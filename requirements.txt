@@ -1,0 +1,5 @@
+pydantic
+python-dotenv
+tenacity
+rich
+
