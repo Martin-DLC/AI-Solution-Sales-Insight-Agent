@@ -20,5 +20,8 @@ Python 3.11 is required.
 
 ## Current Progress
 
-- US-101 Input Pack Schema is complete.
-- Agent logic and model calls have not been implemented yet.
+- US-101 is complete.
+- US-102A is complete.
+- US-102B full Output Schema is complete.
+- LLM calls have not been implemented yet.
+- Agent, LangGraph, RAG, and web pages have not been implemented yet.
