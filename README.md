@@ -18,3 +18,7 @@ Python 3.11 is required.
 - Environment readiness entry point
 - Basic environment tests
 
+## Current Progress
+
+- US-101 Input Pack Schema is complete.
+- Agent logic and model calls have not been implemented yet.

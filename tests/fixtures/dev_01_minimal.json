@@ -1,0 +1,62 @@
+{
+  "case_id": "DEV-01",
+  "case_name": "Regional Service Team Discovery",
+  "dataset_split": "development",
+  "difficulty": "low",
+  "scenario_tags": ["discovery", "service-operations"],
+  "industry": "Field services",
+  "company_size": "200-500 employees",
+  "current_sales_stage": "Discovery",
+  "customer_profile": {
+    "company_name": "Example Service Cooperative",
+    "industry": "Field services",
+    "company_size": "200-500 employees",
+    "main_business": ["On-site maintenance", "Customer support"],
+    "digital_maturity": "Moderate",
+    "current_systems": ["CRM", "Ticketing system"],
+    "publicly_stated_goals": ["Reduce response time", "Improve renewal visibility"],
+    "known_participants": [
+      {
+        "name_or_role": "Operations Director",
+        "organization_role": "Owns field service performance",
+        "source_type": "customer_profile"
+      },
+      {
+        "name_or_role": "Revenue Operations Lead",
+        "organization_role": "Maintains CRM process",
+        "source_type": "customer_profile"
+      }
+    ]
+  },
+  "meeting": {
+    "participants": [
+      {
+        "name_or_role": "Operations Director",
+        "organization_role": "Owns field service performance"
+      },
+      {
+        "name_or_role": "Account Executive",
+        "organization_role": "Runs the discovery meeting"
+      }
+    ],
+    "transcript": "The customer explained that service teams use separate systems for tickets, renewals, and account notes. Managers want a clearer weekly view of delayed work, customer risk, and recommended next steps before renewal conversations begin."
+  },
+  "salesperson_notes": [
+    {
+      "content": "The account team believes an executive sponsor may join the next meeting, but the customer has not confirmed this yet."
+    }
+  ],
+  "known_constraints": [
+    {
+      "category": "Timeline",
+      "description": "The customer wants an initial recommendation before the next quarterly planning meeting.",
+      "severity": "medium"
+    },
+    {
+      "category": "Data readiness",
+      "description": "Ticket quality varies by region, so early analysis should call out confidence limits.",
+      "severity": "high"
+    }
+  ],
+  "available_solution_library": ["CRM-insight-pack", "service-risk-dashboard"]
+}
