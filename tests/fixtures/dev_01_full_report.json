@@ -1,0 +1,471 @@
+{
+  "schema_version": "1.0",
+  "case_id": "DEV-01",
+  "analysis_id": "ANALYSIS-DEV-01",
+  "generated_at": "2026-06-16T10:30:00Z",
+  "executive_summary": {
+    "opportunity_summary": "The customer needs better service and renewal visibility from fragmented systems.",
+    "overall_intent": "medium",
+    "current_stage": "discovery",
+    "recommended_strategy": "Validate budget, authority, and data readiness before proposing a scoped pilot.",
+    "primary_opportunity": "Create a service risk and renewal insight workflow.",
+    "primary_risk": "Budget owner and data readiness are still unconfirmed.",
+    "confidence": "medium"
+  },
+  "customer_context": {
+    "company_name": "Example Service Cooperative",
+    "industry": "Field services",
+    "company_size": "200-500 employees",
+    "current_systems": ["CRM", "Ticketing system"],
+    "sales_stage_input": "Discovery",
+    "confirmed_constraints": [
+      "Initial recommendation needed before quarterly planning",
+      "Ticket quality varies by region"
+    ],
+    "context_quality": "partially_sufficient"
+  },
+  "explicit_needs": [
+    {
+      "need_id": "NEED-001",
+      "description": "Managers need a clearer weekly view of delayed service work.",
+      "priority": "high",
+      "claim_type": "fact",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Customer asked for a clearer weekly view of delayed work."
+        }
+      ]
+    },
+    {
+      "need_id": "NEED-002",
+      "description": "The team wants better visibility into customer risk before renewal conversations.",
+      "priority": "medium",
+      "claim_type": "fact",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Customer linked renewal preparation with customer risk visibility."
+        }
+      ]
+    }
+  ],
+  "underlying_pains": [
+    {
+      "pain_id": "PAIN-001",
+      "description": "Fragmented service and account data likely slows renewal preparation.",
+      "business_dimension": "efficiency",
+      "severity": "high",
+      "claim_type": "inference",
+      "reasoning_summary": "The customer described separate systems and a need for weekly visibility.",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Customer said tickets, renewals, and account notes are in separate systems."
+        }
+      ],
+      "validation_question": "Which renewal preparation tasks take the most time today?"
+    }
+  ],
+  "business_impacts": [
+    {
+      "impact_id": "IMPACT-001",
+      "description": "Delayed risk visibility may reduce renewal team efficiency.",
+      "impact_type": "efficiency",
+      "quantified": false,
+      "current_value": null,
+      "target_value": null,
+      "claim_type": "inference",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Managers want recommended next steps before renewal conversations."
+        }
+      ],
+      "measurement_needed": "Measure hours spent consolidating ticket, renewal, and account notes each week."
+    }
+  ],
+  "buying_intent": {
+    "intent_level": "medium",
+    "sales_stage": "discovery",
+    "confidence": "medium",
+    "positive_signals": [
+      "Customer described concrete operational reporting needs",
+      "Customer has a near-term planning milestone"
+    ],
+    "negative_signals": [],
+    "unknown_factors": ["Budget owner is not yet confirmed"],
+    "reasoning_summary": "The customer has clear needs, but budget and authority remain unverified."
+  },
+  "stakeholder_map": [
+    {
+      "stakeholder_id": "STK-001",
+      "name_or_role": "Operations Director",
+      "organization_role": "Owns field service performance",
+      "sales_role": "business_owner",
+      "influence_level": "high",
+      "attitude": "supportive",
+      "confirmed": true,
+      "claim_type": "fact",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Operations Director joined the discovery meeting."
+        }
+      ],
+      "next_validation": null
+    },
+    {
+      "stakeholder_id": "STK-002",
+      "name_or_role": "Potential Executive Sponsor",
+      "organization_role": "May influence planning approval",
+      "sales_role": "champion_candidate",
+      "influence_level": "medium",
+      "attitude": "unknown",
+      "confirmed": false,
+      "claim_type": "assumption",
+      "confidence": "low",
+      "evidence": [
+        {
+          "source_id": "DEV-01-NOTE",
+          "source_type": "salesperson_note",
+          "evidence_summary": "Sales team believes an executive sponsor may join next meeting."
+        }
+      ],
+      "next_validation": "Confirm whether an executive sponsor will attend the next meeting."
+    }
+  ],
+  "information_gaps": [
+    {
+      "gap_id": "GAP-001",
+      "category": "budget",
+      "description": "Budget owner and funding path are not confirmed.",
+      "priority": "high",
+      "business_impact": "Without budget clarity, the deal may stall after discovery.",
+      "question_to_ask": "Who owns budget approval for this initiative?",
+      "recommended_owner": "sales"
+    },
+    {
+      "gap_id": "GAP-002",
+      "category": "current_metrics",
+      "description": "Current renewal preparation effort is not quantified.",
+      "priority": "medium",
+      "business_impact": "The team cannot yet quantify efficiency improvement.",
+      "question_to_ask": "How many hours does the team spend preparing renewal context each week?",
+      "recommended_owner": "presales"
+    }
+  ],
+  "ai_opportunities": [
+    {
+      "opportunity_id": "AIOPP-001",
+      "name": "Service risk summarization",
+      "related_pain_ids": ["PAIN-001"],
+      "suitability": "suitable_for_poc",
+      "business_value": ["efficiency", "customer_experience"],
+      "reasoning_summary": "The customer needs consolidated signals from fragmented service records.",
+      "required_data": ["Ticket history", "Renewal dates", "Account notes"],
+      "required_integrations": ["CRM", "Ticketing system"],
+      "prerequisites": [],
+      "major_limitations": [],
+      "claim_type": "inference",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Customer described fragmented service and renewal context."
+        }
+      ]
+    },
+    {
+      "opportunity_id": "AIOPP-002",
+      "name": "Renewal preparation assistant",
+      "related_pain_ids": ["PAIN-001"],
+      "suitability": "suitable_after_prerequisites",
+      "business_value": ["revenue", "efficiency"],
+      "reasoning_summary": "A guided assistant could help teams prepare renewal context after data quality is checked.",
+      "required_data": ["Renewal records", "Ticket summaries"],
+      "required_integrations": ["CRM"],
+      "prerequisites": ["Confirm renewal data ownership", "Assess ticket quality by region"],
+      "major_limitations": [],
+      "claim_type": "assumption",
+      "confidence": "low",
+      "evidence": [
+        {
+          "source_id": "DEV-01-NOTE",
+          "source_type": "salesperson_note",
+          "evidence_summary": "Sales note suggests a planning sponsor may join the next meeting."
+        }
+      ]
+    }
+  ],
+  "solution_recommendations": [
+    {
+      "recommendation_id": "REC-001",
+      "solution_id": "SOL-RISK-DASH",
+      "solution_name": "Service Risk Dashboard",
+      "fit_level": "medium",
+      "related_opportunity_ids": ["AIOPP-001"],
+      "recommended_scope": "Start with weekly service risk summaries for priority renewal accounts.",
+      "fit_reasons": [
+        "Matches the requested weekly management visibility",
+        "Can use CRM and ticketing inputs"
+      ],
+      "prerequisites": ["Confirm ticket field quality"],
+      "delivery_risks": ["Regional ticket quality may limit confidence"],
+      "excluded_capabilities": ["Automated customer-facing recommendations"],
+      "knowledge_references": [
+        {
+          "source_id": "SOL-RISK-DASH",
+          "source_type": "solution_library",
+          "evidence_summary": "Solution library includes a service risk dashboard pattern."
+        }
+      ],
+      "confidence": "medium"
+    },
+    {
+      "recommendation_id": "REC-002",
+      "solution_id": "SOL-RENEWAL-PREP",
+      "solution_name": "Renewal Preparation Workspace",
+      "fit_level": "medium",
+      "related_opportunity_ids": ["AIOPP-002"],
+      "recommended_scope": "Pilot a renewal preparation workspace after sponsor and data readiness are confirmed.",
+      "fit_reasons": [
+        "Supports renewal conversation preparation",
+        "Keeps scope limited until governance is clear"
+      ],
+      "prerequisites": ["Confirm executive sponsor", "Validate renewal data fields"],
+      "delivery_risks": ["Budget and authority are not yet confirmed"],
+      "excluded_capabilities": ["Autonomous pricing decisions"],
+      "knowledge_references": [
+        {
+          "source_id": "SOL-RENEWAL-PREP",
+          "source_type": "solution_library",
+          "evidence_summary": "Solution library includes a renewal preparation workspace pattern."
+        }
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "risks_and_objections": [
+    {
+      "risk_id": "RISK-001",
+      "category": "budget",
+      "description": "Budget owner is not confirmed.",
+      "severity": "high",
+      "probability": "medium",
+      "impact": "The opportunity may stall after discovery without funding clarity.",
+      "mitigation": "Ask who owns budget approval and what planning cycle applies.",
+      "claim_type": "inference",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "source_id": "GAP-001",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Budget owner and funding path remain unknown."
+        }
+      ]
+    },
+    {
+      "risk_id": "RISK-002",
+      "category": "data_quality",
+      "description": "Ticket quality varies by region.",
+      "severity": "medium",
+      "probability": "high",
+      "impact": "Data quality issues may reduce confidence in generated insights.",
+      "mitigation": "Assess ticket completeness before promising automation depth.",
+      "claim_type": "fact",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source_id": "DEV-01-CONSTRAINT",
+          "source_type": "known_constraint",
+          "evidence_summary": "Known constraint states that ticket quality varies by region."
+        }
+      ]
+    }
+  ],
+  "deal_score": {
+    "total_score": 68,
+    "score_level": "medium_high",
+    "confidence": "medium",
+    "dimensions": [
+      {
+        "dimension": "business_need",
+        "score": 18,
+        "max_score": 20,
+        "reasoning": "The customer described concrete and repeated operational needs.",
+        "evidence": [
+          {
+            "source_id": "NEED-001",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "Managers need weekly visibility into delayed service work."
+          }
+        ]
+      },
+      {
+        "dimension": "business_value",
+        "score": 12,
+        "max_score": 15,
+        "reasoning": "Efficiency and renewal preparation value are credible but not quantified.",
+        "evidence": [
+          {
+            "source_id": "IMPACT-001",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "Renewal preparation effort still needs measurement."
+          }
+        ]
+      },
+      {
+        "dimension": "budget",
+        "score": 10,
+        "max_score": 15,
+        "reasoning": "Budget path is not confirmed, but planning timing creates urgency.",
+        "evidence": [
+          {
+            "source_id": "GAP-001",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "Budget owner and funding path are still unknown."
+          }
+        ]
+      },
+      {
+        "dimension": "authority",
+        "score": 8,
+        "max_score": 15,
+        "reasoning": "A business owner is present, but decision authority is not confirmed.",
+        "evidence": [
+          {
+            "source_id": "STK-001",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "Operations Director joined but decision maker status is not established."
+          }
+        ]
+      },
+      {
+        "dimension": "timeline",
+        "score": 8,
+        "max_score": 10,
+        "reasoning": "The customer has a quarterly planning milestone for initial recommendations.",
+        "evidence": [
+          {
+            "source_id": "DEV-01-CONSTRAINT",
+            "source_type": "known_constraint",
+            "evidence_summary": "Initial recommendation is needed before quarterly planning."
+          }
+        ]
+      },
+      {
+        "dimension": "solution_fit",
+        "score": 8,
+        "max_score": 15,
+        "reasoning": "Solution patterns fit the needs, but data readiness must be validated.",
+        "evidence": [
+          {
+            "source_id": "SOL-RISK-DASH",
+            "source_type": "solution_library",
+            "evidence_summary": "Service risk dashboard pattern maps to weekly visibility need."
+          }
+        ]
+      },
+      {
+        "dimension": "delivery_readiness",
+        "score": 4,
+        "max_score": 10,
+        "reasoning": "Delivery readiness is constrained by variable regional ticket quality.",
+        "evidence": [
+          {
+            "source_id": "DEV-01-CONSTRAINT",
+            "source_type": "known_constraint",
+            "evidence_summary": "Ticket quality varies by region."
+          }
+        ]
+      }
+    ],
+    "score_limiters": ["Unknown budget owner", "Unverified decision authority", "Data quality risk"],
+    "conditions_to_increase_score": [
+      "Confirm budget owner",
+      "Validate ticket quality",
+      "Identify decision process"
+    ],
+    "reasoning_summary": "The deal has clear need and timing, but authority, budget, and readiness are incomplete."
+  },
+  "next_best_actions": [
+    {
+      "action_id": "NBA-001",
+      "priority": "P0",
+      "objective": "Confirm buying path",
+      "action": "Ask the Operations Director to identify the budget owner and approval process.",
+      "owner": "sales",
+      "required_participants": ["Operations Director"],
+      "required_inputs": ["Current planning timeline"],
+      "expected_output": "Named budget owner and approval process.",
+      "suggested_timeframe": "Before the next discovery meeting",
+      "success_criteria": "Budget owner and approval steps are documented.",
+      "related_gap_ids": ["GAP-001"],
+      "reasoning_summary": "Budget clarity is required before proposing a scoped pilot."
+    },
+    {
+      "action_id": "NBA-002",
+      "priority": "P1",
+      "objective": "Validate data readiness",
+      "action": "Review ticket field quality across two sample regions with the customer team.",
+      "owner": "presales",
+      "required_participants": ["Revenue Operations Lead", "Operations Director"],
+      "required_inputs": ["Sample ticket export", "CRM account list"],
+      "expected_output": "Data readiness notes and confidence limits.",
+      "suggested_timeframe": "Within one week",
+      "success_criteria": "Known data quality constraints are documented.",
+      "related_gap_ids": ["GAP-002"],
+      "reasoning_summary": "Data quality affects recommendation reliability and delivery scope."
+    }
+  ],
+  "customer_followup": {
+    "internal_summary": "The customer has clear service visibility needs but budget and data readiness need validation.",
+    "customer_email_subject": "Next steps for service risk and renewal visibility",
+    "customer_email_body": "Thank you for the discovery conversation. As a next step, we suggest validating budget ownership and sample data readiness before defining a pilot scope.",
+    "next_meeting_agenda": [
+      "Confirm budget owner and approval path",
+      "Review ticket and CRM data readiness",
+      "Agree on pilot scope boundaries"
+    ],
+    "materials_to_prepare": ["Discovery summary", "Sample data checklist"],
+    "claims_requiring_human_review": [
+      "Potential executive sponsor has not been confirmed",
+      "Efficiency impact is not yet quantified"
+    ]
+  },
+  "reliability_summary": {
+    "overall_confidence": "medium",
+    "fact_count": 7,
+    "inference_count": 8,
+    "assumption_count": 2,
+    "unknown_count": 2,
+    "unsupported_claim_count": 0,
+    "knowledge_grounded_recommendation_rate": 1.0,
+    "critical_information_gap_count": 0,
+    "human_review_required": true,
+    "human_review_reasons": [
+      "Budget owner remains unknown",
+      "Decision authority remains unconfirmed"
+    ]
+  },
+  "evaluation_flags": [
+    {
+      "flag": "human_review_required",
+      "severity": "medium",
+      "description": "Human review is required before customer-facing recommendations are used.",
+      "affected_fields": ["solution_recommendations", "customer_followup"]
+    }
+  ]
+}
