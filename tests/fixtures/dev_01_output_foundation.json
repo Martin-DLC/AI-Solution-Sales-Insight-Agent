@@ -1,0 +1,155 @@
+{
+  "customer_context": {
+    "company_name": "Example Service Cooperative",
+    "industry": "Field services",
+    "company_size": "200-500 employees",
+    "current_systems": ["CRM", "Ticketing system"],
+    "sales_stage_input": "Discovery",
+    "confirmed_constraints": [
+      "Initial recommendation needed before quarterly planning",
+      "Ticket quality varies by region"
+    ],
+    "context_quality": "partially_sufficient"
+  },
+  "explicit_needs": [
+    {
+      "need_id": "NEED-001",
+      "description": "Managers need a clearer weekly view of delayed service work.",
+      "priority": "high",
+      "claim_type": "fact",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Customer asked for a clearer weekly view of delayed work."
+        }
+      ]
+    },
+    {
+      "need_id": "NEED-002",
+      "description": "The team wants better visibility into customer risk before renewal conversations.",
+      "priority": "medium",
+      "claim_type": "fact",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Customer linked renewal preparation with customer risk visibility."
+        }
+      ]
+    }
+  ],
+  "underlying_pains": [
+    {
+      "pain_id": "PAIN-001",
+      "description": "Fragmented service and account data likely slows renewal preparation.",
+      "business_dimension": "efficiency",
+      "severity": "high",
+      "claim_type": "inference",
+      "reasoning_summary": "The customer described separate systems and a need for weekly visibility.",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Customer said tickets, renewals, and account notes are in separate systems."
+        }
+      ],
+      "validation_question": "Which renewal preparation tasks take the most time today?"
+    }
+  ],
+  "business_impacts": [
+    {
+      "impact_id": "IMPACT-001",
+      "description": "Delayed risk visibility may reduce renewal team efficiency.",
+      "impact_type": "efficiency",
+      "quantified": false,
+      "current_value": null,
+      "target_value": null,
+      "claim_type": "inference",
+      "confidence": "medium",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Managers want recommended next steps before renewal conversations."
+        }
+      ],
+      "measurement_needed": "Measure hours spent consolidating ticket, renewal, and account notes each week."
+    }
+  ],
+  "buying_intent": {
+    "intent_level": "medium",
+    "sales_stage": "discovery",
+    "confidence": "medium",
+    "positive_signals": [
+      "Customer described concrete operational reporting needs",
+      "Customer has a near-term planning milestone"
+    ],
+    "negative_signals": [],
+    "unknown_factors": ["Budget owner is not yet confirmed"],
+    "reasoning_summary": "The customer has clear needs, but budget and authority remain unverified."
+  },
+  "stakeholder_map": [
+    {
+      "stakeholder_id": "STK-001",
+      "name_or_role": "Operations Director",
+      "organization_role": "Owns field service performance",
+      "sales_role": "business_owner",
+      "influence_level": "high",
+      "attitude": "supportive",
+      "confirmed": true,
+      "claim_type": "fact",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source_id": "DEV-01-MEETING",
+          "source_type": "meeting_transcript",
+          "evidence_summary": "Operations Director joined the discovery meeting."
+        }
+      ],
+      "next_validation": null
+    },
+    {
+      "stakeholder_id": "STK-002",
+      "name_or_role": "Potential Executive Sponsor",
+      "organization_role": "May influence planning approval",
+      "sales_role": "champion_candidate",
+      "influence_level": "medium",
+      "attitude": "unknown",
+      "confirmed": false,
+      "claim_type": "assumption",
+      "confidence": "low",
+      "evidence": [
+        {
+          "source_id": "DEV-01-NOTE",
+          "source_type": "salesperson_note",
+          "evidence_summary": "Sales team believes an executive sponsor may join next meeting."
+        }
+      ],
+      "next_validation": "Confirm whether an executive sponsor will attend the next meeting."
+    }
+  ],
+  "information_gaps": [
+    {
+      "gap_id": "GAP-001",
+      "category": "budget",
+      "description": "Budget owner and funding path are not confirmed.",
+      "priority": "high",
+      "business_impact": "Without budget clarity, the deal may stall after discovery.",
+      "question_to_ask": "Who owns budget approval for this initiative?",
+      "recommended_owner": "sales"
+    },
+    {
+      "gap_id": "GAP-002",
+      "category": "current_metrics",
+      "description": "Current renewal preparation effort is not quantified.",
+      "priority": "medium",
+      "business_impact": "The team cannot yet quantify efficiency improvement.",
+      "question_to_ask": "How many hours does the team spend preparing renewal context each week?",
+      "recommended_owner": "presales"
+    }
+  ]
+}

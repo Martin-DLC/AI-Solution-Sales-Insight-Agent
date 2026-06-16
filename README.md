@@ -21,4 +21,6 @@ Python 3.11 is required.
 ## Current Progress
 
 - US-101 Input Pack Schema is complete.
-- Agent logic and model calls have not been implemented yet.
+- US-102A core sales insight output models are complete.
+- AI opportunities, solution recommendations, Deal Score, and the final report have not been implemented yet.
+- LLM calls and Agent logic have not been implemented yet.
