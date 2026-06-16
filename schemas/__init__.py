@@ -31,6 +31,7 @@ from schemas.decision_models import (
     DealScoreDimension,
     NextBestAction,
 )
+from schemas.evaluation_models import HiddenReferencePack, ReferenceSalesStage
 from schemas.insight_models import (
     BusinessImpact,
     BuyingIntent,
@@ -88,6 +89,7 @@ __all__ = [
     "EvaluationCaseInput",
     "ExecutiveSummary",
     "ExplicitNeed",
+    "HiddenReferencePack",
     "InformationGap",
     "InformationGapCategory",
     "InfluenceLevel",
@@ -99,6 +101,7 @@ __all__ = [
     "Participant",
     "PriorityLevel",
     "ProbabilityLevel",
+    "ReferenceSalesStage",
     "ReliabilitySummary",
     "Risk",
     "RiskCategory",
