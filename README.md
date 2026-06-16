@@ -20,8 +20,10 @@ Python 3.11 is required.
 
 ## Current Progress
 
-- US-101 is complete.
-- US-102A is complete.
-- US-102B full Output Schema is complete.
+- Input Schema is complete.
+- Output Schema is complete.
+- Hidden Reference Pack Schema is complete.
+- JSONL loader and runtime isolation are complete.
+- Formal seed cases have not been imported yet.
 - LLM calls have not been implemented yet.
 - Agent, LangGraph, RAG, and web pages have not been implemented yet.
