@@ -29,5 +29,10 @@ Python 3.11 is required.
 - Official seed dataset validation script is complete.
 - Data sync SOP is complete.
 - Next stage is Baseline A/B and the model adapter layer.
+- Provider-neutral model adapter layer is complete.
+- LLM access uses an OpenAI-compatible interface.
+- pytest does not make live API calls.
+- Real API calls require explicitly running `./.venv/bin/python scripts/smoke_test_llm.py --live`.
+- Baseline A/B has not been implemented yet.
 - LLM calls have not been implemented yet.
 - LangGraph, RAG, and web demo have not been implemented yet.
