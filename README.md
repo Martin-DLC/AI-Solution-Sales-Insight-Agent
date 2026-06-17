@@ -34,5 +34,10 @@ Python 3.11 is required.
 - pytest does not make live API calls.
 - Real API calls require explicitly running `./.venv/bin/python scripts/smoke_test_llm.py --live`.
 - Baseline A/B has not been implemented yet.
-- LLM calls have not been implemented yet.
+- Baseline A plain Prompt runner is complete.
+- Baseline A CLI defaults to Dry Run and does not consume API.
+- Only `--live` calls the model.
+- Live Baseline A outputs are saved under `data/runtime/baseline_runs`, which is ignored by Git.
+- Baseline A does not use the structured Output Schema.
+- Baseline B has not been implemented yet.
 - LangGraph, RAG, and web demo have not been implemented yet.
