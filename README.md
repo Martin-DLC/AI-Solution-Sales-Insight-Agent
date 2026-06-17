@@ -39,5 +39,25 @@ Python 3.11 is required.
 - Only `--live` calls the model.
 - Live Baseline A outputs are saved under `data/runtime/baseline_runs`, which is ignored by Git.
 - Baseline A does not use the structured Output Schema.
-- Baseline B has not been implemented yet.
+- Baseline A plain text Prompt is complete.
+- Baseline B high-quality structured Prompt is complete.
+- Baseline B uses the full SalesInsightReport Schema.
+- Baseline B saves invalid JSON diagnostics separately from Schema validation errors.
+- Baseline B v1 showed JSON and Schema adherence failures in live testing.
+- Baseline B v1 is preserved and not overwritten.
+- Baseline B v2 only strengthens the Prompt contract.
+- Baseline B v2 does not use RAG, Workflow, Critic, or automatic repair.
+- Running Baseline B v2 requires explicitly passing `--prompt-version baseline_b_v2`.
+- Baseline B v2 reduced the live Schema errors from 12 to 5.
+- Baseline B v3 only adds owner enum and text specificity contract rules.
+- After Baseline B v3, DEV-01-specific Prompt tuning should stop.
+- Baseline B v3 is still one model call without automatic repair, RAG, Workflow, or Critic.
+- Baseline A/B experiment phase is frozen.
+- Baseline B v3 still has 2 Schema errors in the recorded DEV-01 run.
+- No additional Baseline B Prompt versions will be added for DEV-01.
+- The next architecture phase is Architecture C stepwise Workflow.
+- Baseline A and Baseline B are both single model calls.
+- Baseline B does not use RAG, Workflow, or Critic.
+- Dry Run does not consume API.
+- Live results are saved under `data/runtime`, which is ignored by Git.
 - LangGraph, RAG, and web demo have not been implemented yet.
