@@ -1,0 +1,19 @@
+请基于下面完整案例，生成一个符合 SalesInsightReport Schema 的结构化销售洞察报告。
+
+Evidence ID约定：
+- customer_profile整体：PROFILE-01
+- meeting transcript：MTG-01
+- salesperson_notes按顺序：NOTE-01、NOTE-02……
+- known_constraints按顺序：CONSTRAINT-01、CONSTRAINT-02……
+- available_solution_library按顺序：SOLUTION-01、SOLUTION-02……
+
+请注意：
+- salesperson_notes默认未经客户确认。
+- SolutionRecommendation的knowledge_references必须使用solution_library。
+- solution_id使用available_solution_library中的原始字符串。
+- 如果原始字符串是方案名称，可同时用作solution_name。
+- 不要删减会议纪要。
+
+完整案例JSON：
+
+{{CASE_JSON}}
