@@ -7,7 +7,7 @@ from typing import Any
 import pytest
 
 from llm.config import LLMConfig
-from llm.errors import LLMRequestError, LLMResponseError
+from llm.errors import LLMJSONDecodeError, LLMRequestError, LLMResponseError
 from llm.factory import create_llm_client
 from llm.models import LLMMessage, LLMRole
 from llm.openai_compatible import OpenAICompatibleClient
@@ -192,8 +192,53 @@ def test_complete_json_invalid_json_fails() -> None:
         FakeSDKClient(completions=FakeCompletionsResource(FakeResponse([FakeChoice(FakeMessage("nope"))])))
     )
 
-    with pytest.raises(LLMResponseError, match="valid JSON"):
+    with pytest.raises(LLMJSONDecodeError, match="valid JSON"):
         client.complete_json([LLMMessage(role=LLMRole.user, content="Return JSON")])
+
+
+def test_complete_json_invalid_json_error_keeps_raw_content() -> None:
+    raw_content = "This is not JSON but should be preserved."
+    client = make_client(
+        FakeSDKClient(
+            completions=FakeCompletionsResource(FakeResponse([FakeChoice(FakeMessage(raw_content))]))
+        )
+    )
+
+    with pytest.raises(LLMJSONDecodeError) as exc_info:
+        client.complete_json([LLMMessage(role=LLMRole.user, content="Return JSON")])
+
+    assert exc_info.value.raw_content == raw_content
+    assert exc_info.value.content_length == len(raw_content)
+    assert exc_info.value.json_error_position == 0
+
+
+def test_json_decode_error_string_does_not_include_raw_content() -> None:
+    raw_content = "Customer-specific ordinary text that should not be in logs."
+    client = make_client(
+        FakeSDKClient(
+            completions=FakeCompletionsResource(FakeResponse([FakeChoice(FakeMessage(raw_content))]))
+        )
+    )
+
+    with pytest.raises(LLMJSONDecodeError) as exc_info:
+        client.complete_json([LLMMessage(role=LLMRole.user, content="Return JSON")])
+
+    assert raw_content not in str(exc_info.value)
+    assert raw_content not in repr(exc_info.value)
+
+
+def test_complete_json_markdown_code_fence_fails_strict_json() -> None:
+    raw_content = '```json\n{"ok": true}\n```'
+    client = make_client(
+        FakeSDKClient(
+            completions=FakeCompletionsResource(FakeResponse([FakeChoice(FakeMessage(raw_content))]))
+        )
+    )
+
+    with pytest.raises(LLMJSONDecodeError) as exc_info:
+        client.complete_json([LLMMessage(role=LLMRole.user, content="Return JSON")])
+
+    assert exc_info.value.raw_content == raw_content
 
 
 def test_complete_json_array_fails() -> None:

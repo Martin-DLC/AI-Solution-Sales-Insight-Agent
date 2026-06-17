@@ -5,7 +5,7 @@ import time
 from typing import Any
 
 from llm.config import LLMConfig
-from llm.errors import LLMRequestError, LLMResponseError
+from llm.errors import LLMJSONDecodeError, LLMRequestError, LLMResponseError
 from llm.models import LLMMessage, LLMResponse, LLMUsage
 
 
@@ -111,7 +111,11 @@ class OpenAICompatibleClient:
             try:
                 decoded = json.loads(content)
             except json.JSONDecodeError as exc:
-                raise LLMResponseError(f"LLM JSON response is not valid JSON: {exc.msg}.") from exc
+                raise LLMJSONDecodeError(
+                    raw_content=content,
+                    json_error_message=exc.msg,
+                    json_error_position=exc.pos,
+                ) from exc
             if not isinstance(decoded, dict):
                 raise LLMResponseError("LLM JSON response must be a JSON object.")
             parsed_json = decoded
@@ -146,4 +150,3 @@ def _extract_usage(raw_usage: Any) -> LLMUsage:
         completion_tokens=getattr(raw_usage, "completion_tokens", None),
         total_tokens=getattr(raw_usage, "total_tokens", None),
     )
-
