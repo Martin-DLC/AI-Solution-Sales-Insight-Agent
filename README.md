@@ -24,6 +24,10 @@ Python 3.11 is required.
 - Output Schema is complete.
 - Hidden Reference Pack Schema is complete.
 - JSONL loader and runtime isolation are complete.
-- Formal seed cases have not been imported yet.
+- Three Development seed cases have been converted to official JSONL.
+- Runtime Cases and Hidden Reference Pack are isolated.
+- Official seed dataset validation script is complete.
+- Data sync SOP is complete.
+- Next stage is Baseline A/B and the model adapter layer.
 - LLM calls have not been implemented yet.
-- Agent, LangGraph, RAG, and web pages have not been implemented yet.
+- LangGraph, RAG, and web demo have not been implemented yet.
