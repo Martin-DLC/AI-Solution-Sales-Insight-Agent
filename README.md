@@ -58,7 +58,9 @@ Python 3.11 is required.
 - The next architecture phase is Architecture C stepwise Workflow.
 - Architecture C design is complete.
 - Architecture C minimal Workflow skeleton is implemented.
-- Architecture C currently contains only a five-node offline graph.
+- Architecture C Batch 1A is implemented with formal Fact Extraction and Explicit Need nodes.
+- Architecture C now validates evidence cross-references before downstream workflow steps.
+- Architecture C currently contains an offline graph through explicit need extraction and human review.
 - Architecture C uses Fake LLM and does not call a real model.
 - Architecture C has not implemented full business nodes, RAG, Deal Score, or final report generation.
 - Baseline A and Baseline B are both single model calls.

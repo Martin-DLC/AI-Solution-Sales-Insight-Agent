@@ -1,0 +1,7 @@
+NODE: fact_extraction
+
+Evidence Source Index:
+{{SOURCE_INDEX_JSON}}
+
+Extract only verified facts and clearly unknown fields from the Source Index.
+Return the JSON object for the fact_extraction node.

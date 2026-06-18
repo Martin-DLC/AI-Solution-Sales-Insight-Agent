@@ -11,6 +11,7 @@ from pydantic import ValidationError
 from agent.workflow_c.contracts import NodeFailurePolicy, WorkflowNode
 from agent.workflow_c.failures import (
     MissingNodeDependencyError,
+    NodeBusinessRuleError,
     NodeContractViolationError,
     NodeJSONParseError,
     redact_secrets,
@@ -102,7 +103,12 @@ def _failure_patch(
     failure_id = f"failure-{uuid.uuid4().hex}"
     category = _failure_category(node.contract.name, error)
     retryable = isinstance(error, LLMRequestError)
-    issues = validation_issues_from_error(error) if isinstance(error, ValidationError) else []
+    if isinstance(error, NodeBusinessRuleError):
+        issues = list(error.issues)
+    elif isinstance(error, ValidationError):
+        issues = validation_issues_from_error(error)
+    else:
+        issues = []
     failure = WorkflowFailure(
         failure_id=failure_id,
         node_name=node.contract.name,
@@ -150,6 +156,8 @@ def _failure_category(node_name: WorkflowNodeName, error: Exception) -> FailureC
     if isinstance(error, ValidationError):
         if node_name is WorkflowNodeName.input_validation:
             return FailureCategory.input_validation
+        return FailureCategory.schema_validation
+    if isinstance(error, NodeBusinessRuleError):
         return FailureCategory.schema_validation
     if isinstance(error, LLMResponseError):
         return FailureCategory.llm_response

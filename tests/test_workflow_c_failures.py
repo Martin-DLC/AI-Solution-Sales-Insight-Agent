@@ -22,7 +22,7 @@ def test_invalid_input_does_not_execute_source_index() -> None:
 
     snapshot = run_architecture_c_skeleton(
         bad,
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_fact_response()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
     )
 
     assert snapshot.workflow_status is WorkflowStatus.failed
@@ -30,7 +30,7 @@ def test_invalid_input_does_not_execute_source_index() -> None:
 
 
 def test_llm_request_error_enters_human_review() -> None:
-    client = FakeWorkflowLLMClient.with_default_fact_response()
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -39,7 +39,7 @@ def test_llm_request_error_enters_human_review() -> None:
 
 
 def test_llm_request_error_does_not_execute_context_sufficiency() -> None:
-    client = FakeWorkflowLLMClient.with_default_fact_response()
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -48,7 +48,7 @@ def test_llm_request_error_does_not_execute_context_sufficiency() -> None:
 
 
 def test_invalid_json_generates_json_parse_failure() -> None:
-    client = FakeWorkflowLLMClient.with_default_fact_response(
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses(
         invalid_json_nodes={"fact_extraction"}
     )
 
@@ -58,7 +58,7 @@ def test_invalid_json_generates_json_parse_failure() -> None:
 
 
 def test_invalid_json_factory_path_enters_human_review_and_stops_downstream() -> None:
-    client = FakeWorkflowLLMClient.with_default_fact_response(
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses(
         invalid_json_nodes={"fact_extraction"}
     )
 
@@ -74,8 +74,10 @@ def test_invalid_json_factory_path_enters_human_review_and_stops_downstream() ->
 
 
 def test_schema_error_generates_schema_validation_failure() -> None:
-    client = FakeWorkflowLLMClient.with_default_fact_response()
-    client.schema_error_payloads[WorkflowNodeName.fact_extraction] = {"facts": []}
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+    client.schema_error_payloads[WorkflowNodeName.fact_extraction] = {
+        "fact_extraction": {"facts": []}
+    }
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
 
@@ -83,23 +85,23 @@ def test_schema_error_generates_schema_validation_failure() -> None:
 
 
 def test_unauthorized_field_generates_internal_error(monkeypatch) -> None:
-    from agent.workflow_c.nodes.fake_fact_extraction import FakeFactExtractionNode
+    from agent.workflow_c.nodes.fact_extraction import FactExtractionNode
 
     def bad_run(self, state, services):
         return {"fact_extraction": {}, "extra": "bad"}
 
-    monkeypatch.setattr(FakeFactExtractionNode, "run", bad_run)
+    monkeypatch.setattr(FactExtractionNode, "run", bad_run)
 
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_fact_response()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
     )
 
     assert snapshot.failures[0].failure_category.value == "internal_error"
 
 
 def test_downstream_nodes_do_not_continue_after_failure() -> None:
-    client = FakeWorkflowLLMClient.with_default_fact_response()
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -108,7 +110,7 @@ def test_downstream_nodes_do_not_continue_after_failure() -> None:
 
 
 def test_human_review_gate_runs_after_non_input_failure() -> None:
-    client = FakeWorkflowLLMClient.with_default_fact_response()
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -117,7 +119,7 @@ def test_human_review_gate_runs_after_non_input_failure() -> None:
 
 
 def test_failure_state_does_not_contain_api_key() -> None:
-    client = FakeWorkflowLLMClient.with_default_fact_response()
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -154,7 +156,7 @@ def test_pytest_does_not_access_network(monkeypatch) -> None:
 
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_fact_response()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
     )
 
     assert snapshot.workflow_status is WorkflowStatus.awaiting_human_review

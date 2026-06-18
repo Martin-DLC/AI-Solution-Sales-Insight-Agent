@@ -6,7 +6,8 @@ from typing import Any, Callable
 from agent.workflow_c.executor import execute_node
 from agent.workflow_c.nodes import (
     ContextSufficiencyNode,
-    FakeFactExtractionNode,
+    ExplicitNeedNode,
+    FactExtractionNode,
     HumanReviewGateNode,
     InputValidationNode,
     SourceIndexingNode,
@@ -15,6 +16,7 @@ from agent.workflow_c.services import WorkflowServices
 from agent.workflow_c.state import (
     ArchitectureCGraphState,
     ArchitectureCStateSnapshot,
+    AnalysisMode,
     WorkflowStatus,
 )
 from schemas import EvaluationCaseInput
@@ -45,8 +47,9 @@ def build_architecture_c_skeleton(
     nodes = {
         "input_validation": InputValidationNode(),
         "source_indexing": SourceIndexingNode(),
-        "fact_extraction": FakeFactExtractionNode(),
+        "fact_extraction": FactExtractionNode(),
         "context_sufficiency": ContextSufficiencyNode(),
+        "explicit_need": ExplicitNeedNode(),
         "human_review_gate": HumanReviewGateNode(),
     }
 
@@ -80,6 +83,15 @@ def build_architecture_c_skeleton(
     )
     builder.add_conditional_edges(
         "context_sufficiency",
+        _route_after_context_sufficiency,
+        {
+            "end": END,
+            "human_review_gate": "human_review_gate",
+            "explicit_need": "explicit_need",
+        },
+    )
+    builder.add_conditional_edges(
+        "explicit_need",
         _route_to_next_or_review("human_review_gate"),
         {"end": END, "human_review_gate": "human_review_gate"},
     )
@@ -120,6 +132,17 @@ def _route_to_next_or_review(next_node: str) -> Callable[[ArchitectureCGraphStat
     return route
 
 
+def _route_after_context_sufficiency(state: ArchitectureCGraphState) -> str:
+    if state.get("workflow_status") is WorkflowStatus.awaiting_human_review:
+        return "human_review_gate"
+    if state.get("workflow_status") is WorkflowStatus.failed:
+        return "end"
+    context = state.get("context_sufficiency")
+    if context is not None and context.analysis_mode is AnalysisMode.clarification_only:
+        return "human_review_gate"
+    return "explicit_need"
+
+
 class _FallbackGraph:
     def __init__(self, services: WorkflowServices, nodes: dict[str, Any]) -> None:
         self.services = services
@@ -127,13 +150,23 @@ class _FallbackGraph:
 
     def invoke(self, state: ArchitectureCGraphState) -> ArchitectureCGraphState:
         current = dict(state)
-        for name in ("input_validation", "source_indexing", "fact_extraction", "context_sufficiency"):
+        for name in (
+            "input_validation",
+            "source_indexing",
+            "fact_extraction",
+            "context_sufficiency",
+            "explicit_need",
+        ):
             patch = execute_node(self.nodes[name], current, self.services)
             current = _merge_state(current, patch)
             if current.get("workflow_status") is WorkflowStatus.failed:
                 return current
             if current.get("workflow_status") is WorkflowStatus.awaiting_human_review:
                 break
+            if name == "context_sufficiency":
+                context = current.get("context_sufficiency")
+                if context is not None and context.analysis_mode is AnalysisMode.clarification_only:
+                    break
         patch = execute_node(self.nodes["human_review_gate"], current, self.services)
         return _merge_state(current, patch)
 

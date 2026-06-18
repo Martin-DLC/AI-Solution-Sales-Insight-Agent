@@ -17,6 +17,11 @@ from agent.workflow_c.state import (
     WorkflowNodeName,
     WorkflowStatus,
 )
+from agent.workflow_c.node_outputs import (
+    ExplicitNeedNodeOutput,
+    ExplicitNeedResult,
+    FactExtractionNodeOutput,
+)
 from schemas import EvaluationCaseInput
 from schemas.common_models import StrictBaseModel
 
@@ -70,8 +75,8 @@ class SourceIndexingOutput(StrictBaseModel):
     source_index: SourceIndexResult
 
 
-class FakeFactExtractionOutput(StrictBaseModel):
-    fact_extraction: FactExtractionResult
+class FakeFactExtractionOutput(FactExtractionNodeOutput):
+    pass
 
 
 class ContextSufficiencyOutput(StrictBaseModel):
