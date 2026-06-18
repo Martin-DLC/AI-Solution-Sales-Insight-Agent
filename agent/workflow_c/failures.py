@@ -53,6 +53,19 @@ class NodeJSONParseError(Exception):
         )
 
 
+class NodeBusinessRuleError(Exception):
+    def __init__(
+        self,
+        *,
+        node_name: WorkflowNodeName,
+        message: str,
+        issues: list[NodeValidationIssue],
+    ) -> None:
+        self.node_name = node_name
+        self.issues = tuple(issues)
+        super().__init__(redact_secrets(message))
+
+
 def validation_issues_from_error(error: ValidationError) -> list[NodeValidationIssue]:
     issues: list[NodeValidationIssue] = []
     for item in error.errors():

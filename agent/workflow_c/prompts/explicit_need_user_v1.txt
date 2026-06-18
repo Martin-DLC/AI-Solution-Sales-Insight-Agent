@@ -1,0 +1,11 @@
+NODE: explicit_need
+
+Evidence Source Index:
+{{SOURCE_INDEX_JSON}}
+
+Verified Fact Extraction:
+{{FACTS_JSON}}
+
+Identify only explicitly expressed customer needs.
+Use source IDs from the Source Index and facts from the verified Fact Extraction.
+Return the JSON object for the explicit_need node.
