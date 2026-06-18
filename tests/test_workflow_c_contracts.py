@@ -4,14 +4,16 @@ import pytest
 
 from agent.workflow_c.contracts import (
     ContextSufficiencyOutput,
+    ExplicitNeedNodeOutput,
     FakeFactExtractionOutput,
+    FactExtractionNodeOutput,
     HumanReviewGateOutput,
     InputValidationOutput,
     NodeContract,
     NodeFailurePolicy,
     SourceIndexingOutput,
 )
-from agent.workflow_c.fake_llm import default_fact_response
+from agent.workflow_c.fake_llm import default_explicit_need_response, default_fact_response
 from agent.workflow_c.state import (
     AnalysisMode,
     ContextSufficiencyResult,
@@ -103,7 +105,7 @@ def test_node_cannot_declare_failures() -> None:
         )
 
 
-def test_five_output_wrappers_validate() -> None:
+def test_output_wrappers_validate() -> None:
     case = load_runtime_cases("data/evaluation/development_cases.jsonl")[0]
     source_index = SourceIndexResult(
         items=[
@@ -129,7 +131,9 @@ def test_five_output_wrappers_validate() -> None:
 
     assert InputValidationOutput(validated_case=case)
     assert SourceIndexingOutput(source_index=source_index)
+    assert FactExtractionNodeOutput(fact_extraction=default_fact_response())
     assert FakeFactExtractionOutput(fact_extraction=default_fact_response())
+    assert ExplicitNeedNodeOutput(**default_explicit_need_response())
     assert ContextSufficiencyOutput(context_sufficiency=context)
     assert HumanReviewGateOutput(
         human_review_decision=HumanReviewDecision(
