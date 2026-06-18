@@ -3,3 +3,4 @@ python-dotenv
 tenacity
 rich
 openai==2.41.0
+langgraph==1.2.5
