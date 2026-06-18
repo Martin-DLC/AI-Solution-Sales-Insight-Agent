@@ -6,7 +6,7 @@ This project is currently in Sprint 0.
 
 Sprint 0 only establishes the development environment baseline and the minimal project skeleton.
 
-Agent functionality has not been implemented yet. This project does not currently include LangGraph, RAG, Streamlit, or multi-agent workflows.
+Full agent functionality has not been implemented yet. This project does not currently include RAG, Streamlit, or multi-agent workflows.
 
 ## Python Requirement
 
@@ -56,8 +56,13 @@ Python 3.11 is required.
 - Baseline B v3 still has 2 Schema errors in the recorded DEV-01 run.
 - No additional Baseline B Prompt versions will be added for DEV-01.
 - The next architecture phase is Architecture C stepwise Workflow.
+- Architecture C design is complete.
+- Architecture C minimal Workflow skeleton is implemented.
+- Architecture C currently contains only a five-node offline graph.
+- Architecture C uses Fake LLM and does not call a real model.
+- Architecture C has not implemented full business nodes, RAG, Deal Score, or final report generation.
 - Baseline A and Baseline B are both single model calls.
 - Baseline B does not use RAG, Workflow, or Critic.
 - Dry Run does not consume API.
 - Live results are saved under `data/runtime`, which is ignored by Git.
-- LangGraph, RAG, and web demo have not been implemented yet.
+- RAG and web demo have not been implemented yet.
