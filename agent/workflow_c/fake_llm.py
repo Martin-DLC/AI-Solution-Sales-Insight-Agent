@@ -1,15 +1,22 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Mapping
 
 from agent.workflow_c.state import WorkflowNodeName
 from agent.workflow_c.services import WorkflowLLMResult
 from llm.errors import LLMRequestError
 from llm.models import LLMMessage, LLMUsage
-from schemas.common_models import ClaimType, ConfidenceLevel, ContextQuality, EvidenceSourceType
+from schemas.common_models import (
+    ClaimType,
+    ConfidenceLevel,
+    ContextQuality,
+    EvidenceSourceType,
+    PriorityLevel,
+)
 
 
 @dataclass
@@ -49,6 +56,42 @@ class FakeWorkflowLLMClient:
                 node: {"facts": []}
                 for node in schema_nodes
             },
+        )
+
+    @classmethod
+    def with_default_batch1a_responses(
+        cls,
+        *,
+        request_error_nodes: set[WorkflowNodeName | str] | None = None,
+        invalid_json_nodes: set[WorkflowNodeName | str] | None = None,
+        schema_error_nodes: set[WorkflowNodeName | str] | None = None,
+        custom_payloads: Mapping[WorkflowNodeName | str, dict[str, Any]] | None = None,
+    ) -> "FakeWorkflowLLMClient":
+        request_nodes = _normalize_nodes(request_error_nodes)
+        invalid_nodes = _normalize_nodes(invalid_json_nodes)
+        schema_nodes = _normalize_nodes(schema_error_nodes)
+        _ensure_failure_modes_are_exclusive(
+            request_nodes=request_nodes,
+            invalid_nodes=invalid_nodes,
+            schema_nodes=schema_nodes,
+        )
+        schema_error_payloads = {
+            node: _schema_error_payload_for_node(node)
+            for node in schema_nodes
+        }
+        responses_by_node = {
+            WorkflowNodeName.fact_extraction: {
+                "fact_extraction": default_fact_response(),
+            },
+            WorkflowNodeName.explicit_need: default_explicit_need_response(),
+        }
+        for node, payload in (custom_payloads or {}).items():
+            responses_by_node[_normalize_node(node)] = deepcopy(payload)
+        return cls(
+            responses_by_node=responses_by_node,
+            request_error_nodes=request_nodes,
+            invalid_json_nodes=invalid_nodes,
+            schema_error_payloads=schema_error_payloads,
         )
 
     @property
@@ -123,6 +166,14 @@ def _ensure_failure_modes_are_exclusive(
         raise ValueError(f"Fake workflow failure modes are mutually exclusive: {conflicts}.")
 
 
+def _schema_error_payload_for_node(node: WorkflowNodeName) -> dict[str, Any]:
+    if node is WorkflowNodeName.fact_extraction:
+        return {"fact_extraction": {"facts": []}}
+    if node is WorkflowNodeName.explicit_need:
+        return {"explicit_needs": []}
+    return {}
+
+
 def default_fact_response() -> dict[str, Any]:
     return {
         "facts": [
@@ -179,4 +230,25 @@ def default_fact_response() -> dict[str, Any]:
             "confirmed_constraints": ["需要人工复核"],
             "context_quality": ContextQuality.partially_sufficient.value,
         },
+    }
+
+
+def default_explicit_need_response() -> dict[str, Any]:
+    return {
+        "explicit_needs": [
+            {
+                "need_id": "NEED-01",
+                "description": "客户明确希望提升销售线索跟进效率。",
+                "priority": PriorityLevel.high.value,
+                "claim_type": ClaimType.fact.value,
+                "confidence": ConfidenceLevel.high.value,
+                "evidence": [
+                    {
+                        "source_id": "MTG-01",
+                        "source_type": EvidenceSourceType.meeting_transcript.value,
+                        "evidence_summary": "会议中明确表达了提升销售线索跟进效率的需求。",
+                    }
+                ],
+            }
+        ]
     }
