@@ -5,7 +5,10 @@ import socket
 
 import pytest
 
-from agent.workflow_c.fake_llm import FakeWorkflowLLMClient
+from agent.workflow_c.fake_llm import (
+    FakeWorkflowLLMClient,
+    default_explicit_need_response,
+)
 from agent.workflow_c.state import WorkflowNodeName
 from llm.errors import LLMRequestError
 from llm.models import LLMMessage, LLMRole
@@ -162,3 +165,69 @@ def test_fake_response_does_not_contain_solution_blacklist() -> None:
     )
 
     assert "solution_blacklist" not in result.content
+
+
+def test_batch1a_default_responses_include_fact_and_explicit_need() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+
+    fact_result = client.complete_json_for_node(WorkflowNodeName.fact_extraction, messages())
+    need_result = client.complete_json_for_node(WorkflowNodeName.explicit_need, messages())
+
+    assert fact_result.parsed_json["fact_extraction"]["facts"]
+    assert need_result.parsed_json["explicit_needs"][0]["need_id"] == "NEED-01"
+
+
+def test_batch1a_custom_payload_overrides_explicit_need() -> None:
+    payload = {
+        "explicit_needs": [
+            {
+                **default_explicit_need_response()["explicit_needs"][0],
+                "need_id": "NEED-CUSTOM",
+            }
+        ]
+    }
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses(
+        custom_payloads={"explicit_need": payload}
+    )
+
+    result = client.complete_json_for_node("explicit_need", messages())
+
+    assert result.parsed_json["explicit_needs"][0]["need_id"] == "NEED-CUSTOM"
+
+
+def test_batch1a_custom_explicit_need_does_not_override_fact_response() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses(
+        custom_payloads={
+            "explicit_need": {
+                "explicit_needs": [
+                    {
+                        **default_explicit_need_response()["explicit_needs"][0],
+                        "need_id": "NEED-CUSTOM",
+                    }
+                ]
+            }
+        }
+    )
+
+    result = client.complete_json_for_node(WorkflowNodeName.fact_extraction, messages())
+
+    assert result.parsed_json["fact_extraction"]["facts"][0]["fact_id"] == "FACT-01"
+
+
+def test_batch1a_custom_payload_does_not_mutate_caller_dict() -> None:
+    payload = default_explicit_need_response()
+    original_need_id = payload["explicit_needs"][0]["need_id"]
+    client = FakeWorkflowLLMClient.with_default_batch1a_responses(
+        custom_payloads={WorkflowNodeName.explicit_need: payload}
+    )
+
+    client.responses_by_node[WorkflowNodeName.explicit_need]["explicit_needs"][0]["need_id"] = "MUTATED"
+
+    assert payload["explicit_needs"][0]["need_id"] == original_need_id
+
+
+def test_batch1a_custom_payload_rejects_invalid_node_name() -> None:
+    with pytest.raises(ValueError, match="not_a_node"):
+        FakeWorkflowLLMClient.with_default_batch1a_responses(
+            custom_payloads={"not_a_node": {"ok": True}}
+        )
