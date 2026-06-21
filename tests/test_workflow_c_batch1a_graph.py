@@ -14,10 +14,10 @@ def dev_01_case():
     return load_runtime_cases("data/evaluation/development_cases.jsonl")[0]
 
 
-def test_batch1a_success_path_node_order() -> None:
+def test_batch1b_success_path_node_order() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1b_responses()),
     )
 
     assert [record.node_name for record in snapshot.node_records] == [
@@ -26,24 +26,28 @@ def test_batch1a_success_path_node_order() -> None:
         WorkflowNodeName.fact_extraction,
         WorkflowNodeName.context_sufficiency,
         WorkflowNodeName.explicit_need,
+        WorkflowNodeName.underlying_pain,
+        WorkflowNodeName.business_impact,
         WorkflowNodeName.human_review_gate,
     ]
 
 
-def test_batch1a_success_path_llm_calls_twice() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+def test_batch1b_success_path_llm_calls_four_times() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch1b_responses()
 
     run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
 
-    assert client.total_calls == 2
+    assert client.total_calls == 4
     assert client.calls_for_node(WorkflowNodeName.fact_extraction) == 1
     assert client.calls_for_node(WorkflowNodeName.explicit_need) == 1
+    assert client.calls_for_node(WorkflowNodeName.underlying_pain) == 1
+    assert client.calls_for_node(WorkflowNodeName.business_impact) == 1
 
 
-def test_batch1a_final_status_still_awaits_human_review() -> None:
+def test_batch1b_final_status_still_awaits_human_review() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1b_responses()),
     )
 
     assert snapshot.workflow_status is WorkflowStatus.awaiting_human_review
@@ -60,6 +64,8 @@ def test_fact_failure_skips_context_and_explicit_need() -> None:
 
     assert WorkflowNodeName.context_sufficiency not in order
     assert WorkflowNodeName.explicit_need not in order
+    assert WorkflowNodeName.underlying_pain not in order
+    assert WorkflowNodeName.business_impact not in order
     assert order[-1] is WorkflowNodeName.human_review_gate
 
 
@@ -74,10 +80,10 @@ def test_explicit_need_failure_still_runs_human_review_gate() -> None:
     assert snapshot.node_records[-1].node_name is WorkflowNodeName.human_review_gate
 
 
-def test_batch1a_snapshot_serializes_explicit_needs() -> None:
+def test_batch1b_snapshot_serializes_explicit_needs() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1b_responses()),
     )
 
     dumped = snapshot.model_dump(mode="json")
