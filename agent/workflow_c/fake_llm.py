@@ -11,11 +11,13 @@ from agent.workflow_c.services import WorkflowLLMResult
 from llm.errors import LLMRequestError
 from llm.models import LLMMessage, LLMUsage
 from schemas.common_models import (
+    BusinessDimension,
     ClaimType,
     ConfidenceLevel,
     ContextQuality,
     EvidenceSourceType,
     PriorityLevel,
+    SeverityLevel,
 )
 
 
@@ -84,6 +86,44 @@ class FakeWorkflowLLMClient:
                 "fact_extraction": default_fact_response(),
             },
             WorkflowNodeName.explicit_need: default_explicit_need_response(),
+        }
+        for node, payload in (custom_payloads or {}).items():
+            responses_by_node[_normalize_node(node)] = deepcopy(payload)
+        return cls(
+            responses_by_node=responses_by_node,
+            request_error_nodes=request_nodes,
+            invalid_json_nodes=invalid_nodes,
+            schema_error_payloads=schema_error_payloads,
+        )
+
+    @classmethod
+    def with_default_batch1b_responses(
+        cls,
+        *,
+        request_error_nodes: set[WorkflowNodeName | str] | None = None,
+        invalid_json_nodes: set[WorkflowNodeName | str] | None = None,
+        schema_error_nodes: set[WorkflowNodeName | str] | None = None,
+        custom_payloads: Mapping[WorkflowNodeName | str, dict[str, Any]] | None = None,
+    ) -> "FakeWorkflowLLMClient":
+        request_nodes = _normalize_nodes(request_error_nodes)
+        invalid_nodes = _normalize_nodes(invalid_json_nodes)
+        schema_nodes = _normalize_nodes(schema_error_nodes)
+        _ensure_failure_modes_are_exclusive(
+            request_nodes=request_nodes,
+            invalid_nodes=invalid_nodes,
+            schema_nodes=schema_nodes,
+        )
+        schema_error_payloads = {
+            node: _schema_error_payload_for_node(node)
+            for node in schema_nodes
+        }
+        responses_by_node = {
+            WorkflowNodeName.fact_extraction: {
+                "fact_extraction": default_fact_response(),
+            },
+            WorkflowNodeName.explicit_need: default_explicit_need_response(),
+            WorkflowNodeName.underlying_pain: default_underlying_pain_response(),
+            WorkflowNodeName.business_impact: default_business_impact_response(),
         }
         for node, payload in (custom_payloads or {}).items():
             responses_by_node[_normalize_node(node)] = deepcopy(payload)
@@ -171,6 +211,10 @@ def _schema_error_payload_for_node(node: WorkflowNodeName) -> dict[str, Any]:
         return {"fact_extraction": {"facts": []}}
     if node is WorkflowNodeName.explicit_need:
         return {"explicit_needs": []}
+    if node is WorkflowNodeName.underlying_pain:
+        return {"underlying_pains": []}
+    if node is WorkflowNodeName.business_impact:
+        return {"business_impacts": []}
     return {}
 
 
@@ -249,6 +293,55 @@ def default_explicit_need_response() -> dict[str, Any]:
                         "evidence_summary": "会议中明确表达了提升销售线索跟进效率的需求。",
                     }
                 ],
+            }
+        ]
+    }
+
+
+def default_underlying_pain_response() -> dict[str, Any]:
+    return {
+        "underlying_pains": [
+            {
+                "pain_id": "PAIN-01",
+                "description": "客户线索跟进依赖人工整理，可能造成响应效率下降。",
+                "business_dimension": BusinessDimension.efficiency.value,
+                "severity": SeverityLevel.medium.value,
+                "claim_type": ClaimType.inference.value,
+                "reasoning_summary": "该痛点由会议中对销售线索跟进效率和手工整理流程的描述推断而来。",
+                "confidence": ConfidenceLevel.medium.value,
+                "evidence": [
+                    {
+                        "source_id": "MTG-01",
+                        "source_type": EvidenceSourceType.meeting_transcript.value,
+                        "evidence_summary": "会议中提到线索跟进效率和手工整理流程。",
+                    }
+                ],
+                "validation_question": "目前人工整理线索信息是否影响了销售响应速度？",
+            }
+        ]
+    }
+
+
+def default_business_impact_response() -> dict[str, Any]:
+    return {
+        "business_impacts": [
+            {
+                "impact_id": "IMPACT-01",
+                "description": "线索处理效率不足可能影响销售团队及时跟进潜在客户。",
+                "impact_type": BusinessDimension.efficiency.value,
+                "quantified": False,
+                "current_value": None,
+                "target_value": None,
+                "claim_type": ClaimType.inference.value,
+                "confidence": ConfidenceLevel.medium.value,
+                "evidence": [
+                    {
+                        "source_id": "MTG-01",
+                        "source_type": EvidenceSourceType.meeting_transcript.value,
+                        "evidence_summary": "会议中描述了线索跟进效率和手工整理问题。",
+                    }
+                ],
+                "measurement_needed": "需要确认当前线索处理周期和目标响应时间。",
             }
         ]
     }
