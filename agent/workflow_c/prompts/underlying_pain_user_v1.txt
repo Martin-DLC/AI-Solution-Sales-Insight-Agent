@@ -1,0 +1,12 @@
+NODE: underlying_pain
+
+Source Index:
+{{SOURCE_INDEX_JSON}}
+
+Fact Extraction:
+{{FACTS_JSON}}
+
+Explicit Needs:
+{{EXPLICIT_NEEDS_JSON}}
+
+只识别潜在痛点。Return the JSON object for the underlying_pain node.

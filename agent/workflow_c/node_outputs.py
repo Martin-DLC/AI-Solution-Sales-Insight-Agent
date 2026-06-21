@@ -6,7 +6,16 @@ from pydantic import Field, model_validator
 
 from agent.workflow_c.state import FactExtractionResult
 from schemas.common_models import StrictBaseModel
-from schemas.insight_models import ExplicitNeed
+from schemas.insight_models import BusinessImpact, ExplicitNeed, UnderlyingPain
+
+
+def _normalized_descriptions_are_unique(
+    descriptions: list[str],
+    field_label: str,
+) -> None:
+    normalized = [" ".join(description.split()) for description in descriptions]
+    if len(normalized) != len(set(normalized)):
+        raise ValueError(f"{field_label} descriptions must not be duplicated.")
 
 
 class FactExtractionNodeOutput(StrictBaseModel):
@@ -26,10 +35,55 @@ class ExplicitNeedResult(StrictBaseModel):
             raise ValueError("Explicit need IDs must not be duplicated.")
 
         descriptions = [need.description for need in self.explicit_needs]
-        if len(descriptions) != len(set(descriptions)):
-            raise ValueError("Explicit need descriptions must not be duplicated.")
+        _normalized_descriptions_are_unique(descriptions, "Explicit need")
         return self
 
 
 class ExplicitNeedNodeOutput(ExplicitNeedResult):
+    pass
+
+
+class UnderlyingPainResult(StrictBaseModel):
+    underlying_pains: list[UnderlyingPain] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_underlying_pains(self) -> Self:
+        if not self.underlying_pains:
+            raise ValueError("Underlying pain extraction must include at least one pain.")
+
+        pain_ids = [pain.pain_id for pain in self.underlying_pains]
+        if len(pain_ids) != len(set(pain_ids)):
+            raise ValueError("Underlying pain IDs must not be duplicated.")
+
+        _normalized_descriptions_are_unique(
+            [pain.description for pain in self.underlying_pains],
+            "Underlying pain",
+        )
+        return self
+
+
+class UnderlyingPainNodeOutput(UnderlyingPainResult):
+    pass
+
+
+class BusinessImpactResult(StrictBaseModel):
+    business_impacts: list[BusinessImpact] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_business_impacts(self) -> Self:
+        if not self.business_impacts:
+            raise ValueError("Business impact analysis must include at least one impact.")
+
+        impact_ids = [impact.impact_id for impact in self.business_impacts]
+        if len(impact_ids) != len(set(impact_ids)):
+            raise ValueError("Business impact IDs must not be duplicated.")
+
+        _normalized_descriptions_are_unique(
+            [impact.description for impact in self.business_impacts],
+            "Business impact",
+        )
+        return self
+
+
+class BusinessImpactNodeOutput(BusinessImpactResult):
     pass

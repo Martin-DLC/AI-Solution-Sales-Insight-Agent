@@ -18,9 +18,13 @@ from agent.workflow_c.state import (
     WorkflowStatus,
 )
 from agent.workflow_c.node_outputs import (
+    BusinessImpactNodeOutput,
+    BusinessImpactResult,
     ExplicitNeedNodeOutput,
     ExplicitNeedResult,
     FactExtractionNodeOutput,
+    UnderlyingPainNodeOutput,
+    UnderlyingPainResult,
 )
 from schemas import EvaluationCaseInput
 from schemas.common_models import StrictBaseModel

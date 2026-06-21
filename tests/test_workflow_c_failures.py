@@ -22,7 +22,7 @@ def test_invalid_input_does_not_execute_source_index() -> None:
 
     snapshot = run_architecture_c_skeleton(
         bad,
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1b_responses()),
     )
 
     assert snapshot.workflow_status is WorkflowStatus.failed
@@ -30,7 +30,7 @@ def test_invalid_input_does_not_execute_source_index() -> None:
 
 
 def test_llm_request_error_enters_human_review() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+    client = FakeWorkflowLLMClient.with_default_batch1b_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -39,7 +39,7 @@ def test_llm_request_error_enters_human_review() -> None:
 
 
 def test_llm_request_error_does_not_execute_context_sufficiency() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+    client = FakeWorkflowLLMClient.with_default_batch1b_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -69,12 +69,15 @@ def test_invalid_json_factory_path_enters_human_review_and_stops_downstream() ->
     assert snapshot.failures[0].node_name is WorkflowNodeName.fact_extraction
     assert snapshot.failures[0].failure_category.value == "json_parse"
     assert WorkflowNodeName.context_sufficiency not in node_order
+    assert WorkflowNodeName.explicit_need not in node_order
+    assert WorkflowNodeName.underlying_pain not in node_order
+    assert WorkflowNodeName.business_impact not in node_order
     assert node_order[-1] is WorkflowNodeName.human_review_gate
     assert client.total_calls == 1
 
 
 def test_schema_error_generates_schema_validation_failure() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+    client = FakeWorkflowLLMClient.with_default_batch1b_responses()
     client.schema_error_payloads[WorkflowNodeName.fact_extraction] = {
         "fact_extraction": {"facts": []}
     }
@@ -94,23 +97,28 @@ def test_unauthorized_field_generates_internal_error(monkeypatch) -> None:
 
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1b_responses()),
     )
 
     assert snapshot.failures[0].failure_category.value == "internal_error"
 
 
 def test_downstream_nodes_do_not_continue_after_failure() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+    client = FakeWorkflowLLMClient.with_default_batch1b_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
 
-    assert WorkflowNodeName.context_sufficiency not in [record.node_name for record in snapshot.node_records]
+    node_order = [record.node_name for record in snapshot.node_records]
+
+    assert WorkflowNodeName.context_sufficiency not in node_order
+    assert WorkflowNodeName.explicit_need not in node_order
+    assert WorkflowNodeName.underlying_pain not in node_order
+    assert WorkflowNodeName.business_impact not in node_order
 
 
 def test_human_review_gate_runs_after_non_input_failure() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+    client = FakeWorkflowLLMClient.with_default_batch1b_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -119,7 +127,7 @@ def test_human_review_gate_runs_after_non_input_failure() -> None:
 
 
 def test_failure_state_does_not_contain_api_key() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch1a_responses()
+    client = FakeWorkflowLLMClient.with_default_batch1b_responses()
     client.request_error_nodes.add(WorkflowNodeName.fact_extraction)
 
     snapshot = run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
@@ -156,7 +164,7 @@ def test_pytest_does_not_access_network(monkeypatch) -> None:
 
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1b_responses()),
     )
 
     assert snapshot.workflow_status is WorkflowStatus.awaiting_human_review

@@ -1,0 +1,15 @@
+NODE: business_impact
+
+Source Index:
+{{SOURCE_INDEX_JSON}}
+
+Fact Extraction:
+{{FACTS_JSON}}
+
+Explicit Needs:
+{{EXPLICIT_NEEDS_JSON}}
+
+Underlying Pains:
+{{UNDERLYING_PAINS_JSON}}
+
+只分析业务影响。Return the JSON object for the business_impact node.
