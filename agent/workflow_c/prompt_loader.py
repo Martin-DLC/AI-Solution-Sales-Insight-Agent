@@ -3,8 +3,14 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from agent.workflow_c.node_outputs import ExplicitNeedNodeOutput, FactExtractionNodeOutput
+from agent.workflow_c.node_outputs import (
+    BusinessImpactNodeOutput,
+    ExplicitNeedNodeOutput,
+    FactExtractionNodeOutput,
+    UnderlyingPainNodeOutput,
+)
 from agent.workflow_c.state import FactExtractionResult, SourceIndexResult, WorkflowNodeName
+from schemas.insight_models import ExplicitNeed, UnderlyingPain
 from llm.models import LLMMessage, LLMRole
 
 
@@ -19,6 +25,14 @@ _PROMPT_REGISTRY: dict[tuple[WorkflowNodeName, str], tuple[str, str]] = {
         WorkflowNodeName.explicit_need,
         "explicit_need_v1",
     ): ("explicit_need_system_v1.txt", "explicit_need_user_v1.txt"),
+    (
+        WorkflowNodeName.underlying_pain,
+        "underlying_pain_v1",
+    ): ("underlying_pain_system_v1.txt", "underlying_pain_user_v1.txt"),
+    (
+        WorkflowNodeName.business_impact,
+        "business_impact_v1",
+    ): ("business_impact_system_v1.txt", "business_impact_user_v1.txt"),
 }
 
 _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str], ...]] = {
@@ -36,6 +50,25 @@ _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str]
         ("system", "{{OUTPUT_SCHEMA_JSON}}"),
         ("user", "{{SOURCE_INDEX_JSON}}"),
         ("user", "{{FACTS_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.underlying_pain,
+        "underlying_pain_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{FACTS_JSON}}"),
+        ("user", "{{EXPLICIT_NEEDS_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.business_impact,
+        "business_impact_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{FACTS_JSON}}"),
+        ("user", "{{EXPLICIT_NEEDS_JSON}}"),
+        ("user", "{{UNDERLYING_PAINS_JSON}}"),
     ),
 }
 
@@ -100,6 +133,79 @@ def render_explicit_need_messages(
                 user_template
                 .replace("{{SOURCE_INDEX_JSON}}", source_index_json)
                 .replace("{{FACTS_JSON}}", facts_json)
+            ),
+        ),
+    ]
+
+
+def render_underlying_pain_messages(
+    source_index: SourceIndexResult,
+    fact_extraction: FactExtractionResult,
+    explicit_needs: list[ExplicitNeed],
+    *,
+    version: str = "underlying_pain_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.underlying_pain,
+        version,
+    )
+    schema_json = _dump_json(UnderlyingPainNodeOutput.model_json_schema())
+    source_index_json = _dump_json(source_index.model_dump(mode="json"))
+    facts_json = _dump_json(fact_extraction.model_dump(mode="json"))
+    explicit_needs_json = _dump_json(
+        [need.model_dump(mode="json") for need in explicit_needs]
+    )
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace("{{OUTPUT_SCHEMA_JSON}}", schema_json),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{SOURCE_INDEX_JSON}}", source_index_json)
+                .replace("{{FACTS_JSON}}", facts_json)
+                .replace("{{EXPLICIT_NEEDS_JSON}}", explicit_needs_json)
+            ),
+        ),
+    ]
+
+
+def render_business_impact_messages(
+    source_index: SourceIndexResult,
+    fact_extraction: FactExtractionResult,
+    explicit_needs: list[ExplicitNeed],
+    underlying_pains: list[UnderlyingPain],
+    *,
+    version: str = "business_impact_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.business_impact,
+        version,
+    )
+    schema_json = _dump_json(BusinessImpactNodeOutput.model_json_schema())
+    source_index_json = _dump_json(source_index.model_dump(mode="json"))
+    facts_json = _dump_json(fact_extraction.model_dump(mode="json"))
+    explicit_needs_json = _dump_json(
+        [need.model_dump(mode="json") for need in explicit_needs]
+    )
+    underlying_pains_json = _dump_json(
+        [pain.model_dump(mode="json") for pain in underlying_pains]
+    )
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace("{{OUTPUT_SCHEMA_JSON}}", schema_json),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{SOURCE_INDEX_JSON}}", source_index_json)
+                .replace("{{FACTS_JSON}}", facts_json)
+                .replace("{{EXPLICIT_NEEDS_JSON}}", explicit_needs_json)
+                .replace("{{UNDERLYING_PAINS_JSON}}", underlying_pains_json)
             ),
         ),
     ]
