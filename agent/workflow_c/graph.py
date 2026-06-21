@@ -5,12 +5,14 @@ from typing import Any, Callable
 
 from agent.workflow_c.executor import execute_node
 from agent.workflow_c.nodes import (
+    BusinessImpactNode,
     ContextSufficiencyNode,
     ExplicitNeedNode,
     FactExtractionNode,
     HumanReviewGateNode,
     InputValidationNode,
     SourceIndexingNode,
+    UnderlyingPainNode,
 )
 from agent.workflow_c.services import WorkflowServices
 from agent.workflow_c.state import (
@@ -50,6 +52,8 @@ def build_architecture_c_skeleton(
         "fact_extraction": FactExtractionNode(),
         "context_sufficiency": ContextSufficiencyNode(),
         "explicit_need": ExplicitNeedNode(),
+        "underlying_pain": UnderlyingPainNode(),
+        "business_impact": BusinessImpactNode(),
         "human_review_gate": HumanReviewGateNode(),
     }
 
@@ -92,6 +96,16 @@ def build_architecture_c_skeleton(
     )
     builder.add_conditional_edges(
         "explicit_need",
+        _route_to_next_or_review("underlying_pain"),
+        {"end": END, "human_review_gate": "human_review_gate", "underlying_pain": "underlying_pain"},
+    )
+    builder.add_conditional_edges(
+        "underlying_pain",
+        _route_to_next_or_review("business_impact"),
+        {"end": END, "human_review_gate": "human_review_gate", "business_impact": "business_impact"},
+    )
+    builder.add_conditional_edges(
+        "business_impact",
         _route_to_next_or_review("human_review_gate"),
         {"end": END, "human_review_gate": "human_review_gate"},
     )
@@ -156,6 +170,8 @@ class _FallbackGraph:
             "fact_extraction",
             "context_sufficiency",
             "explicit_need",
+            "underlying_pain",
+            "business_impact",
         ):
             patch = execute_node(self.nodes[name], current, self.services)
             current = _merge_state(current, patch)

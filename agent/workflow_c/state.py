@@ -18,7 +18,7 @@ from schemas.common_models import (
     EvidenceSourceType,
     StrictBaseModel,
 )
-from schemas.insight_models import CustomerContext, ExplicitNeed
+from schemas.insight_models import BusinessImpact, CustomerContext, ExplicitNeed, UnderlyingPain
 
 
 class WorkflowNodeName(str, Enum):
@@ -317,6 +317,8 @@ class ArchitectureCGraphState(TypedDict, total=False):
     fact_extraction: FactExtractionResult
     context_sufficiency: ContextSufficiencyResult
     explicit_needs: list[ExplicitNeed]
+    underlying_pains: list[UnderlyingPain]
+    business_impacts: list[BusinessImpact]
     human_review_decision: HumanReviewDecision
     node_records: Annotated[list[NodeExecutionRecord], operator.add]
     failures: Annotated[list[WorkflowFailure], operator.add]
@@ -338,6 +340,8 @@ class ArchitectureCStateSnapshot(StrictBaseModel):
     fact_extraction: FactExtractionResult | None = None
     context_sufficiency: ContextSufficiencyResult | None = None
     explicit_needs: list[ExplicitNeed] | None = None
+    underlying_pains: list[UnderlyingPain] | None = None
+    business_impacts: list[BusinessImpact] | None = None
     human_review_decision: HumanReviewDecision | None = None
     node_records: list[NodeExecutionRecord] = Field(default_factory=list)
     failures: list[WorkflowFailure] = Field(default_factory=list)
