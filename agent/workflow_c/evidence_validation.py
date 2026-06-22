@@ -85,3 +85,23 @@ def validate_evidence_references(
                 )
             )
     return issues
+
+
+def has_verified_support(
+    evidence: list[EvidenceReference],
+    source_index: SourceIndexResult,
+    *,
+    allowed_source_types: set[EvidenceSourceType],
+) -> bool:
+    sources = build_source_index_map(source_index)
+    for reference in evidence:
+        item = sources.get(reference.source_id)
+        if item is None:
+            continue
+        if item.source_type is not reference.source_type:
+            continue
+        if not item.verified:
+            continue
+        if item.source_type in allowed_source_types:
+            return True
+    return False

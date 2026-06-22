@@ -16,8 +16,13 @@ from schemas.common_models import (
     ConfidenceLevel,
     ContextQuality,
     EvidenceSourceType,
+    InfluenceLevel,
+    IntentLevel,
     PriorityLevel,
+    SalesRole,
+    SalesStage,
     SeverityLevel,
+    StakeholderAttitude,
 )
 
 
@@ -134,6 +139,46 @@ class FakeWorkflowLLMClient:
             schema_error_payloads=schema_error_payloads,
         )
 
+    @classmethod
+    def with_default_batch2a_responses(
+        cls,
+        *,
+        request_error_nodes: set[WorkflowNodeName | str] | None = None,
+        invalid_json_nodes: set[WorkflowNodeName | str] | None = None,
+        schema_error_nodes: set[WorkflowNodeName | str] | None = None,
+        custom_payloads: Mapping[WorkflowNodeName | str, dict[str, Any]] | None = None,
+    ) -> "FakeWorkflowLLMClient":
+        request_nodes = _normalize_nodes(request_error_nodes)
+        invalid_nodes = _normalize_nodes(invalid_json_nodes)
+        schema_nodes = _normalize_nodes(schema_error_nodes)
+        _ensure_failure_modes_are_exclusive(
+            request_nodes=request_nodes,
+            invalid_nodes=invalid_nodes,
+            schema_nodes=schema_nodes,
+        )
+        schema_error_payloads = {
+            node: _schema_error_payload_for_node(node)
+            for node in schema_nodes
+        }
+        responses_by_node = {
+            WorkflowNodeName.fact_extraction: {
+                "fact_extraction": default_fact_response(),
+            },
+            WorkflowNodeName.explicit_need: default_explicit_need_response(),
+            WorkflowNodeName.underlying_pain: default_underlying_pain_response(),
+            WorkflowNodeName.business_impact: default_business_impact_response(),
+            WorkflowNodeName.buying_intent: default_buying_intent_response(),
+            WorkflowNodeName.stakeholder: default_stakeholder_response(),
+        }
+        for node, payload in (custom_payloads or {}).items():
+            responses_by_node[_normalize_node(node)] = deepcopy(payload)
+        return cls(
+            responses_by_node=responses_by_node,
+            request_error_nodes=request_nodes,
+            invalid_json_nodes=invalid_nodes,
+            schema_error_payloads=schema_error_payloads,
+        )
+
     @property
     def total_calls(self) -> int:
         return self.call_count
@@ -215,6 +260,10 @@ def _schema_error_payload_for_node(node: WorkflowNodeName) -> dict[str, Any]:
         return {"underlying_pains": []}
     if node is WorkflowNodeName.business_impact:
         return {"business_impacts": []}
+    if node is WorkflowNodeName.buying_intent:
+        return {"buying_intent": {}}
+    if node is WorkflowNodeName.stakeholder:
+        return {"stakeholder_map": []}
     return {}
 
 
@@ -343,5 +392,58 @@ def default_business_impact_response() -> dict[str, Any]:
                 ],
                 "measurement_needed": "需要确认当前线索处理周期和目标响应时间。",
             }
+        ]
+    }
+
+
+def default_buying_intent_response() -> dict[str, Any]:
+    return {
+        "buying_intent": {
+            "intent_level": IntentLevel.medium_high.value,
+            "sales_stage": SalesStage.discovery.value,
+            "confidence": ConfidenceLevel.medium.value,
+            "positive_signals": ["客户明确表达希望提升销售线索跟进效率。"],
+            "negative_signals": [],
+            "unknown_factors": ["预算、决策权、采购流程和明确时间表尚未确认。"],
+            "reasoning_summary": "客户表达了明确业务需求，但预算、决策权和采购流程仍需验证。",
+        }
+    }
+
+
+def default_stakeholder_response() -> dict[str, Any]:
+    return {
+        "stakeholder_map": [
+            {
+                "stakeholder_id": "STK-01",
+                "name_or_role": "业务参与者",
+                "organization_role": "业务部门代表",
+                "sales_role": SalesRole.user.value,
+                "influence_level": InfluenceLevel.medium.value,
+                "attitude": StakeholderAttitude.supportive.value,
+                "confirmed": True,
+                "claim_type": ClaimType.fact.value,
+                "confidence": ConfidenceLevel.medium.value,
+                "evidence": [
+                    {
+                        "source_id": "MTG-01",
+                        "source_type": EvidenceSourceType.meeting_transcript.value,
+                        "evidence_summary": "会议参与者包含业务相关角色。",
+                    }
+                ],
+                "next_validation": None,
+            },
+            {
+                "stakeholder_id": "STK-02",
+                "name_or_role": "待确认决策角色",
+                "organization_role": "可能参与预算或决策",
+                "sales_role": SalesRole.decision_maker.value,
+                "influence_level": InfluenceLevel.unknown.value,
+                "attitude": StakeholderAttitude.unknown.value,
+                "confirmed": False,
+                "claim_type": ClaimType.assumption.value,
+                "confidence": ConfidenceLevel.low.value,
+                "evidence": [],
+                "next_validation": "下一次会议确认谁负责预算和最终决策。",
+            },
         ]
     }
