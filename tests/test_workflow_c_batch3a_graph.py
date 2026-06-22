@@ -55,6 +55,7 @@ def test_complete_path_node_order_has_thirteen_nodes() -> None:
         WorkflowNodeName.stakeholder,
         WorkflowNodeName.information_gap,
         WorkflowNodeName.ai_opportunity,
+        WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
         WorkflowNodeName.human_review_gate,
     ]
@@ -85,6 +86,7 @@ def test_nine_llm_nodes_called_once() -> None:
         WorkflowNodeName.solution_recommendation,
     ):
         assert client.calls_for_node(node_name) == 1
+    assert client.calls_for_node(WorkflowNodeName.solution_retrieval) == 0
 
 
 def test_final_status_awaits_human_review() -> None:
@@ -114,13 +116,13 @@ def test_solution_recommendations_field_exists() -> None:
     assert snapshot.solution_recommendations is not None
 
 
-def test_does_not_generate_retrieved_solutions() -> None:
+def test_generates_retrieved_solutions() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
         WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
-    assert not hasattr(snapshot, "retrieved_solutions")
+    assert snapshot.retrieved_solutions is not None
 
 
 def test_does_not_generate_deal_score() -> None:
@@ -148,6 +150,7 @@ def test_clarification_only_skips_ai_opportunity() -> None:
     order = [record.node_name for record in snapshot.node_records]
 
     assert WorkflowNodeName.ai_opportunity not in order
+    assert WorkflowNodeName.solution_retrieval not in order
 
 
 def test_clarification_only_skips_solution_recommendation() -> None:
@@ -157,6 +160,7 @@ def test_clarification_only_skips_solution_recommendation() -> None:
     order = [record.node_name for record in snapshot.node_records]
 
     assert WorkflowNodeName.solution_recommendation not in order
+    assert WorkflowNodeName.solution_retrieval not in order
 
 
 def test_information_gap_failure_skips_two_new_nodes() -> None:
@@ -168,6 +172,7 @@ def test_information_gap_failure_skips_two_new_nodes() -> None:
     order = [record.node_name for record in snapshot.node_records]
 
     assert WorkflowNodeName.ai_opportunity not in order
+    assert WorkflowNodeName.solution_retrieval not in order
     assert WorkflowNodeName.solution_recommendation not in order
 
 
@@ -180,6 +185,7 @@ def test_ai_opportunity_failure_skips_solution_recommendation() -> None:
     order = [record.node_name for record in snapshot.node_records]
 
     assert WorkflowNodeName.solution_recommendation not in order
+    assert WorkflowNodeName.solution_retrieval not in order
 
 
 def test_ai_opportunity_failure_still_enters_human_review() -> None:

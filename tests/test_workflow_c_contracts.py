@@ -11,8 +11,10 @@ from agent.workflow_c.contracts import (
     InputValidationOutput,
     NodeContract,
     NodeFailurePolicy,
+    SolutionRetrievalNodeOutput,
     SourceIndexingOutput,
 )
+from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from agent.workflow_c.fake_llm import default_explicit_need_response, default_fact_response
 from agent.workflow_c.state import (
     AnalysisMode,
@@ -134,6 +136,15 @@ def test_output_wrappers_validate() -> None:
     assert FactExtractionNodeOutput(fact_extraction=default_fact_response())
     assert FakeFactExtractionOutput(fact_extraction=default_fact_response())
     assert ExplicitNeedNodeOutput(**default_explicit_need_response())
+    assert SolutionRetrievalNodeOutput(
+        retrieved_solutions=SolutionRetrievalResult(
+            query_text="NO_ELIGIBLE_AI_OPPORTUNITY",
+            eligible_opportunity_ids=[],
+            top_k=5,
+            candidate_count=0,
+            candidates=[],
+        )
+    )
     assert ContextSufficiencyOutput(context_sufficiency=context)
     assert HumanReviewGateOutput(
         human_review_decision=HumanReviewDecision(

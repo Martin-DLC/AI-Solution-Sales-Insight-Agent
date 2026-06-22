@@ -55,6 +55,7 @@ def test_full_path_node_order_has_thirteen_nodes_after_batch3a() -> None:
         WorkflowNodeName.stakeholder,
         WorkflowNodeName.information_gap,
         WorkflowNodeName.ai_opportunity,
+        WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
         WorkflowNodeName.human_review_gate,
     ]
@@ -81,6 +82,7 @@ def test_nine_llm_nodes_called_once() -> None:
     assert client.calls_for_node(WorkflowNodeName.stakeholder) == 1
     assert client.calls_for_node(WorkflowNodeName.information_gap) == 1
     assert client.calls_for_node(WorkflowNodeName.ai_opportunity) == 1
+    assert client.calls_for_node(WorkflowNodeName.solution_retrieval) == 0
     assert client.calls_for_node(WorkflowNodeName.solution_recommendation) == 1
 
 
