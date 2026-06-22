@@ -5,12 +5,20 @@ from pathlib import Path
 
 from agent.workflow_c.node_outputs import (
     BusinessImpactNodeOutput,
+    BuyingIntentNodeOutput,
     ExplicitNeedNodeOutput,
     FactExtractionNodeOutput,
+    StakeholderNodeOutput,
     UnderlyingPainNodeOutput,
 )
-from agent.workflow_c.state import FactExtractionResult, SourceIndexResult, WorkflowNodeName
-from schemas.insight_models import ExplicitNeed, UnderlyingPain
+from agent.workflow_c.state import (
+    ContextSufficiencyResult,
+    FactExtractionResult,
+    SourceIndexResult,
+    WorkflowNodeName,
+)
+from schemas.input_models import Participant
+from schemas.insight_models import BusinessImpact, BuyingIntent, ExplicitNeed, UnderlyingPain
 from llm.models import LLMMessage, LLMRole
 
 
@@ -33,6 +41,14 @@ _PROMPT_REGISTRY: dict[tuple[WorkflowNodeName, str], tuple[str, str]] = {
         WorkflowNodeName.business_impact,
         "business_impact_v1",
     ): ("business_impact_system_v1.txt", "business_impact_user_v1.txt"),
+    (
+        WorkflowNodeName.buying_intent,
+        "buying_intent_v1",
+    ): ("buying_intent_system_v1.txt", "buying_intent_user_v1.txt"),
+    (
+        WorkflowNodeName.stakeholder,
+        "stakeholder_v1",
+    ): ("stakeholder_system_v1.txt", "stakeholder_user_v1.txt"),
 }
 
 _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str], ...]] = {
@@ -69,6 +85,28 @@ _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str]
         ("user", "{{FACTS_JSON}}"),
         ("user", "{{EXPLICIT_NEEDS_JSON}}"),
         ("user", "{{UNDERLYING_PAINS_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.buying_intent,
+        "buying_intent_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{CONTEXT_SUFFICIENCY_JSON}}"),
+        ("user", "{{FACTS_JSON}}"),
+        ("user", "{{EXPLICIT_NEEDS_JSON}}"),
+        ("user", "{{UNDERLYING_PAINS_JSON}}"),
+        ("user", "{{BUSINESS_IMPACTS_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.stakeholder,
+        "stakeholder_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{FACTS_JSON}}"),
+        ("user", "{{BUYING_INTENT_JSON}}"),
+        ("user", "{{PARTICIPANTS_JSON}}"),
     ),
 }
 
@@ -206,6 +244,72 @@ def render_business_impact_messages(
                 .replace("{{FACTS_JSON}}", facts_json)
                 .replace("{{EXPLICIT_NEEDS_JSON}}", explicit_needs_json)
                 .replace("{{UNDERLYING_PAINS_JSON}}", underlying_pains_json)
+            ),
+        ),
+    ]
+
+
+def render_buying_intent_messages(
+    source_index: SourceIndexResult,
+    context_sufficiency: ContextSufficiencyResult,
+    fact_extraction: FactExtractionResult,
+    explicit_needs: list[ExplicitNeed],
+    underlying_pains: list[UnderlyingPain],
+    business_impacts: list[BusinessImpact],
+    *,
+    version: str = "buying_intent_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.buying_intent,
+        version,
+    )
+    schema_json = _dump_json(BuyingIntentNodeOutput.model_json_schema())
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace("{{OUTPUT_SCHEMA_JSON}}", schema_json),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{SOURCE_INDEX_JSON}}", _dump_json(source_index.model_dump(mode="json")))
+                .replace("{{CONTEXT_SUFFICIENCY_JSON}}", _dump_json(context_sufficiency.model_dump(mode="json")))
+                .replace("{{FACTS_JSON}}", _dump_json(fact_extraction.model_dump(mode="json")))
+                .replace("{{EXPLICIT_NEEDS_JSON}}", _dump_json([need.model_dump(mode="json") for need in explicit_needs]))
+                .replace("{{UNDERLYING_PAINS_JSON}}", _dump_json([pain.model_dump(mode="json") for pain in underlying_pains]))
+                .replace("{{BUSINESS_IMPACTS_JSON}}", _dump_json([impact.model_dump(mode="json") for impact in business_impacts]))
+            ),
+        ),
+    ]
+
+
+def render_stakeholder_messages(
+    source_index: SourceIndexResult,
+    fact_extraction: FactExtractionResult,
+    buying_intent: BuyingIntent,
+    participants: list[Participant],
+    *,
+    version: str = "stakeholder_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.stakeholder,
+        version,
+    )
+    schema_json = _dump_json(StakeholderNodeOutput.model_json_schema())
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace("{{OUTPUT_SCHEMA_JSON}}", schema_json),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{SOURCE_INDEX_JSON}}", _dump_json(source_index.model_dump(mode="json")))
+                .replace("{{FACTS_JSON}}", _dump_json(fact_extraction.model_dump(mode="json")))
+                .replace("{{BUYING_INTENT_JSON}}", _dump_json(buying_intent.model_dump(mode="json")))
+                .replace("{{PARTICIPANTS_JSON}}", _dump_json([participant.model_dump(mode="json") for participant in participants]))
             ),
         ),
     ]

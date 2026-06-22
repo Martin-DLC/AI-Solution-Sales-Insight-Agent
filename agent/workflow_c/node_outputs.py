@@ -6,7 +6,13 @@ from pydantic import Field, model_validator
 
 from agent.workflow_c.state import FactExtractionResult
 from schemas.common_models import StrictBaseModel
-from schemas.insight_models import BusinessImpact, ExplicitNeed, UnderlyingPain
+from schemas.insight_models import (
+    BusinessImpact,
+    BuyingIntent,
+    ExplicitNeed,
+    Stakeholder,
+    UnderlyingPain,
+)
 
 
 def _normalized_descriptions_are_unique(
@@ -86,4 +92,33 @@ class BusinessImpactResult(StrictBaseModel):
 
 
 class BusinessImpactNodeOutput(BusinessImpactResult):
+    pass
+
+
+class BuyingIntentNodeOutput(StrictBaseModel):
+    buying_intent: BuyingIntent
+
+
+class StakeholderResult(StrictBaseModel):
+    stakeholder_map: list[Stakeholder] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_stakeholders(self) -> Self:
+        if not self.stakeholder_map:
+            raise ValueError("Stakeholder analysis must include at least one stakeholder.")
+
+        stakeholder_ids = [stakeholder.stakeholder_id for stakeholder in self.stakeholder_map]
+        if len(stakeholder_ids) != len(set(stakeholder_ids)):
+            raise ValueError("Stakeholder IDs must not be duplicated.")
+
+        normalized_names = [
+            " ".join(stakeholder.name_or_role.split()).casefold()
+            for stakeholder in self.stakeholder_map
+        ]
+        if len(normalized_names) != len(set(normalized_names)):
+            raise ValueError("Stakeholder name_or_role values must not be duplicated.")
+        return self
+
+
+class StakeholderNodeOutput(StakeholderResult):
     pass
