@@ -1,0 +1,15 @@
+NODE: information_gap
+
+Source Index:
+{{SOURCE_INDEX_JSON}}
+
+Context Sufficiency:
+{{CONTEXT_SUFFICIENCY_JSON}}
+
+Fact Extraction:
+{{FACTS_JSON}}
+
+Optional Analysis Context:
+{{OPTIONAL_ANALYSIS_JSON}}
+
+只识别信息缺口和澄清问题。Do not create customer facts, solution recommendations, deal scores, risks, or next actions.
