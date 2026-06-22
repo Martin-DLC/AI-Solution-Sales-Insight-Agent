@@ -14,6 +14,7 @@ from agent.workflow_c.nodes import (
     HumanReviewGateNode,
     InformationGapNode,
     InputValidationNode,
+    SolutionRetrievalNode,
     SolutionRecommendationNode,
     StakeholderNode,
     SourceIndexingNode,
@@ -63,6 +64,7 @@ def build_architecture_c_skeleton(
         "stakeholder": StakeholderNode(),
         "information_gap": InformationGapNode(),
         "ai_opportunity": AIOpportunityNode(),
+        "solution_retrieval": SolutionRetrievalNode(),
         "solution_recommendation": SolutionRecommendationNode(),
         "human_review_gate": HumanReviewGateNode(),
     }
@@ -141,7 +143,16 @@ def build_architecture_c_skeleton(
     )
     builder.add_conditional_edges(
         "ai_opportunity",
-        _route_to_next_or_review("solution_recommendation"),
+        _route_to_next_or_review("solution_retrieval"),
+        {
+            "end": END,
+            "human_review_gate": "human_review_gate",
+            "solution_retrieval": "solution_retrieval",
+        },
+    )
+    builder.add_conditional_edges(
+        "solution_retrieval",
+        _route_after_solution_retrieval,
         {
             "end": END,
             "human_review_gate": "human_review_gate",
@@ -212,6 +223,17 @@ def _route_after_information_gap(state: ArchitectureCGraphState) -> str:
     return "ai_opportunity"
 
 
+def _route_after_solution_retrieval(state: ArchitectureCGraphState) -> str:
+    if state.get("workflow_status") is WorkflowStatus.awaiting_human_review:
+        return "human_review_gate"
+    if state.get("workflow_status") is WorkflowStatus.failed:
+        return "end"
+    retrieved = state.get("retrieved_solutions")
+    if retrieved is not None and retrieved.candidate_count == 0:
+        return "human_review_gate"
+    return "solution_recommendation"
+
+
 class _FallbackGraph:
     def __init__(self, services: WorkflowServices, nodes: dict[str, Any]) -> None:
         self.services = services
@@ -243,6 +265,7 @@ class _FallbackGraph:
                     "stakeholder",
                     "information_gap",
                     "ai_opportunity",
+                    "solution_retrieval",
                     "solution_recommendation",
                 ):
                     current = self._run_or_stop(name, current)
@@ -256,6 +279,12 @@ class _FallbackGraph:
                         and current.get("context_sufficiency") is not None
                         and current["context_sufficiency"].analysis_mode
                         is AnalysisMode.clarification_only
+                    ):
+                        break
+                    if (
+                        name == "solution_retrieval"
+                        and current.get("retrieved_solutions") is not None
+                        and current["retrieved_solutions"].candidate_count == 0
                     ):
                         break
         if current.get("workflow_status") is WorkflowStatus.failed:

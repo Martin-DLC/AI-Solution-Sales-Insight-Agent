@@ -10,9 +10,11 @@ from agent.workflow_c.prompt_loader import render_solution_recommendation_messag
 from agent.workflow_c.solution_validation import (
     build_solution_catalog,
     opportunity_allows_recommendation,
+    validate_recommendation_in_retrieved_candidates,
     validate_solution_catalog,
     validate_solution_recommendation,
 )
+from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from agent.workflow_c.state import NodeValidationIssue, SourceIndexResult, WorkflowNodeName
 from schemas.input_models import EvaluationCaseInput
 from schemas.insight_models import InformationGap
@@ -27,6 +29,7 @@ class SolutionRecommendationNode:
             "source_index",
             "information_gaps",
             "ai_opportunities",
+            "retrieved_solutions",
         ),
         produced_state_fields=("solution_recommendations",),
         output_model=SolutionRecommendationNodeOutput,
@@ -39,12 +42,13 @@ class SolutionRecommendationNode:
         source_index: SourceIndexResult = state["source_index"]
         information_gaps: list[InformationGap] = state["information_gaps"]
         ai_opportunities: list[AIOpportunity] = state["ai_opportunities"]
+        retrieved_solutions: SolutionRetrievalResult = state["retrieved_solutions"]
         solution_catalog = build_solution_catalog(case, source_index)
         messages = render_solution_recommendation_messages(
             ai_opportunities,
             information_gaps,
             case.known_constraints,
-            solution_catalog,
+            retrieved_solutions,
         )
         result = services.llm.complete_json_for_node(
             WorkflowNodeName.solution_recommendation,
@@ -67,6 +71,7 @@ class SolutionRecommendationNode:
             case,
             solution_catalog,
             ai_opportunities,
+            retrieved_solutions,
         )
         return {"solution_recommendations": output.solution_recommendations}
 
@@ -76,6 +81,7 @@ def _validate_solution_recommendation_rules(
     case: EvaluationCaseInput,
     solution_catalog: dict[str, Any],
     ai_opportunities: list[AIOpportunity],
+    retrieved_solutions: SolutionRetrievalResult,
 ) -> None:
     issues: list[NodeValidationIssue] = []
     issues.extend(validate_solution_catalog(case, solution_catalog))
@@ -102,6 +108,13 @@ def _validate_solution_recommendation_rules(
                 recommendation_index=index,
                 solution_catalog=solution_catalog,
                 ai_opportunities=ai_opportunities,
+            )
+        )
+        issues.extend(
+            validate_recommendation_in_retrieved_candidates(
+                recommendation=recommendation,
+                recommendation_index=index,
+                retrieved_solutions=retrieved_solutions,
             )
         )
 

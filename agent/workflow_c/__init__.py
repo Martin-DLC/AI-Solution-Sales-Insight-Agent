@@ -12,6 +12,7 @@ from agent.workflow_c.node_outputs import (
     ExplicitNeedResult,
     InformationGapNodeOutput,
     InformationGapResult,
+    SolutionRetrievalNodeOutput,
     SolutionRecommendationNodeOutput,
     SolutionRecommendationResult,
     StakeholderNodeOutput,
@@ -25,6 +26,7 @@ from agent.workflow_c.nodes import (
     ExplicitNeedNode,
     FactExtractionNode,
     InformationGapNode,
+    SolutionRetrievalNode,
     SolutionRecommendationNode,
     StakeholderNode,
     UnderlyingPainNode,
@@ -43,7 +45,19 @@ from agent.workflow_c.prompt_loader import (
 from agent.workflow_c.services import WorkflowServices
 from agent.workflow_c.solution_validation import (
     build_solution_catalog,
+    validate_recommendation_in_retrieved_candidates,
     validate_solution_recommendation,
+)
+from agent.workflow_c.retrieval_models import (
+    RetrievedSolutionCandidate,
+    SolutionRetrievalMethod,
+    SolutionRetrievalResult,
+)
+from agent.workflow_c.solution_retrieval import (
+    build_solution_retrieval_query,
+    retrieve_solution_candidates,
+    score_solution_candidate,
+    tokenize_retrieval_text,
 )
 from agent.workflow_c.state import (
     AnalysisMode,
@@ -78,9 +92,14 @@ __all__ = [
     "InformationGapResult",
     "NodeExecutionRecord",
     "NodeStatus",
+    "RetrievedSolutionCandidate",
     "SolutionRecommendationNode",
     "SolutionRecommendationNodeOutput",
     "SolutionRecommendationResult",
+    "SolutionRetrievalMethod",
+    "SolutionRetrievalNode",
+    "SolutionRetrievalNodeOutput",
+    "SolutionRetrievalResult",
     "StakeholderNode",
     "StakeholderNodeOutput",
     "StakeholderResult",
@@ -92,7 +111,9 @@ __all__ = [
     "UnderlyingPainResult",
     "build_architecture_c_skeleton",
     "build_solution_catalog",
+    "build_solution_retrieval_query",
     "create_initial_state",
+    "retrieve_solution_candidates",
     "run_architecture_c_skeleton",
     "render_ai_opportunity_messages",
     "render_business_impact_messages",
@@ -103,5 +124,8 @@ __all__ = [
     "render_solution_recommendation_messages",
     "render_stakeholder_messages",
     "render_underlying_pain_messages",
+    "score_solution_candidate",
+    "tokenize_retrieval_text",
+    "validate_recommendation_in_retrieved_candidates",
     "validate_solution_recommendation",
 ]

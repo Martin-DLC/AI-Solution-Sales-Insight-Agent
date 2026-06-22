@@ -4,6 +4,7 @@ from typing import Self
 
 from pydantic import Field, model_validator
 
+from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from agent.workflow_c.state import FactExtractionResult
 from schemas.common_models import StrictBaseModel
 from schemas.insight_models import (
@@ -180,6 +181,10 @@ class AIOpportunityResult(StrictBaseModel):
 
 class AIOpportunityNodeOutput(AIOpportunityResult):
     pass
+
+
+class SolutionRetrievalNodeOutput(StrictBaseModel):
+    retrieved_solutions: SolutionRetrievalResult
 
 
 class SolutionRecommendationResult(StrictBaseModel):

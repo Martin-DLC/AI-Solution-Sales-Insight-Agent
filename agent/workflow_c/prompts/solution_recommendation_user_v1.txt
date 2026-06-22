@@ -1,6 +1,6 @@
 NODE: solution_recommendation
 
-Only recommend from the Available Solution Catalog.
+Only recommend from the Retrieved Solution Candidates.
 
 AI Opportunities:
 {{AI_OPPORTUNITIES_JSON}}
@@ -11,5 +11,5 @@ Information Gaps:
 Known Constraints:
 {{CONSTRAINTS_JSON}}
 
-Available Solution Catalog:
-{{SOLUTION_CATALOG_JSON}}
+Retrieved Solution Candidates:
+{{RETRIEVED_SOLUTION_CANDIDATES_JSON}}
