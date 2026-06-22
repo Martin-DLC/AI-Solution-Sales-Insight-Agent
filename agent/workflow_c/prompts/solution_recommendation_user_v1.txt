@@ -1,0 +1,15 @@
+NODE: solution_recommendation
+
+Only recommend from the Available Solution Catalog.
+
+AI Opportunities:
+{{AI_OPPORTUNITIES_JSON}}
+
+Information Gaps:
+{{INFORMATION_GAPS_JSON}}
+
+Known Constraints:
+{{CONSTRAINTS_JSON}}
+
+Available Solution Catalog:
+{{SOLUTION_CATALOG_JSON}}

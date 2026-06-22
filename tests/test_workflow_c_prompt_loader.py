@@ -5,26 +5,39 @@ import pytest
 from agent.workflow_c.executor import execute_node
 from agent.workflow_c.nodes import SourceIndexingNode
 from agent.workflow_c.prompt_loader import (
+    render_ai_opportunity_messages,
     render_buying_intent_messages,
     load_node_prompt_templates,
     render_business_impact_messages,
     render_explicit_need_messages,
     render_fact_extraction_messages,
     render_information_gap_messages,
+    render_solution_recommendation_messages,
     render_stakeholder_messages,
     render_underlying_pain_messages,
 )
 from agent.workflow_c.fake_llm import (
+    default_ai_opportunity_response,
     default_buying_intent_response,
     default_business_impact_response,
     default_explicit_need_response,
     default_fact_response,
+    default_information_gap_response,
     default_stakeholder_response,
     default_underlying_pain_response,
 )
+from agent.workflow_c.solution_validation import build_solution_catalog
 from agent.workflow_c.state import ContextSufficiencyResult, FactExtractionResult, WorkflowNodeName
 from dataio.runtime_cases import load_runtime_cases
-from schemas.insight_models import BusinessImpact, BuyingIntent, ExplicitNeed, Stakeholder, UnderlyingPain
+from schemas.insight_models import (
+    BusinessImpact,
+    BuyingIntent,
+    ExplicitNeed,
+    InformationGap,
+    Stakeholder,
+    UnderlyingPain,
+)
+from schemas.solution_models import AIOpportunity
 
 
 def dev_01_case():
@@ -125,6 +138,35 @@ def test_information_gap_prompt_templates_load() -> None:
     assert user_template.count("{{CONTEXT_SUFFICIENCY_JSON}}") == 1
     assert user_template.count("{{FACTS_JSON}}") == 1
     assert user_template.count("{{OPTIONAL_ANALYSIS_JSON}}") == 1
+
+
+def test_ai_opportunity_prompt_templates_load() -> None:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.ai_opportunity,
+        "ai_opportunity_v1",
+    )
+
+    assert system_template.count("{{OUTPUT_SCHEMA_JSON}}") == 1
+    assert user_template.count("{{SOURCE_INDEX_JSON}}") == 1
+    assert user_template.count("{{CONTEXT_SUFFICIENCY_JSON}}") == 1
+    assert user_template.count("{{EXPLICIT_NEEDS_JSON}}") == 1
+    assert user_template.count("{{UNDERLYING_PAINS_JSON}}") == 1
+    assert user_template.count("{{BUSINESS_IMPACTS_JSON}}") == 1
+    assert user_template.count("{{INFORMATION_GAPS_JSON}}") == 1
+    assert user_template.count("{{CONSTRAINTS_JSON}}") == 1
+
+
+def test_solution_recommendation_prompt_templates_load() -> None:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.solution_recommendation,
+        "solution_recommendation_v1",
+    )
+
+    assert system_template.count("{{OUTPUT_SCHEMA_JSON}}") == 1
+    assert user_template.count("{{AI_OPPORTUNITIES_JSON}}") == 1
+    assert user_template.count("{{INFORMATION_GAPS_JSON}}") == 1
+    assert user_template.count("{{CONSTRAINTS_JSON}}") == 1
+    assert user_template.count("{{SOLUTION_CATALOG_JSON}}") == 1
 
 
 def test_unknown_prompt_version_fails() -> None:
@@ -281,6 +323,65 @@ def test_information_gap_prompt_renders_optional_context() -> None:
     assert "STK-02" in messages[1].content
 
 
+def test_ai_opportunity_prompt_renders_dependencies() -> None:
+    messages = render_ai_opportunity_messages(
+        source_index(),
+        ContextSufficiencyResult.model_validate(
+            {
+                "context_quality": "partially_sufficient",
+                "analysis_mode": "partial_analysis",
+                "available_categories": ["business_goal"],
+                "missing_categories": ["budget"],
+                "blocking_gaps": [],
+                "reasoning_summary": "已有业务目标，但预算和决策链仍需确认。",
+            }
+        ),
+        [
+            ExplicitNeed.model_validate(item)
+            for item in default_explicit_need_response()["explicit_needs"]
+        ],
+        [
+            UnderlyingPain.model_validate(item)
+            for item in default_underlying_pain_response()["underlying_pains"]
+        ],
+        [
+            BusinessImpact.model_validate(item)
+            for item in default_business_impact_response()["business_impacts"]
+        ],
+        [
+            InformationGap.model_validate(item)
+            for item in default_information_gap_response()["information_gaps"]
+        ],
+        dev_01_case().known_constraints,
+    )
+
+    assert len(messages) == 2
+    assert "NODE: ai_opportunity" in messages[1].content
+    assert "PAIN-01" in messages[1].content
+    assert "GAP-01" in messages[1].content
+
+
+def test_solution_recommendation_prompt_renders_full_catalog() -> None:
+    catalog = build_solution_catalog(dev_01_case(), source_index())
+    messages = render_solution_recommendation_messages(
+        [
+            AIOpportunity.model_validate(item)
+            for item in default_ai_opportunity_response()["ai_opportunities"]
+        ],
+        [
+            InformationGap.model_validate(item)
+            for item in default_information_gap_response()["information_gaps"]
+        ],
+        dev_01_case().known_constraints,
+        catalog,
+    )
+
+    assert len(messages) == 2
+    assert "NODE: solution_recommendation" in messages[1].content
+    for solution_name in dev_01_case().available_solution_library:
+        assert solution_name in messages[1].content
+
+
 def test_prompts_do_not_include_reference_pack_terms() -> None:
     combined = "\n".join(
         load_node_prompt_templates(WorkflowNodeName.fact_extraction, "fact_extraction_v1")
@@ -290,6 +391,11 @@ def test_prompts_do_not_include_reference_pack_terms() -> None:
         + load_node_prompt_templates(WorkflowNodeName.buying_intent, "buying_intent_v1")
         + load_node_prompt_templates(WorkflowNodeName.stakeholder, "stakeholder_v1")
         + load_node_prompt_templates(WorkflowNodeName.information_gap, "information_gap_v1")
+        + load_node_prompt_templates(WorkflowNodeName.ai_opportunity, "ai_opportunity_v1")
+        + load_node_prompt_templates(
+            WorkflowNodeName.solution_recommendation,
+            "solution_recommendation_v1",
+        )
     )
 
     assert "hard_failure_traps" not in combined
@@ -335,5 +441,32 @@ def test_new_prompt_rendering_is_stable() -> None:
     fact_extraction = FactExtractionResult.model_validate(default_fact_response())
     first = render_underlying_pain_messages(source_index(), fact_extraction, explicit_needs)
     second = render_underlying_pain_messages(source_index(), fact_extraction, explicit_needs)
+
+    assert [message.content for message in first] == [message.content for message in second]
+
+
+def test_solution_recommendation_rendering_is_stable() -> None:
+    catalog = build_solution_catalog(dev_01_case(), source_index())
+    ai_opportunities = [
+        AIOpportunity.model_validate(item)
+        for item in default_ai_opportunity_response()["ai_opportunities"]
+    ]
+    information_gaps = [
+        InformationGap.model_validate(item)
+        for item in default_information_gap_response()["information_gaps"]
+    ]
+
+    first = render_solution_recommendation_messages(
+        ai_opportunities,
+        information_gaps,
+        dev_01_case().known_constraints,
+        catalog,
+    )
+    second = render_solution_recommendation_messages(
+        ai_opportunities,
+        information_gaps,
+        dev_01_case().known_constraints,
+        catalog,
+    )
 
     assert [message.content for message in first] == [message.content for message in second]
