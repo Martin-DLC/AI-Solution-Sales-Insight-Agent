@@ -17,6 +17,7 @@ from schemas.common_models import (
     ContextQuality,
     EvidenceSourceType,
     InfluenceLevel,
+    InformationGapCategory,
     IntentLevel,
     PriorityLevel,
     SalesRole,
@@ -179,6 +180,47 @@ class FakeWorkflowLLMClient:
             schema_error_payloads=schema_error_payloads,
         )
 
+    @classmethod
+    def with_default_batch2b_responses(
+        cls,
+        *,
+        request_error_nodes: set[WorkflowNodeName | str] | None = None,
+        invalid_json_nodes: set[WorkflowNodeName | str] | None = None,
+        schema_error_nodes: set[WorkflowNodeName | str] | None = None,
+        custom_payloads: Mapping[WorkflowNodeName | str, dict[str, Any]] | None = None,
+    ) -> "FakeWorkflowLLMClient":
+        request_nodes = _normalize_nodes(request_error_nodes)
+        invalid_nodes = _normalize_nodes(invalid_json_nodes)
+        schema_nodes = _normalize_nodes(schema_error_nodes)
+        _ensure_failure_modes_are_exclusive(
+            request_nodes=request_nodes,
+            invalid_nodes=invalid_nodes,
+            schema_nodes=schema_nodes,
+        )
+        schema_error_payloads = {
+            node: _schema_error_payload_for_node(node)
+            for node in schema_nodes
+        }
+        responses_by_node = {
+            WorkflowNodeName.fact_extraction: {
+                "fact_extraction": default_fact_response(),
+            },
+            WorkflowNodeName.explicit_need: default_explicit_need_response(),
+            WorkflowNodeName.underlying_pain: default_underlying_pain_response(),
+            WorkflowNodeName.business_impact: default_business_impact_response(),
+            WorkflowNodeName.buying_intent: default_buying_intent_response(),
+            WorkflowNodeName.stakeholder: default_stakeholder_response(),
+            WorkflowNodeName.information_gap: default_information_gap_response(),
+        }
+        for node, payload in (custom_payloads or {}).items():
+            responses_by_node[_normalize_node(node)] = deepcopy(payload)
+        return cls(
+            responses_by_node=responses_by_node,
+            request_error_nodes=request_nodes,
+            invalid_json_nodes=invalid_nodes,
+            schema_error_payloads=schema_error_payloads,
+        )
+
     @property
     def total_calls(self) -> int:
         return self.call_count
@@ -264,6 +306,8 @@ def _schema_error_payload_for_node(node: WorkflowNodeName) -> dict[str, Any]:
         return {"buying_intent": {}}
     if node is WorkflowNodeName.stakeholder:
         return {"stakeholder_map": []}
+    if node is WorkflowNodeName.information_gap:
+        return {"information_gaps": []}
     return {}
 
 
@@ -444,6 +488,31 @@ def default_stakeholder_response() -> dict[str, Any]:
                 "confidence": ConfidenceLevel.low.value,
                 "evidence": [],
                 "next_validation": "下一次会议确认谁负责预算和最终决策。",
+            },
+        ]
+    }
+
+
+def default_information_gap_response() -> dict[str, Any]:
+    return {
+        "information_gaps": [
+            {
+                "gap_id": "GAP-01",
+                "category": InformationGapCategory.budget.value,
+                "description": "客户是否已有正式预算仍未确认。",
+                "priority": SeverityLevel.high.value,
+                "business_impact": "预算不清会影响方案范围和采购推进判断。",
+                "question_to_ask": "本项目是否已有正式预算或预算审批计划？",
+                "recommended_owner": "sales",
+            },
+            {
+                "gap_id": "GAP-02",
+                "category": InformationGapCategory.authority.value,
+                "description": "最终决策人和审批流程尚未确认。",
+                "priority": SeverityLevel.high.value,
+                "business_impact": "决策链不清会影响后续方案确认和商务推进。",
+                "question_to_ask": "后续谁会参与最终决策和审批流程确认？",
+                "recommended_owner": "sales",
             },
         ]
     }
