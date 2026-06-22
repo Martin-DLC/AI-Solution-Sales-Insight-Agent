@@ -23,6 +23,7 @@ from schemas.insight_models import (
     BuyingIntent,
     CustomerContext,
     ExplicitNeed,
+    InformationGap,
     Stakeholder,
     UnderlyingPain,
 )
@@ -328,6 +329,7 @@ class ArchitectureCGraphState(TypedDict, total=False):
     business_impacts: list[BusinessImpact]
     buying_intent: BuyingIntent
     stakeholder_map: list[Stakeholder]
+    information_gaps: list[InformationGap]
     human_review_decision: HumanReviewDecision
     node_records: Annotated[list[NodeExecutionRecord], operator.add]
     failures: Annotated[list[WorkflowFailure], operator.add]
@@ -353,6 +355,7 @@ class ArchitectureCStateSnapshot(StrictBaseModel):
     business_impacts: list[BusinessImpact] | None = None
     buying_intent: BuyingIntent | None = None
     stakeholder_map: list[Stakeholder] | None = None
+    information_gaps: list[InformationGap] | None = None
     human_review_decision: HumanReviewDecision | None = None
     node_records: list[NodeExecutionRecord] = Field(default_factory=list)
     failures: list[WorkflowFailure] = Field(default_factory=list)
