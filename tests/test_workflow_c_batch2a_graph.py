@@ -18,16 +18,16 @@ def dev_01_case():
 def test_dev_01_offline_success() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert snapshot.failures == []
 
 
-def test_success_node_order_has_eleven_nodes_after_batch2b() -> None:
+def test_success_node_order_has_thirteen_nodes_after_batch3a() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert [record.node_name for record in snapshot.node_records] == [
@@ -41,20 +41,22 @@ def test_success_node_order_has_eleven_nodes_after_batch2b() -> None:
         WorkflowNodeName.buying_intent,
         WorkflowNodeName.stakeholder,
         WorkflowNodeName.information_gap,
+        WorkflowNodeName.ai_opportunity,
+        WorkflowNodeName.solution_recommendation,
         WorkflowNodeName.human_review_gate,
     ]
 
 
-def test_fake_llm_total_calls_is_seven_after_batch2b() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch2b_responses()
+def test_fake_llm_total_calls_is_nine_after_batch3a() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch3a_responses()
 
     run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
 
-    assert client.total_calls == 7
+    assert client.total_calls == 9
 
 
 def test_each_llm_node_called_once() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch2b_responses()
+    client = FakeWorkflowLLMClient.with_default_batch3a_responses()
 
     run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
 
@@ -65,12 +67,14 @@ def test_each_llm_node_called_once() -> None:
     assert client.calls_for_node(WorkflowNodeName.buying_intent) == 1
     assert client.calls_for_node(WorkflowNodeName.stakeholder) == 1
     assert client.calls_for_node(WorkflowNodeName.information_gap) == 1
+    assert client.calls_for_node(WorkflowNodeName.ai_opportunity) == 1
+    assert client.calls_for_node(WorkflowNodeName.solution_recommendation) == 1
 
 
 def test_final_status_awaits_human_review() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert snapshot.workflow_status is WorkflowStatus.awaiting_human_review
@@ -79,7 +83,7 @@ def test_final_status_awaits_human_review() -> None:
 def test_buying_intent_exists() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert snapshot.buying_intent is not None
@@ -88,7 +92,7 @@ def test_buying_intent_exists() -> None:
 def test_stakeholder_map_exists() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert snapshot.stakeholder_map
@@ -97,7 +101,7 @@ def test_stakeholder_map_exists() -> None:
 def test_generates_information_gaps_after_batch2b() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert snapshot.information_gaps
@@ -106,7 +110,7 @@ def test_generates_information_gaps_after_batch2b() -> None:
 def test_does_not_generate_deal_score() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert not hasattr(snapshot, "deal_score")
@@ -115,7 +119,7 @@ def test_does_not_generate_deal_score() -> None:
 def test_does_not_generate_final_report() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert not hasattr(snapshot, "final_report")
@@ -127,7 +131,7 @@ def test_clarification_only_skips_all_analysis_nodes_after_context() -> None:
     case.customer_profile.current_systems = []
     case.known_constraints = []
     case.meeting.participants = []
-    client = FakeWorkflowLLMClient.with_default_batch2b_responses()
+    client = FakeWorkflowLLMClient.with_default_batch3a_responses()
     payload = client.responses_by_node[WorkflowNodeName.fact_extraction]["fact_extraction"]
     payload["facts"] = [payload["facts"][0]]
     payload["facts"][0]["category"] = "other"
@@ -214,7 +218,7 @@ def test_unconfirmed_stakeholder_without_next_validation_fails_schema_validation
 def test_snapshot_json_serializes() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
     assert snapshot.model_dump(mode="json")["workflow_version"] == "c_skeleton_v1"
