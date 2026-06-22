@@ -8,6 +8,8 @@ from agent.workflow_c.node_outputs import (
     BusinessImpactResult,
     BuyingIntentNodeOutput,
     ExplicitNeedResult,
+    InformationGapNodeOutput,
+    InformationGapResult,
     StakeholderNodeOutput,
     StakeholderResult,
     UnderlyingPainResult,
@@ -17,6 +19,7 @@ from agent.workflow_c.nodes import (
     BuyingIntentNode,
     ExplicitNeedNode,
     FactExtractionNode,
+    InformationGapNode,
     StakeholderNode,
     UnderlyingPainNode,
 )
@@ -25,6 +28,7 @@ from agent.workflow_c.prompt_loader import (
     render_buying_intent_messages,
     render_explicit_need_messages,
     render_fact_extraction_messages,
+    render_information_gap_messages,
     render_stakeholder_messages,
     render_underlying_pain_messages,
 )
@@ -54,6 +58,9 @@ __all__ = [
     "ExplicitNeedResult",
     "FactExtractionNode",
     "HumanReviewDecision",
+    "InformationGapNode",
+    "InformationGapNodeOutput",
+    "InformationGapResult",
     "NodeExecutionRecord",
     "NodeStatus",
     "StakeholderNode",
@@ -72,6 +79,7 @@ __all__ = [
     "render_buying_intent_messages",
     "render_explicit_need_messages",
     "render_fact_extraction_messages",
+    "render_information_gap_messages",
     "render_stakeholder_messages",
     "render_underlying_pain_messages",
 ]

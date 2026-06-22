@@ -8,6 +8,7 @@ from agent.workflow_c.node_outputs import (
     BuyingIntentNodeOutput,
     ExplicitNeedNodeOutput,
     FactExtractionNodeOutput,
+    InformationGapNodeOutput,
     StakeholderNodeOutput,
     UnderlyingPainNodeOutput,
 )
@@ -18,7 +19,7 @@ from agent.workflow_c.state import (
     WorkflowNodeName,
 )
 from schemas.input_models import Participant
-from schemas.insight_models import BusinessImpact, BuyingIntent, ExplicitNeed, UnderlyingPain
+from schemas.insight_models import BusinessImpact, BuyingIntent, ExplicitNeed, Stakeholder, UnderlyingPain
 from llm.models import LLMMessage, LLMRole
 
 
@@ -49,6 +50,10 @@ _PROMPT_REGISTRY: dict[tuple[WorkflowNodeName, str], tuple[str, str]] = {
         WorkflowNodeName.stakeholder,
         "stakeholder_v1",
     ): ("stakeholder_system_v1.txt", "stakeholder_user_v1.txt"),
+    (
+        WorkflowNodeName.information_gap,
+        "information_gap_v1",
+    ): ("information_gap_system_v1.txt", "information_gap_user_v1.txt"),
 }
 
 _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str], ...]] = {
@@ -107,6 +112,16 @@ _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str]
         ("user", "{{FACTS_JSON}}"),
         ("user", "{{BUYING_INTENT_JSON}}"),
         ("user", "{{PARTICIPANTS_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.information_gap,
+        "information_gap_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{CONTEXT_SUFFICIENCY_JSON}}"),
+        ("user", "{{FACTS_JSON}}"),
+        ("user", "{{OPTIONAL_ANALYSIS_JSON}}"),
     ),
 }
 
@@ -310,6 +325,63 @@ def render_stakeholder_messages(
                 .replace("{{FACTS_JSON}}", _dump_json(fact_extraction.model_dump(mode="json")))
                 .replace("{{BUYING_INTENT_JSON}}", _dump_json(buying_intent.model_dump(mode="json")))
                 .replace("{{PARTICIPANTS_JSON}}", _dump_json([participant.model_dump(mode="json") for participant in participants]))
+            ),
+        ),
+    ]
+
+
+def render_information_gap_messages(
+    source_index: SourceIndexResult,
+    context_sufficiency: ContextSufficiencyResult,
+    fact_extraction: FactExtractionResult,
+    *,
+    explicit_needs: list[ExplicitNeed] | None = None,
+    underlying_pains: list[UnderlyingPain] | None = None,
+    business_impacts: list[BusinessImpact] | None = None,
+    buying_intent: BuyingIntent | None = None,
+    stakeholder_map: list[Stakeholder] | None = None,
+    version: str = "information_gap_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.information_gap,
+        version,
+    )
+    optional_analysis = {
+        "explicit_needs": [
+            need.model_dump(mode="json") for need in explicit_needs or []
+        ],
+        "underlying_pains": [
+            pain.model_dump(mode="json") for pain in underlying_pains or []
+        ],
+        "business_impacts": [
+            impact.model_dump(mode="json") for impact in business_impacts or []
+        ],
+        "buying_intent": (
+            buying_intent.model_dump(mode="json")
+            if buying_intent is not None
+            else None
+        ),
+        "stakeholder_map": [
+            stakeholder.model_dump(mode="json")
+            for stakeholder in stakeholder_map or []
+        ],
+    }
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace(
+                "{{OUTPUT_SCHEMA_JSON}}",
+                _dump_json(InformationGapNodeOutput.model_json_schema()),
+            ),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{SOURCE_INDEX_JSON}}", _dump_json(source_index.model_dump(mode="json")))
+                .replace("{{CONTEXT_SUFFICIENCY_JSON}}", _dump_json(context_sufficiency.model_dump(mode="json")))
+                .replace("{{FACTS_JSON}}", _dump_json(fact_extraction.model_dump(mode="json")))
+                .replace("{{OPTIONAL_ANALYSIS_JSON}}", _dump_json(optional_analysis))
             ),
         ),
     ]

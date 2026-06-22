@@ -10,6 +10,7 @@ from agent.workflow_c.prompt_loader import (
     render_business_impact_messages,
     render_explicit_need_messages,
     render_fact_extraction_messages,
+    render_information_gap_messages,
     render_stakeholder_messages,
     render_underlying_pain_messages,
 )
@@ -18,11 +19,12 @@ from agent.workflow_c.fake_llm import (
     default_business_impact_response,
     default_explicit_need_response,
     default_fact_response,
+    default_stakeholder_response,
     default_underlying_pain_response,
 )
 from agent.workflow_c.state import ContextSufficiencyResult, FactExtractionResult, WorkflowNodeName
 from dataio.runtime_cases import load_runtime_cases
-from schemas.insight_models import BusinessImpact, BuyingIntent, ExplicitNeed, UnderlyingPain
+from schemas.insight_models import BusinessImpact, BuyingIntent, ExplicitNeed, Stakeholder, UnderlyingPain
 
 
 def dev_01_case():
@@ -110,6 +112,19 @@ def test_stakeholder_prompt_templates_load() -> None:
     assert user_template.count("{{FACTS_JSON}}") == 1
     assert user_template.count("{{BUYING_INTENT_JSON}}") == 1
     assert user_template.count("{{PARTICIPANTS_JSON}}") == 1
+
+
+def test_information_gap_prompt_templates_load() -> None:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.information_gap,
+        "information_gap_v1",
+    )
+
+    assert system_template.count("{{OUTPUT_SCHEMA_JSON}}") == 1
+    assert user_template.count("{{SOURCE_INDEX_JSON}}") == 1
+    assert user_template.count("{{CONTEXT_SUFFICIENCY_JSON}}") == 1
+    assert user_template.count("{{FACTS_JSON}}") == 1
+    assert user_template.count("{{OPTIONAL_ANALYSIS_JSON}}") == 1
 
 
 def test_unknown_prompt_version_fails() -> None:
@@ -223,6 +238,49 @@ def test_stakeholder_prompt_renders_dependencies() -> None:
     assert dev_01_case().meeting.participants[0].name_or_role in messages[1].content
 
 
+def test_information_gap_prompt_renders_optional_context() -> None:
+    messages = render_information_gap_messages(
+        source_index(),
+        ContextSufficiencyResult.model_validate(
+            {
+                "context_quality": "partially_sufficient",
+                "analysis_mode": "partial_analysis",
+                "available_categories": ["business_goal"],
+                "missing_categories": ["budget"],
+                "blocking_gaps": [],
+                "reasoning_summary": "已有业务目标，但预算和决策链仍需确认。",
+            }
+        ),
+        FactExtractionResult.model_validate(default_fact_response()),
+        explicit_needs=[
+            ExplicitNeed.model_validate(item)
+            for item in default_explicit_need_response()["explicit_needs"]
+        ],
+        underlying_pains=[
+            UnderlyingPain.model_validate(item)
+            for item in default_underlying_pain_response()["underlying_pains"]
+        ],
+        business_impacts=[
+            BusinessImpact.model_validate(item)
+            for item in default_business_impact_response()["business_impacts"]
+        ],
+        buying_intent=BuyingIntent.model_validate(
+            default_buying_intent_response()["buying_intent"]
+        ),
+        stakeholder_map=[
+            Stakeholder.model_validate(item)
+            for item in default_stakeholder_response()["stakeholder_map"]
+        ],
+    )
+
+    assert len(messages) == 2
+    assert "NEED-01" in messages[1].content
+    assert "PAIN-01" in messages[1].content
+    assert "IMPACT-01" in messages[1].content
+    assert "unknown_factors" in messages[1].content
+    assert "STK-02" in messages[1].content
+
+
 def test_prompts_do_not_include_reference_pack_terms() -> None:
     combined = "\n".join(
         load_node_prompt_templates(WorkflowNodeName.fact_extraction, "fact_extraction_v1")
@@ -231,6 +289,7 @@ def test_prompts_do_not_include_reference_pack_terms() -> None:
         + load_node_prompt_templates(WorkflowNodeName.business_impact, "business_impact_v1")
         + load_node_prompt_templates(WorkflowNodeName.buying_intent, "buying_intent_v1")
         + load_node_prompt_templates(WorkflowNodeName.stakeholder, "stakeholder_v1")
+        + load_node_prompt_templates(WorkflowNodeName.information_gap, "information_gap_v1")
     )
 
     assert "hard_failure_traps" not in combined

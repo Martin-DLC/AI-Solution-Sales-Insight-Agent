@@ -11,6 +11,7 @@ from agent.workflow_c.nodes import (
     ExplicitNeedNode,
     FactExtractionNode,
     HumanReviewGateNode,
+    InformationGapNode,
     InputValidationNode,
     StakeholderNode,
     SourceIndexingNode,
@@ -58,6 +59,7 @@ def build_architecture_c_skeleton(
         "business_impact": BusinessImpactNode(),
         "buying_intent": BuyingIntentNode(),
         "stakeholder": StakeholderNode(),
+        "information_gap": InformationGapNode(),
         "human_review_gate": HumanReviewGateNode(),
     }
 
@@ -95,6 +97,7 @@ def build_architecture_c_skeleton(
         {
             "end": END,
             "human_review_gate": "human_review_gate",
+            "information_gap": "information_gap",
             "explicit_need": "explicit_need",
         },
     )
@@ -120,6 +123,11 @@ def build_architecture_c_skeleton(
     )
     builder.add_conditional_edges(
         "stakeholder",
+        _route_to_next_or_review("information_gap"),
+        {"end": END, "human_review_gate": "human_review_gate", "information_gap": "information_gap"},
+    )
+    builder.add_conditional_edges(
+        "information_gap",
         _route_to_next_or_review("human_review_gate"),
         {"end": END, "human_review_gate": "human_review_gate"},
     )
@@ -167,7 +175,7 @@ def _route_after_context_sufficiency(state: ArchitectureCGraphState) -> str:
         return "end"
     context = state.get("context_sufficiency")
     if context is not None and context.analysis_mode is AnalysisMode.clarification_only:
-        return "human_review_gate"
+        return "information_gap"
     return "explicit_need"
 
 
@@ -183,23 +191,42 @@ class _FallbackGraph:
             "source_indexing",
             "fact_extraction",
             "context_sufficiency",
-            "explicit_need",
-            "underlying_pain",
-            "business_impact",
-            "buying_intent",
-            "stakeholder",
         ):
-            patch = execute_node(self.nodes[name], current, self.services)
-            current = _merge_state(current, patch)
+            current = self._run_or_stop(name, current)
             if current.get("workflow_status") is WorkflowStatus.failed:
                 return current
             if current.get("workflow_status") is WorkflowStatus.awaiting_human_review:
                 break
-            if name == "context_sufficiency":
-                context = current.get("context_sufficiency")
-                if context is not None and context.analysis_mode is AnalysisMode.clarification_only:
-                    break
+        else:
+            context = current.get("context_sufficiency")
+            if context is not None and context.analysis_mode is AnalysisMode.clarification_only:
+                current = self._run_or_stop("information_gap", current)
+            else:
+                for name in (
+                    "explicit_need",
+                    "underlying_pain",
+                    "business_impact",
+                    "buying_intent",
+                    "stakeholder",
+                    "information_gap",
+                ):
+                    current = self._run_or_stop(name, current)
+                    if current.get("workflow_status") in {
+                        WorkflowStatus.failed,
+                        WorkflowStatus.awaiting_human_review,
+                    }:
+                        break
+        if current.get("workflow_status") is WorkflowStatus.failed:
+            return current
         patch = execute_node(self.nodes["human_review_gate"], current, self.services)
+        return _merge_state(current, patch)
+
+    def _run_or_stop(
+        self,
+        name: str,
+        current: ArchitectureCGraphState,
+    ) -> ArchitectureCGraphState:
+        patch = execute_node(self.nodes[name], current, self.services)
         return _merge_state(current, patch)
 
 

@@ -10,6 +10,7 @@ from schemas.insight_models import (
     BusinessImpact,
     BuyingIntent,
     ExplicitNeed,
+    InformationGap,
     Stakeholder,
     UnderlyingPain,
 )
@@ -121,4 +122,33 @@ class StakeholderResult(StrictBaseModel):
 
 
 class StakeholderNodeOutput(StakeholderResult):
+    pass
+
+
+class InformationGapResult(StrictBaseModel):
+    information_gaps: list[InformationGap] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_information_gaps(self) -> Self:
+        if not self.information_gaps:
+            raise ValueError("Information gap analysis must include at least one gap.")
+
+        gap_ids = [gap.gap_id for gap in self.information_gaps]
+        if len(gap_ids) != len(set(gap_ids)):
+            raise ValueError("Information gap IDs must not be duplicated.")
+
+        _normalized_descriptions_are_unique(
+            [gap.description for gap in self.information_gaps],
+            "Information gap",
+        )
+        normalized_questions = [
+            " ".join(gap.question_to_ask.split()).casefold()
+            for gap in self.information_gaps
+        ]
+        if len(normalized_questions) != len(set(normalized_questions)):
+            raise ValueError("Information gap questions must not be duplicated.")
+        return self
+
+
+class InformationGapNodeOutput(InformationGapResult):
     pass
