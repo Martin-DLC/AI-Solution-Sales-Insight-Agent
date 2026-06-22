@@ -20,9 +20,12 @@ from agent.workflow_c.state import (
 from agent.workflow_c.node_outputs import (
     BusinessImpactNodeOutput,
     BusinessImpactResult,
+    BuyingIntentNodeOutput,
     ExplicitNeedNodeOutput,
     ExplicitNeedResult,
     FactExtractionNodeOutput,
+    StakeholderNodeOutput,
+    StakeholderResult,
     UnderlyingPainNodeOutput,
     UnderlyingPainResult,
 )
