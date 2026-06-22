@@ -9,6 +9,7 @@ from agent.workflow_c.nodes import (
     BusinessImpactNode,
     BuyingIntentNode,
     ContextSufficiencyNode,
+    DealScoreNode,
     ExplicitNeedNode,
     FactExtractionNode,
     HumanReviewGateNode,
@@ -66,6 +67,7 @@ def build_architecture_c_skeleton(
         "ai_opportunity": AIOpportunityNode(),
         "solution_retrieval": SolutionRetrievalNode(),
         "solution_recommendation": SolutionRecommendationNode(),
+        "deal_score": DealScoreNode(),
         "human_review_gate": HumanReviewGateNode(),
     }
 
@@ -155,12 +157,18 @@ def build_architecture_c_skeleton(
         _route_after_solution_retrieval,
         {
             "end": END,
+            "deal_score": "deal_score",
             "human_review_gate": "human_review_gate",
             "solution_recommendation": "solution_recommendation",
         },
     )
     builder.add_conditional_edges(
         "solution_recommendation",
+        _route_to_next_or_review("deal_score"),
+        {"end": END, "human_review_gate": "human_review_gate", "deal_score": "deal_score"},
+    )
+    builder.add_conditional_edges(
+        "deal_score",
         _route_to_next_or_review("human_review_gate"),
         {"end": END, "human_review_gate": "human_review_gate"},
     )
@@ -230,7 +238,7 @@ def _route_after_solution_retrieval(state: ArchitectureCGraphState) -> str:
         return "end"
     retrieved = state.get("retrieved_solutions")
     if retrieved is not None and retrieved.candidate_count == 0:
-        return "human_review_gate"
+        return "deal_score"
     return "solution_recommendation"
 
 
@@ -267,7 +275,14 @@ class _FallbackGraph:
                     "ai_opportunity",
                     "solution_retrieval",
                     "solution_recommendation",
+                    "deal_score",
                 ):
+                    if (
+                        name == "solution_recommendation"
+                        and current.get("retrieved_solutions") is not None
+                        and current["retrieved_solutions"].candidate_count == 0
+                    ):
+                        continue
                     current = self._run_or_stop(name, current)
                     if current.get("workflow_status") in {
                         WorkflowStatus.failed,
@@ -279,12 +294,6 @@ class _FallbackGraph:
                         and current.get("context_sufficiency") is not None
                         and current["context_sufficiency"].analysis_mode
                         is AnalysisMode.clarification_only
-                    ):
-                        break
-                    if (
-                        name == "solution_retrieval"
-                        and current.get("retrieved_solutions") is not None
-                        and current["retrieved_solutions"].candidate_count == 0
                     ):
                         break
         if current.get("workflow_status") is WorkflowStatus.failed:

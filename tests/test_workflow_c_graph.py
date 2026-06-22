@@ -52,6 +52,7 @@ def test_node_execution_order_is_expected() -> None:
         WorkflowNodeName.ai_opportunity,
         WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
+        WorkflowNodeName.deal_score,
         WorkflowNodeName.human_review_gate,
     ]
 
@@ -74,6 +75,7 @@ def test_fake_llm_called_once() -> None:
 
     assert client.call_count == 9
     assert client.total_calls == 9
+    assert client.calls_for_node(WorkflowNodeName.deal_score) == 0
 
 
 def test_graph_generates_source_index() -> None:
@@ -167,6 +169,15 @@ def test_graph_generates_retrieved_solutions() -> None:
     )
 
     assert snapshot.retrieved_solutions is not None
+
+
+def test_graph_generates_deal_score() -> None:
+    snapshot = run_architecture_c_skeleton(
+        dev_01_case(),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
+    )
+
+    assert snapshot.deal_score is not None
 
 
 def test_graph_generates_human_review_decision() -> None:

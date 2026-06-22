@@ -2,6 +2,7 @@ from agent.workflow_c.nodes.ai_opportunity import AIOpportunityNode
 from agent.workflow_c.nodes.business_impact import BusinessImpactNode
 from agent.workflow_c.nodes.buying_intent import BuyingIntentNode
 from agent.workflow_c.nodes.context_sufficiency import ContextSufficiencyNode
+from agent.workflow_c.nodes.deal_score import DealScoreNode
 from agent.workflow_c.nodes.explicit_need import ExplicitNeedNode
 from agent.workflow_c.nodes.fact_extraction import FactExtractionNode
 from agent.workflow_c.nodes.fake_fact_extraction import FakeFactExtractionNode
@@ -19,6 +20,7 @@ __all__ = [
     "BusinessImpactNode",
     "BuyingIntentNode",
     "ContextSufficiencyNode",
+    "DealScoreNode",
     "ExplicitNeedNode",
     "FactExtractionNode",
     "FakeFactExtractionNode",

@@ -7,6 +7,7 @@ from pydantic import Field, model_validator
 from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from agent.workflow_c.state import FactExtractionResult
 from schemas.common_models import StrictBaseModel
+from schemas.decision_models import DealScore
 from schemas.insight_models import (
     BusinessImpact,
     BuyingIntent,
@@ -210,3 +211,7 @@ class SolutionRecommendationResult(StrictBaseModel):
 
 class SolutionRecommendationNodeOutput(SolutionRecommendationResult):
     pass
+
+
+class DealScoreNodeOutput(StrictBaseModel):
+    deal_score: DealScore

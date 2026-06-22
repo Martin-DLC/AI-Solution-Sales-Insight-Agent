@@ -18,6 +18,7 @@ from schemas.common_models import (
     EvidenceSourceType,
     StrictBaseModel,
 )
+from schemas.decision_models import DealScore
 from schemas.insight_models import (
     BusinessImpact,
     BuyingIntent,
@@ -336,6 +337,7 @@ class ArchitectureCGraphState(TypedDict, total=False):
     ai_opportunities: list[AIOpportunity]
     retrieved_solutions: SolutionRetrievalResult
     solution_recommendations: list[SolutionRecommendation]
+    deal_score: DealScore
     human_review_decision: HumanReviewDecision
     node_records: Annotated[list[NodeExecutionRecord], operator.add]
     failures: Annotated[list[WorkflowFailure], operator.add]
@@ -365,6 +367,7 @@ class ArchitectureCStateSnapshot(StrictBaseModel):
     ai_opportunities: list[AIOpportunity] | None = None
     retrieved_solutions: SolutionRetrievalResult | None = None
     solution_recommendations: list[SolutionRecommendation] | None = None
+    deal_score: DealScore | None = None
     human_review_decision: HumanReviewDecision | None = None
     node_records: list[NodeExecutionRecord] = Field(default_factory=list)
     failures: list[WorkflowFailure] = Field(default_factory=list)
