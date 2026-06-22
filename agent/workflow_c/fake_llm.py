@@ -4,7 +4,7 @@ import json
 from copy import deepcopy
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from agent.workflow_c.state import WorkflowNodeName
 from agent.workflow_c.services import WorkflowLLMResult
@@ -32,6 +32,10 @@ from schemas.common_models import (
 @dataclass
 class FakeWorkflowLLMClient:
     responses_by_node: dict[WorkflowNodeName, dict[str, Any]] = field(default_factory=dict)
+    dynamic_payload_builders: dict[
+        WorkflowNodeName,
+        Callable[[WorkflowNodeName, list[LLMMessage]], dict[str, Any]],
+    ] = field(default_factory=dict)
     request_error_nodes: set[WorkflowNodeName] = field(default_factory=set)
     invalid_json_nodes: set[WorkflowNodeName] = field(default_factory=set)
     schema_error_payloads: dict[WorkflowNodeName, dict[str, Any]] = field(default_factory=dict)
@@ -282,6 +286,31 @@ class FakeWorkflowLLMClient:
             custom_payloads=custom_payloads,
         )
 
+    @classmethod
+    def with_default_batch4a_responses(
+        cls,
+        *,
+        request_error_nodes: set[WorkflowNodeName | str] | None = None,
+        invalid_json_nodes: set[WorkflowNodeName | str] | None = None,
+        schema_error_nodes: set[WorkflowNodeName | str] | None = None,
+        custom_payloads: Mapping[WorkflowNodeName | str, dict[str, Any]] | None = None,
+    ) -> "FakeWorkflowLLMClient":
+        client = cls.with_default_batch3b_responses(
+            request_error_nodes=request_error_nodes,
+            invalid_json_nodes=invalid_json_nodes,
+            schema_error_nodes=schema_error_nodes,
+            custom_payloads=custom_payloads,
+        )
+        custom_nodes = {
+            _normalize_node(node)
+            for node in (custom_payloads or {})
+        }
+        if WorkflowNodeName.solution_recommendation not in custom_nodes:
+            client.dynamic_payload_builders[WorkflowNodeName.solution_recommendation] = (
+                _build_batch4a_solution_recommendation_payload
+            )
+        return client
+
     @property
     def total_calls(self) -> int:
         return self.call_count
@@ -311,10 +340,12 @@ class FakeWorkflowLLMClient:
                 usage=LLMUsage(prompt_tokens=1, completion_tokens=1, total_tokens=2),
                 latency_ms=5,
             )
-        payload = self.schema_error_payloads.get(
-            node_name,
-            self.responses_by_node.get(node_name, {}),
-        )
+        if node_name in self.schema_error_payloads:
+            payload = self.schema_error_payloads[node_name]
+        elif node_name in self.dynamic_payload_builders:
+            payload = self.dynamic_payload_builders[node_name](node_name, messages)
+        else:
+            payload = self.responses_by_node.get(node_name, {})
         return WorkflowLLMResult(
             content=json.dumps(payload, ensure_ascii=False),
             parsed_json=payload,
@@ -380,6 +411,74 @@ def _schema_error_payload_for_node(node: WorkflowNodeName) -> dict[str, Any]:
             ]
         }
     return {}
+
+
+def _build_batch4a_solution_recommendation_payload(
+    node_name: WorkflowNodeName,
+    messages: list[LLMMessage],
+) -> dict[str, Any]:
+    if node_name is not WorkflowNodeName.solution_recommendation:
+        return {}
+    user_content = _last_user_message_content(messages)
+    retrieved = _extract_json_after_marker(user_content, "Retrieved Solution Candidates:")
+    candidates = retrieved.get("candidates", [])
+    if not candidates:
+        return {"solution_recommendations": []}
+
+    opportunities = _extract_json_after_marker(user_content, "AI Opportunities:")
+    eligible_opportunity_ids = retrieved.get("eligible_opportunity_ids", [])
+    opportunity_ids = [
+        opportunity.get("opportunity_id")
+        for opportunity in opportunities
+        if opportunity.get("opportunity_id") in eligible_opportunity_ids
+    ]
+    if not opportunity_ids:
+        return {"solution_recommendations": []}
+
+    candidate = candidates[0]
+    solution_id = candidate["solution_id"]
+    source_id = candidate["source_id"]
+    return {
+        "solution_recommendations": [
+            {
+                "recommendation_id": "REC-01",
+                "solution_id": solution_id,
+                "solution_name": solution_id,
+                "fit_level": SolutionFitLevel.medium.value,
+                "related_opportunity_ids": [opportunity_ids[0]],
+                "recommended_scope": f"围绕{solution_id}进行小范围POC验证。",
+                "fit_reasons": ["该方案来自当前检索候选，并与已识别AI机会存在词项匹配。"],
+                "prerequisites": ["确认候选方案所需数据、接口和验收范围。"],
+                "delivery_risks": ["检索候选仅代表轻量相关性，仍需人工确认业务适配程度。"],
+                "excluded_capabilities": ["不承诺超出当前候选方案范围的能力。"],
+                "knowledge_references": [
+                    {
+                        "source_id": source_id,
+                        "source_type": EvidenceSourceType.solution_library.value,
+                        "evidence_summary": f"检索候选中包含方案：{solution_id}。",
+                    }
+                ],
+                "confidence": ConfidenceLevel.medium.value,
+            }
+        ]
+    }
+
+
+def _last_user_message_content(messages: list[LLMMessage]) -> str:
+    for message in reversed(messages):
+        if message.role.value == "user":
+            return message.content
+    return messages[-1].content if messages else ""
+
+
+def _extract_json_after_marker(content: str, marker: str) -> Any:
+    marker_index = content.index(marker)
+    decoder = json.JSONDecoder()
+    start = marker_index + len(marker)
+    while start < len(content) and content[start].isspace():
+        start += 1
+    value, _end = decoder.raw_decode(content[start:])
+    return value
 
 
 def default_fact_response() -> dict[str, Any]:

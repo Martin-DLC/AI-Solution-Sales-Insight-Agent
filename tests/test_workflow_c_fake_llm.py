@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 import socket
 
 import pytest
@@ -17,6 +18,44 @@ from llm.models import LLMMessage, LLMRole
 
 def messages() -> list[LLMMessage]:
     return [LLMMessage(role=LLMRole.user, content="Return JSON")]
+
+
+def solution_recommendation_messages(
+    *,
+    opportunity_id: str = "OPP-01",
+    solution_id: str = "客服辅助回复方案",
+    source_id: str = "SOLUTION-04",
+) -> list[LLMMessage]:
+    user_message = "\n\n".join(
+        [
+            "AI Opportunities:",
+            json.dumps(
+                [
+                    {
+                        "opportunity_id": opportunity_id,
+                        "suitability": "suitable_for_poc",
+                    }
+                ],
+                ensure_ascii=False,
+            ),
+            "Retrieved Solution Candidates:",
+            json.dumps(
+                {
+                    "eligible_opportunity_ids": [opportunity_id],
+                    "candidate_count": 1,
+                    "candidates": [
+                        {
+                            "solution_id": solution_id,
+                            "source_id": source_id,
+                            "source_type": "solution_library",
+                        }
+                    ],
+                },
+                ensure_ascii=False,
+            ),
+        ]
+    )
+    return [LLMMessage(role=LLMRole.user, content=user_message)]
 
 
 def test_default_fact_response_succeeds() -> None:
@@ -239,7 +278,7 @@ def test_batch3b_default_responses_include_solution_recommendation() -> None:
 
     result = client.complete_json_for_node(
         WorkflowNodeName.solution_recommendation,
-        messages(),
+        solution_recommendation_messages(),
     )
 
     assert result.parsed_json["solution_recommendations"][0]["solution_id"] == "客服辅助回复方案"
@@ -259,6 +298,57 @@ def test_batch3b_custom_payload_overrides_solution_recommendation() -> None:
 
 def test_batch3b_keeps_solution_retrieval_as_non_llm_node() -> None:
     client = FakeWorkflowLLMClient.with_default_batch3b_responses()
+
+    result = client.complete_json_for_node("solution_retrieval", messages())
+
+    assert result.parsed_json == {}
+
+
+def test_batch4a_default_responses_include_solution_recommendation() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch4a_responses()
+
+    result = client.complete_json_for_node(
+        WorkflowNodeName.solution_recommendation,
+        solution_recommendation_messages(),
+    )
+
+    recommendation = result.parsed_json["solution_recommendations"][0]
+    assert recommendation["solution_id"] == "客服辅助回复方案"
+    assert recommendation["knowledge_references"][0]["source_id"] == "SOLUTION-04"
+
+
+def test_batch4a_solution_recommendation_uses_retrieved_candidate_from_messages() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch4a_responses()
+    result = client.complete_json_for_node(
+        WorkflowNodeName.solution_recommendation,
+        solution_recommendation_messages(
+            opportunity_id="OPP-X",
+            solution_id="动态候选方案",
+            source_id="SOLUTION-X",
+        ),
+    )
+
+    recommendation = result.parsed_json["solution_recommendations"][0]
+    assert recommendation["solution_id"] == "动态候选方案"
+    assert recommendation["solution_name"] == "动态候选方案"
+    assert recommendation["related_opportunity_ids"] == ["OPP-X"]
+    assert recommendation["knowledge_references"][0]["source_id"] == "SOLUTION-X"
+
+
+def test_batch4a_custom_payload_overrides_solution_recommendation() -> None:
+    payload = default_solution_recommendation_response()
+    payload["solution_recommendations"][0]["recommendation_id"] = "REC-BATCH4A"
+    client = FakeWorkflowLLMClient.with_default_batch4a_responses(
+        custom_payloads={"solution_recommendation": payload}
+    )
+
+    result = client.complete_json_for_node("solution_recommendation", messages())
+
+    assert result.parsed_json["solution_recommendations"][0]["recommendation_id"] == "REC-BATCH4A"
+
+
+def test_batch4a_keeps_solution_retrieval_as_non_llm_node() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch4a_responses()
 
     result = client.complete_json_for_node("solution_retrieval", messages())
 
