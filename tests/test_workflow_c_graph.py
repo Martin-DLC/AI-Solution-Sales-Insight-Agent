@@ -50,6 +50,7 @@ def test_node_execution_order_is_expected() -> None:
         WorkflowNodeName.stakeholder,
         WorkflowNodeName.information_gap,
         WorkflowNodeName.ai_opportunity,
+        WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
         WorkflowNodeName.human_review_gate,
     ]
@@ -157,6 +158,15 @@ def test_graph_generates_information_gaps() -> None:
     )
 
     assert snapshot.information_gaps is not None
+
+
+def test_graph_generates_retrieved_solutions() -> None:
+    snapshot = run_architecture_c_skeleton(
+        dev_01_case(),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
+    )
+
+    assert snapshot.retrieved_solutions is not None
 
 
 def test_graph_generates_human_review_decision() -> None:

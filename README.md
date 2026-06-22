@@ -64,11 +64,11 @@ Python 3.11 is required.
 - Architecture C Batch 2A is implemented with Buying Intent and Stakeholder nodes.
 - Architecture C Batch 2B is implemented with Information Gap.
 - Architecture C Batch 3A is implemented with AI Opportunity and Solution Recommendation.
+- Architecture C Batch 3B is implemented with deterministic lightweight solution retrieval.
 - AI Opportunity can explicitly mark opportunities as not suitable for AI or insufficient information.
-- Solution Recommendation can only select from `available_solution_library`.
-- The current solution catalog comes directly from case input and does not use RAG.
-- Architecture C currently uses Fake LLM for Batch 3A offline tests.
-- The next Architecture C stage is a lightweight RAG retrieval layer.
+- Solution Recommendation can only select from retrieved candidates that originate in `available_solution_library`.
+- The current retrieval layer is lexical, in-process, deterministic, and does not use RAG or embeddings.
+- Architecture C currently uses Fake LLM for Batch 3B offline tests.
 - Deal Score, Risk, Next Best Action, and final report generation are not implemented yet.
 - Architecture C business understanding now reaches Information Gap.
 - clarification_only now generates concrete clarification questions before human review.

@@ -27,6 +27,7 @@ from schemas.insight_models import (
     Stakeholder,
     UnderlyingPain,
 )
+from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from schemas.solution_models import AIOpportunity, SolutionRecommendation
 
 
@@ -42,6 +43,7 @@ class WorkflowNodeName(str, Enum):
     stakeholder = "stakeholder"
     information_gap = "information_gap"
     ai_opportunity = "ai_opportunity"
+    solution_retrieval = "solution_retrieval"
     solution_recommendation = "solution_recommendation"
     deal_score = "deal_score"
     risk = "risk"
@@ -332,6 +334,7 @@ class ArchitectureCGraphState(TypedDict, total=False):
     stakeholder_map: list[Stakeholder]
     information_gaps: list[InformationGap]
     ai_opportunities: list[AIOpportunity]
+    retrieved_solutions: SolutionRetrievalResult
     solution_recommendations: list[SolutionRecommendation]
     human_review_decision: HumanReviewDecision
     node_records: Annotated[list[NodeExecutionRecord], operator.add]
@@ -360,6 +363,7 @@ class ArchitectureCStateSnapshot(StrictBaseModel):
     stakeholder_map: list[Stakeholder] | None = None
     information_gaps: list[InformationGap] | None = None
     ai_opportunities: list[AIOpportunity] | None = None
+    retrieved_solutions: SolutionRetrievalResult | None = None
     solution_recommendations: list[SolutionRecommendation] | None = None
     human_review_decision: HumanReviewDecision | None = None
     node_records: list[NodeExecutionRecord] = Field(default_factory=list)

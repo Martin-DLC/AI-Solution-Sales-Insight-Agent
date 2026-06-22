@@ -26,6 +26,7 @@ from agent.workflow_c.node_outputs import (
     FactExtractionNodeOutput,
     InformationGapNodeOutput,
     InformationGapResult,
+    SolutionRetrievalNodeOutput,
     StakeholderNodeOutput,
     StakeholderResult,
     UnderlyingPainNodeOutput,

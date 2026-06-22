@@ -26,7 +26,7 @@ from agent.workflow_c.fake_llm import (
     default_stakeholder_response,
     default_underlying_pain_response,
 )
-from agent.workflow_c.solution_validation import build_solution_catalog
+from agent.workflow_c.solution_retrieval import retrieve_solution_candidates
 from agent.workflow_c.state import ContextSufficiencyResult, FactExtractionResult, WorkflowNodeName
 from dataio.runtime_cases import load_runtime_cases
 from schemas.insight_models import (
@@ -166,7 +166,7 @@ def test_solution_recommendation_prompt_templates_load() -> None:
     assert user_template.count("{{AI_OPPORTUNITIES_JSON}}") == 1
     assert user_template.count("{{INFORMATION_GAPS_JSON}}") == 1
     assert user_template.count("{{CONSTRAINTS_JSON}}") == 1
-    assert user_template.count("{{SOLUTION_CATALOG_JSON}}") == 1
+    assert user_template.count("{{RETRIEVED_SOLUTION_CANDIDATES_JSON}}") == 1
 
 
 def test_unknown_prompt_version_fails() -> None:
@@ -361,25 +361,39 @@ def test_ai_opportunity_prompt_renders_dependencies() -> None:
     assert "GAP-01" in messages[1].content
 
 
-def test_solution_recommendation_prompt_renders_full_catalog() -> None:
-    catalog = build_solution_catalog(dev_01_case(), source_index())
-    messages = render_solution_recommendation_messages(
-        [
-            AIOpportunity.model_validate(item)
-            for item in default_ai_opportunity_response()["ai_opportunities"]
+def test_solution_recommendation_prompt_renders_retrieved_candidates() -> None:
+    ai_opportunities = [
+        AIOpportunity.model_validate(item)
+        for item in default_ai_opportunity_response()["ai_opportunities"]
+    ]
+    retrieved_solutions = retrieve_solution_candidates(
+        case=dev_01_case(),
+        source_index=source_index(),
+        ai_opportunities=ai_opportunities,
+        underlying_pains=[
+            UnderlyingPain.model_validate(item)
+            for item in default_underlying_pain_response()["underlying_pains"]
         ],
+        business_impacts=[
+            BusinessImpact.model_validate(item)
+            for item in default_business_impact_response()["business_impacts"]
+        ],
+    )
+    messages = render_solution_recommendation_messages(
+        ai_opportunities,
         [
             InformationGap.model_validate(item)
             for item in default_information_gap_response()["information_gaps"]
         ],
         dev_01_case().known_constraints,
-        catalog,
+        retrieved_solutions,
     )
 
     assert len(messages) == 2
     assert "NODE: solution_recommendation" in messages[1].content
-    for solution_name in dev_01_case().available_solution_library:
-        assert solution_name in messages[1].content
+    assert "retrieval_method" in messages[1].content
+    assert retrieved_solutions.candidates[0].solution_id in messages[1].content
+    assert "订单与物流查询Tool方案" not in messages[1].content
 
 
 def test_prompts_do_not_include_reference_pack_terms() -> None:
@@ -446,11 +460,23 @@ def test_new_prompt_rendering_is_stable() -> None:
 
 
 def test_solution_recommendation_rendering_is_stable() -> None:
-    catalog = build_solution_catalog(dev_01_case(), source_index())
     ai_opportunities = [
         AIOpportunity.model_validate(item)
         for item in default_ai_opportunity_response()["ai_opportunities"]
     ]
+    retrieved_solutions = retrieve_solution_candidates(
+        case=dev_01_case(),
+        source_index=source_index(),
+        ai_opportunities=ai_opportunities,
+        underlying_pains=[
+            UnderlyingPain.model_validate(item)
+            for item in default_underlying_pain_response()["underlying_pains"]
+        ],
+        business_impacts=[
+            BusinessImpact.model_validate(item)
+            for item in default_business_impact_response()["business_impacts"]
+        ],
+    )
     information_gaps = [
         InformationGap.model_validate(item)
         for item in default_information_gap_response()["information_gaps"]
@@ -460,13 +486,13 @@ def test_solution_recommendation_rendering_is_stable() -> None:
         ai_opportunities,
         information_gaps,
         dev_01_case().known_constraints,
-        catalog,
+        retrieved_solutions,
     )
     second = render_solution_recommendation_messages(
         ai_opportunities,
         information_gaps,
         dev_01_case().known_constraints,
-        catalog,
+        retrieved_solutions,
     )
 
     assert [message.content for message in first] == [message.content for message in second]
