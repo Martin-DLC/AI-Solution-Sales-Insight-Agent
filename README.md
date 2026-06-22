@@ -63,14 +63,21 @@ Python 3.11 is required.
 - Architecture C Batch 1B is implemented with Underlying Pain and Business Impact nodes.
 - Architecture C Batch 2A is implemented with Buying Intent and Stakeholder nodes.
 - Architecture C Batch 2B is implemented with Information Gap.
+- Architecture C Batch 3A is implemented with AI Opportunity and Solution Recommendation.
+- AI Opportunity can explicitly mark opportunities as not suitable for AI or insufficient information.
+- Solution Recommendation can only select from `available_solution_library`.
+- The current solution catalog comes directly from case input and does not use RAG.
+- Architecture C currently uses Fake LLM for Batch 3A offline tests.
+- The next Architecture C stage is a lightweight RAG retrieval layer.
+- Deal Score, Risk, Next Best Action, and final report generation are not implemented yet.
 - Architecture C business understanding now reaches Information Gap.
 - clarification_only now generates concrete clarification questions before human review.
 - Information Gap combines Context Sufficiency, Buying Intent unknown factors, and unconfirmed Stakeholders.
 - Architecture C nodes use independent Prompt contracts and Pydantic output contracts.
 - Architecture C Evidence references are cross-validated by code before downstream workflow steps.
-- Architecture C currently contains an offline graph through information gap analysis and human review.
+- Architecture C currently contains an offline graph through solution recommendation and human review.
 - Architecture C uses Fake LLM and does not call a real model.
-- Architecture C has not implemented AI Opportunity, Solution Recommendation, RAG, Deal Score, or final report generation.
+- Architecture C has not implemented RAG, Deal Score, Risk, Next Best Action, or final report generation.
 - Architecture C has not connected to a real model or RAG.
 - Baseline A and Baseline B are both single model calls.
 - Baseline B does not use RAG, Workflow, or Critic.

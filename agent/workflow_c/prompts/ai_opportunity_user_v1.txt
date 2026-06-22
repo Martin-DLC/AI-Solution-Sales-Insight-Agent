@@ -1,0 +1,24 @@
+NODE: ai_opportunity
+
+Only judge AI opportunity suitability. Do not recommend solutions or actions.
+
+Source Index:
+{{SOURCE_INDEX_JSON}}
+
+Context Sufficiency:
+{{CONTEXT_SUFFICIENCY_JSON}}
+
+Explicit Needs:
+{{EXPLICIT_NEEDS_JSON}}
+
+Underlying Pains:
+{{UNDERLYING_PAINS_JSON}}
+
+Business Impacts:
+{{BUSINESS_IMPACTS_JSON}}
+
+Information Gaps:
+{{INFORMATION_GAPS_JSON}}
+
+Known Constraints:
+{{CONSTRAINTS_JSON}}

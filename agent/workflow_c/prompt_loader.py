@@ -4,22 +4,33 @@ import json
 from pathlib import Path
 
 from agent.workflow_c.node_outputs import (
+    AIOpportunityNodeOutput,
     BusinessImpactNodeOutput,
     BuyingIntentNodeOutput,
     ExplicitNeedNodeOutput,
     FactExtractionNodeOutput,
     InformationGapNodeOutput,
+    SolutionRecommendationNodeOutput,
     StakeholderNodeOutput,
     UnderlyingPainNodeOutput,
 )
 from agent.workflow_c.state import (
     ContextSufficiencyResult,
     FactExtractionResult,
+    SourceIndexItem,
     SourceIndexResult,
     WorkflowNodeName,
 )
-from schemas.input_models import Participant
-from schemas.insight_models import BusinessImpact, BuyingIntent, ExplicitNeed, Stakeholder, UnderlyingPain
+from schemas.input_models import KnownConstraint, Participant
+from schemas.insight_models import (
+    BusinessImpact,
+    BuyingIntent,
+    ExplicitNeed,
+    InformationGap,
+    Stakeholder,
+    UnderlyingPain,
+)
+from schemas.solution_models import AIOpportunity
 from llm.models import LLMMessage, LLMRole
 
 
@@ -54,6 +65,17 @@ _PROMPT_REGISTRY: dict[tuple[WorkflowNodeName, str], tuple[str, str]] = {
         WorkflowNodeName.information_gap,
         "information_gap_v1",
     ): ("information_gap_system_v1.txt", "information_gap_user_v1.txt"),
+    (
+        WorkflowNodeName.ai_opportunity,
+        "ai_opportunity_v1",
+    ): ("ai_opportunity_system_v1.txt", "ai_opportunity_user_v1.txt"),
+    (
+        WorkflowNodeName.solution_recommendation,
+        "solution_recommendation_v1",
+    ): (
+        "solution_recommendation_system_v1.txt",
+        "solution_recommendation_user_v1.txt",
+    ),
 }
 
 _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str], ...]] = {
@@ -122,6 +144,29 @@ _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str]
         ("user", "{{CONTEXT_SUFFICIENCY_JSON}}"),
         ("user", "{{FACTS_JSON}}"),
         ("user", "{{OPTIONAL_ANALYSIS_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.ai_opportunity,
+        "ai_opportunity_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{CONTEXT_SUFFICIENCY_JSON}}"),
+        ("user", "{{EXPLICIT_NEEDS_JSON}}"),
+        ("user", "{{UNDERLYING_PAINS_JSON}}"),
+        ("user", "{{BUSINESS_IMPACTS_JSON}}"),
+        ("user", "{{INFORMATION_GAPS_JSON}}"),
+        ("user", "{{CONSTRAINTS_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.solution_recommendation,
+        "solution_recommendation_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{AI_OPPORTUNITIES_JSON}}"),
+        ("user", "{{INFORMATION_GAPS_JSON}}"),
+        ("user", "{{CONSTRAINTS_JSON}}"),
+        ("user", "{{SOLUTION_CATALOG_JSON}}"),
     ),
 }
 
@@ -382,6 +427,86 @@ def render_information_gap_messages(
                 .replace("{{CONTEXT_SUFFICIENCY_JSON}}", _dump_json(context_sufficiency.model_dump(mode="json")))
                 .replace("{{FACTS_JSON}}", _dump_json(fact_extraction.model_dump(mode="json")))
                 .replace("{{OPTIONAL_ANALYSIS_JSON}}", _dump_json(optional_analysis))
+            ),
+        ),
+    ]
+
+
+def render_ai_opportunity_messages(
+    source_index: SourceIndexResult,
+    context_sufficiency: ContextSufficiencyResult,
+    explicit_needs: list[ExplicitNeed],
+    underlying_pains: list[UnderlyingPain],
+    business_impacts: list[BusinessImpact],
+    information_gaps: list[InformationGap],
+    known_constraints: list[KnownConstraint],
+    *,
+    version: str = "ai_opportunity_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.ai_opportunity,
+        version,
+    )
+    schema_json = _dump_json(AIOpportunityNodeOutput.model_json_schema())
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace("{{OUTPUT_SCHEMA_JSON}}", schema_json),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{SOURCE_INDEX_JSON}}", _dump_json(source_index.model_dump(mode="json")))
+                .replace("{{CONTEXT_SUFFICIENCY_JSON}}", _dump_json(context_sufficiency.model_dump(mode="json")))
+                .replace("{{EXPLICIT_NEEDS_JSON}}", _dump_json([need.model_dump(mode="json") for need in explicit_needs]))
+                .replace("{{UNDERLYING_PAINS_JSON}}", _dump_json([pain.model_dump(mode="json") for pain in underlying_pains]))
+                .replace("{{BUSINESS_IMPACTS_JSON}}", _dump_json([impact.model_dump(mode="json") for impact in business_impacts]))
+                .replace("{{INFORMATION_GAPS_JSON}}", _dump_json([gap.model_dump(mode="json") for gap in information_gaps]))
+                .replace("{{CONSTRAINTS_JSON}}", _dump_json([constraint.model_dump(mode="json") for constraint in known_constraints]))
+            ),
+        ),
+    ]
+
+
+def render_solution_recommendation_messages(
+    ai_opportunities: list[AIOpportunity],
+    information_gaps: list[InformationGap],
+    known_constraints: list[KnownConstraint],
+    solution_catalog: dict[str, SourceIndexItem],
+    *,
+    version: str = "solution_recommendation_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.solution_recommendation,
+        version,
+    )
+    schema_json = _dump_json(SolutionRecommendationNodeOutput.model_json_schema())
+    catalog_json = _dump_json(
+        [
+            {
+                "solution_id": solution_id,
+                "source_id": item.source_id,
+                "source_type": item.source_type.value,
+                "content": item.content,
+                "name": item.content,
+            }
+            for solution_id, item in solution_catalog.items()
+        ]
+    )
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace("{{OUTPUT_SCHEMA_JSON}}", schema_json),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{AI_OPPORTUNITIES_JSON}}", _dump_json([opportunity.model_dump(mode="json") for opportunity in ai_opportunities]))
+                .replace("{{INFORMATION_GAPS_JSON}}", _dump_json([gap.model_dump(mode="json") for gap in information_gaps]))
+                .replace("{{CONSTRAINTS_JSON}}", _dump_json([constraint.model_dump(mode="json") for constraint in known_constraints]))
+                .replace("{{SOLUTION_CATALOG_JSON}}", catalog_json)
             ),
         ),
     ]

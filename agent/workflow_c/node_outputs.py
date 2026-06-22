@@ -14,6 +14,7 @@ from schemas.insight_models import (
     Stakeholder,
     UnderlyingPain,
 )
+from schemas.solution_models import AIOpportunity, SolutionRecommendation
 
 
 def _normalized_descriptions_are_unique(
@@ -151,4 +152,56 @@ class InformationGapResult(StrictBaseModel):
 
 
 class InformationGapNodeOutput(InformationGapResult):
+    pass
+
+
+class AIOpportunityResult(StrictBaseModel):
+    ai_opportunities: list[AIOpportunity] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_ai_opportunities(self) -> Self:
+        if not self.ai_opportunities:
+            raise ValueError("AI opportunity analysis must include at least one opportunity.")
+
+        opportunity_ids = [
+            opportunity.opportunity_id for opportunity in self.ai_opportunities
+        ]
+        if len(opportunity_ids) != len(set(opportunity_ids)):
+            raise ValueError("AI opportunity IDs must not be duplicated.")
+
+        normalized_names = [
+            " ".join(opportunity.name.split()).casefold()
+            for opportunity in self.ai_opportunities
+        ]
+        if len(normalized_names) != len(set(normalized_names)):
+            raise ValueError("AI opportunity names must not be duplicated.")
+        return self
+
+
+class AIOpportunityNodeOutput(AIOpportunityResult):
+    pass
+
+
+class SolutionRecommendationResult(StrictBaseModel):
+    solution_recommendations: list[SolutionRecommendation] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_solution_recommendations(self) -> Self:
+        recommendation_ids = [
+            recommendation.recommendation_id
+            for recommendation in self.solution_recommendations
+        ]
+        if len(recommendation_ids) != len(set(recommendation_ids)):
+            raise ValueError("Solution recommendation IDs must not be duplicated.")
+
+        solution_ids = [
+            recommendation.solution_id
+            for recommendation in self.solution_recommendations
+        ]
+        if len(solution_ids) != len(set(solution_ids)):
+            raise ValueError("Solution IDs must not be recommended more than once.")
+        return self
+
+
+class SolutionRecommendationNodeOutput(SolutionRecommendationResult):
     pass
