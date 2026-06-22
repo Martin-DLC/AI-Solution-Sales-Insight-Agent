@@ -17,7 +17,7 @@ def dev_01_case():
 def test_batch1b_success_path_node_order() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
     )
 
     assert [record.node_name for record in snapshot.node_records] == [
@@ -30,28 +30,30 @@ def test_batch1b_success_path_node_order() -> None:
         WorkflowNodeName.business_impact,
         WorkflowNodeName.buying_intent,
         WorkflowNodeName.stakeholder,
+        WorkflowNodeName.information_gap,
         WorkflowNodeName.human_review_gate,
     ]
 
 
-def test_batch1b_coverage_success_path_llm_calls_six_times_after_batch2a() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch2a_responses()
+def test_batch1b_coverage_success_path_llm_calls_seven_times_after_batch2b() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch2b_responses()
 
     run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
 
-    assert client.total_calls == 6
+    assert client.total_calls == 7
     assert client.calls_for_node(WorkflowNodeName.fact_extraction) == 1
     assert client.calls_for_node(WorkflowNodeName.explicit_need) == 1
     assert client.calls_for_node(WorkflowNodeName.underlying_pain) == 1
     assert client.calls_for_node(WorkflowNodeName.business_impact) == 1
     assert client.calls_for_node(WorkflowNodeName.buying_intent) == 1
     assert client.calls_for_node(WorkflowNodeName.stakeholder) == 1
+    assert client.calls_for_node(WorkflowNodeName.information_gap) == 1
 
 
 def test_batch1b_final_status_still_awaits_human_review() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
     )
 
     assert snapshot.workflow_status is WorkflowStatus.awaiting_human_review
@@ -89,7 +91,7 @@ def test_explicit_need_failure_still_runs_human_review_gate() -> None:
 def test_batch1b_snapshot_serializes_explicit_needs() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2a_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch2b_responses()),
     )
 
     dumped = snapshot.model_dump(mode="json")
