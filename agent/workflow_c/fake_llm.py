@@ -19,11 +19,13 @@ from schemas.common_models import (
     InfluenceLevel,
     InformationGapCategory,
     IntentLevel,
+    OpportunitySuitability,
     PriorityLevel,
     SalesRole,
     SalesStage,
     SeverityLevel,
     StakeholderAttitude,
+    SolutionFitLevel,
 )
 
 
@@ -221,6 +223,49 @@ class FakeWorkflowLLMClient:
             schema_error_payloads=schema_error_payloads,
         )
 
+    @classmethod
+    def with_default_batch3a_responses(
+        cls,
+        *,
+        request_error_nodes: set[WorkflowNodeName | str] | None = None,
+        invalid_json_nodes: set[WorkflowNodeName | str] | None = None,
+        schema_error_nodes: set[WorkflowNodeName | str] | None = None,
+        custom_payloads: Mapping[WorkflowNodeName | str, dict[str, Any]] | None = None,
+    ) -> "FakeWorkflowLLMClient":
+        request_nodes = _normalize_nodes(request_error_nodes)
+        invalid_nodes = _normalize_nodes(invalid_json_nodes)
+        schema_nodes = _normalize_nodes(schema_error_nodes)
+        _ensure_failure_modes_are_exclusive(
+            request_nodes=request_nodes,
+            invalid_nodes=invalid_nodes,
+            schema_nodes=schema_nodes,
+        )
+        schema_error_payloads = {
+            node: _schema_error_payload_for_node(node)
+            for node in schema_nodes
+        }
+        responses_by_node = {
+            WorkflowNodeName.fact_extraction: {
+                "fact_extraction": default_fact_response(),
+            },
+            WorkflowNodeName.explicit_need: default_explicit_need_response(),
+            WorkflowNodeName.underlying_pain: default_underlying_pain_response(),
+            WorkflowNodeName.business_impact: default_business_impact_response(),
+            WorkflowNodeName.buying_intent: default_buying_intent_response(),
+            WorkflowNodeName.stakeholder: default_stakeholder_response(),
+            WorkflowNodeName.information_gap: default_information_gap_response(),
+            WorkflowNodeName.ai_opportunity: default_ai_opportunity_response(),
+            WorkflowNodeName.solution_recommendation: default_solution_recommendation_response(),
+        }
+        for node, payload in (custom_payloads or {}).items():
+            responses_by_node[_normalize_node(node)] = deepcopy(payload)
+        return cls(
+            responses_by_node=responses_by_node,
+            request_error_nodes=request_nodes,
+            invalid_json_nodes=invalid_nodes,
+            schema_error_payloads=schema_error_payloads,
+        )
+
     @property
     def total_calls(self) -> int:
         return self.call_count
@@ -308,6 +353,16 @@ def _schema_error_payload_for_node(node: WorkflowNodeName) -> dict[str, Any]:
         return {"stakeholder_map": []}
     if node is WorkflowNodeName.information_gap:
         return {"information_gaps": []}
+    if node is WorkflowNodeName.ai_opportunity:
+        return {"ai_opportunities": []}
+    if node is WorkflowNodeName.solution_recommendation:
+        return {
+            "solution_recommendations": [
+                {
+                    "recommendation_id": "REC-01",
+                }
+            ]
+        }
     return {}
 
 
@@ -514,5 +569,60 @@ def default_information_gap_response() -> dict[str, Any]:
                 "question_to_ask": "后续谁会参与最终决策和审批流程确认？",
                 "recommended_owner": "sales",
             },
+        ]
+    }
+
+
+def default_ai_opportunity_response() -> dict[str, Any]:
+    return {
+        "ai_opportunities": [
+            {
+                "opportunity_id": "OPP-01",
+                "name": "销售线索跟进辅助机会",
+                "related_pain_ids": ["PAIN-01"],
+                "suitability": OpportunitySuitability.suitable_for_poc.value,
+                "business_value": [BusinessDimension.efficiency.value],
+                "reasoning_summary": "该机会基于客户对线索跟进效率和手工整理问题的描述，可先以验证性POC评估。",
+                "required_data": ["线索记录", "跟进记录"],
+                "required_integrations": ["CRM"],
+                "prerequisites": ["确认当前线索字段和跟进流程"],
+                "major_limitations": [],
+                "claim_type": ClaimType.inference.value,
+                "confidence": ConfidenceLevel.medium.value,
+                "evidence": [
+                    {
+                        "source_id": "MTG-01",
+                        "source_type": EvidenceSourceType.meeting_transcript.value,
+                        "evidence_summary": "会议中描述了销售线索跟进效率和人工整理问题。",
+                    }
+                ],
+            }
+        ]
+    }
+
+
+def default_solution_recommendation_response() -> dict[str, Any]:
+    return {
+        "solution_recommendations": [
+            {
+                "recommendation_id": "REC-01",
+                "solution_id": "AI客服知识问答方案",
+                "solution_name": "AI客服知识问答方案",
+                "fit_level": SolutionFitLevel.medium.value,
+                "related_opportunity_ids": ["OPP-01"],
+                "recommended_scope": "围绕客户服务知识问答场景进行首期POC验证。",
+                "fit_reasons": ["该方案来自输入方案库，且与客户服务知识问答效率问题相关。"],
+                "prerequisites": ["确认客服知识内容范围和知识更新流程"],
+                "delivery_risks": ["知识内容不完整可能影响POC效果判断。"],
+                "excluded_capabilities": ["不承诺完整客服自动化闭环或替代人工决策。"],
+                "knowledge_references": [
+                    {
+                        "source_id": "SOLUTION-01",
+                        "source_type": EvidenceSourceType.solution_library.value,
+                        "evidence_summary": "方案库中列出了AI客服知识问答方案。",
+                    }
+                ],
+                "confidence": ConfidenceLevel.medium.value,
+            }
         ]
     }
