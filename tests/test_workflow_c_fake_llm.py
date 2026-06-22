@@ -8,6 +8,7 @@ import pytest
 from agent.workflow_c.fake_llm import (
     FakeWorkflowLLMClient,
     default_explicit_need_response,
+    default_solution_recommendation_response,
 )
 from agent.workflow_c.state import WorkflowNodeName
 from llm.errors import LLMRequestError
@@ -231,3 +232,34 @@ def test_batch1a_custom_payload_rejects_invalid_node_name() -> None:
         FakeWorkflowLLMClient.with_default_batch1a_responses(
             custom_payloads={"not_a_node": {"ok": True}}
         )
+
+
+def test_batch3b_default_responses_include_solution_recommendation() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch3b_responses()
+
+    result = client.complete_json_for_node(
+        WorkflowNodeName.solution_recommendation,
+        messages(),
+    )
+
+    assert result.parsed_json["solution_recommendations"][0]["solution_id"] == "客服辅助回复方案"
+
+
+def test_batch3b_custom_payload_overrides_solution_recommendation() -> None:
+    payload = default_solution_recommendation_response()
+    payload["solution_recommendations"][0]["recommendation_id"] = "REC-CUSTOM"
+    client = FakeWorkflowLLMClient.with_default_batch3b_responses(
+        custom_payloads={"solution_recommendation": payload}
+    )
+
+    result = client.complete_json_for_node("solution_recommendation", messages())
+
+    assert result.parsed_json["solution_recommendations"][0]["recommendation_id"] == "REC-CUSTOM"
+
+
+def test_batch3b_keeps_solution_retrieval_as_non_llm_node() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch3b_responses()
+
+    result = client.complete_json_for_node("solution_retrieval", messages())
+
+    assert result.parsed_json == {}

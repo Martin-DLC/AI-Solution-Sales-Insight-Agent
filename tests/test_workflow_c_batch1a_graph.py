@@ -32,6 +32,7 @@ def test_batch1b_success_path_node_order() -> None:
         WorkflowNodeName.stakeholder,
         WorkflowNodeName.information_gap,
         WorkflowNodeName.ai_opportunity,
+        WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
         WorkflowNodeName.human_review_gate,
     ]
@@ -51,6 +52,7 @@ def test_batch1b_coverage_success_path_llm_calls_nine_times_after_batch3a() -> N
     assert client.calls_for_node(WorkflowNodeName.stakeholder) == 1
     assert client.calls_for_node(WorkflowNodeName.information_gap) == 1
     assert client.calls_for_node(WorkflowNodeName.ai_opportunity) == 1
+    assert client.calls_for_node(WorkflowNodeName.solution_retrieval) == 0
     assert client.calls_for_node(WorkflowNodeName.solution_recommendation) == 1
 
 
