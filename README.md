@@ -61,11 +61,12 @@ Python 3.11 is required.
 - Architecture C Batch 1A is implemented with formal Fact Extraction and Explicit Need nodes.
 - Architecture C now validates evidence cross-references before downstream workflow steps.
 - Architecture C Batch 1B is implemented with Underlying Pain and Business Impact nodes.
+- Architecture C Batch 2A is implemented with Buying Intent and Stakeholder nodes.
 - Architecture C nodes use independent Prompt contracts and Pydantic output contracts.
 - Architecture C Evidence references are cross-validated by code before downstream workflow steps.
-- Architecture C currently contains an offline graph through business impact analysis and human review.
+- Architecture C currently contains an offline graph through stakeholder mapping and human review.
 - Architecture C uses Fake LLM and does not call a real model.
-- Architecture C has not implemented Buying Intent, Stakeholder, Information Gap, RAG, Deal Score, or final report generation.
+- Architecture C has not implemented Information Gap, RAG, Deal Score, or final report generation.
 - Baseline A and Baseline B are both single model calls.
 - Baseline B does not use RAG, Workflow, or Critic.
 - Dry Run does not consume API.

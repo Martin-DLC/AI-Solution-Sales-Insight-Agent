@@ -4,12 +4,28 @@ from agent.workflow_c.graph import (
     create_initial_state,
     run_architecture_c_skeleton,
 )
-from agent.workflow_c.node_outputs import BusinessImpactResult, ExplicitNeedResult, UnderlyingPainResult
-from agent.workflow_c.nodes import BusinessImpactNode, ExplicitNeedNode, FactExtractionNode, UnderlyingPainNode
+from agent.workflow_c.node_outputs import (
+    BusinessImpactResult,
+    BuyingIntentNodeOutput,
+    ExplicitNeedResult,
+    StakeholderNodeOutput,
+    StakeholderResult,
+    UnderlyingPainResult,
+)
+from agent.workflow_c.nodes import (
+    BusinessImpactNode,
+    BuyingIntentNode,
+    ExplicitNeedNode,
+    FactExtractionNode,
+    StakeholderNode,
+    UnderlyingPainNode,
+)
 from agent.workflow_c.prompt_loader import (
     render_business_impact_messages,
+    render_buying_intent_messages,
     render_explicit_need_messages,
     render_fact_extraction_messages,
+    render_stakeholder_messages,
     render_underlying_pain_messages,
 )
 from agent.workflow_c.services import WorkflowServices
@@ -31,6 +47,8 @@ __all__ = [
     "ArchitectureCStateSnapshot",
     "BusinessImpactNode",
     "BusinessImpactResult",
+    "BuyingIntentNode",
+    "BuyingIntentNodeOutput",
     "FakeWorkflowLLMClient",
     "ExplicitNeedNode",
     "ExplicitNeedResult",
@@ -38,6 +56,9 @@ __all__ = [
     "HumanReviewDecision",
     "NodeExecutionRecord",
     "NodeStatus",
+    "StakeholderNode",
+    "StakeholderNodeOutput",
+    "StakeholderResult",
     "WorkflowFailure",
     "WorkflowNodeName",
     "WorkflowServices",
@@ -48,7 +69,9 @@ __all__ = [
     "create_initial_state",
     "run_architecture_c_skeleton",
     "render_business_impact_messages",
+    "render_buying_intent_messages",
     "render_explicit_need_messages",
     "render_fact_extraction_messages",
+    "render_stakeholder_messages",
     "render_underlying_pain_messages",
 ]

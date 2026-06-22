@@ -6,11 +6,13 @@ from typing import Any, Callable
 from agent.workflow_c.executor import execute_node
 from agent.workflow_c.nodes import (
     BusinessImpactNode,
+    BuyingIntentNode,
     ContextSufficiencyNode,
     ExplicitNeedNode,
     FactExtractionNode,
     HumanReviewGateNode,
     InputValidationNode,
+    StakeholderNode,
     SourceIndexingNode,
     UnderlyingPainNode,
 )
@@ -54,6 +56,8 @@ def build_architecture_c_skeleton(
         "explicit_need": ExplicitNeedNode(),
         "underlying_pain": UnderlyingPainNode(),
         "business_impact": BusinessImpactNode(),
+        "buying_intent": BuyingIntentNode(),
+        "stakeholder": StakeholderNode(),
         "human_review_gate": HumanReviewGateNode(),
     }
 
@@ -106,6 +110,16 @@ def build_architecture_c_skeleton(
     )
     builder.add_conditional_edges(
         "business_impact",
+        _route_to_next_or_review("buying_intent"),
+        {"end": END, "human_review_gate": "human_review_gate", "buying_intent": "buying_intent"},
+    )
+    builder.add_conditional_edges(
+        "buying_intent",
+        _route_to_next_or_review("stakeholder"),
+        {"end": END, "human_review_gate": "human_review_gate", "stakeholder": "stakeholder"},
+    )
+    builder.add_conditional_edges(
+        "stakeholder",
         _route_to_next_or_review("human_review_gate"),
         {"end": END, "human_review_gate": "human_review_gate"},
     )
@@ -172,6 +186,8 @@ class _FallbackGraph:
             "explicit_need",
             "underlying_pain",
             "business_impact",
+            "buying_intent",
+            "stakeholder",
         ):
             patch = execute_node(self.nodes[name], current, self.services)
             current = _merge_state(current, patch)
