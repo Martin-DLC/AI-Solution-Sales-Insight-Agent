@@ -1,0 +1,21 @@
+NODE: buying_intent
+
+Source Index:
+{{SOURCE_INDEX_JSON}}
+
+Context Sufficiency:
+{{CONTEXT_SUFFICIENCY_JSON}}
+
+Fact Extraction:
+{{FACTS_JSON}}
+
+Explicit Needs:
+{{EXPLICIT_NEEDS_JSON}}
+
+Underlying Pains:
+{{UNDERLYING_PAINS_JSON}}
+
+Business Impacts:
+{{BUSINESS_IMPACTS_JSON}}
+
+只判断购买意向和销售阶段。Return the JSON object for the buying_intent node.

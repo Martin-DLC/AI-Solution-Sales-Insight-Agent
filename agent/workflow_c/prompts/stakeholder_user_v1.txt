@@ -1,0 +1,15 @@
+NODE: stakeholder
+
+Source Index:
+{{SOURCE_INDEX_JSON}}
+
+Fact Extraction:
+{{FACTS_JSON}}
+
+Buying Intent:
+{{BUYING_INTENT_JSON}}
+
+原始会议参与者信息:
+{{PARTICIPANTS_JSON}}
+
+只分析Stakeholder。Return the JSON object for the stakeholder node.
