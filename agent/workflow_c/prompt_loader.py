@@ -14,6 +14,7 @@ from agent.workflow_c.node_outputs import (
     StakeholderNodeOutput,
     UnderlyingPainNodeOutput,
 )
+from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from agent.workflow_c.state import (
     ContextSufficiencyResult,
     FactExtractionResult,
@@ -166,7 +167,7 @@ _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str]
         ("user", "{{AI_OPPORTUNITIES_JSON}}"),
         ("user", "{{INFORMATION_GAPS_JSON}}"),
         ("user", "{{CONSTRAINTS_JSON}}"),
-        ("user", "{{SOLUTION_CATALOG_JSON}}"),
+        ("user", "{{RETRIEVED_SOLUTION_CANDIDATES_JSON}}"),
     ),
 }
 
@@ -473,7 +474,7 @@ def render_solution_recommendation_messages(
     ai_opportunities: list[AIOpportunity],
     information_gaps: list[InformationGap],
     known_constraints: list[KnownConstraint],
-    solution_catalog: dict[str, SourceIndexItem],
+    retrieved_solutions: SolutionRetrievalResult,
     *,
     version: str = "solution_recommendation_v1",
 ) -> list[LLMMessage]:
@@ -482,18 +483,7 @@ def render_solution_recommendation_messages(
         version,
     )
     schema_json = _dump_json(SolutionRecommendationNodeOutput.model_json_schema())
-    catalog_json = _dump_json(
-        [
-            {
-                "solution_id": solution_id,
-                "source_id": item.source_id,
-                "source_type": item.source_type.value,
-                "content": item.content,
-                "name": item.content,
-            }
-            for solution_id, item in solution_catalog.items()
-        ]
-    )
+    candidates_json = _dump_json(retrieved_solutions.model_dump(mode="json"))
     return [
         LLMMessage(
             role=LLMRole.system,
@@ -506,7 +496,7 @@ def render_solution_recommendation_messages(
                 .replace("{{AI_OPPORTUNITIES_JSON}}", _dump_json([opportunity.model_dump(mode="json") for opportunity in ai_opportunities]))
                 .replace("{{INFORMATION_GAPS_JSON}}", _dump_json([gap.model_dump(mode="json") for gap in information_gaps]))
                 .replace("{{CONSTRAINTS_JSON}}", _dump_json([constraint.model_dump(mode="json") for constraint in known_constraints]))
-                .replace("{{SOLUTION_CATALOG_JSON}}", catalog_json)
+                .replace("{{RETRIEVED_SOLUTION_CANDIDATES_JSON}}", candidates_json)
             ),
         ),
     ]

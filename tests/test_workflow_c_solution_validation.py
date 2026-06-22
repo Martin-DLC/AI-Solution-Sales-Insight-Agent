@@ -5,8 +5,10 @@ from agent.workflow_c.nodes import SourceIndexingNode
 from agent.workflow_c.services import WorkflowServices
 from agent.workflow_c.solution_validation import (
     build_solution_catalog,
+    validate_recommendation_in_retrieved_candidates,
     validate_solution_recommendation,
 )
+from agent.workflow_c.solution_retrieval import retrieve_solution_candidates
 from agent.workflow_c.fake_llm import FakeWorkflowLLMClient, default_ai_opportunity_response
 from dataio.runtime_cases import load_runtime_cases
 from schemas.common_models import EvidenceSourceType, OpportunitySuitability
@@ -32,11 +34,21 @@ def opportunities() -> list[AIOpportunity]:
     ]
 
 
+def retrieved_solutions():
+    return retrieve_solution_candidates(
+        case=dev_01_case(),
+        source_index=source_index(),
+        ai_opportunities=opportunities(),
+        underlying_pains=[],
+        business_impacts=[],
+    )
+
+
 def recommendation(**overrides) -> SolutionRecommendation:
     payload = {
         "recommendation_id": "REC-01",
-        "solution_id": "AI客服知识问答方案",
-        "solution_name": "AI客服知识问答方案",
+        "solution_id": "客服辅助回复方案",
+        "solution_name": "客服辅助回复方案",
         "fit_level": "medium",
         "related_opportunity_ids": ["OPP-01"],
         "recommended_scope": "围绕CRM线索数据进行销售跟进洞察的POC验证。",
@@ -46,9 +58,9 @@ def recommendation(**overrides) -> SolutionRecommendation:
         "excluded_capabilities": ["不承诺完整销售自动化闭环。"],
         "knowledge_references": [
             {
-                "source_id": "SOLUTION-01",
+                "source_id": "SOLUTION-04",
                 "source_type": "solution_library",
-                "evidence_summary": "方案库中列出了AI客服知识问答方案。",
+                "evidence_summary": "方案库中列出了客服辅助回复方案。",
             }
         ],
         "confidence": "medium",
@@ -176,6 +188,34 @@ def test_eligible_opportunity_can_be_recommended() -> None:
     )
 
     assert issues == []
+
+
+def test_recommendation_must_be_in_retrieved_candidates() -> None:
+    issues = validate_recommendation_in_retrieved_candidates(
+        recommendation=recommendation(solution_id="AI客服知识问答方案"),
+        recommendation_index=0,
+        retrieved_solutions=retrieved_solutions(),
+    )
+
+    assert any("retrieved solution candidates" in issue.message for issue in issues)
+
+
+def test_recommendation_candidate_reference_must_match_retrieved_source() -> None:
+    issues = validate_recommendation_in_retrieved_candidates(
+        recommendation=recommendation(
+            knowledge_references=[
+                {
+                    "source_id": "SOLUTION-01",
+                    "source_type": "solution_library",
+                    "evidence_summary": "错误方案引用。",
+                }
+            ]
+        ),
+        recommendation_index=0,
+        retrieved_solutions=retrieved_solutions(),
+    )
+
+    assert any("candidate source_id" in issue.message for issue in issues)
 
 
 def test_not_suitable_for_ai_opportunity_cannot_be_recommended() -> None:

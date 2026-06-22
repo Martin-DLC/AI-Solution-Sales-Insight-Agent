@@ -6,16 +6,19 @@ from agent.workflow_c.executor import execute_node
 from agent.workflow_c.fake_llm import (
     FakeWorkflowLLMClient,
     default_ai_opportunity_response,
+    default_business_impact_response,
     default_information_gap_response,
     default_solution_recommendation_response,
+    default_underlying_pain_response,
 )
 from agent.workflow_c.nodes import SolutionRecommendationNode, SourceIndexingNode
 from agent.workflow_c.services import WorkflowLLMResult, WorkflowServices
+from agent.workflow_c.solution_retrieval import retrieve_solution_candidates
 from agent.workflow_c.state import FailureCategory, WorkflowNodeName
 from dataio.runtime_cases import load_runtime_cases
 from llm.models import LLMMessage, LLMUsage
 from schemas.common_models import OpportunitySuitability
-from schemas.insight_models import InformationGap
+from schemas.insight_models import BusinessImpact, InformationGap, UnderlyingPain
 from schemas.solution_models import AIOpportunity
 
 
@@ -40,14 +43,31 @@ def opportunities(payload: dict | None = None) -> list[AIOpportunity]:
 
 
 def state_with_dependencies(ai_opportunities: list[AIOpportunity] | None = None) -> dict:
+    selected_opportunities = ai_opportunities or opportunities()
+    underlying_pains = [
+        UnderlyingPain.model_validate(item)
+        for item in default_underlying_pain_response()["underlying_pains"]
+    ]
+    business_impacts = [
+        BusinessImpact.model_validate(item)
+        for item in default_business_impact_response()["business_impacts"]
+    ]
+    index = source_index()
     return {
         "validated_case": dev_01_case(),
-        "source_index": source_index(),
+        "source_index": index,
         "information_gaps": [
             InformationGap.model_validate(item)
             for item in default_information_gap_response()["information_gaps"]
         ],
-        "ai_opportunities": ai_opportunities or opportunities(),
+        "ai_opportunities": selected_opportunities,
+        "retrieved_solutions": retrieve_solution_candidates(
+            case=dev_01_case(),
+            source_index=index,
+            ai_opportunities=selected_opportunities,
+            underlying_pains=underlying_pains,
+            business_impacts=business_impacts,
+        ),
     }
 
 
@@ -88,7 +108,7 @@ class ContentOnlyClient:
 def test_valid_recommendation_passes() -> None:
     patch = run_payload(default_solution_recommendation_response())
 
-    assert patch["solution_recommendations"][0].solution_id == "AI客服知识问答方案"
+    assert patch["solution_recommendations"][0].solution_id == "客服辅助回复方案"
 
 
 def test_empty_recommendations_are_valid() -> None:

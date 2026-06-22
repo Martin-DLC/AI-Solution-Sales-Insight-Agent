@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from agent.workflow_c.state import NodeValidationIssue, SourceIndexItem, SourceIndexResult
 from schemas.common_models import EvidenceSourceType, OpportunitySuitability
 from schemas.input_models import EvaluationCaseInput
@@ -176,6 +177,52 @@ def validate_solution_recommendation(
                     "Solution recommendations must reference at least one AI opportunity "
                     "that is eligible for recommendation."
                 ),
+            )
+        )
+    return issues
+
+
+def validate_recommendation_in_retrieved_candidates(
+    *,
+    recommendation: SolutionRecommendation,
+    recommendation_index: int,
+    retrieved_solutions: SolutionRetrievalResult,
+) -> list[NodeValidationIssue]:
+    issues: list[NodeValidationIssue] = []
+    location = f"solution_recommendations.{recommendation_index}"
+    candidates_by_solution_id = {
+        candidate.solution_id: candidate
+        for candidate in retrieved_solutions.candidates
+    }
+    candidate = candidates_by_solution_id.get(recommendation.solution_id)
+    if candidate is None:
+        issues.append(
+            NodeValidationIssue(
+                location=f"{location}.solution_id",
+                error_type="business_rule",
+                message=(
+                    "Solution recommendation must use a solution_id from the "
+                    "retrieved solution candidates."
+                ),
+                input_summary="solution_not_retrieved",
+            )
+        )
+        return issues
+
+    if not any(
+        reference.source_type is EvidenceSourceType.solution_library
+        and reference.source_id == candidate.source_id
+        for reference in recommendation.knowledge_references
+    ):
+        issues.append(
+            NodeValidationIssue(
+                location=f"{location}.knowledge_references",
+                error_type="business_rule",
+                message=(
+                    "At least one knowledge reference must match the retrieved "
+                    "candidate source_id."
+                ),
+                input_summary=candidate.source_id,
             )
         )
     return issues
