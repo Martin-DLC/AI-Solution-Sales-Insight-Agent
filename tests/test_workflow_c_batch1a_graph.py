@@ -34,6 +34,7 @@ def test_batch1b_success_path_node_order() -> None:
         WorkflowNodeName.ai_opportunity,
         WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
+        WorkflowNodeName.deal_score,
         WorkflowNodeName.human_review_gate,
     ]
 
@@ -54,6 +55,7 @@ def test_batch1b_coverage_success_path_llm_calls_nine_times_after_batch3a() -> N
     assert client.calls_for_node(WorkflowNodeName.ai_opportunity) == 1
     assert client.calls_for_node(WorkflowNodeName.solution_retrieval) == 0
     assert client.calls_for_node(WorkflowNodeName.solution_recommendation) == 1
+    assert client.calls_for_node(WorkflowNodeName.deal_score) == 0
 
 
 def test_batch1b_final_status_still_awaits_human_review() -> None:

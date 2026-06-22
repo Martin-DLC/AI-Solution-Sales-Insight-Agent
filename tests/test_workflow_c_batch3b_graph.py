@@ -48,6 +48,7 @@ def test_batch3b_complete_path_node_order_includes_solution_retrieval() -> None:
         WorkflowNodeName.ai_opportunity,
         WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
+        WorkflowNodeName.deal_score,
         WorkflowNodeName.human_review_gate,
     ]
 
@@ -59,6 +60,7 @@ def test_batch3b_complete_path_llm_calls_remain_nine() -> None:
 
     assert client.total_calls == 9
     assert client.calls_for_node(WorkflowNodeName.solution_retrieval) == 0
+    assert client.calls_for_node(WorkflowNodeName.deal_score) == 0
 
 
 def test_batch3b_generates_retrieved_solutions() -> None:

@@ -57,6 +57,7 @@ def test_full_path_node_order_has_thirteen_nodes_after_batch3a() -> None:
         WorkflowNodeName.ai_opportunity,
         WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
+        WorkflowNodeName.deal_score,
         WorkflowNodeName.human_review_gate,
     ]
 
@@ -84,6 +85,7 @@ def test_nine_llm_nodes_called_once() -> None:
     assert client.calls_for_node(WorkflowNodeName.ai_opportunity) == 1
     assert client.calls_for_node(WorkflowNodeName.solution_retrieval) == 0
     assert client.calls_for_node(WorkflowNodeName.solution_recommendation) == 1
+    assert client.calls_for_node(WorkflowNodeName.deal_score) == 0
 
 
 def test_final_status_awaits_human_review() -> None:
@@ -113,13 +115,13 @@ def test_generates_ai_opportunities_after_batch3a() -> None:
     assert snapshot.ai_opportunities is not None
 
 
-def test_does_not_generate_deal_score() -> None:
+def test_generates_deal_score_after_batch4a() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
         WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3a_responses()),
     )
 
-    assert not hasattr(snapshot, "deal_score")
+    assert snapshot.deal_score is not None
 
 
 def test_does_not_generate_final_report() -> None:

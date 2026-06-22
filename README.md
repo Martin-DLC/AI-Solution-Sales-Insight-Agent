@@ -68,8 +68,14 @@ Python 3.11 is required.
 - AI Opportunity can explicitly mark opportunities as not suitable for AI or insufficient information.
 - Solution Recommendation can only select from retrieved candidates that originate in `available_solution_library`.
 - The current retrieval layer is lexical, in-process, deterministic, and does not use RAG or embeddings.
-- Architecture C currently uses Fake LLM for Batch 3B offline tests.
-- Deal Score, Risk, Next Best Action, and final report generation are not implemented yet.
+- Architecture C Batch 4A is implemented with pure-code deterministic Deal Score.
+- Deal Score uses fixed seven dimensions and every dimension includes evidence and reasoning.
+- Deal Score total is calculated by rules; LLM output cannot directly provide the score.
+- Deal Score measures opportunity maturity and does not represent close probability.
+- Zero-candidate solution paths still produce a limited Deal Score.
+- Deal Score does not increase LLM call count.
+- Architecture C currently uses Fake LLM for Batch 4A offline tests.
+- Risk, Next Best Action, and final report generation are not implemented yet.
 - Architecture C business understanding now reaches Information Gap.
 - clarification_only now generates concrete clarification questions before human review.
 - Information Gap combines Context Sufficiency, Buying Intent unknown factors, and unconfirmed Stakeholders.
@@ -77,7 +83,7 @@ Python 3.11 is required.
 - Architecture C Evidence references are cross-validated by code before downstream workflow steps.
 - Architecture C currently contains an offline graph through solution recommendation and human review.
 - Architecture C uses Fake LLM and does not call a real model.
-- Architecture C has not implemented RAG, Deal Score, Risk, Next Best Action, or final report generation.
+- Architecture C has not implemented RAG, Risk, Next Best Action, or final report generation.
 - Architecture C has not connected to a real model or RAG.
 - Baseline A and Baseline B are both single model calls.
 - Baseline B does not use RAG, Workflow, or Critic.
