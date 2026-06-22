@@ -27,6 +27,7 @@ from schemas.insight_models import (
     Stakeholder,
     UnderlyingPain,
 )
+from schemas.solution_models import AIOpportunity, SolutionRecommendation
 
 
 class WorkflowNodeName(str, Enum):
@@ -330,6 +331,8 @@ class ArchitectureCGraphState(TypedDict, total=False):
     buying_intent: BuyingIntent
     stakeholder_map: list[Stakeholder]
     information_gaps: list[InformationGap]
+    ai_opportunities: list[AIOpportunity]
+    solution_recommendations: list[SolutionRecommendation]
     human_review_decision: HumanReviewDecision
     node_records: Annotated[list[NodeExecutionRecord], operator.add]
     failures: Annotated[list[WorkflowFailure], operator.add]
@@ -356,6 +359,8 @@ class ArchitectureCStateSnapshot(StrictBaseModel):
     buying_intent: BuyingIntent | None = None
     stakeholder_map: list[Stakeholder] | None = None
     information_gaps: list[InformationGap] | None = None
+    ai_opportunities: list[AIOpportunity] | None = None
+    solution_recommendations: list[SolutionRecommendation] | None = None
     human_review_decision: HumanReviewDecision | None = None
     node_records: list[NodeExecutionRecord] = Field(default_factory=list)
     failures: list[WorkflowFailure] = Field(default_factory=list)

@@ -5,6 +5,7 @@ from typing import Any, Callable
 
 from agent.workflow_c.executor import execute_node
 from agent.workflow_c.nodes import (
+    AIOpportunityNode,
     BusinessImpactNode,
     BuyingIntentNode,
     ContextSufficiencyNode,
@@ -13,6 +14,7 @@ from agent.workflow_c.nodes import (
     HumanReviewGateNode,
     InformationGapNode,
     InputValidationNode,
+    SolutionRecommendationNode,
     StakeholderNode,
     SourceIndexingNode,
     UnderlyingPainNode,
@@ -60,6 +62,8 @@ def build_architecture_c_skeleton(
         "buying_intent": BuyingIntentNode(),
         "stakeholder": StakeholderNode(),
         "information_gap": InformationGapNode(),
+        "ai_opportunity": AIOpportunityNode(),
+        "solution_recommendation": SolutionRecommendationNode(),
         "human_review_gate": HumanReviewGateNode(),
     }
 
@@ -128,6 +132,24 @@ def build_architecture_c_skeleton(
     )
     builder.add_conditional_edges(
         "information_gap",
+        _route_after_information_gap,
+        {
+            "end": END,
+            "human_review_gate": "human_review_gate",
+            "ai_opportunity": "ai_opportunity",
+        },
+    )
+    builder.add_conditional_edges(
+        "ai_opportunity",
+        _route_to_next_or_review("solution_recommendation"),
+        {
+            "end": END,
+            "human_review_gate": "human_review_gate",
+            "solution_recommendation": "solution_recommendation",
+        },
+    )
+    builder.add_conditional_edges(
+        "solution_recommendation",
         _route_to_next_or_review("human_review_gate"),
         {"end": END, "human_review_gate": "human_review_gate"},
     )
@@ -179,6 +201,17 @@ def _route_after_context_sufficiency(state: ArchitectureCGraphState) -> str:
     return "explicit_need"
 
 
+def _route_after_information_gap(state: ArchitectureCGraphState) -> str:
+    if state.get("workflow_status") is WorkflowStatus.awaiting_human_review:
+        return "human_review_gate"
+    if state.get("workflow_status") is WorkflowStatus.failed:
+        return "end"
+    context = state.get("context_sufficiency")
+    if context is not None and context.analysis_mode is AnalysisMode.clarification_only:
+        return "human_review_gate"
+    return "ai_opportunity"
+
+
 class _FallbackGraph:
     def __init__(self, services: WorkflowServices, nodes: dict[str, Any]) -> None:
         self.services = services
@@ -209,12 +242,21 @@ class _FallbackGraph:
                     "buying_intent",
                     "stakeholder",
                     "information_gap",
+                    "ai_opportunity",
+                    "solution_recommendation",
                 ):
                     current = self._run_or_stop(name, current)
                     if current.get("workflow_status") in {
                         WorkflowStatus.failed,
                         WorkflowStatus.awaiting_human_review,
                     }:
+                        break
+                    if (
+                        name == "information_gap"
+                        and current.get("context_sufficiency") is not None
+                        and current["context_sufficiency"].analysis_mode
+                        is AnalysisMode.clarification_only
+                    ):
                         break
         if current.get("workflow_status") is WorkflowStatus.failed:
             return current

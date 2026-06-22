@@ -5,34 +5,46 @@ from agent.workflow_c.graph import (
     run_architecture_c_skeleton,
 )
 from agent.workflow_c.node_outputs import (
+    AIOpportunityNodeOutput,
+    AIOpportunityResult,
     BusinessImpactResult,
     BuyingIntentNodeOutput,
     ExplicitNeedResult,
     InformationGapNodeOutput,
     InformationGapResult,
+    SolutionRecommendationNodeOutput,
+    SolutionRecommendationResult,
     StakeholderNodeOutput,
     StakeholderResult,
     UnderlyingPainResult,
 )
 from agent.workflow_c.nodes import (
+    AIOpportunityNode,
     BusinessImpactNode,
     BuyingIntentNode,
     ExplicitNeedNode,
     FactExtractionNode,
     InformationGapNode,
+    SolutionRecommendationNode,
     StakeholderNode,
     UnderlyingPainNode,
 )
 from agent.workflow_c.prompt_loader import (
+    render_ai_opportunity_messages,
     render_business_impact_messages,
     render_buying_intent_messages,
     render_explicit_need_messages,
     render_fact_extraction_messages,
     render_information_gap_messages,
+    render_solution_recommendation_messages,
     render_stakeholder_messages,
     render_underlying_pain_messages,
 )
 from agent.workflow_c.services import WorkflowServices
+from agent.workflow_c.solution_validation import (
+    build_solution_catalog,
+    validate_solution_recommendation,
+)
 from agent.workflow_c.state import (
     AnalysisMode,
     ArchitectureCGraphState,
@@ -47,6 +59,9 @@ from agent.workflow_c.state import (
 
 __all__ = [
     "AnalysisMode",
+    "AIOpportunityNode",
+    "AIOpportunityNodeOutput",
+    "AIOpportunityResult",
     "ArchitectureCGraphState",
     "ArchitectureCStateSnapshot",
     "BusinessImpactNode",
@@ -63,6 +78,9 @@ __all__ = [
     "InformationGapResult",
     "NodeExecutionRecord",
     "NodeStatus",
+    "SolutionRecommendationNode",
+    "SolutionRecommendationNodeOutput",
+    "SolutionRecommendationResult",
     "StakeholderNode",
     "StakeholderNodeOutput",
     "StakeholderResult",
@@ -73,13 +91,17 @@ __all__ = [
     "UnderlyingPainNode",
     "UnderlyingPainResult",
     "build_architecture_c_skeleton",
+    "build_solution_catalog",
     "create_initial_state",
     "run_architecture_c_skeleton",
+    "render_ai_opportunity_messages",
     "render_business_impact_messages",
     "render_buying_intent_messages",
     "render_explicit_need_messages",
     "render_fact_extraction_messages",
     "render_information_gap_messages",
+    "render_solution_recommendation_messages",
     "render_stakeholder_messages",
     "render_underlying_pain_messages",
+    "validate_solution_recommendation",
 ]
