@@ -11,6 +11,7 @@ from agent.workflow_c.contracts import (
     InputValidationOutput,
     NodeContract,
     NodeFailurePolicy,
+    ReportComposerNodeOutput,
     SolutionRetrievalNodeOutput,
     SourceIndexingOutput,
 )
@@ -27,6 +28,7 @@ from agent.workflow_c.state import (
 )
 from dataio.runtime_cases import load_runtime_cases
 from schemas.common_models import ContextQuality, EvidenceSourceType
+from schemas.output_models import SalesInsightReport
 
 
 def test_valid_node_contract_can_be_created() -> None:
@@ -155,3 +157,13 @@ def test_output_wrappers_validate() -> None:
         human_review_reasons=["review needed"],
         workflow_status=WorkflowStatus.awaiting_human_review,
     )
+
+
+def test_report_composer_output_wrapper_validates() -> None:
+    import json
+    from pathlib import Path
+
+    payload = json.loads(Path("tests/fixtures/dev_01_full_report.json").read_text())
+    report = SalesInsightReport.model_validate(payload)
+
+    assert ReportComposerNodeOutput(report_draft=report)

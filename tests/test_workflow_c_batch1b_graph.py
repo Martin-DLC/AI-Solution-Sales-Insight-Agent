@@ -46,6 +46,7 @@ def test_success_node_order_includes_batch4b_nodes() -> None:
         WorkflowNodeName.deal_score,
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
+        WorkflowNodeName.report_composer,
         WorkflowNodeName.human_review_gate,
     ]
 

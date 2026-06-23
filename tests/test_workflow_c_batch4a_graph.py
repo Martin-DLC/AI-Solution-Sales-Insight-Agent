@@ -34,6 +34,7 @@ def complete_order() -> list[WorkflowNodeName]:
         WorkflowNodeName.deal_score,
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
+        WorkflowNodeName.report_composer,
         WorkflowNodeName.human_review_gate,
     ]
 
