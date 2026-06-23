@@ -35,6 +35,7 @@ def complete_order() -> list[WorkflowNodeName]:
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
         WorkflowNodeName.report_composer,
+        WorkflowNodeName.final_validation,
         WorkflowNodeName.human_review_gate,
     ]
 
@@ -49,7 +50,7 @@ def test_dev_01_complete_recommendation_path_builds_report_draft() -> None:
     assert [record.node_name for record in snapshot.node_records] == complete_order()
     assert isinstance(snapshot.report_draft, SalesInsightReport)
     assert snapshot.report_draft.reliability_summary.human_review_required is True
-    assert not hasattr(snapshot, "final_report")
+    assert snapshot.final_report is not None
 
 
 def test_complete_path_llm_calls_still_eleven() -> None:

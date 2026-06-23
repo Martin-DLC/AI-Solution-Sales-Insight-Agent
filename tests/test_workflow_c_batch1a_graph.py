@@ -38,6 +38,7 @@ def test_batch1b_success_path_node_order() -> None:
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
         WorkflowNodeName.report_composer,
+        WorkflowNodeName.final_validation,
         WorkflowNodeName.human_review_gate,
     ]
 

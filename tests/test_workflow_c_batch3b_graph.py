@@ -52,6 +52,7 @@ def test_batch3b_complete_path_node_order_includes_solution_retrieval() -> None:
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
         WorkflowNodeName.report_composer,
+        WorkflowNodeName.final_validation,
         WorkflowNodeName.human_review_gate,
     ]
 

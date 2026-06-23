@@ -34,6 +34,7 @@ def complete_order() -> list[WorkflowNodeName]:
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
         WorkflowNodeName.report_composer,
+        WorkflowNodeName.final_validation,
         WorkflowNodeName.human_review_gate,
     ]
 
@@ -71,7 +72,7 @@ def test_risk_and_next_best_action_exist() -> None:
     assert snapshot.risk_traces
     assert snapshot.next_best_actions
     assert snapshot.action_traces
-    assert not hasattr(snapshot, "final_report")
+    assert snapshot.final_report is not None
 
 
 def test_zero_candidate_path_still_generates_risk_and_action() -> None:
