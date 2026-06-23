@@ -18,6 +18,7 @@ from schemas.insight_models import (
     UnderlyingPain,
 )
 from schemas.solution_models import AIOpportunity, Risk, SolutionRecommendation
+from schemas.output_models import SalesInsightReport
 
 
 def _normalized_descriptions_are_unique(
@@ -277,3 +278,7 @@ class NextBestActionResult(StrictBaseModel):
 
 class NextBestActionNodeOutput(NextBestActionResult):
     pass
+
+
+class ReportComposerNodeOutput(StrictBaseModel):
+    report_draft: SalesInsightReport
