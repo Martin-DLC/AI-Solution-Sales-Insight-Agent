@@ -56,6 +56,14 @@ from agent.workflow_c.report_composer import (
     compose_sales_insight_report,
     utc_now,
 )
+from agent.workflow_c.real_llm import RealWorkflowLLMClient, WorkflowLLMCallRecord
+from agent.workflow_c.runtime import (
+    ArchitectureCRunError,
+    ArchitectureCRunResult,
+    ArchitectureCRunner,
+    WorkflowCRunMetadata,
+    WorkflowCRunStatus,
+)
 from agent.workflow_c.prompt_loader import (
     render_ai_opportunity_messages,
     render_business_impact_messages,
@@ -104,6 +112,9 @@ __all__ = [
     "AIOpportunityNodeOutput",
     "AIOpportunityResult",
     "ArchitectureCGraphState",
+    "ArchitectureCRunError",
+    "ArchitectureCRunResult",
+    "ArchitectureCRunner",
     "ArchitectureCStateSnapshot",
     "ActionTrace",
     "BusinessImpactNode",
@@ -129,6 +140,7 @@ __all__ = [
     "NextBestActionResult",
     "NodeExecutionRecord",
     "NodeStatus",
+    "RealWorkflowLLMClient",
     "RetrievedSolutionCandidate",
     "ReportComposerNode",
     "ReportComposerNodeOutput",
@@ -146,7 +158,10 @@ __all__ = [
     "StakeholderNode",
     "StakeholderNodeOutput",
     "StakeholderResult",
+    "WorkflowCRunMetadata",
+    "WorkflowCRunStatus",
     "WorkflowFailure",
+    "WorkflowLLMCallRecord",
     "WorkflowActionType",
     "WorkflowNodeName",
     "WorkflowServices",

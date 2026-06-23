@@ -89,6 +89,12 @@ Python 3.11 is required.
 - The workflow does not perform automatic repair.
 - All final outputs still require Human Review.
 - The next stage is real model execution and formal A/B/C evaluation.
+- Architecture C core Workflow has a real LLM adapter and runtime runner.
+- Architecture C CLI defaults to Dry Run and does not consume API.
+- Live Architecture C runs save node prompts, raw responses, parsed JSON, workflow state, validation result, and final status.
+- Architecture C runtime artifacts are saved under `data/runtime`, which is ignored by Git.
+- Architecture C runtime does not read the Hidden Reference Pack.
+- The next stage is DEV-01, DEV-04, DEV-05 real experiments and A/B/C comparison.
 - Architecture C business understanding now reaches Information Gap.
 - clarification_only now generates concrete clarification questions before human review.
 - Information Gap combines Context Sufficiency, Buying Intent unknown factors, and unconfirmed Stakeholders.
