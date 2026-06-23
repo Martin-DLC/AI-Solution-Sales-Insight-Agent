@@ -10,6 +10,7 @@ from pydantic import Field, field_validator, model_validator
 
 from llm.models import LLMUsage
 from agent.workflow_c.decision_models import ActionTrace, RiskTrace
+from agent.workflow_c.final_validation import FinalValidationResult
 from schemas import EvaluationCaseInput
 from schemas.common_models import (
     ClaimType,
@@ -345,6 +346,8 @@ class ArchitectureCGraphState(TypedDict, total=False):
     next_best_actions: list[NextBestAction]
     action_traces: list[ActionTrace]
     report_draft: SalesInsightReport
+    final_validation_result: FinalValidationResult
+    final_report: SalesInsightReport | None
     human_review_decision: HumanReviewDecision
     node_records: Annotated[list[NodeExecutionRecord], operator.add]
     failures: Annotated[list[WorkflowFailure], operator.add]
@@ -380,6 +383,8 @@ class ArchitectureCStateSnapshot(StrictBaseModel):
     next_best_actions: list[NextBestAction] | None = None
     action_traces: list[ActionTrace] | None = None
     report_draft: SalesInsightReport | None = None
+    final_validation_result: FinalValidationResult | None = None
+    final_report: SalesInsightReport | None = None
     human_review_decision: HumanReviewDecision | None = None
     node_records: list[NodeExecutionRecord] = Field(default_factory=list)
     failures: list[WorkflowFailure] = Field(default_factory=list)

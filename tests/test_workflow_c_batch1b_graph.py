@@ -46,6 +46,8 @@ def test_success_node_order_includes_batch4b_nodes() -> None:
         WorkflowNodeName.deal_score,
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
+        WorkflowNodeName.report_composer,
+        WorkflowNodeName.final_validation,
         WorkflowNodeName.human_review_gate,
     ]
 
@@ -118,7 +120,7 @@ def test_does_not_generate_final_report() -> None:
         WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch4b_responses()),
     )
 
-    assert not hasattr(snapshot, "final_report")
+    assert snapshot.final_report is not None
 
 
 def test_clarification_only_skips_business_nodes() -> None:

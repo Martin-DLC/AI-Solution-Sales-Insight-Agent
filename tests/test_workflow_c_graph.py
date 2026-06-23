@@ -56,6 +56,7 @@ def test_node_execution_order_is_expected() -> None:
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
         WorkflowNodeName.report_composer,
+        WorkflowNodeName.final_validation,
         WorkflowNodeName.human_review_gate,
     ]
 
@@ -192,13 +193,13 @@ def test_graph_generates_human_review_decision() -> None:
     assert snapshot.human_review_decision is not None
 
 
-def test_graph_does_not_generate_final_report() -> None:
+def test_graph_generates_final_report() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
         WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch4b_responses()),
     )
 
-    assert not hasattr(snapshot, "final_report")
+    assert snapshot.final_report is not None
 
 
 def test_graph_does_not_generate_sales_insight_report() -> None:

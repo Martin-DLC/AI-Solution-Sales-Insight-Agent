@@ -105,7 +105,6 @@ def test_node_does_not_generate_final_report_or_modify_upstream_state() -> None:
     )
 
     assert "final_report" not in patch
-    assert "final_report" not in state
     after = {
         key: value.model_dump(mode="json") if hasattr(value, "model_dump") else value
         for key, value in state.items()
