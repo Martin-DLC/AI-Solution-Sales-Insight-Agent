@@ -55,6 +55,7 @@ def test_node_execution_order_is_expected() -> None:
         WorkflowNodeName.deal_score,
         WorkflowNodeName.risk,
         WorkflowNodeName.next_best_action,
+        WorkflowNodeName.report_composer,
         WorkflowNodeName.human_review_gate,
     ]
 

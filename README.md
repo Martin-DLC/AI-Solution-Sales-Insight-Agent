@@ -80,7 +80,13 @@ Python 3.11 is required.
 - The workflow does not automatically send email, update CRM, send quotes, or commit to go-live dates.
 - Architecture C normal full path currently contains 11 LLM node calls.
 - Architecture C currently uses Fake LLM for Batch 4B offline tests.
-- Report Composer, Final Validation, and real model execution are not implemented yet.
+- Architecture C Batch 5A is implemented with a pure-code Report Composer.
+- Report Composer only assembles already validated node results into a `SalesInsightReport` draft.
+- Report Composer does not call the LLM, re-analyze the case, or modify upstream node outputs.
+- RiskTrace and ActionTrace remain in Workflow State and are not written into the business report draft.
+- Zero-candidate solution paths can still produce a report draft with an empty recommendation list.
+- Report Draft still requires Final Validation and Human Review before customer use.
+- Final Validation, real model execution, and formal A/B/C evaluation are not implemented yet.
 - Architecture C business understanding now reaches Information Gap.
 - clarification_only now generates concrete clarification questions before human review.
 - Information Gap combines Context Sufficiency, Buying Intent unknown factors, and unconfirmed Stakeholders.
