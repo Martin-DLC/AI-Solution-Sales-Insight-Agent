@@ -10,6 +10,8 @@ from agent.workflow_c.node_outputs import (
     ExplicitNeedNodeOutput,
     FactExtractionNodeOutput,
     InformationGapNodeOutput,
+    NextBestActionNodeOutput,
+    RiskNodeOutput,
     SolutionRecommendationNodeOutput,
     StakeholderNodeOutput,
     UnderlyingPainNodeOutput,
@@ -23,6 +25,7 @@ from agent.workflow_c.state import (
     WorkflowNodeName,
 )
 from schemas.input_models import KnownConstraint, Participant
+from schemas.decision_models import DealScore
 from schemas.insight_models import (
     BusinessImpact,
     BuyingIntent,
@@ -31,7 +34,7 @@ from schemas.insight_models import (
     Stakeholder,
     UnderlyingPain,
 )
-from schemas.solution_models import AIOpportunity
+from schemas.solution_models import AIOpportunity, Risk, SolutionRecommendation
 from llm.models import LLMMessage, LLMRole
 
 
@@ -77,6 +80,14 @@ _PROMPT_REGISTRY: dict[tuple[WorkflowNodeName, str], tuple[str, str]] = {
         "solution_recommendation_system_v1.txt",
         "solution_recommendation_user_v1.txt",
     ),
+    (
+        WorkflowNodeName.risk,
+        "risk_v1",
+    ): ("risk_system_v1.txt", "risk_user_v1.txt"),
+    (
+        WorkflowNodeName.next_best_action,
+        "next_best_action_v1",
+    ): ("next_best_action_system_v1.txt", "next_best_action_user_v1.txt"),
 }
 
 _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str], ...]] = {
@@ -168,6 +179,30 @@ _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str]
         ("user", "{{INFORMATION_GAPS_JSON}}"),
         ("user", "{{CONSTRAINTS_JSON}}"),
         ("user", "{{RETRIEVED_SOLUTION_CANDIDATES_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.risk,
+        "risk_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{CONSTRAINTS_JSON}}"),
+        ("user", "{{INFORMATION_GAPS_JSON}}"),
+        ("user", "{{BUYING_INTENT_JSON}}"),
+        ("user", "{{STAKEHOLDERS_JSON}}"),
+        ("user", "{{AI_OPPORTUNITIES_JSON}}"),
+        ("user", "{{SOLUTION_RECOMMENDATIONS_JSON}}"),
+        ("user", "{{DEAL_SCORE_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.next_best_action,
+        "next_best_action_v1",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{BUYING_INTENT_JSON}}"),
+        ("user", "{{STAKEHOLDERS_JSON}}"),
+        ("user", "{{INFORMATION_GAPS_JSON}}"),
+        ("user", "{{DEAL_SCORE_JSON}}"),
+        ("user", "{{RISKS_JSON}}"),
     ),
 }
 
@@ -497,6 +532,80 @@ def render_solution_recommendation_messages(
                 .replace("{{INFORMATION_GAPS_JSON}}", _dump_json([gap.model_dump(mode="json") for gap in information_gaps]))
                 .replace("{{CONSTRAINTS_JSON}}", _dump_json([constraint.model_dump(mode="json") for constraint in known_constraints]))
                 .replace("{{RETRIEVED_SOLUTION_CANDIDATES_JSON}}", candidates_json)
+            ),
+        ),
+    ]
+
+
+def render_risk_messages(
+    known_constraints: list[KnownConstraint],
+    information_gaps: list[InformationGap],
+    buying_intent: BuyingIntent,
+    stakeholder_map: list[Stakeholder],
+    ai_opportunities: list[AIOpportunity],
+    solution_recommendations: list[SolutionRecommendation],
+    deal_score: DealScore,
+    *,
+    version: str = "risk_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.risk,
+        version,
+    )
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace(
+                "{{OUTPUT_SCHEMA_JSON}}",
+                _dump_json(RiskNodeOutput.model_json_schema()),
+            ),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{CONSTRAINTS_JSON}}", _dump_json([constraint.model_dump(mode="json") for constraint in known_constraints]))
+                .replace("{{INFORMATION_GAPS_JSON}}", _dump_json([gap.model_dump(mode="json") for gap in information_gaps]))
+                .replace("{{BUYING_INTENT_JSON}}", _dump_json(buying_intent.model_dump(mode="json")))
+                .replace("{{STAKEHOLDERS_JSON}}", _dump_json([stakeholder.model_dump(mode="json") for stakeholder in stakeholder_map]))
+                .replace("{{AI_OPPORTUNITIES_JSON}}", _dump_json([opportunity.model_dump(mode="json") for opportunity in ai_opportunities]))
+                .replace("{{SOLUTION_RECOMMENDATIONS_JSON}}", _dump_json([recommendation.model_dump(mode="json") for recommendation in solution_recommendations]))
+                .replace("{{DEAL_SCORE_JSON}}", _dump_json(deal_score.model_dump(mode="json")))
+            ),
+        ),
+    ]
+
+
+def render_next_best_action_messages(
+    buying_intent: BuyingIntent,
+    stakeholder_map: list[Stakeholder],
+    information_gaps: list[InformationGap],
+    deal_score: DealScore,
+    risks_and_objections: list[Risk],
+    *,
+    version: str = "next_best_action_v1",
+) -> list[LLMMessage]:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.next_best_action,
+        version,
+    )
+    return [
+        LLMMessage(
+            role=LLMRole.system,
+            content=system_template.replace(
+                "{{OUTPUT_SCHEMA_JSON}}",
+                _dump_json(NextBestActionNodeOutput.model_json_schema()),
+            ),
+        ),
+        LLMMessage(
+            role=LLMRole.user,
+            content=(
+                user_template
+                .replace("{{BUYING_INTENT_JSON}}", _dump_json(buying_intent.model_dump(mode="json")))
+                .replace("{{STAKEHOLDERS_JSON}}", _dump_json([stakeholder.model_dump(mode="json") for stakeholder in stakeholder_map]))
+                .replace("{{INFORMATION_GAPS_JSON}}", _dump_json([gap.model_dump(mode="json") for gap in information_gaps]))
+                .replace("{{DEAL_SCORE_JSON}}", _dump_json(deal_score.model_dump(mode="json")))
+                .replace("{{RISKS_JSON}}", _dump_json([risk.model_dump(mode="json") for risk in risks_and_objections]))
             ),
         ),
     ]

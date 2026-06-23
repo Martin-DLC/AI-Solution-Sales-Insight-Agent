@@ -15,6 +15,8 @@ from agent.workflow_c.nodes import (
     HumanReviewGateNode,
     InformationGapNode,
     InputValidationNode,
+    NextBestActionNode,
+    RiskNode,
     SolutionRetrievalNode,
     SolutionRecommendationNode,
     StakeholderNode,
@@ -68,6 +70,8 @@ def build_architecture_c_skeleton(
         "solution_retrieval": SolutionRetrievalNode(),
         "solution_recommendation": SolutionRecommendationNode(),
         "deal_score": DealScoreNode(),
+        "risk": RiskNode(),
+        "next_best_action": NextBestActionNode(),
         "human_review_gate": HumanReviewGateNode(),
     }
 
@@ -169,6 +173,20 @@ def build_architecture_c_skeleton(
     )
     builder.add_conditional_edges(
         "deal_score",
+        _route_to_next_or_review("risk"),
+        {"end": END, "human_review_gate": "human_review_gate", "risk": "risk"},
+    )
+    builder.add_conditional_edges(
+        "risk",
+        _route_to_next_or_review("next_best_action"),
+        {
+            "end": END,
+            "human_review_gate": "human_review_gate",
+            "next_best_action": "next_best_action",
+        },
+    )
+    builder.add_conditional_edges(
+        "next_best_action",
         _route_to_next_or_review("human_review_gate"),
         {"end": END, "human_review_gate": "human_review_gate"},
     )
@@ -276,6 +294,8 @@ class _FallbackGraph:
                     "solution_retrieval",
                     "solution_recommendation",
                     "deal_score",
+                    "risk",
+                    "next_best_action",
                 ):
                     if (
                         name == "solution_recommendation"

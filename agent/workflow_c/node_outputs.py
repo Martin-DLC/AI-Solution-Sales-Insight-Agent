@@ -4,10 +4,11 @@ from typing import Self
 
 from pydantic import Field, model_validator
 
+from agent.workflow_c.decision_models import ActionTrace, RiskTrace
 from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from agent.workflow_c.state import FactExtractionResult
 from schemas.common_models import StrictBaseModel
-from schemas.decision_models import DealScore
+from schemas.decision_models import DealScore, NextBestAction
 from schemas.insight_models import (
     BusinessImpact,
     BuyingIntent,
@@ -16,7 +17,7 @@ from schemas.insight_models import (
     Stakeholder,
     UnderlyingPain,
 )
-from schemas.solution_models import AIOpportunity, SolutionRecommendation
+from schemas.solution_models import AIOpportunity, Risk, SolutionRecommendation
 
 
 def _normalized_descriptions_are_unique(
@@ -215,3 +216,64 @@ class SolutionRecommendationNodeOutput(SolutionRecommendationResult):
 
 class DealScoreNodeOutput(StrictBaseModel):
     deal_score: DealScore
+
+
+class RiskResult(StrictBaseModel):
+    risks_and_objections: list[Risk] = Field(default_factory=list)
+    risk_traces: list[RiskTrace] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_risks(self) -> Self:
+        if not self.risks_and_objections:
+            raise ValueError("Risk analysis must include at least one risk.")
+        risk_ids = [risk.risk_id for risk in self.risks_and_objections]
+        if len(risk_ids) != len(set(risk_ids)):
+            raise ValueError("Risk IDs must not be duplicated.")
+        _normalized_descriptions_are_unique(
+            [risk.description for risk in self.risks_and_objections],
+            "Risk",
+        )
+        trace_ids = [trace.risk_id for trace in self.risk_traces]
+        if len(trace_ids) != len(set(trace_ids)):
+            raise ValueError("Risk trace IDs must not be duplicated.")
+        if set(trace_ids) != set(risk_ids):
+            raise ValueError("Each risk must have exactly one matching risk trace.")
+        return self
+
+
+class RiskNodeOutput(RiskResult):
+    pass
+
+
+class NextBestActionResult(StrictBaseModel):
+    next_best_actions: list[NextBestAction] = Field(default_factory=list)
+    action_traces: list[ActionTrace] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_actions(self) -> Self:
+        if not self.next_best_actions:
+            raise ValueError("Next best action analysis must include at least one action.")
+        action_ids = [action.action_id for action in self.next_best_actions]
+        if len(action_ids) != len(set(action_ids)):
+            raise ValueError("Action IDs must not be duplicated.")
+        normalized_actions = [
+            " ".join(action.action.split()).casefold()
+            for action in self.next_best_actions
+        ]
+        if len(normalized_actions) != len(set(normalized_actions)):
+            raise ValueError("Next best action descriptions must not be duplicated.")
+        trace_ids = [trace.action_id for trace in self.action_traces]
+        if len(trace_ids) != len(set(trace_ids)):
+            raise ValueError("Action trace IDs must not be duplicated.")
+        if set(trace_ids) != set(action_ids):
+            raise ValueError("Each action must have exactly one matching action trace.")
+        priorities = {"P0": 0, "P1": 1, "P2": 2}
+        if [priorities[action.priority.value] for action in self.next_best_actions] != sorted(
+            priorities[action.priority.value] for action in self.next_best_actions
+        ):
+            raise ValueError("Next best actions must be sorted by priority.")
+        return self
+
+
+class NextBestActionNodeOutput(NextBestActionResult):
+    pass

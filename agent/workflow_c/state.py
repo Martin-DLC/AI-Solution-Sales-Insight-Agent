@@ -9,6 +9,7 @@ from typing import Annotated, Self, TypedDict
 from pydantic import Field, field_validator, model_validator
 
 from llm.models import LLMUsage
+from agent.workflow_c.decision_models import ActionTrace, RiskTrace
 from schemas import EvaluationCaseInput
 from schemas.common_models import (
     ClaimType,
@@ -18,7 +19,7 @@ from schemas.common_models import (
     EvidenceSourceType,
     StrictBaseModel,
 )
-from schemas.decision_models import DealScore
+from schemas.decision_models import DealScore, NextBestAction
 from schemas.insight_models import (
     BusinessImpact,
     BuyingIntent,
@@ -29,7 +30,7 @@ from schemas.insight_models import (
     UnderlyingPain,
 )
 from agent.workflow_c.retrieval_models import SolutionRetrievalResult
-from schemas.solution_models import AIOpportunity, SolutionRecommendation
+from schemas.solution_models import AIOpportunity, Risk, SolutionRecommendation
 
 
 class WorkflowNodeName(str, Enum):
@@ -338,6 +339,10 @@ class ArchitectureCGraphState(TypedDict, total=False):
     retrieved_solutions: SolutionRetrievalResult
     solution_recommendations: list[SolutionRecommendation]
     deal_score: DealScore
+    risks_and_objections: list[Risk]
+    risk_traces: list[RiskTrace]
+    next_best_actions: list[NextBestAction]
+    action_traces: list[ActionTrace]
     human_review_decision: HumanReviewDecision
     node_records: Annotated[list[NodeExecutionRecord], operator.add]
     failures: Annotated[list[WorkflowFailure], operator.add]
@@ -368,6 +373,10 @@ class ArchitectureCStateSnapshot(StrictBaseModel):
     retrieved_solutions: SolutionRetrievalResult | None = None
     solution_recommendations: list[SolutionRecommendation] | None = None
     deal_score: DealScore | None = None
+    risks_and_objections: list[Risk] | None = None
+    risk_traces: list[RiskTrace] | None = None
+    next_best_actions: list[NextBestAction] | None = None
+    action_traces: list[ActionTrace] | None = None
     human_review_decision: HumanReviewDecision | None = None
     node_records: list[NodeExecutionRecord] = Field(default_factory=list)
     failures: list[WorkflowFailure] = Field(default_factory=list)

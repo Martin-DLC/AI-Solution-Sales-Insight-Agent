@@ -12,6 +12,8 @@ from agent.workflow_c.prompt_loader import (
     render_explicit_need_messages,
     render_fact_extraction_messages,
     render_information_gap_messages,
+    render_next_best_action_messages,
+    render_risk_messages,
     render_solution_recommendation_messages,
     render_stakeholder_messages,
     render_underlying_pain_messages,
@@ -38,6 +40,7 @@ from schemas.insight_models import (
     UnderlyingPain,
 )
 from schemas.solution_models import AIOpportunity
+from agent.workflow_c import FakeWorkflowLLMClient, WorkflowServices, run_architecture_c_skeleton
 
 
 def dev_01_case():
@@ -167,6 +170,36 @@ def test_solution_recommendation_prompt_templates_load() -> None:
     assert user_template.count("{{INFORMATION_GAPS_JSON}}") == 1
     assert user_template.count("{{CONSTRAINTS_JSON}}") == 1
     assert user_template.count("{{RETRIEVED_SOLUTION_CANDIDATES_JSON}}") == 1
+
+
+def test_risk_prompt_templates_load() -> None:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.risk,
+        "risk_v1",
+    )
+
+    assert system_template.count("{{OUTPUT_SCHEMA_JSON}}") == 1
+    assert user_template.count("{{CONSTRAINTS_JSON}}") == 1
+    assert user_template.count("{{INFORMATION_GAPS_JSON}}") == 1
+    assert user_template.count("{{BUYING_INTENT_JSON}}") == 1
+    assert user_template.count("{{STAKEHOLDERS_JSON}}") == 1
+    assert user_template.count("{{AI_OPPORTUNITIES_JSON}}") == 1
+    assert user_template.count("{{SOLUTION_RECOMMENDATIONS_JSON}}") == 1
+    assert user_template.count("{{DEAL_SCORE_JSON}}") == 1
+
+
+def test_next_best_action_prompt_templates_load() -> None:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.next_best_action,
+        "next_best_action_v1",
+    )
+
+    assert system_template.count("{{OUTPUT_SCHEMA_JSON}}") == 1
+    assert user_template.count("{{BUYING_INTENT_JSON}}") == 1
+    assert user_template.count("{{STAKEHOLDERS_JSON}}") == 1
+    assert user_template.count("{{INFORMATION_GAPS_JSON}}") == 1
+    assert user_template.count("{{DEAL_SCORE_JSON}}") == 1
+    assert user_template.count("{{RISKS_JSON}}") == 1
 
 
 def test_unknown_prompt_version_fails() -> None:
@@ -410,6 +443,11 @@ def test_prompts_do_not_include_reference_pack_terms() -> None:
             WorkflowNodeName.solution_recommendation,
             "solution_recommendation_v1",
         )
+        + load_node_prompt_templates(WorkflowNodeName.risk, "risk_v1")
+        + load_node_prompt_templates(
+            WorkflowNodeName.next_best_action,
+            "next_best_action_v1",
+        )
     )
 
     assert "hard_failure_traps" not in combined
@@ -496,3 +534,41 @@ def test_solution_recommendation_rendering_is_stable() -> None:
     )
 
     assert [message.content for message in first] == [message.content for message in second]
+
+
+def test_risk_prompt_renders_dependencies() -> None:
+    snapshot = run_architecture_c_skeleton(
+        dev_01_case(),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch4b_responses()),
+    )
+    messages = render_risk_messages(
+        dev_01_case().known_constraints,
+        snapshot.information_gaps,
+        snapshot.buying_intent,
+        snapshot.stakeholder_map,
+        snapshot.ai_opportunities,
+        snapshot.solution_recommendations or [],
+        snapshot.deal_score,
+    )
+
+    assert "NODE: risk" in messages[1].content
+    assert "BEGIN_INFORMATION_GAPS_JSON" in messages[1].content
+    assert "GAP-01" in messages[1].content
+
+
+def test_next_best_action_prompt_renders_dependencies() -> None:
+    snapshot = run_architecture_c_skeleton(
+        dev_01_case(),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch4b_responses()),
+    )
+    messages = render_next_best_action_messages(
+        snapshot.buying_intent,
+        snapshot.stakeholder_map,
+        snapshot.information_gaps,
+        snapshot.deal_score,
+        snapshot.risks_and_objections,
+    )
+
+    assert "NODE: next_best_action" in messages[1].content
+    assert "BEGIN_RISKS_JSON" in messages[1].content
+    assert "RISK-01" in messages[1].content
