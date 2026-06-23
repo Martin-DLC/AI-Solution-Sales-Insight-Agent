@@ -19,6 +19,7 @@ from schemas.insight_models import (
 )
 from schemas.solution_models import AIOpportunity, Risk, SolutionRecommendation
 from schemas.output_models import SalesInsightReport
+from agent.workflow_c.final_validation import FinalValidationResult
 
 
 def _normalized_descriptions_are_unique(
@@ -282,3 +283,16 @@ class NextBestActionNodeOutput(NextBestActionResult):
 
 class ReportComposerNodeOutput(StrictBaseModel):
     report_draft: SalesInsightReport
+
+
+class FinalValidationNodeOutput(StrictBaseModel):
+    final_validation_result: FinalValidationResult
+    final_report: SalesInsightReport | None
+
+    @model_validator(mode="after")
+    def validate_final_validation_output(self) -> Self:
+        if self.final_validation_result.passed and self.final_report is None:
+            raise ValueError("Final report is required when final validation passes.")
+        if not self.final_validation_result.passed and self.final_report is not None:
+            raise ValueError("Final report must be empty when final validation fails.")
+        return self
