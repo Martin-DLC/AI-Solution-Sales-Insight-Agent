@@ -31,6 +31,7 @@ from schemas.insight_models import (
 )
 from agent.workflow_c.retrieval_models import SolutionRetrievalResult
 from schemas.solution_models import AIOpportunity, Risk, SolutionRecommendation
+from schemas.output_models import SalesInsightReport
 
 
 class WorkflowNodeName(str, Enum):
@@ -343,6 +344,7 @@ class ArchitectureCGraphState(TypedDict, total=False):
     risk_traces: list[RiskTrace]
     next_best_actions: list[NextBestAction]
     action_traces: list[ActionTrace]
+    report_draft: SalesInsightReport
     human_review_decision: HumanReviewDecision
     node_records: Annotated[list[NodeExecutionRecord], operator.add]
     failures: Annotated[list[WorkflowFailure], operator.add]
@@ -377,6 +379,7 @@ class ArchitectureCStateSnapshot(StrictBaseModel):
     risk_traces: list[RiskTrace] | None = None
     next_best_actions: list[NextBestAction] | None = None
     action_traces: list[ActionTrace] | None = None
+    report_draft: SalesInsightReport | None = None
     human_review_decision: HumanReviewDecision | None = None
     node_records: list[NodeExecutionRecord] = Field(default_factory=list)
     failures: list[WorkflowFailure] = Field(default_factory=list)

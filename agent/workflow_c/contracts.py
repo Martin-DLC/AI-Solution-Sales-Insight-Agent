@@ -29,6 +29,7 @@ from agent.workflow_c.node_outputs import (
     InformationGapResult,
     NextBestActionNodeOutput,
     NextBestActionResult,
+    ReportComposerNodeOutput,
     RiskNodeOutput,
     RiskResult,
     SolutionRetrievalNodeOutput,
