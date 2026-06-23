@@ -29,6 +29,16 @@ class HumanReviewGateNode:
 
     def run(self, state: dict[str, Any], services: Any) -> dict[str, Any]:
         reasons = ["Architecture C MVP requires human review."]
+        final_validation_result = state.get("final_validation_result")
+        if final_validation_result is not None:
+            if final_validation_result.passed:
+                reasons.append("Final validation passed; business approval is still required.")
+            else:
+                reasons.append(
+                    "Final validation found "
+                    f"{final_validation_result.blocking_issue_count} blocking issue(s); "
+                    "review the draft and validation result."
+                )
         for failure in state.get("failures", []):
             if isinstance(failure, WorkflowFailure):
                 reasons.append(failure.message)

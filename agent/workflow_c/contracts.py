@@ -25,6 +25,7 @@ from agent.workflow_c.node_outputs import (
     ExplicitNeedNodeOutput,
     ExplicitNeedResult,
     FactExtractionNodeOutput,
+    FinalValidationNodeOutput,
     InformationGapNodeOutput,
     InformationGapResult,
     NextBestActionNodeOutput,

@@ -5,6 +5,7 @@ from agent.workflow_c.nodes.context_sufficiency import ContextSufficiencyNode
 from agent.workflow_c.nodes.deal_score import DealScoreNode
 from agent.workflow_c.nodes.explicit_need import ExplicitNeedNode
 from agent.workflow_c.nodes.fact_extraction import FactExtractionNode
+from agent.workflow_c.nodes.final_validation import FinalValidationNode
 from agent.workflow_c.nodes.fake_fact_extraction import FakeFactExtractionNode
 from agent.workflow_c.nodes.human_review_gate import HumanReviewGateNode
 from agent.workflow_c.nodes.information_gap import InformationGapNode
@@ -26,6 +27,7 @@ __all__ = [
     "DealScoreNode",
     "ExplicitNeedNode",
     "FactExtractionNode",
+    "FinalValidationNode",
     "FakeFactExtractionNode",
     "HumanReviewGateNode",
     "InformationGapNode",

@@ -6,6 +6,12 @@ from agent.workflow_c.graph import (
 )
 from agent.workflow_c.deal_scoring import calculate_deal_score, determine_deal_score_level
 from agent.workflow_c.decision_models import ActionTrace, RiskTrace, WorkflowActionType
+from agent.workflow_c.final_validation import (
+    FinalValidationIssue,
+    FinalValidationResult,
+    find_forbidden_report_keys,
+    validate_report_draft,
+)
 from agent.workflow_c.node_outputs import (
     AIOpportunityNodeOutput,
     AIOpportunityResult,
@@ -13,6 +19,7 @@ from agent.workflow_c.node_outputs import (
     BuyingIntentNodeOutput,
     DealScoreNodeOutput,
     ExplicitNeedResult,
+    FinalValidationNodeOutput,
     InformationGapNodeOutput,
     InformationGapResult,
     NextBestActionNodeOutput,
@@ -34,6 +41,7 @@ from agent.workflow_c.nodes import (
     DealScoreNode,
     ExplicitNeedNode,
     FactExtractionNode,
+    FinalValidationNode,
     InformationGapNode,
     NextBestActionNode,
     ReportComposerNode,
@@ -108,6 +116,10 @@ __all__ = [
     "ExplicitNeedNode",
     "ExplicitNeedResult",
     "FactExtractionNode",
+    "FinalValidationIssue",
+    "FinalValidationNode",
+    "FinalValidationNodeOutput",
+    "FinalValidationResult",
     "HumanReviewDecision",
     "InformationGapNode",
     "InformationGapNodeOutput",
@@ -149,6 +161,7 @@ __all__ = [
     "compose_sales_insight_report",
     "create_initial_state",
     "determine_deal_score_level",
+    "find_forbidden_report_keys",
     "retrieve_solution_candidates",
     "run_architecture_c_skeleton",
     "render_ai_opportunity_messages",
@@ -165,6 +178,7 @@ __all__ = [
     "score_solution_candidate",
     "tokenize_retrieval_text",
     "utc_now",
+    "validate_report_draft",
     "validate_recommendation_in_retrieved_candidates",
     "validate_solution_recommendation",
 ]
