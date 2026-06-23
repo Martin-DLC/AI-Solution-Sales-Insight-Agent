@@ -21,7 +21,7 @@ def clarification_case_and_client():
     case.customer_profile.current_systems = []
     case.known_constraints = []
     case.meeting.participants = []
-    client = FakeWorkflowLLMClient.with_default_batch3b_responses()
+    client = FakeWorkflowLLMClient.with_default_batch4b_responses()
     payload = client.responses_by_node[WorkflowNodeName.fact_extraction]["fact_extraction"]
     payload["facts"] = [payload["facts"][0]]
     payload["facts"][0]["category"] = "other"
@@ -31,7 +31,7 @@ def clarification_case_and_client():
 def test_batch3b_complete_path_node_order_includes_solution_retrieval() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch4b_responses()),
     )
 
     assert [record.node_name for record in snapshot.node_records] == [
@@ -49,16 +49,18 @@ def test_batch3b_complete_path_node_order_includes_solution_retrieval() -> None:
         WorkflowNodeName.solution_retrieval,
         WorkflowNodeName.solution_recommendation,
         WorkflowNodeName.deal_score,
+        WorkflowNodeName.risk,
+        WorkflowNodeName.next_best_action,
         WorkflowNodeName.human_review_gate,
     ]
 
 
-def test_batch3b_complete_path_llm_calls_remain_nine() -> None:
-    client = FakeWorkflowLLMClient.with_default_batch3b_responses()
+def test_batch3b_complete_path_llm_calls_are_eleven_after_batch4b() -> None:
+    client = FakeWorkflowLLMClient.with_default_batch4b_responses()
 
     run_architecture_c_skeleton(dev_01_case(), WorkflowServices(llm=client))
 
-    assert client.total_calls == 9
+    assert client.total_calls == 11
     assert client.calls_for_node(WorkflowNodeName.solution_retrieval) == 0
     assert client.calls_for_node(WorkflowNodeName.deal_score) == 0
 
@@ -66,7 +68,7 @@ def test_batch3b_complete_path_llm_calls_remain_nine() -> None:
 def test_batch3b_generates_retrieved_solutions() -> None:
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch4b_responses()),
     )
 
     assert snapshot.retrieved_solutions is not None
@@ -113,7 +115,7 @@ def test_solution_retrieval_failure_enters_human_review(monkeypatch) -> None:
 
     snapshot = run_architecture_c_skeleton(
         dev_01_case(),
-        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch3b_responses()),
+        WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch4b_responses()),
     )
     order = [record.node_name for record in snapshot.node_records]
 

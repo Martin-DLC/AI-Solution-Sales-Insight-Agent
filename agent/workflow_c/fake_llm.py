@@ -12,6 +12,8 @@ from llm.errors import LLMRequestError
 from llm.models import LLMMessage, LLMUsage
 from schemas.common_models import (
     BusinessDimension,
+    ActionOwner,
+    ActionPriority,
     ClaimType,
     ConfidenceLevel,
     ContextQuality,
@@ -21,12 +23,15 @@ from schemas.common_models import (
     IntentLevel,
     OpportunitySuitability,
     PriorityLevel,
+    ProbabilityLevel,
+    RiskCategory,
     SalesRole,
     SalesStage,
     SeverityLevel,
     StakeholderAttitude,
     SolutionFitLevel,
 )
+from agent.workflow_c.decision_models import WorkflowActionType
 
 
 @dataclass
@@ -311,6 +316,33 @@ class FakeWorkflowLLMClient:
             )
         return client
 
+    @classmethod
+    def with_default_batch4b_responses(
+        cls,
+        *,
+        request_error_nodes: set[WorkflowNodeName | str] | None = None,
+        invalid_json_nodes: set[WorkflowNodeName | str] | None = None,
+        schema_error_nodes: set[WorkflowNodeName | str] | None = None,
+        custom_payloads: Mapping[WorkflowNodeName | str, dict[str, Any]] | None = None,
+    ) -> "FakeWorkflowLLMClient":
+        client = cls.with_default_batch4a_responses(
+            request_error_nodes=request_error_nodes,
+            invalid_json_nodes=invalid_json_nodes,
+            schema_error_nodes=schema_error_nodes,
+            custom_payloads=custom_payloads,
+        )
+        custom_nodes = {
+            _normalize_node(node)
+            for node in (custom_payloads or {})
+        }
+        if WorkflowNodeName.risk not in custom_nodes:
+            client.dynamic_payload_builders[WorkflowNodeName.risk] = _build_batch4b_risk_payload
+        if WorkflowNodeName.next_best_action not in custom_nodes:
+            client.dynamic_payload_builders[WorkflowNodeName.next_best_action] = (
+                _build_batch4b_next_best_action_payload
+            )
+        return client
+
     @property
     def total_calls(self) -> int:
         return self.call_count
@@ -410,6 +442,10 @@ def _schema_error_payload_for_node(node: WorkflowNodeName) -> dict[str, Any]:
                 }
             ]
         }
+    if node is WorkflowNodeName.risk:
+        return {"risks_and_objections": [], "risk_traces": []}
+    if node is WorkflowNodeName.next_best_action:
+        return {"next_best_actions": [], "action_traces": []}
     return {}
 
 
@@ -469,6 +505,98 @@ def _last_user_message_content(messages: list[LLMMessage]) -> str:
         if message.role.value == "user":
             return message.content
     return messages[-1].content if messages else ""
+
+
+def _build_batch4b_risk_payload(
+    node_name: WorkflowNodeName,
+    messages: list[LLMMessage],
+) -> dict[str, Any]:
+    if node_name is not WorkflowNodeName.risk:
+        return {}
+    content = _last_user_message_content(messages)
+    gaps = _extract_json_block(content, "INFORMATION_GAPS")
+    opportunities = _extract_json_block(content, "AI_OPPORTUNITIES")
+    gap_ids = [gap["gap_id"] for gap in gaps]
+    opportunity_ids = [opportunity["opportunity_id"] for opportunity in opportunities]
+    primary_gap_id = gap_ids[0] if gap_ids else None
+    primary_opportunity_id = opportunity_ids[0] if opportunity_ids else None
+    return {
+        "risks_and_objections": [
+            {
+                "risk_id": "RISK-01",
+                "category": RiskCategory.budget.value,
+                "description": "预算和决策链仍未确认，可能影响方案推进节奏。",
+                "severity": SeverityLevel.high.value,
+                "probability": ProbabilityLevel.medium.value,
+                "impact": "可能导致POC范围和采购推进计划无法及时确认。",
+                "mitigation": "先确认预算审批路径、决策角色和下一阶段准入条件。",
+                "claim_type": ClaimType.inference.value,
+                "confidence": ConfidenceLevel.medium.value,
+                "evidence": [
+                    {
+                        "source_id": "CONSTRAINT-01",
+                        "source_type": EvidenceSourceType.known_constraint.value,
+                        "evidence_summary": "已知限制中包含预算审批或推进约束。",
+                    }
+                ],
+            }
+        ],
+        "risk_traces": [
+            {
+                "risk_id": "RISK-01",
+                "related_gap_ids": [primary_gap_id] if primary_gap_id else [],
+                "related_opportunity_ids": [primary_opportunity_id] if primary_opportunity_id else [],
+            }
+        ],
+    }
+
+
+def _build_batch4b_next_best_action_payload(
+    node_name: WorkflowNodeName,
+    messages: list[LLMMessage],
+) -> dict[str, Any]:
+    if node_name is not WorkflowNodeName.next_best_action:
+        return {}
+    content = _last_user_message_content(messages)
+    gaps = _extract_json_block(content, "INFORMATION_GAPS")
+    risks = _extract_json_block(content, "RISKS")
+    gap_ids = [gap["gap_id"] for gap in gaps]
+    risk_ids = [risk["risk_id"] for risk in risks]
+    primary_gap_id = gap_ids[0] if gap_ids else None
+    primary_risk_id = risk_ids[0] if risk_ids else None
+    return {
+        "next_best_actions": [
+            {
+                "action_id": "ACT-01",
+                "priority": ActionPriority.P0.value,
+                "objective": "确认预算与决策链关键缺口",
+                "action": "组织预算和决策链确认会议",
+                "owner": ActionOwner.sales.value,
+                "required_participants": ["销售负责人", "客户业务负责人"],
+                "required_inputs": ["预算审批路径", "决策角色清单"],
+                "expected_output": "形成预算状态和决策链确认记录",
+                "suggested_timeframe": "下一次客户会议前",
+                "success_criteria": "客户确认预算状态、审批路径和关键决策角色",
+                "related_gap_ids": [primary_gap_id] if primary_gap_id else [],
+                "reasoning_summary": "当前商机仍存在预算和决策链缺口，P0行动应先完成澄清。",
+            }
+        ],
+        "action_traces": [
+            {
+                "action_id": "ACT-01",
+                "related_risk_ids": [primary_risk_id] if primary_risk_id else [],
+                "action_type": WorkflowActionType.clarification.value,
+            }
+        ],
+    }
+
+
+def _extract_json_block(content: str, block_name: str) -> Any:
+    start_marker = f"BEGIN_{block_name}_JSON"
+    end_marker = f"END_{block_name}_JSON"
+    start_index = content.index(start_marker) + len(start_marker)
+    end_index = content.index(end_marker, start_index)
+    return json.loads(content[start_index:end_index].strip())
 
 
 def _extract_json_after_marker(content: str, marker: str) -> Any:

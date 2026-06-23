@@ -74,16 +74,21 @@ Python 3.11 is required.
 - Deal Score measures opportunity maturity and does not represent close probability.
 - Zero-candidate solution paths still produce a limited Deal Score.
 - Deal Score does not increase LLM call count.
-- Architecture C currently uses Fake LLM for Batch 4A offline tests.
-- Risk, Next Best Action, and final report generation are not implemented yet.
+- Architecture C Batch 4B is implemented with Risk and Next Best Action nodes.
+- Risk is based on Information Gaps, Known Constraints, Deal Score, and solution state.
+- P0 actions must be grounded by High/Critical Information Gaps or Risks through Workflow traces.
+- The workflow does not automatically send email, update CRM, send quotes, or commit to go-live dates.
+- Architecture C normal full path currently contains 11 LLM node calls.
+- Architecture C currently uses Fake LLM for Batch 4B offline tests.
+- Report Composer, Final Validation, and real model execution are not implemented yet.
 - Architecture C business understanding now reaches Information Gap.
 - clarification_only now generates concrete clarification questions before human review.
 - Information Gap combines Context Sufficiency, Buying Intent unknown factors, and unconfirmed Stakeholders.
 - Architecture C nodes use independent Prompt contracts and Pydantic output contracts.
 - Architecture C Evidence references are cross-validated by code before downstream workflow steps.
-- Architecture C currently contains an offline graph through solution recommendation and human review.
+- Architecture C currently contains an offline graph through next best action and human review.
 - Architecture C uses Fake LLM and does not call a real model.
-- Architecture C has not implemented RAG, Risk, Next Best Action, or final report generation.
+- Architecture C has not implemented RAG or final report generation.
 - Architecture C has not connected to a real model or RAG.
 - Baseline A and Baseline B are both single model calls.
 - Baseline B does not use RAG, Workflow, or Critic.

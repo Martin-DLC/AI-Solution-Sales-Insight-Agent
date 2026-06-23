@@ -9,6 +9,8 @@ from agent.workflow_c.nodes.fake_fact_extraction import FakeFactExtractionNode
 from agent.workflow_c.nodes.human_review_gate import HumanReviewGateNode
 from agent.workflow_c.nodes.information_gap import InformationGapNode
 from agent.workflow_c.nodes.input_validation import InputValidationNode
+from agent.workflow_c.nodes.next_best_action import NextBestActionNode
+from agent.workflow_c.nodes.risk import RiskNode
 from agent.workflow_c.nodes.source_indexing import SourceIndexingNode
 from agent.workflow_c.nodes.solution_retrieval import SolutionRetrievalNode
 from agent.workflow_c.nodes.solution_recommendation import SolutionRecommendationNode
@@ -27,6 +29,8 @@ __all__ = [
     "HumanReviewGateNode",
     "InformationGapNode",
     "InputValidationNode",
+    "NextBestActionNode",
+    "RiskNode",
     "SourceIndexingNode",
     "SolutionRetrievalNode",
     "SolutionRecommendationNode",
