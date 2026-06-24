@@ -1,8 +1,8 @@
 # AI Solution Sales Insight Agent
 
-> 一个面向企业 AI 解决方案销售场景的可审计分析 Agent，将客户访谈转化为需求洞察、商机判断、AI 机会、方案建议、风险与下一步行动。
+一个面向企业 AI 解决方案销售场景的可审计 Sales Insight Agent，将客户访谈、销售备注和企业方案资料转化为结构化需求洞察、商机资格判断、AI 机会、方案建议、风险识别与下一步行动。
 
-这是一个求职展示型企业 Agent MVP，不是生产级自动销售系统。所有最终结果都需要 Human Review。
+系统通过 Evidence Grounding、节点级 Schema、跨节点 Business Rules、候选方案约束、确定性 Deal Score、Final Validation 和 Human Review，将传统的“一次性生成销售报告”升级为可验证、可定位、可追踪的企业级 Agent Workflow。
 
 ## Project Charter
 
@@ -15,7 +15,7 @@
 - 方案是否受候选集约束
 - Deal Score 是否可解释
 - 失败是否能被准确定位
-- 最终结果是否适合 Human Review
+- Human Review Gate 的输入是否达到业务审批标准
 
 ## Evaluation Rubric
 
@@ -109,7 +109,7 @@ flowchart LR
 3. 未确认 Stakeholder 不能直接升级成决策人
 4. Solution 只能来自企业方案库和 Top-K 候选
 5. Deal Score 由确定性规则计算
-6. Final Report 必须通过 Final Validation 并等待 Human Review
+6. Final Report 必须通过 Final Validation；在进入客户沟通、方案决策或外部系统前，由 Human Review Gate 完成业务审批
 
 ## 技术栈
 
