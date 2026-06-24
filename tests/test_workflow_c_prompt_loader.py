@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 import pytest
 
 from agent.workflow_c.executor import execute_node
@@ -66,6 +68,17 @@ def test_fact_prompt_templates_load() -> None:
     assert "{{SOURCE_INDEX_JSON}}" in user_template
 
 
+def test_fact_prompt_templates_load_v2() -> None:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.fact_extraction,
+        "fact_extraction_v2",
+    )
+
+    assert "{{OUTPUT_SCHEMA_JSON}}" in system_template
+    assert "{{SOURCE_INDEX_JSON}}" in user_template
+    assert "{{ALLOWED_EVIDENCE_SOURCES_JSON}}" in user_template
+
+
 def test_explicit_need_prompt_templates_load() -> None:
     system_template, user_template = load_node_prompt_templates(
         WorkflowNodeName.explicit_need,
@@ -85,6 +98,19 @@ def test_underlying_pain_prompt_templates_load() -> None:
 
     assert system_template.count("{{OUTPUT_SCHEMA_JSON}}") == 1
     assert user_template.count("{{SOURCE_INDEX_JSON}}") == 1
+    assert user_template.count("{{FACTS_JSON}}") == 1
+    assert user_template.count("{{EXPLICIT_NEEDS_JSON}}") == 1
+
+
+def test_underlying_pain_prompt_templates_load_v2() -> None:
+    system_template, user_template = load_node_prompt_templates(
+        WorkflowNodeName.underlying_pain,
+        "underlying_pain_v2",
+    )
+
+    assert system_template.count("{{OUTPUT_SCHEMA_JSON}}") == 1
+    assert user_template.count("{{SOURCE_INDEX_JSON}}") == 1
+    assert user_template.count("{{ALLOWED_EVIDENCE_SOURCES_JSON}}") == 1
     assert user_template.count("{{FACTS_JSON}}") == 1
     assert user_template.count("{{EXPLICIT_NEEDS_JSON}}") == 1
 
@@ -432,8 +458,10 @@ def test_solution_recommendation_prompt_renders_retrieved_candidates() -> None:
 def test_prompts_do_not_include_reference_pack_terms() -> None:
     combined = "\n".join(
         load_node_prompt_templates(WorkflowNodeName.fact_extraction, "fact_extraction_v1")
+        + load_node_prompt_templates(WorkflowNodeName.fact_extraction, "fact_extraction_v2")
         + load_node_prompt_templates(WorkflowNodeName.explicit_need, "explicit_need_v1")
         + load_node_prompt_templates(WorkflowNodeName.underlying_pain, "underlying_pain_v1")
+        + load_node_prompt_templates(WorkflowNodeName.underlying_pain, "underlying_pain_v2")
         + load_node_prompt_templates(WorkflowNodeName.business_impact, "business_impact_v1")
         + load_node_prompt_templates(WorkflowNodeName.buying_intent, "buying_intent_v1")
         + load_node_prompt_templates(WorkflowNodeName.stakeholder, "stakeholder_v1")
@@ -459,12 +487,26 @@ def test_prompts_do_not_include_reference_pack_terms() -> None:
 def test_fact_prompt_forbids_downstream_outputs() -> None:
     system_template, _ = load_node_prompt_templates(
         WorkflowNodeName.fact_extraction,
-        "fact_extraction_v1",
+        "fact_extraction_v2",
     )
 
     assert "Do not infer underlying pain" in system_template
-    assert "recommendations" in system_template
-    assert "next actions" in system_template
+    assert "business_rule" in system_template
+    assert "evidence_summary" in system_template
+    assert "8 characters" in system_template
+
+
+def test_fact_prompt_includes_allowed_evidence_sources_list() -> None:
+    messages = render_fact_extraction_messages(source_index(), version="fact_extraction_v2")
+    user_content = messages[1].content
+    marker = "ALLOWED EVIDENCE SOURCES\n"
+    allowed_json = user_content.split(marker, 1)[1].split("\n\n", 1)[0]
+    allowed_sources = json.loads(allowed_json)
+
+    assert allowed_sources
+    assert set(allowed_sources[0]) == {"source_id", "source_type"}
+    assert allowed_sources[0]["source_id"] == "PROFILE-01"
+    assert allowed_sources[0]["source_type"] == "customer_profile"
 
 
 def test_explicit_need_prompt_requires_fact_claim_type() -> None:
@@ -483,6 +525,28 @@ def test_explicit_need_prompt_mentions_unverified_notes() -> None:
     )
 
     assert "verified=false" in system_template
+
+
+def test_underlying_pain_prompt_mentions_allowed_evidence_sources() -> None:
+    messages = render_underlying_pain_messages(
+        source_index(),
+        FactExtractionResult.model_validate(default_fact_response()),
+        [
+            ExplicitNeed.model_validate(item)
+            for item in default_explicit_need_response()["explicit_needs"]
+        ],
+        version="underlying_pain_v2",
+    )
+    user_content = messages[1].content
+    marker = "ALLOWED EVIDENCE SOURCES\n"
+    allowed_json = user_content.split(marker, 1)[1].split("\n\n", 1)[0]
+    allowed_sources = json.loads(allowed_json)
+
+    assert allowed_sources
+    assert set(allowed_sources[0]) == {"source_id", "source_type"}
+    assert "business_rule" in messages[0].content
+    assert "evidence_summary" in messages[0].content
+    assert "8 characters" in messages[0].content
 
 
 def test_new_prompt_rendering_is_stable() -> None:

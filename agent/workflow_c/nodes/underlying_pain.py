@@ -36,7 +36,7 @@ class UnderlyingPainNode:
         produced_state_fields=("underlying_pains",),
         output_model=UnderlyingPainNodeOutput,
         failure_policy=NodeFailurePolicy.require_human_review,
-        prompt_version="underlying_pain_v1",
+        prompt_version="underlying_pain_v2",
     )
 
     def run(self, state: dict[str, Any], services: Any) -> dict[str, Any]:
