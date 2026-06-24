@@ -46,6 +46,10 @@ _PROMPT_REGISTRY: dict[tuple[WorkflowNodeName, str], tuple[str, str]] = {
         "fact_extraction_v1",
     ): ("fact_extraction_system_v1.txt", "fact_extraction_user_v1.txt"),
     (
+        WorkflowNodeName.fact_extraction,
+        "fact_extraction_v2",
+    ): ("fact_extraction_system_v2.txt", "fact_extraction_user_v2.txt"),
+    (
         WorkflowNodeName.explicit_need,
         "explicit_need_v1",
     ): ("explicit_need_system_v1.txt", "explicit_need_user_v1.txt"),
@@ -53,6 +57,10 @@ _PROMPT_REGISTRY: dict[tuple[WorkflowNodeName, str], tuple[str, str]] = {
         WorkflowNodeName.underlying_pain,
         "underlying_pain_v1",
     ): ("underlying_pain_system_v1.txt", "underlying_pain_user_v1.txt"),
+    (
+        WorkflowNodeName.underlying_pain,
+        "underlying_pain_v2",
+    ): ("underlying_pain_system_v2.txt", "underlying_pain_user_v2.txt"),
     (
         WorkflowNodeName.business_impact,
         "business_impact_v1",
@@ -99,6 +107,14 @@ _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str]
         ("user", "{{SOURCE_INDEX_JSON}}"),
     ),
     (
+        WorkflowNodeName.fact_extraction,
+        "fact_extraction_v2",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{ALLOWED_EVIDENCE_SOURCES_JSON}}"),
+    ),
+    (
         WorkflowNodeName.explicit_need,
         "explicit_need_v1",
     ): (
@@ -112,6 +128,16 @@ _REQUIRED_PLACEHOLDERS: dict[tuple[WorkflowNodeName, str], tuple[tuple[str, str]
     ): (
         ("system", "{{OUTPUT_SCHEMA_JSON}}"),
         ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{FACTS_JSON}}"),
+        ("user", "{{EXPLICIT_NEEDS_JSON}}"),
+    ),
+    (
+        WorkflowNodeName.underlying_pain,
+        "underlying_pain_v2",
+    ): (
+        ("system", "{{OUTPUT_SCHEMA_JSON}}"),
+        ("user", "{{SOURCE_INDEX_JSON}}"),
+        ("user", "{{ALLOWED_EVIDENCE_SOURCES_JSON}}"),
         ("user", "{{FACTS_JSON}}"),
         ("user", "{{EXPLICIT_NEEDS_JSON}}"),
     ),
@@ -224,7 +250,7 @@ def load_node_prompt_templates(
 
 def render_fact_extraction_messages(
     source_index: SourceIndexResult,
-    version: str = "fact_extraction_v1",
+    version: str = "fact_extraction_v2",
 ) -> list[LLMMessage]:
     system_template, user_template = load_node_prompt_templates(
         WorkflowNodeName.fact_extraction,
@@ -232,6 +258,7 @@ def render_fact_extraction_messages(
     )
     schema_json = _dump_json(FactExtractionNodeOutput.model_json_schema())
     source_index_json = _dump_json(source_index.model_dump(mode="json"))
+    allowed_evidence_sources_json = _dump_json(_allowed_evidence_sources(source_index))
     return [
         LLMMessage(
             role=LLMRole.system,
@@ -239,7 +266,11 @@ def render_fact_extraction_messages(
         ),
         LLMMessage(
             role=LLMRole.user,
-            content=user_template.replace("{{SOURCE_INDEX_JSON}}", source_index_json),
+            content=(
+                user_template
+                .replace("{{SOURCE_INDEX_JSON}}", source_index_json)
+                .replace("{{ALLOWED_EVIDENCE_SOURCES_JSON}}", allowed_evidence_sources_json)
+            ),
         ),
     ]
 
@@ -277,7 +308,7 @@ def render_underlying_pain_messages(
     fact_extraction: FactExtractionResult,
     explicit_needs: list[ExplicitNeed],
     *,
-    version: str = "underlying_pain_v1",
+    version: str = "underlying_pain_v2",
 ) -> list[LLMMessage]:
     system_template, user_template = load_node_prompt_templates(
         WorkflowNodeName.underlying_pain,
@@ -285,6 +316,7 @@ def render_underlying_pain_messages(
     )
     schema_json = _dump_json(UnderlyingPainNodeOutput.model_json_schema())
     source_index_json = _dump_json(source_index.model_dump(mode="json"))
+    allowed_evidence_sources_json = _dump_json(_allowed_evidence_sources(source_index))
     facts_json = _dump_json(fact_extraction.model_dump(mode="json"))
     explicit_needs_json = _dump_json(
         [need.model_dump(mode="json") for need in explicit_needs]
@@ -299,6 +331,7 @@ def render_underlying_pain_messages(
             content=(
                 user_template
                 .replace("{{SOURCE_INDEX_JSON}}", source_index_json)
+                .replace("{{ALLOWED_EVIDENCE_SOURCES_JSON}}", allowed_evidence_sources_json)
                 .replace("{{FACTS_JSON}}", facts_json)
                 .replace("{{EXPLICIT_NEEDS_JSON}}", explicit_needs_json)
             ),
@@ -635,3 +668,13 @@ def _validate_placeholders(
 
 def _dump_json(value: object) -> str:
     return json.dumps(value, ensure_ascii=False, indent=2)
+
+
+def _allowed_evidence_sources(source_index: SourceIndexResult) -> list[dict[str, str]]:
+    return [
+        {
+            "source_id": item.source_id,
+            "source_type": item.source_type.value,
+        }
+        for item in source_index.items
+    ]

@@ -1,0 +1,17 @@
+NODE: underlying_pain
+
+Source Index:
+{{SOURCE_INDEX_JSON}}
+
+ALLOWED EVIDENCE SOURCES
+{{ALLOWED_EVIDENCE_SOURCES_JSON}}
+
+Fact Extraction:
+{{FACTS_JSON}}
+
+Explicit Needs:
+{{EXPLICIT_NEEDS_JSON}}
+
+Only identify potential pains.
+Use the allowed evidence source list as the legal source_id/source_type reference.
+Return the JSON object for the underlying_pain node.

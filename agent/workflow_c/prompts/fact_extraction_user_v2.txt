@@ -1,0 +1,11 @@
+NODE: fact_extraction
+
+Evidence Source Index:
+{{SOURCE_INDEX_JSON}}
+
+ALLOWED EVIDENCE SOURCES
+{{ALLOWED_EVIDENCE_SOURCES_JSON}}
+
+Extract only verified facts and clearly unknown fields from the Source Index.
+Use the allowed evidence source list as the legal source_id/source_type reference.
+Return the JSON object for the fact_extraction node.
