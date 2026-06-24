@@ -109,3 +109,11 @@ Python 3.11 is required.
 - Dry Run does not consume API.
 - Live results are saved under `data/runtime`, which is ignored by Git.
 - RAG and web demo have not been implemented yet.
+
+## Experiment Results
+
+- Architecture A is fast and low-cost, but it does not provide full business Schema guarantees.
+- Architecture B reduces structural errors step by step, but it still has not passed the full Schema contract.
+- Architecture C node-level guardrails isolated four real business errors, but the live flow still has not produced a stable `final_report`.
+- See [docs/08_Architecture_ABC_Experiment_Report_V1.md](docs/08_Architecture_ABC_Experiment_Report_V1.md) for the full experiment summary.
+- The MVP stops adding new nodes here; later work should focus on cost optimization and presentation material.
