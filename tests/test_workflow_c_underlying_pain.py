@@ -91,7 +91,7 @@ def test_prompt_version_is_correct() -> None:
         WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1b_responses()),
     )
 
-    assert patch["node_records"][0].prompt_version == "underlying_pain_v1"
+    assert patch["node_records"][0].prompt_version == "underlying_pain_v2"
 
 
 def test_content_json_without_parsed_json_passes() -> None:

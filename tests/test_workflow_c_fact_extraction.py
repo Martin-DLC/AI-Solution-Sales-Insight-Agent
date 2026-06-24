@@ -47,7 +47,7 @@ def test_fact_extraction_uses_formal_prompt_version() -> None:
         WorkflowServices(llm=FakeWorkflowLLMClient.with_default_batch1a_responses()),
     )
 
-    assert patch["node_records"][0].prompt_version == "fact_extraction_v1"
+    assert patch["node_records"][0].prompt_version == "fact_extraction_v2"
 
 
 def test_fact_extraction_invalid_json_fails_as_json_parse() -> None:

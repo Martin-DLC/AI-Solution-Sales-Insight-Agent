@@ -24,7 +24,7 @@ class FactExtractionNode:
         produced_state_fields=("fact_extraction",),
         output_model=FactExtractionNodeOutput,
         failure_policy=NodeFailurePolicy.require_human_review,
-        prompt_version="fact_extraction_v1",
+        prompt_version="fact_extraction_v2",
     )
 
     def run(self, state: dict[str, Any], services: Any) -> dict[str, Any]:
