@@ -1,119 +1,208 @@
 # AI Solution Sales Insight Agent
 
-## Status
+> 一个面向企业 AI 解决方案销售场景的可审计分析 Agent，将客户访谈转化为需求洞察、商机判断、AI 机会、方案建议、风险与下一步行动。
 
-This project is currently in Sprint 0.
+这是一个求职展示型企业 Agent MVP，不是生产级自动销售系统。所有最终结果都需要 Human Review。
 
-Sprint 0 only establishes the development environment baseline and the minimal project skeleton.
+## Project Charter
 
-Full agent functionality has not been implemented yet. This project does not currently include RAG, Streamlit, or multi-agent workflows.
+本项目的目标是把销售分析从“单次生成一整份大报告”改造成“可验证、可定位、可审计的节点式 Workflow”。
 
-## Python Requirement
+我们关注的是：
 
-Python 3.11 is required.
+- 业务事实是否被正确提取
+- 推断是否和证据一致
+- 方案是否受候选集约束
+- Deal Score 是否可解释
+- 失败是否能被准确定位
+- 最终结果是否适合 Human Review
 
-## Current Scope
+## Evaluation Rubric
 
-- Minimal project structure
-- Environment readiness entry point
-- Basic environment tests
+这个项目的好坏，不看“模型说得多漂亮”，主要看以下几件事：
 
-## Current Progress
+- 证据是否 grounded
+- Schema 是否稳定遵守
+- 跨节点业务规则是否一致
+- 候选边界是否被尊重
+- 纯代码节点是否可验证
+- 失败是否能被清晰归类
+- 是否保留 Human Review 边界
 
-- Input Schema is complete.
-- Output Schema is complete.
-- Hidden Reference Pack Schema is complete.
-- JSONL loader and runtime isolation are complete.
-- Three Development seed cases have been converted to official JSONL.
-- Runtime Cases and Hidden Reference Pack are isolated.
-- Official seed dataset validation script is complete.
-- Data sync SOP is complete.
-- Next stage is Baseline A/B and the model adapter layer.
-- Provider-neutral model adapter layer is complete.
-- LLM access uses an OpenAI-compatible interface.
-- pytest does not make live API calls.
-- Real API calls require explicitly running `./.venv/bin/python scripts/smoke_test_llm.py --live`.
-- Baseline A/B has not been implemented yet.
-- Baseline A plain Prompt runner is complete.
-- Baseline A CLI defaults to Dry Run and does not consume API.
-- Only `--live` calls the model.
-- Live Baseline A outputs are saved under `data/runtime/baseline_runs`, which is ignored by Git.
-- Baseline A does not use the structured Output Schema.
-- Baseline A plain text Prompt is complete.
-- Baseline B high-quality structured Prompt is complete.
-- Baseline B uses the full SalesInsightReport Schema.
-- Baseline B saves invalid JSON diagnostics separately from Schema validation errors.
-- Baseline B v1 showed JSON and Schema adherence failures in live testing.
-- Baseline B v1 is preserved and not overwritten.
-- Baseline B v2 only strengthens the Prompt contract.
-- Baseline B v2 does not use RAG, Workflow, Critic, or automatic repair.
-- Running Baseline B v2 requires explicitly passing `--prompt-version baseline_b_v2`.
-- Baseline B v2 reduced the live Schema errors from 12 to 5.
-- Baseline B v3 only adds owner enum and text specificity contract rules.
-- After Baseline B v3, DEV-01-specific Prompt tuning should stop.
-- Baseline B v3 is still one model call without automatic repair, RAG, Workflow, or Critic.
-- Baseline A/B experiment phase is frozen.
-- Baseline B v3 still has 2 Schema errors in the recorded DEV-01 run.
-- No additional Baseline B Prompt versions will be added for DEV-01.
-- The next architecture phase is Architecture C stepwise Workflow.
-- Architecture C design is complete.
-- Architecture C minimal Workflow skeleton is implemented.
-- Architecture C Batch 1A is implemented with formal Fact Extraction and Explicit Need nodes.
-- Architecture C now validates evidence cross-references before downstream workflow steps.
-- Architecture C Batch 1B is implemented with Underlying Pain and Business Impact nodes.
-- Architecture C Batch 2A is implemented with Buying Intent and Stakeholder nodes.
-- Architecture C Batch 2B is implemented with Information Gap.
-- Architecture C Batch 3A is implemented with AI Opportunity and Solution Recommendation.
-- Architecture C Batch 3B is implemented with deterministic lightweight solution retrieval.
-- AI Opportunity can explicitly mark opportunities as not suitable for AI or insufficient information.
-- Solution Recommendation can only select from retrieved candidates that originate in `available_solution_library`.
-- The current retrieval layer is lexical, in-process, deterministic, and does not use RAG or embeddings.
-- Architecture C Batch 4A is implemented with pure-code deterministic Deal Score.
-- Deal Score uses fixed seven dimensions and every dimension includes evidence and reasoning.
-- Deal Score total is calculated by rules; LLM output cannot directly provide the score.
-- Deal Score measures opportunity maturity and does not represent close probability.
-- Zero-candidate solution paths still produce a limited Deal Score.
-- Deal Score does not increase LLM call count.
-- Architecture C Batch 4B is implemented with Risk and Next Best Action nodes.
-- Risk is based on Information Gaps, Known Constraints, Deal Score, and solution state.
-- P0 actions must be grounded by High/Critical Information Gaps or Risks through Workflow traces.
-- The workflow does not automatically send email, update CRM, send quotes, or commit to go-live dates.
-- Architecture C normal full path currently contains 11 LLM node calls.
-- Architecture C currently uses Fake LLM for Batch 4B offline tests.
-- Architecture C Batch 5A is implemented with a pure-code Report Composer.
-- Report Composer only assembles already validated node results into a `SalesInsightReport` draft.
-- Report Composer does not call the LLM, re-analyze the case, or modify upstream node outputs.
-- Architecture C core workflow is now complete.
-- Final Validation is implemented as deterministic cross-field code validation.
-- If Final Validation fails, the workflow keeps `report_draft` and leaves `final_report` empty.
-- The workflow does not perform automatic repair.
-- All final outputs still require Human Review.
-- The next stage is real model execution and formal A/B/C evaluation.
-- Architecture C core Workflow has a real LLM adapter and runtime runner.
-- Architecture C CLI defaults to Dry Run and does not consume API.
-- Live Architecture C runs save node prompts, raw responses, parsed JSON, workflow state, validation result, and final status.
-- Architecture C runtime artifacts are saved under `data/runtime`, which is ignored by Git.
-- Architecture C runtime does not read the Hidden Reference Pack.
-- The next stage is DEV-01, DEV-04, DEV-05 real experiments and A/B/C comparison.
-- Architecture C business understanding now reaches Information Gap.
-- clarification_only now generates concrete clarification questions before human review.
-- Information Gap combines Context Sufficiency, Buying Intent unknown factors, and unconfirmed Stakeholders.
-- Architecture C nodes use independent Prompt contracts and Pydantic output contracts.
-- Architecture C Evidence references are cross-validated by code before downstream workflow steps.
-- Architecture C currently contains an offline graph through next best action and human review.
-- Architecture C uses Fake LLM and does not call a real model.
-- Architecture C has not implemented RAG or final report generation.
-- Architecture C has not connected to a real model or RAG.
-- Baseline A and Baseline B are both single model calls.
-- Baseline B does not use RAG, Workflow, or Critic.
-- Dry Run does not consume API.
-- Live results are saved under `data/runtime`, which is ignored by Git.
-- RAG and web demo have not been implemented yet.
+## 业务问题
 
-## Experiment Results
+传统销售分析常见的问题是：
 
-- Architecture A is fast and low-cost, but it does not provide full business Schema guarantees.
-- Architecture B reduces structural errors step by step, but it still has not passed the full Schema contract.
-- Architecture C node-level guardrails isolated four real business errors, but the live flow still has not produced a stable `final_report`.
-- See [docs/08_Architecture_ABC_Experiment_Report_V1.md](docs/08_Architecture_ABC_Experiment_Report_V1.md) for the full experiment summary.
-- The MVP stops adding new nodes here; later work should focus on cost optimization and presentation material.
+- 客户需求、痛点和事实混在一起
+- 销售容易把积极联系人误判成决策人
+- LLM 容易推荐企业并不存在的方案
+- 大模型生成的 Deal Score 不可解释
+- 单 Prompt 复杂 JSON 难以稳定遵守业务合同
+- 错误通常只能在整份报告完成后发现
+
+## 项目核心能力
+
+1. Evidence-grounded Fact Extraction
+2. Explicit Need / Underlying Pain / Business Impact
+3. Buying Intent 与 Stakeholder 判断
+4. Information Gap 与澄清问题
+5. AI Opportunity 适配性判断
+6. 受候选集约束的 Solution Recommendation
+7. 纯代码 Deal Score
+8. Risk、Next Best Action、Final Validation 与 Human Review
+
+## Architecture C 简图
+
+```mermaid
+flowchart LR
+    A[Customer Input] --> B[Evidence & Facts]
+    B --> C[Needs & Business Impact]
+    C --> D[Buying Intent & Stakeholders]
+    D --> E[Information Gaps]
+    E --> F[AI Opportunity]
+    F --> G[Solution Retrieval]
+    G --> H[Solution Recommendation]
+    H --> I[Deterministic Deal Score]
+    I --> J[Risk & Next Best Action]
+    J --> K[Report Composer]
+    K --> L[Final Validation]
+    L --> M[Human Review]
+```
+
+这张图只表达主流程，不展开每个节点的全部细节。
+
+## 为什么比较 A / B / C
+
+| Architecture | 方式 | 优点 | 主要限制 |
+| --- | --- | --- | --- |
+| A | 普通单 Prompt 文本输出 | 快、便宜 | 缺少 Schema 和业务规则控制 |
+| B | 单次完整 JSON Schema 输出 | 结构更强 | 复杂合同仍不稳定 |
+| C | 分节点 Workflow 与 Guardrail | 可定位、可隔离、可审计 | Token 和延迟更高 |
+
+如实地说：
+
+- A 两次都返回文本，但不等于业务正确
+- B 最终仍未生成完整合法报告
+- C 真实实验尚未生成稳定的 Live Final Report
+- C 的价值主要体现在发现并隔离不合法结果
+
+## 冻结实验结果
+
+| 运行 | 调用数 | Tokens | 最后停止节点 |
+| --- | ---: | ---: | --- |
+| DEV-01 | 7 | 63,604 | Information Gap |
+| DEV-04 | 3 | 23,879 | Underlying Pain |
+| DEV-05 v1 | 1 | 5,917 | Fact Extraction |
+| DEV-05 v2 | 9 | 81,082 | Solution Recommendation |
+
+补充说明：
+
+- Evidence 合同 v2 让 DEV-05 从第 1 个 LLM 节点推进到了第 9 个
+- 4 次运行都没有让不合法结果进入最终报告
+- 当前 Live Final Report 成功率为 0，这一点不回避
+- 详细分析见 [A/B/C 实验总结](docs/08_Architecture_ABC_Experiment_Report_V1.md)
+
+## Guardrails 设计亮点
+
+1. 未验证销售备注不能成为客户事实
+2. Evidence ID 必须来自 Source Index
+3. 未确认 Stakeholder 不能直接升级成决策人
+4. Solution 只能来自企业方案库和 Top-K 候选
+5. Deal Score 由确定性规则计算
+6. Final Report 必须通过 Final Validation 并等待 Human Review
+
+## 技术栈
+
+- Python
+- Pydantic
+- LangGraph
+- DeepSeek OpenAI-compatible API
+- Provider-neutral LLM Adapter
+- Deterministic lexical retrieval
+- Pytest
+- JSONL evaluation dataset
+
+本项目没有使用：
+
+- FAISS
+- Vector Database
+- Embedding RAG 主链路
+- Multi-Agent
+- LangSmith
+- Database
+- UI
+
+## 快速开始
+
+Dry Run：
+
+```bash
+python scripts/run_workflow_c.py --case DEV-01
+```
+
+这不会消耗 API。
+
+Live Run：
+
+```bash
+python scripts/run_workflow_c.py --case DEV-01 --live
+```
+
+说明：
+
+- 需要本地 `.env`
+- 不要提交 `.env`
+- Live 运行会产生 Token 成本
+- 运行产物保存在 Git 忽略的 `data/runtime` 目录
+
+详细步骤见 [Demo 与复现指南](docs/10_Demo_and_Reproduction_Guide_V1.md)。
+
+## 仓库结构
+
+```text
+agent/workflow_c/
+schemas/
+evaluation/
+data/evaluation/
+docs/
+scripts/
+tests/
+```
+
+- `agent/workflow_c/`：Architecture C 的 Workflow、节点、运行器和留痕
+- `schemas/`：输入与输出的 Pydantic 模型
+- `evaluation/`：Baseline、Prompt 合同和评估相关内容
+- `data/evaluation/`：正式种子数据集
+- `docs/`：架构说明、实验总结和复现文档
+- `scripts/`：运行、校验和 Smoke Test 脚本
+- `tests/`：单元测试和回归测试
+
+## 当前限制
+
+- 真实模型尚未完成端到端 Final Report
+- 节点较多，Token 和延迟偏高
+- 当前检索是 lexical retrieval，不是向量 RAG
+- 当前只使用 3 个种子案例进行重点实验
+- 当前不包含 UI、CRM 写入和自动外部操作
+- 当前不做自动重试和自动修复
+
+## 项目展示价值
+
+这个项目主要展示的是：
+
+- AI 产品需求拆解
+- 企业 Agent Workflow 设计
+- LLM 业务合同与 Guardrail
+- Evaluation 与 Failure Taxonomy
+- 成本、延迟和可靠性权衡
+- 从 Baseline 到可审计架构的演进
+
+## 文档导航
+
+- [Project Charter](README.md#project-charter)
+- [Evaluation Rubric](README.md#evaluation-rubric)
+- [Workflow Contract](docs/07_Architecture_C_Workflow_Contract_V1.md)
+- [A/B/C Experiment Report](docs/08_Architecture_ABC_Experiment_Report_V1.md)
+- [System Architecture and Workflow](docs/09_System_Architecture_and_Workflow_V1.md)
+- [Demo and Reproduction Guide](docs/10_Demo_and_Reproduction_Guide_V1.md)
+- [Data Sync SOP](docs/06_Dataset_Sync_SOP_V1.md)
