@@ -10,11 +10,29 @@ from evaluation.model_benchmark.dataset import (
     validate_node_input_fixture,
     validate_node_benchmark_dataset,
 )
+from evaluation.model_benchmark.assertions import (
+    BenchmarkAssertionContext,
+    evaluate_benchmark_assertion,
+    evaluate_benchmark_assertions,
+)
+from evaluation.model_benchmark.clients import (
+    BenchmarkClientFactory,
+    ReplayBenchmarkCallRecord,
+    ReplayBenchmarkClient,
+    ReplayBenchmarkRecord,
+    create_replay_client_factory,
+    load_model_benchmark_configs,
+    load_replay_records,
+)
 from evaluation.model_benchmark.metrics import summarize_node_model_results
+from evaluation.model_benchmark.executor import BenchmarkCaseExecution, NodeModelBenchmarkExecutor
 from evaluation.model_benchmark.models import (
     BenchmarkAssertion,
     BenchmarkAssertionType,
+    BenchmarkAssertionResult,
+    BenchmarkCaseRunArtifact,
     BenchmarkNodeName,
+    BenchmarkRunManifest,
     BenchmarkRunStatus,
     ModelBenchmarkConfig,
     ModelBenchmarkConfigCatalog,
@@ -23,15 +41,30 @@ from evaluation.model_benchmark.models import (
     NodeBenchmarkCase,
     NodeModelBenchmarkSummary,
     NodeBenchmarkRunResult,
+    NodeExecutionObservation,
+    BenchmarkRunReport,
 )
+from evaluation.model_benchmark.runner import BenchmarkPlan, NodeModelBenchmarkRunner, format_benchmark_plan
+from evaluation.model_benchmark.storage import write_benchmark_case_artifact, write_benchmark_run_report
 
 __all__ = [
+    "BenchmarkAssertionContext",
     "BenchmarkAssertion",
     "BenchmarkAssertionType",
+    "BenchmarkAssertionResult",
+    "BenchmarkCaseExecution",
+    "BenchmarkCaseRunArtifact",
     "BenchmarkNodeName",
+    "BenchmarkPlan",
+    "BenchmarkClientFactory",
+    "BenchmarkRunManifest",
     "BenchmarkRunStatus",
+    "BenchmarkRunReport",
     "DEFAULT_DEVELOPMENT_CASES_PATH",
     "DEFAULT_REFERENCE_PACK_PATH",
+    "NodeExecutionObservation",
+    "NodeModelBenchmarkExecutor",
+    "NodeModelBenchmarkRunner",
     "ModelBenchmarkConfig",
     "ModelBenchmarkConfigCatalog",
     "ModelBenchmarkSummary",
@@ -40,12 +73,23 @@ __all__ = [
     "NodeBenchmarkCase",
     "NodeModelBenchmarkSummary",
     "NodeBenchmarkRunResult",
+    "ReplayBenchmarkCallRecord",
+    "ReplayBenchmarkClient",
+    "ReplayBenchmarkRecord",
+    "create_replay_client_factory",
+    "evaluate_benchmark_assertion",
+    "evaluate_benchmark_assertions",
+    "format_benchmark_plan",
     "load_development_cases",
+    "load_model_benchmark_configs",
     "load_node_benchmark_cases",
     "load_node_input_fixture",
+    "load_replay_records",
     "load_reference_packs",
     "summarize_dataset_coverage",
     "validate_node_input_fixture",
     "summarize_node_model_results",
     "validate_node_benchmark_dataset",
+    "write_benchmark_case_artifact",
+    "write_benchmark_run_report",
 ]
