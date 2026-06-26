@@ -1,0 +1,104 @@
+{
+  "matrix_version": "v1",
+  "formal_run_ids": [
+    "MB-20260626T174835Z-25d3d6a0",
+    "MB-20260626T172704Z-70afe0ec",
+    "MB-20260626T175832Z-371b721f",
+    "MB-20260626T173701Z-d68a9f15"
+  ],
+  "nodes": [
+    {
+      "node_name": "fact_extraction",
+      "case_count": 4,
+      "route_status": "route_ready",
+      "primary_model_config_id": "ds-v4-flash-non-thinking",
+      "fallback_model_config_id": "ds-v4-pro-thinking-high",
+      "eligible_model_config_ids": [
+        "ds-v4-flash-non-thinking",
+        "ds-v4-pro-thinking-high"
+      ],
+      "disqualified_models": [
+        {
+          "model_config_id": "ds-v4-pro-non-thinking",
+          "disqualification_reasons": [
+            "schema_validation_failure",
+            "blocking_assertion_failure",
+            "evidence_reference_failure"
+          ],
+          "eligible_for_routing": false
+        }
+      ],
+      "primary_cost_cny": "0.038932",
+      "primary_average_latency_ms": 30132.25,
+      "primary_total_tokens": 23856,
+      "selection_reason": "Selected by eligible_for_routing gate, then ordered by total cost, average latency, total tokens, and model_config_id.",
+      "limitations": [
+        "Some models remain disqualified by existing benchmark gating."
+      ]
+    },
+    {
+      "node_name": "underlying_pain",
+      "case_count": 4,
+      "route_status": "route_ready",
+      "primary_model_config_id": "ds-v4-flash-non-thinking",
+      "fallback_model_config_id": "ds-v4-pro-non-thinking",
+      "eligible_model_config_ids": [
+        "ds-v4-flash-non-thinking",
+        "ds-v4-pro-non-thinking",
+        "ds-v4-pro-thinking-high"
+      ],
+      "disqualified_models": [],
+      "primary_cost_cny": "0.017016",
+      "primary_average_latency_ms": 8824.5,
+      "primary_total_tokens": 13463,
+      "selection_reason": "Selected by eligible_for_routing gate, then ordered by total cost, average latency, total tokens, and model_config_id.",
+      "limitations": []
+    },
+    {
+      "node_name": "information_gap",
+      "case_count": 4,
+      "route_status": "route_ready",
+      "primary_model_config_id": "ds-v4-flash-non-thinking",
+      "fallback_model_config_id": "ds-v4-pro-non-thinking",
+      "eligible_model_config_ids": [
+        "ds-v4-flash-non-thinking",
+        "ds-v4-pro-non-thinking",
+        "ds-v4-pro-thinking-high"
+      ],
+      "disqualified_models": [],
+      "primary_cost_cny": "0.016681",
+      "primary_average_latency_ms": 14441.25,
+      "primary_total_tokens": 12497,
+      "selection_reason": "Selected by eligible_for_routing gate, then ordered by total cost, average latency, total tokens, and model_config_id.",
+      "limitations": []
+    },
+    {
+      "node_name": "solution_recommendation",
+      "case_count": 4,
+      "route_status": "route_ready",
+      "primary_model_config_id": "ds-v4-flash-non-thinking",
+      "fallback_model_config_id": "ds-v4-pro-thinking-high",
+      "eligible_model_config_ids": [
+        "ds-v4-flash-non-thinking",
+        "ds-v4-pro-thinking-high"
+      ],
+      "disqualified_models": [
+        {
+          "model_config_id": "ds-v4-pro-non-thinking",
+          "disqualification_reasons": [
+            "blocking_assertion_failure",
+            "candidate_boundary_failure"
+          ],
+          "eligible_for_routing": false
+        }
+      ],
+      "primary_cost_cny": "0.017759",
+      "primary_average_latency_ms": 13477.75,
+      "primary_total_tokens": 12922,
+      "selection_reason": "Selected by eligible_for_routing gate, then ordered by total cost, average latency, total tokens, and model_config_id.",
+      "limitations": [
+        "Some models remain disqualified by existing benchmark gating."
+      ]
+    }
+  ]
+}
