@@ -21,6 +21,7 @@ def write_benchmark_case_artifact(
     *,
     artifact_dir: Path,
     call_records: list[Any],
+    capture_debug_artifacts: bool = False,
 ) -> Path:
     artifact_dir.mkdir(parents=True, exist_ok=True)
     write_json(artifact_dir / "artifact.json", artifact.model_dump(mode="json"))
@@ -47,6 +48,9 @@ def write_benchmark_case_artifact(
         parsed_json = getattr(call_record, "parsed_json", None)
         if parsed_json is not None:
             write_json(call_dir / "parsed_response.json", parsed_json)
+        reasoning_content = getattr(call_record, "reasoning_content", None)
+        if capture_debug_artifacts and isinstance(reasoning_content, str) and reasoning_content:
+            (call_dir / "reasoning_content.txt").write_text(reasoning_content, encoding="utf-8")
     return artifact_dir
 
 
@@ -73,5 +77,6 @@ def write_benchmark_run_report(
             artifact,
             artifact_dir=artifact_dir,
             call_records=call_records,
+            capture_debug_artifacts=manifest.capture_debug_artifacts,
         )
     return root

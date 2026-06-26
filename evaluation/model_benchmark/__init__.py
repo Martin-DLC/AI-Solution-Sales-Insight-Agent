@@ -24,6 +24,11 @@ from evaluation.model_benchmark.clients import (
     load_model_benchmark_configs,
     load_replay_records,
 )
+from evaluation.model_benchmark.live_clients import (
+    DeepSeekBenchmarkClient,
+    create_deepseek_live_client_factory,
+    resolve_api_key,
+)
 from evaluation.model_benchmark.metrics import summarize_node_model_results
 from evaluation.model_benchmark.executor import BenchmarkCaseExecution, NodeModelBenchmarkExecutor
 from evaluation.model_benchmark.models import (
@@ -31,6 +36,7 @@ from evaluation.model_benchmark.models import (
     BenchmarkAssertionType,
     BenchmarkAssertionResult,
     BenchmarkCaseRunArtifact,
+    BenchmarkExecutionMode,
     BenchmarkNodeName,
     BenchmarkRunManifest,
     BenchmarkRunStatus,
@@ -42,7 +48,16 @@ from evaluation.model_benchmark.models import (
     NodeModelBenchmarkSummary,
     NodeBenchmarkRunResult,
     NodeExecutionObservation,
+    ReasoningEffort,
+    ThinkingMode,
     BenchmarkRunReport,
+)
+from evaluation.model_benchmark.pricing import (
+    FLASH_V4_2026_06,
+    PRO_V4_2026_06,
+    PricingProfile,
+    estimate_request_cost,
+    get_pricing_profile,
 )
 from evaluation.model_benchmark.runner import BenchmarkPlan, NodeModelBenchmarkRunner, format_benchmark_plan
 from evaluation.model_benchmark.storage import write_benchmark_case_artifact, write_benchmark_run_report
@@ -54,14 +69,17 @@ __all__ = [
     "BenchmarkAssertionResult",
     "BenchmarkCaseExecution",
     "BenchmarkCaseRunArtifact",
+    "BenchmarkExecutionMode",
     "BenchmarkNodeName",
     "BenchmarkPlan",
     "BenchmarkClientFactory",
     "BenchmarkRunManifest",
     "BenchmarkRunStatus",
     "BenchmarkRunReport",
+    "DeepSeekBenchmarkClient",
     "DEFAULT_DEVELOPMENT_CASES_PATH",
     "DEFAULT_REFERENCE_PACK_PATH",
+    "FLASH_V4_2026_06",
     "NodeExecutionObservation",
     "NodeModelBenchmarkExecutor",
     "NodeModelBenchmarkRunner",
@@ -73,19 +91,27 @@ __all__ = [
     "NodeBenchmarkCase",
     "NodeModelBenchmarkSummary",
     "NodeBenchmarkRunResult",
+    "PricingProfile",
+    "PRO_V4_2026_06",
     "ReplayBenchmarkCallRecord",
     "ReplayBenchmarkClient",
     "ReplayBenchmarkRecord",
+    "ReasoningEffort",
+    "ThinkingMode",
+    "create_deepseek_live_client_factory",
     "create_replay_client_factory",
+    "estimate_request_cost",
     "evaluate_benchmark_assertion",
     "evaluate_benchmark_assertions",
     "format_benchmark_plan",
+    "get_pricing_profile",
     "load_development_cases",
     "load_model_benchmark_configs",
     "load_node_benchmark_cases",
     "load_node_input_fixture",
     "load_replay_records",
     "load_reference_packs",
+    "resolve_api_key",
     "summarize_dataset_coverage",
     "validate_node_input_fixture",
     "summarize_node_model_results",
