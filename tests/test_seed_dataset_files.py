@@ -16,7 +16,21 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CASES_PATH = PROJECT_ROOT / "data" / "evaluation" / "development_cases.jsonl"
 REFERENCES_PATH = PROJECT_ROOT / "data" / "evaluation" / "development_reference.jsonl"
 VALIDATION_SCRIPT = PROJECT_ROOT / "scripts" / "validate_seed_dataset.py"
-EXPECTED_CASE_IDS = ["DEV-01", "DEV-04", "DEV-05"]
+EXPECTED_CASE_IDS = [
+    "DEV-01",
+    "DEV-04",
+    "DEV-05",
+    "DEV-06",
+    "DEV-07",
+    "DEV-08",
+    "DEV-09",
+    "DEV-10",
+    "DEV-11",
+    "DEV-12",
+    "DEV-13",
+    "DEV-14",
+]
+ORIGINAL_SEED_CASE_IDS = ["DEV-01", "DEV-04", "DEV-05"]
 FORBIDDEN_MARKERS = ("TODO", "待补充", "同上", "省略")
 
 
@@ -42,12 +56,12 @@ def test_official_references_load(seed_references) -> None:
     assert [reference.case_id for reference in seed_references] == EXPECTED_CASE_IDS
 
 
-def test_cases_count_is_three(seed_cases) -> None:
-    assert len(seed_cases) == 3
+def test_cases_count_is_twelve(seed_cases) -> None:
+    assert len(seed_cases) == 12
 
 
-def test_references_count_is_three(seed_references) -> None:
-    assert len(seed_references) == 3
+def test_references_count_is_twelve(seed_references) -> None:
+    assert len(seed_references) == 12
 
 
 def test_case_ids_match_exactly(seed_cases, seed_references) -> None:
@@ -59,6 +73,7 @@ def test_case_ids_match_exactly(seed_cases, seed_references) -> None:
 def test_case_order_is_expected(seed_cases, seed_references) -> None:
     assert [case.case_id for case in seed_cases] == EXPECTED_CASE_IDS
     assert [reference.case_id for reference in seed_references] == EXPECTED_CASE_IDS
+    assert [case.case_id for case in seed_cases[:3]] == ORIGINAL_SEED_CASE_IDS
 
 
 def test_all_dataset_splits_are_development(seed_cases) -> None:
@@ -128,9 +143,9 @@ def test_seed_data_has_no_forbidden_markers() -> None:
     assert not any(marker in combined_text for marker in FORBIDDEN_MARKERS)
 
 
-def test_both_jsonl_files_have_three_non_empty_physical_lines() -> None:
-    assert len(non_empty_lines(CASES_PATH)) == 3
-    assert len(non_empty_lines(REFERENCES_PATH)) == 3
+def test_both_jsonl_files_have_twelve_non_empty_physical_lines() -> None:
+    assert len(non_empty_lines(CASES_PATH)) == 12
+    assert len(non_empty_lines(REFERENCES_PATH)) == 12
 
 
 def test_each_non_empty_physical_line_is_independent_json() -> None:

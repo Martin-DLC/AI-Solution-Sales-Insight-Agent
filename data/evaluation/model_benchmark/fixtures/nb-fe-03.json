@@ -1,0 +1,61 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-FE-03",
+  "source_case_id": "DEV-08",
+  "node_name": "fact_extraction",
+  "state": {
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "凌岳装备租赁有限公司 工程设备租赁 租赁管理系统, 维保工单系统, 项目结算Excel",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "运营副总说明，减少设备闲置是当前讨论的主要目标，现有租赁管理系统与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n维保经理补充，团队目前依赖人工核对和经验判断，提高维保响应速度也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\n财务BP提醒，客户明确希望小范围试点，不能扩大成全流程重构。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "客户明确希望小范围试点，不能扩大成全流程重构。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "设备调拨推荐助手",
+          "content": "设备调拨推荐助手 is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "维保工单诊断摘要",
+          "content": "维保工单诊断摘要 is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    }
+  }
+}

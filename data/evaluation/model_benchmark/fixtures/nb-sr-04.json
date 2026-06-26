@@ -1,0 +1,255 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-SR-04",
+  "source_case_id": "DEV-14",
+  "node_name": "solution_recommendation",
+  "state": {
+    "validated_case": {
+      "case_id": "DEV-14",
+      "case_name": "安全合规阻塞的金融知识助手评估",
+      "dataset_split": "development",
+      "difficulty": "high",
+      "scenario_tags": [
+        "security_blocker",
+        "compliance_blocker",
+        "financial_services"
+      ],
+      "industry": "金融服务",
+      "company_size": "约500人，服务小微信贷客户",
+      "current_sales_stage": "流程与数据评估，安全合规要求优先于功能试点",
+      "customer_profile": {
+        "company_name": "汇宁小微信贷服务有限公司",
+        "industry": "金融服务",
+        "company_size": "约500人，服务小微信贷客户",
+        "main_business": [
+          "小微信贷咨询",
+          "贷后服务",
+          "客户资料管理"
+        ],
+        "digital_maturity": "有CRM和贷后管理系统，知识文档分散在制度库和培训材料中。",
+        "current_systems": [
+          "CRM系统",
+          "贷后管理系统",
+          "制度文档库"
+        ],
+        "publicly_stated_goals": [
+          "提升坐席政策答复准确性",
+          "减少合规误答"
+        ],
+        "known_participants": [
+          {
+            "name_or_role": "客服运营负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "合规经理",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "信息安全负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "IT架构师",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          }
+        ]
+      },
+      "meeting": {
+        "participants": [
+          {
+            "name_or_role": "客服运营负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "合规经理",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "信息安全负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "IT架构师",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          }
+        ],
+        "transcript": "客服运营负责人说明，提升坐席政策答复准确性是当前讨论的主要目标，现有CRM系统与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n合规经理补充，团队目前依赖人工核对和经验判断，减少合规误答也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\nIT架构师提醒，未完成安全评估前不能使用真实客户数据。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。"
+      },
+      "salesperson_notes": [
+        {
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        }
+      ],
+      "known_constraints": [
+        {
+          "category": "primary",
+          "description": "未完成安全评估前不能使用真实客户数据。",
+          "severity": "high"
+        },
+        {
+          "category": "secondary",
+          "description": "金融政策答复必须引用制度来源并保留审计。",
+          "severity": "medium"
+        }
+      ],
+      "available_solution_library": [
+        "金融制度RAG检索助手",
+        "合规引用与审计组件",
+        "坐席知识库治理",
+        "客户数据脱敏方案"
+      ]
+    },
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "汇宁小微信贷服务有限公司 金融服务 CRM系统, 贷后管理系统, 制度文档库",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "客服运营负责人说明，提升坐席政策答复准确性是当前讨论的主要目标，现有CRM系统与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n合规经理补充，团队目前依赖人工核对和经验判断，减少合规误答也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\nIT架构师提醒，未完成安全评估前不能使用真实客户数据。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "未完成安全评估前不能使用真实客户数据。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "金融制度RAG检索助手",
+          "content": "金融制度RAG检索助手 is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "合规引用与审计组件",
+          "content": "合规引用与审计组件 is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    },
+    "information_gaps": [
+      {
+        "gap_id": "GAP-01",
+        "category": "budget",
+        "description": "预算区间和费用归属尚未确认。",
+        "priority": "high",
+        "business_impact": "缺少预算信息会影响方案范围和推进节奏。",
+        "question_to_ask": "请确认项目是否已有预算或费用归属？",
+        "recommended_owner": "sales"
+      },
+      {
+        "gap_id": "GAP-02",
+        "category": "decision_process",
+        "description": "最终决策流程仍不清楚。",
+        "priority": "medium",
+        "business_impact": "决策路径不清会导致试点后无法进入采购。",
+        "question_to_ask": "请确认哪些角色需要参与最终决策？",
+        "recommended_owner": "sales"
+      }
+    ],
+    "ai_opportunities": [
+      {
+        "opportunity_id": "OPP-01",
+        "name": "金融制度RAG检索助手机会",
+        "related_pain_ids": [
+          "PAIN-01"
+        ],
+        "suitability": "suitable_after_prerequisites",
+        "business_value": [
+          "efficiency"
+        ],
+        "reasoning_summary": "该机会与客户目标相关，但需要先确认数据和试点前提。",
+        "required_data": [
+          "会议纪要",
+          "业务规则样本"
+        ],
+        "required_integrations": [
+          "CRM系统"
+        ],
+        "prerequisites": [
+          "确认数据可用性"
+        ],
+        "major_limitations": [],
+        "claim_type": "inference",
+        "confidence": "medium",
+        "evidence": [
+          {
+            "source_id": "MTG-01",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "会议内容支持该AI机会判断"
+          }
+        ]
+      }
+    ],
+    "retrieved_solutions": {
+      "retrieval_method": "lexical_v1",
+      "query_text": "安全合规阻塞的金融知识助手评估",
+      "eligible_opportunity_ids": [
+        "OPP-01"
+      ],
+      "top_k": 5,
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "solution_id": "金融制度RAG检索助手",
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "content": "金融制度RAG检索助手 is a retrieved candidate for benchmark evaluation.",
+          "score": 0.85,
+          "rank": 1,
+          "matched_terms": [
+            "业务",
+            "试点"
+          ]
+        },
+        {
+          "solution_id": "合规引用与审计组件",
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "content": "合规引用与审计组件 is a retrieved candidate for benchmark evaluation.",
+          "score": 0.8,
+          "rank": 2,
+          "matched_terms": [
+            "业务",
+            "试点"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-UP-01",
+  "source_case_id": "DEV-04",
+  "node_name": "underlying_pain",
+  "state": {
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "悦庭零售集团 连锁零售 / 家居生活 ERP, CRM, 电商平台, 企业微信服务商系统, 天猫旗舰店, 自营小程序",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "张雯介绍，董事长近期多次提到AI，希望集团能够尽快探索一个能够对外展示的AI项目。数字化团队因此开始接触不同厂商，目前已经沟通过约五家AI服务商。她表示，希望未来消费者进入小程序后，可以直接和AI导购对话，获取商品推荐、搭配建议、门店库存、优惠活动和售后政策等信息。她还希望AI能够根据会员历史消费记录自动生成营销内容，并通过企业微信完成客户触达。孙倩补充，目前会员运营团队每个月需要手动设计大量营销活动。不同渠道之间的数据并不完整，门店会员手机号、电商会员账号和企业微信客户身份经常无法对应。她认为AI如果能够帮助分析会员偏好、自动推荐商品并生成营销文案，可能会提升复购率。但目前团队没有明确统计客户推荐转化率，也没有统一的会员标签体系。高峰表示，门店导购对AI项目比较感兴趣，因为新人熟悉商品通常需要两到三个月。但不同门店经营品类、促销政策和库存情况存在差异。如果系统推荐错误商品或错误优惠，可能引起客户投诉。何工说明，目前商品主数据存放在ERP中，库存数据每两小时同步一次。会员数据分别存在CRM、电商平台和企业微信服务商系统中。集团尚未完成统一会员ID建设。他还表示，现阶段不确定现有系统能否稳定开放接口，也没有对大模型使用客户消费数据进行安全评估。陈浩询问项目预算和上线时间。张雯表示，目前主要是响应董事长要求开展调研，还没有正式预算。她计划先收集几家厂商的方案，再向集团管理层汇报。孙倩希望最好能在两个月内做出一个能演示的版本，但是否真正上线，需要等管理层决定。她也没有明确由哪个部门承担项目费用。刘顾问询问第一阶段最重要的业务目标。张雯认为可以同时做AI导购、会员分析、营销文案、智能客服和门店员工培训，这样展示效果更好。何工认为范围太大，建议先确定一个场景，并先解决商品数据、会员身份和接口问题。会议最后，张雯要求我方在下周提供一份完整解决方案，包括整体蓝图、产品Demo、实施路线和费用预估，用于管理层内部讨论。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "张雯在整个会议中表现得非常积极，而且董事长亲自关注AI，我认为这是集团级战略项目。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "客户没有正式立项，没有明确预算，也没有明确费用承担部门。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "AI商品导购方案",
+          "content": "AI商品导购方案 is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "商品知识库RAG方案",
+          "content": "商品知识库RAG方案 is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    },
+    "fact_extraction": {
+      "facts": [
+        {
+          "fact_id": "FACT-01",
+          "category": "business_goal",
+          "statement": "探索AI导购和AI员工相关方案",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "MTG-01",
+              "source_type": "meeting_transcript",
+              "evidence_summary": "会议中明确提出该目标"
+            }
+          ]
+        },
+        {
+          "fact_id": "FACT-02",
+          "category": "constraint",
+          "statement": "客户没有正式立项，没有明确预算，也没有明确费用承担部门。",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "CONSTRAINT-01",
+              "source_type": "known_constraint",
+              "evidence_summary": "已知限制记录该约束"
+            }
+          ]
+        }
+      ],
+      "unknown_fields": [
+        "budget",
+        "decision_process"
+      ],
+      "customer_context_draft": {
+        "company_name": "悦庭零售集团",
+        "industry": "连锁零售 / 家居生活",
+        "company_size": "约1800名员工，拥有85家线下门店及自营电商渠道",
+        "current_systems": [
+          "ERP",
+          "CRM",
+          "电商平台",
+          "企业微信服务商系统",
+          "天猫旗舰店",
+          "自营小程序"
+        ],
+        "sales_stage_input": "初次需求交流 / 市场调研阶段",
+        "confirmed_constraints": [
+          "客户没有正式立项，没有明确预算，也没有明确费用承担部门。",
+          "最终决策人没有参与会议，董事长的具体目标和优先级不明确。",
+          "统一会员ID尚未建立，多渠道会员数据没有打通。",
+          "接口能力尚未确认。",
+          "数据安全评估尚未开展。",
+          "第一阶段业务目标没有统一。",
+          "已有约五家竞争厂商参与。",
+          "客户提出的两个月时间仅针对演示，不等于上线承诺。"
+        ],
+        "context_quality": "partially_sufficient"
+      }
+    },
+    "explicit_needs": [
+      {
+        "need_id": "NEED-01",
+        "description": "探索AI导购和AI员工相关方案",
+        "priority": "high",
+        "claim_type": "fact",
+        "confidence": "high",
+        "evidence": [
+          {
+            "source_id": "MTG-01",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "会议纪要支持该显性需求"
+          }
+        ]
+      }
+    ]
+  }
+}

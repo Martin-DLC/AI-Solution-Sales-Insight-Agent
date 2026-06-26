@@ -1,0 +1,255 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-SR-03",
+  "source_case_id": "DEV-12",
+  "node_name": "solution_recommendation",
+  "state": {
+    "validated_case": {
+      "case_id": "DEV-12",
+      "case_name": "POC就绪的智能质检机会评估",
+      "dataset_split": "development",
+      "difficulty": "low",
+      "scenario_tags": [
+        "poc_ready",
+        "high_intent",
+        "clear_success_metrics"
+      ],
+      "industry": "在线教育",
+      "company_size": "约800人，覆盖多学科课程服务",
+      "current_sales_stage": "POC规划，客户已提出试点范围和衡量指标",
+      "customer_profile": {
+        "company_name": "云枫在线教育科技有限公司",
+        "industry": "在线教育",
+        "company_size": "约800人，覆盖多学科课程服务",
+        "main_business": [
+          "在线课程销售",
+          "班主任服务",
+          "客服咨询"
+        ],
+        "digital_maturity": "客服和班主任服务有统一系统，录音和文本质检已有历史样本。",
+        "current_systems": [
+          "客服会话系统",
+          "班主任服务系统",
+          "质检抽样平台"
+        ],
+        "publicly_stated_goals": [
+          "提高质检覆盖率",
+          "发现服务风险"
+        ],
+        "known_participants": [
+          {
+            "name_or_role": "服务质量负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "质检主管",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "数据平台负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "采购经理",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          }
+        ]
+      },
+      "meeting": {
+        "participants": [
+          {
+            "name_or_role": "服务质量负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "质检主管",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "数据平台负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "采购经理",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          }
+        ],
+        "transcript": "服务质量负责人说明，提高质检覆盖率是当前讨论的主要目标，现有客服会话系统与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n质检主管补充，团队目前依赖人工核对和经验判断，发现服务风险也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\n采购经理提醒，会话数据必须脱敏后用于POC。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。"
+      },
+      "salesperson_notes": [
+        {
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        }
+      ],
+      "known_constraints": [
+        {
+          "category": "primary",
+          "description": "会话数据必须脱敏后用于POC。",
+          "severity": "high"
+        },
+        {
+          "category": "secondary",
+          "description": "POC后正式采购仍需走流程。",
+          "severity": "medium"
+        }
+      ],
+      "available_solution_library": [
+        "服务会话智能质检",
+        "高风险会话识别Agent",
+        "质检规则知识库",
+        "人工复核工作台"
+      ]
+    },
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "云枫在线教育科技有限公司 在线教育 客服会话系统, 班主任服务系统, 质检抽样平台",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "服务质量负责人说明，提高质检覆盖率是当前讨论的主要目标，现有客服会话系统与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n质检主管补充，团队目前依赖人工核对和经验判断，发现服务风险也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\n采购经理提醒，会话数据必须脱敏后用于POC。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "会话数据必须脱敏后用于POC。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "服务会话智能质检",
+          "content": "服务会话智能质检 is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "高风险会话识别Agent",
+          "content": "高风险会话识别Agent is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    },
+    "information_gaps": [
+      {
+        "gap_id": "GAP-01",
+        "category": "budget",
+        "description": "预算区间和费用归属尚未确认。",
+        "priority": "high",
+        "business_impact": "缺少预算信息会影响方案范围和推进节奏。",
+        "question_to_ask": "请确认项目是否已有预算或费用归属？",
+        "recommended_owner": "sales"
+      },
+      {
+        "gap_id": "GAP-02",
+        "category": "decision_process",
+        "description": "最终决策流程仍不清楚。",
+        "priority": "medium",
+        "business_impact": "决策路径不清会导致试点后无法进入采购。",
+        "question_to_ask": "请确认哪些角色需要参与最终决策？",
+        "recommended_owner": "sales"
+      }
+    ],
+    "ai_opportunities": [
+      {
+        "opportunity_id": "OPP-01",
+        "name": "服务会话智能质检机会",
+        "related_pain_ids": [
+          "PAIN-01"
+        ],
+        "suitability": "suitable_after_prerequisites",
+        "business_value": [
+          "efficiency"
+        ],
+        "reasoning_summary": "该机会与客户目标相关，但需要先确认数据和试点前提。",
+        "required_data": [
+          "会议纪要",
+          "业务规则样本"
+        ],
+        "required_integrations": [
+          "客服会话系统"
+        ],
+        "prerequisites": [
+          "确认数据可用性"
+        ],
+        "major_limitations": [],
+        "claim_type": "inference",
+        "confidence": "medium",
+        "evidence": [
+          {
+            "source_id": "MTG-01",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "会议内容支持该AI机会判断"
+          }
+        ]
+      }
+    ],
+    "retrieved_solutions": {
+      "retrieval_method": "lexical_v1",
+      "query_text": "POC就绪的智能质检机会评估",
+      "eligible_opportunity_ids": [
+        "OPP-01"
+      ],
+      "top_k": 5,
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "solution_id": "服务会话智能质检",
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "content": "服务会话智能质检 is a retrieved candidate for benchmark evaluation.",
+          "score": 0.85,
+          "rank": 1,
+          "matched_terms": [
+            "业务",
+            "试点"
+          ]
+        },
+        {
+          "solution_id": "高风险会话识别Agent",
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "content": "高风险会话识别Agent is a retrieved candidate for benchmark evaluation.",
+          "score": 0.8,
+          "rank": 2,
+          "matched_terms": [
+            "业务",
+            "试点"
+          ]
+        }
+      ]
+    }
+  }
+}

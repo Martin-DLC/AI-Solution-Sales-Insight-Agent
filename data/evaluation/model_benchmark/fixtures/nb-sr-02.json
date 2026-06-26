@@ -1,0 +1,245 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-SR-02",
+  "source_case_id": "DEV-07",
+  "node_name": "solution_recommendation",
+  "state": {
+    "validated_case": {
+      "case_id": "DEV-07",
+      "case_name": "合规政策检索适配性评估",
+      "dataset_split": "development",
+      "difficulty": "medium",
+      "scenario_tags": [
+        "solution_mismatch",
+        "compliance_sensitive",
+        "knowledge_search"
+      ],
+      "industry": "医疗健康服务",
+      "company_size": "约350人，多城市门店运营",
+      "current_sales_stage": "市场调研，客户比较通用搜索和内部政策检索工具",
+      "customer_profile": {
+        "company_name": "安澜健康管理中心",
+        "industry": "医疗健康服务",
+        "company_size": "约350人，多城市门店运营",
+        "main_business": [
+          "健康管理服务",
+          "会员运营",
+          "门店合规管理"
+        ],
+        "digital_maturity": "门店使用SaaS会员系统，合规政策以PDF和内部公告为主。",
+        "current_systems": [
+          "会员管理SaaS",
+          "内部公告平台",
+          "共享网盘"
+        ],
+        "publicly_stated_goals": [
+          "减少门店政策误读",
+          "提升客服答复一致性"
+        ],
+        "known_participants": [
+          {
+            "name_or_role": "合规负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "客服运营经理",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "IT支持",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          }
+        ]
+      },
+      "meeting": {
+        "participants": [
+          {
+            "name_or_role": "合规负责人",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "客服运营经理",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          },
+          {
+            "name_or_role": "IT支持",
+            "organization_role": "会议参与者",
+            "source_type": "meeting_transcript"
+          }
+        ],
+        "transcript": "合规负责人说明，减少门店政策误读是当前讨论的主要目标，现有会员管理SaaS与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n客服运营经理补充，团队目前依赖人工核对和经验判断，提升客服答复一致性也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\nIT支持提醒，输出不得越界生成医疗建议，必须保留人工审核边界。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。"
+      },
+      "salesperson_notes": [
+        {
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        }
+      ],
+      "known_constraints": [
+        {
+          "category": "primary",
+          "description": "输出不得越界生成医疗建议，必须保留人工审核边界。",
+          "severity": "high"
+        },
+        {
+          "category": "secondary",
+          "description": "政策文档来源分散，版本和权限需要先治理。",
+          "severity": "medium"
+        }
+      ],
+      "available_solution_library": [
+        "合规政策RAG检索助手",
+        "政策出处引用组件",
+        "客服答复审核工作台",
+        "文档版本治理咨询"
+      ]
+    },
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "安澜健康管理中心 医疗健康服务 会员管理SaaS, 内部公告平台, 共享网盘",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "合规负责人说明，减少门店政策误读是当前讨论的主要目标，现有会员管理SaaS与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n客服运营经理补充，团队目前依赖人工核对和经验判断，提升客服答复一致性也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\nIT支持提醒，输出不得越界生成医疗建议，必须保留人工审核边界。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "输出不得越界生成医疗建议，必须保留人工审核边界。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "合规政策RAG检索助手",
+          "content": "合规政策RAG检索助手 is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "政策出处引用组件",
+          "content": "政策出处引用组件 is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    },
+    "information_gaps": [
+      {
+        "gap_id": "GAP-01",
+        "category": "budget",
+        "description": "预算区间和费用归属尚未确认。",
+        "priority": "high",
+        "business_impact": "缺少预算信息会影响方案范围和推进节奏。",
+        "question_to_ask": "请确认项目是否已有预算或费用归属？",
+        "recommended_owner": "sales"
+      },
+      {
+        "gap_id": "GAP-02",
+        "category": "decision_process",
+        "description": "最终决策流程仍不清楚。",
+        "priority": "medium",
+        "business_impact": "决策路径不清会导致试点后无法进入采购。",
+        "question_to_ask": "请确认哪些角色需要参与最终决策？",
+        "recommended_owner": "sales"
+      }
+    ],
+    "ai_opportunities": [
+      {
+        "opportunity_id": "OPP-01",
+        "name": "合规政策RAG检索助手机会",
+        "related_pain_ids": [
+          "PAIN-01"
+        ],
+        "suitability": "suitable_after_prerequisites",
+        "business_value": [
+          "efficiency"
+        ],
+        "reasoning_summary": "该机会与客户目标相关，但需要先确认数据和试点前提。",
+        "required_data": [
+          "会议纪要",
+          "业务规则样本"
+        ],
+        "required_integrations": [
+          "会员管理SaaS"
+        ],
+        "prerequisites": [
+          "确认数据可用性"
+        ],
+        "major_limitations": [],
+        "claim_type": "inference",
+        "confidence": "medium",
+        "evidence": [
+          {
+            "source_id": "MTG-01",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "会议内容支持该AI机会判断"
+          }
+        ]
+      }
+    ],
+    "retrieved_solutions": {
+      "retrieval_method": "lexical_v1",
+      "query_text": "合规政策检索适配性评估",
+      "eligible_opportunity_ids": [
+        "OPP-01"
+      ],
+      "top_k": 5,
+      "candidate_count": 2,
+      "candidates": [
+        {
+          "solution_id": "合规政策RAG检索助手",
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "content": "合规政策RAG检索助手 is a retrieved candidate for benchmark evaluation.",
+          "score": 0.85,
+          "rank": 1,
+          "matched_terms": [
+            "业务",
+            "试点"
+          ]
+        },
+        {
+          "solution_id": "政策出处引用组件",
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "content": "政策出处引用组件 is a retrieved candidate for benchmark evaluation.",
+          "score": 0.8,
+          "rank": 2,
+          "matched_terms": [
+            "业务",
+            "试点"
+          ]
+        }
+      ]
+    }
+  }
+}
