@@ -16,12 +16,21 @@ def write_json(path: Path, payload: object) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def write_jsonl(path: Path, payloads: list[object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        for payload in payloads:
+            handle.write(json.dumps(payload, ensure_ascii=False))
+            handle.write("\n")
+
+
 def write_benchmark_case_artifact(
     artifact: BenchmarkCaseRunArtifact,
     *,
     artifact_dir: Path,
     call_records: list[Any],
     capture_debug_artifacts: bool = False,
+    safe_mode: bool = False,
 ) -> Path:
     artifact_dir.mkdir(parents=True, exist_ok=True)
     write_json(artifact_dir / "artifact.json", artifact.model_dump(mode="json"))
@@ -41,16 +50,17 @@ def write_benchmark_case_artifact(
             call_dir / "metadata.json",
             call_record.model_dump(mode="json", exclude={"messages", "raw_content", "parsed_json"}),
         )
-        write_json(call_dir / "messages.json", getattr(call_record, "messages", []))
-        raw_content = getattr(call_record, "raw_content", None)
-        if raw_content is not None:
-            (call_dir / "raw_response.txt").write_text(raw_content, encoding="utf-8")
-        parsed_json = getattr(call_record, "parsed_json", None)
-        if parsed_json is not None:
-            write_json(call_dir / "parsed_response.json", parsed_json)
-        reasoning_content = getattr(call_record, "reasoning_content", None)
-        if capture_debug_artifacts and isinstance(reasoning_content, str) and reasoning_content:
-            (call_dir / "reasoning_content.txt").write_text(reasoning_content, encoding="utf-8")
+        if not safe_mode:
+            write_json(call_dir / "messages.json", getattr(call_record, "messages", []))
+            raw_content = getattr(call_record, "raw_content", None)
+            if raw_content is not None:
+                (call_dir / "raw_response.txt").write_text(raw_content, encoding="utf-8")
+            parsed_json = getattr(call_record, "parsed_json", None)
+            if parsed_json is not None:
+                write_json(call_dir / "parsed_response.json", parsed_json)
+            reasoning_content = getattr(call_record, "reasoning_content", None)
+            if capture_debug_artifacts and isinstance(reasoning_content, str) and reasoning_content:
+                (call_dir / "reasoning_content.txt").write_text(reasoning_content, encoding="utf-8")
     return artifact_dir
 
 
@@ -65,6 +75,33 @@ def write_benchmark_run_report(
     root.mkdir(parents=True, exist_ok=False)
     write_json(root / "run_manifest.json", manifest.model_dump(mode="json"))
     write_json(root / "benchmark_report.json", report.model_dump(mode="json"))
+    write_json(
+        root / "run_summary.json",
+        {
+            "run_id": manifest.run_id,
+            "execution_mode": manifest.execution_mode.value,
+            "planned_run_count": manifest.planned_run_count,
+            "completed_run_count": manifest.completed_run_count,
+            "passed_count": manifest.passed_count,
+            "failed_count": manifest.failed_count,
+            "request_error_count": manifest.request_error_count,
+            "unknown_cost_run_count": manifest.unknown_cost_run_count,
+            "stopped_by_budget": manifest.stopped_by_budget,
+            "stop_reason": manifest.stop_reason,
+            "estimated_cost_cny": (
+                str(manifest.estimated_cost_cny) if manifest.estimated_cost_cny is not None else None
+            ),
+        },
+    )
+    write_jsonl(
+        root / "case_results.jsonl",
+        [result.model_dump(mode="json") for result in report.run_results],
+    )
+    write_json(
+        root / "node_model_summaries.json",
+        [summary.model_dump(mode="json") for summary in report.summaries],
+    )
+    safe_mode = manifest.execution_mode.value == "live"
     for artifact, call_records in case_artifacts:
         artifact_dir = (
             root
@@ -78,5 +115,6 @@ def write_benchmark_run_report(
             artifact_dir=artifact_dir,
             call_records=call_records,
             capture_debug_artifacts=manifest.capture_debug_artifacts,
+            safe_mode=safe_mode,
         )
     return root

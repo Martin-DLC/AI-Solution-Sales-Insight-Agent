@@ -137,20 +137,10 @@ class DeepSeekBenchmarkClient:
         sequence = len(self.call_records) + 1
         started_at = datetime.now(UTC)
         serialized_messages = [_serialize_message(message) for message in messages]
-        request_payload: dict[str, Any] = {
-            "model": self.model_config.model,
-            "messages": serialized_messages,
-            "max_tokens": self.model_config.max_tokens,
-            "stream": False,
-            "response_format": {"type": "json_object"},
-        }
-        if self.model_config.thinking_mode is ThinkingMode.enabled:
-            request_payload["thinking"] = {"type": "enabled"}
-            if self.model_config.reasoning_effort is not None:
-                request_payload["reasoning_effort"] = self.model_config.reasoning_effort.value
-        else:
-            request_payload["thinking"] = {"type": "disabled"}
-            request_payload["temperature"] = self.model_config.temperature
+        request_payload = _build_request_payload(
+            model_config=self.model_config,
+            serialized_messages=serialized_messages,
+        )
 
         started_perf = time.perf_counter()
         try:
@@ -252,6 +242,26 @@ class DeepSeekBenchmarkClient:
             usage=usage,
             latency_ms=latency_ms,
         )
+
+
+def _build_request_payload(
+    *,
+    model_config: ModelBenchmarkConfig,
+    serialized_messages: list[dict[str, str]],
+) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "model": model_config.model,
+        "messages": serialized_messages,
+        "max_tokens": model_config.max_tokens,
+        "stream": False,
+        "response_format": {"type": "json_object"},
+    }
+    if model_config.thinking_mode is ThinkingMode.enabled:
+        if model_config.reasoning_effort is not None:
+            payload["reasoning_effort"] = model_config.reasoning_effort.value
+    else:
+        payload["temperature"] = model_config.temperature
+    return {key: value for key, value in payload.items() if value is not None}
 
 
 def _extract_usage(raw_usage: Any) -> LLMUsage:

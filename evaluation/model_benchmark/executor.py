@@ -174,8 +174,8 @@ class NodeModelBenchmarkExecutor:
             json_parse_success = False
             schema_validation_success = False
             business_rule_success = False
-            error_type = "request_error"
-            error_message = str(execution_error)
+            error_type = getattr(call_record, "error_type", None) or "request_error"
+            error_message = getattr(call_record, "error_message", None) or str(execution_error)
             parsed_payload = None
         elif isinstance(execution_error, NodeJSONParseError):
             request_succeeded = True
@@ -246,7 +246,7 @@ class NodeModelBenchmarkExecutor:
         passed = execution_error is None and all(result.passed for result in assertion_results)
         if isinstance(execution_error, LLMRequestError):
             status = BenchmarkRunStatus.request_error
-            error_type = "request_error"
+            error_type = observation.error_type or "request_error"
             error_message = observation.error_message
         elif passed:
             status = BenchmarkRunStatus.passed

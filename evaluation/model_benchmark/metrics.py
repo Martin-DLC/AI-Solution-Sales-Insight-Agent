@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter
+from decimal import Decimal
 from statistics import mean
 
 from evaluation.model_benchmark.models import (
@@ -60,7 +61,7 @@ def summarize_node_model_results(
     average_latency_ms = mean(latency_values) if latency_values else 0.0
     total_tokens = sum(result.total_tokens or 0 for result in results)
     cost_values = [result.estimated_cost for result in results if result.estimated_cost is not None]
-    estimated_total_cost = sum(cost_values) if cost_values else None
+    estimated_total_cost = sum(cost_values, Decimal("0")) if cost_values else None
 
     disqualification_reasons: list[str] = []
     if request_error_count:

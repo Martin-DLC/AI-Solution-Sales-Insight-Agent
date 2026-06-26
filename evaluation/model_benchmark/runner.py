@@ -112,14 +112,16 @@ class NodeModelBenchmarkRunner:
         accumulated_cost = Decimal("0")
         unknown_cost_run_count = 0
         stopped_by_budget = False
+        stop_reason: str | None = None
 
         for case in selected_cases:
             for model_config in selected_models:
                 if max_budget_cny is not None and accumulated_cost >= max_budget_cny:
                     stopped_by_budget = True
+                    stop_reason = "budget"
                     break
                 if execution_mode is BenchmarkExecutionMode.live and unknown_cost_run_count > max_unknown_cost_runs:
-                    stopped_by_budget = True
+                    stop_reason = "unknown_cost_limit"
                     break
                 client = self.client_factory(model_config, case)
                 execution = self.executor.execute_case(
@@ -156,10 +158,13 @@ class NodeModelBenchmarkRunner:
                     else:
                         accumulated_cost += artifact.run_result.estimated_cost
                 if fail_fast and artifact.run_result.status is not BenchmarkRunStatus.passed:
+                    stop_reason = "fail_fast"
                     break
             if fail_fast and run_results and run_results[-1].status is not BenchmarkRunStatus.passed:
                 break
             if stopped_by_budget:
+                break
+            if stop_reason == "unknown_cost_limit":
                 break
 
         completed_at = datetime.now(UTC)
@@ -185,6 +190,7 @@ class NodeModelBenchmarkRunner:
             estimated_cost_cny=accumulated_cost if execution_mode is BenchmarkExecutionMode.live else None,
             unknown_cost_run_count=unknown_cost_run_count if execution_mode is BenchmarkExecutionMode.live else 0,
             stopped_by_budget=stopped_by_budget,
+            stop_reason=stop_reason,
             live_confirmed=live_confirmed,
             selected_model_details=[
                 {

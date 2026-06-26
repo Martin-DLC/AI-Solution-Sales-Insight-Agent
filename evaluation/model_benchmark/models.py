@@ -566,6 +566,7 @@ class BenchmarkRunManifest(StrictBaseModel):
     estimated_cost_cny: Decimal | None = None
     unknown_cost_run_count: int = 0
     stopped_by_budget: bool = False
+    stop_reason: Literal["budget", "unknown_cost_limit", "fail_fast"] | None = None
     live_confirmed: bool = False
     selected_model_details: list[dict[str, Any]] = Field(default_factory=list)
     capture_debug_artifacts: bool = False
@@ -612,6 +613,10 @@ class BenchmarkRunManifest(StrictBaseModel):
             raise ValueError("Completed run count must equal the sum of status counts.")
         if self.execution_mode is BenchmarkExecutionMode.live and not self.provider_names:
             raise ValueError("Live benchmark manifests must include provider_names.")
+        if self.stopped_by_budget and self.stop_reason not in {None, "budget"}:
+            raise ValueError("stopped_by_budget can only be true when stop_reason is budget.")
+        if self.stop_reason == "budget" and not self.stopped_by_budget:
+            raise ValueError("stop_reason=budget requires stopped_by_budget=true.")
         return self
 
 
