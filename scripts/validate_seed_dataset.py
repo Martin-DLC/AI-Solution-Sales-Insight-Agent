@@ -14,7 +14,21 @@ from dataio.evaluation_references import load_reference_packs  # noqa: E402
 from dataio.runtime_cases import load_runtime_cases  # noqa: E402
 
 
-EXPECTED_CASE_IDS = ["DEV-01", "DEV-04", "DEV-05"]
+EXPECTED_CASE_IDS = [
+    "DEV-01",
+    "DEV-04",
+    "DEV-05",
+    "DEV-06",
+    "DEV-07",
+    "DEV-08",
+    "DEV-09",
+    "DEV-10",
+    "DEV-11",
+    "DEV-12",
+    "DEV-13",
+    "DEV-14",
+]
+ORIGINAL_SEED_CASE_IDS = ["DEV-01", "DEV-04", "DEV-05"]
 CASES_PATH = PROJECT_ROOT / "data" / "evaluation" / "development_cases.jsonl"
 REFERENCES_PATH = PROJECT_ROOT / "data" / "evaluation" / "development_reference.jsonl"
 FORBIDDEN_MARKERS = ("TODO", "待补充", "同上", "省略")
@@ -66,8 +80,12 @@ def main() -> int:
     case_ids = [case.case_id for case in cases]
     reference_ids = [reference.case_id for reference in references]
 
-    assert_true(len(cases) == 3, f"Expected 3 runtime cases, got {len(cases)}.")
-    assert_true(len(references) == 3, f"Expected 3 reference packs, got {len(references)}.")
+    assert_true(len(cases) == 12, f"Expected 12 runtime cases, got {len(cases)}.")
+    assert_true(len(references) == 12, f"Expected 12 reference packs, got {len(references)}.")
+    assert_true(
+        case_ids[:3] == ORIGINAL_SEED_CASE_IDS,
+        f"Original seed case order must remain {ORIGINAL_SEED_CASE_IDS}, got {case_ids[:3]}.",
+    )
     assert_true(case_ids == EXPECTED_CASE_IDS, f"Case order must be {EXPECTED_CASE_IDS}, got {case_ids}.")
     assert_true(
         reference_ids == EXPECTED_CASE_IDS,
@@ -81,10 +99,10 @@ def main() -> int:
 
     case_lines = non_empty_lines(CASES_PATH)
     reference_lines = non_empty_lines(REFERENCES_PATH)
-    assert_true(len(case_lines) == 3, f"{CASES_PATH} must have exactly 3 non-empty lines.")
+    assert_true(len(case_lines) == 12, f"{CASES_PATH} must have exactly 12 non-empty lines.")
     assert_true(
-        len(reference_lines) == 3,
-        f"{REFERENCES_PATH} must have exactly 3 non-empty lines.",
+        len(reference_lines) == 12,
+        f"{REFERENCES_PATH} must have exactly 12 non-empty lines.",
     )
 
     for case in cases:

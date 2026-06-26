@@ -1,0 +1,41 @@
+[
+  {
+    "config_id": "ds-v4-flash-non-thinking",
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "tier": "fast",
+    "thinking_mode": "disabled",
+    "reasoning_effort": null,
+    "temperature": 0,
+    "max_tokens": 8192,
+    "pricing_profile_id": "flash-v4-2026-06",
+    "api_key_env": "LLM_API_KEY",
+    "enabled": true
+  },
+  {
+    "config_id": "ds-v4-pro-non-thinking",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "tier": "balanced",
+    "thinking_mode": "disabled",
+    "reasoning_effort": null,
+    "temperature": 0,
+    "max_tokens": 8192,
+    "pricing_profile_id": "pro-v4-2026-06",
+    "api_key_env": "LLM_API_KEY",
+    "enabled": true
+  },
+  {
+    "config_id": "ds-v4-pro-thinking-high",
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "tier": "strong_reasoning",
+    "thinking_mode": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null,
+    "max_tokens": 8192,
+    "pricing_profile_id": "pro-v4-2026-06",
+    "api_key_env": "LLM_API_KEY",
+    "enabled": true
+  }
+]

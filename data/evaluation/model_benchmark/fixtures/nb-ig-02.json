@@ -1,0 +1,125 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-IG-02",
+  "source_case_id": "DEV-09",
+  "node_name": "information_gap",
+  "state": {
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "悦禾美妆品牌管理有限公司 美妆零售 电商客服系统, 商品信息系统, 门店培训平台",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "电商运营负责人说明，缩短新品知识上线时间是当前讨论的主要目标，现有电商客服系统与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n客服主管补充，团队目前依赖人工核对和经验判断，提升客服答复一致性也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\nIT项目经理提醒，新品上市窗口很近，但采购和安全评审周期未明确。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "新品上市窗口很近，但采购和安全评审周期未明确。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "新品知识库生成助手",
+          "content": "新品知识库生成助手 is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "客服标准问答审核工作台",
+          "content": "客服标准问答审核工作台 is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    },
+    "context_sufficiency": {
+      "context_quality": "partially_sufficient",
+      "analysis_mode": "full_analysis",
+      "available_categories": [
+        "business_goal"
+      ],
+      "missing_categories": [
+        "budget"
+      ],
+      "blocking_gaps": [],
+      "reasoning_summary": "上下文足以继续节点级评测，但仍存在预算缺口。"
+    },
+    "fact_extraction": {
+      "facts": [
+        {
+          "fact_id": "FACT-01",
+          "category": "business_goal",
+          "statement": "缩短新品知识上线时间",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "MTG-01",
+              "source_type": "meeting_transcript",
+              "evidence_summary": "会议中明确提出该目标"
+            }
+          ]
+        },
+        {
+          "fact_id": "FACT-02",
+          "category": "constraint",
+          "statement": "新品上市窗口很近，但采购和安全评审周期未明确。",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "CONSTRAINT-01",
+              "source_type": "known_constraint",
+              "evidence_summary": "已知限制记录该约束"
+            }
+          ]
+        }
+      ],
+      "unknown_fields": [
+        "budget",
+        "decision_process"
+      ],
+      "customer_context_draft": {
+        "company_name": "悦禾美妆品牌管理有限公司",
+        "industry": "美妆零售",
+        "company_size": "约450人，线上线下多渠道销售",
+        "current_systems": [
+          "电商客服系统",
+          "商品信息系统",
+          "门店培训平台"
+        ],
+        "sales_stage_input": "方案探索，客户希望支持新品上市客服和内容准备",
+        "confirmed_constraints": [
+          "新品上市窗口很近，但采购和安全评审周期未明确。",
+          "功效表述必须引用已审核素材，不能自由生成承诺。"
+        ],
+        "context_quality": "partially_sufficient"
+      }
+    }
+  }
+}

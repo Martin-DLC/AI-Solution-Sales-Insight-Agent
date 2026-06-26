@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from decimal import Decimal
 import secrets
 from pathlib import Path
 from typing import Any
@@ -12,13 +13,16 @@ from evaluation.model_benchmark.dataset import validate_node_benchmark_dataset
 from evaluation.model_benchmark.executor import NodeModelBenchmarkExecutor
 from evaluation.model_benchmark.metrics import summarize_node_model_results
 from evaluation.model_benchmark.models import (
+    BenchmarkExecutionMode,
     BenchmarkRunManifest,
     BenchmarkRunReport,
     BenchmarkRunStatus,
     ModelBenchmarkConfig,
     NodeBenchmarkCase,
     NodeBenchmarkRunResult,
+    ThinkingMode,
 )
+from evaluation.model_benchmark.pricing import estimate_request_cost, get_pricing_profile
 from evaluation.model_benchmark.storage import write_benchmark_run_report
 
 
@@ -92,7 +96,12 @@ class NodeModelBenchmarkRunner:
         case_ids: list[str] | None = None,
         model_config_ids: list[str] | None = None,
         fail_fast: bool = False,
+        execution_mode: BenchmarkExecutionMode = BenchmarkExecutionMode.replay,
+        max_budget_cny: Decimal | None = None,
+        live_confirmed: bool = False,
+        max_unknown_cost_runs: int = 1,
     ) -> BenchmarkRunReport:
+        execution_mode = BenchmarkExecutionMode(execution_mode)
         selected_cases = self._filter_cases(case_ids)
         selected_models = self._filter_model_configs(model_config_ids)
         started_at = datetime.now(UTC)
@@ -100,9 +109,20 @@ class NodeModelBenchmarkRunner:
 
         run_results: list[NodeBenchmarkRunResult] = []
         case_artifacts: list[tuple[Any, list[Any]]] = []
+        accumulated_cost = Decimal("0")
+        unknown_cost_run_count = 0
+        stopped_by_budget = False
+        stop_reason: str | None = None
 
         for case in selected_cases:
             for model_config in selected_models:
+                if max_budget_cny is not None and accumulated_cost >= max_budget_cny:
+                    stopped_by_budget = True
+                    stop_reason = "budget"
+                    break
+                if execution_mode is BenchmarkExecutionMode.live and unknown_cost_run_count > max_unknown_cost_runs:
+                    stop_reason = "unknown_cost_limit"
+                    break
                 client = self.client_factory(model_config, case)
                 execution = self.executor.execute_case(
                     case,
@@ -111,12 +131,40 @@ class NodeModelBenchmarkRunner:
                     run_id=self._case_run_id(run_id, case, model_config),
                 )
                 artifact_dir = self._artifact_dir(run_id, execution.artifact)
-                artifact = execution.artifact.model_copy(update={"artifact_dir": str(artifact_dir)})
+                artifact = execution.artifact.model_copy(
+                    update={
+                        "artifact_dir": str(artifact_dir),
+                        "observation": self._annotate_observation(
+                            execution.artifact.observation,
+                            model_config=model_config,
+                            call_records=execution.call_records,
+                        ),
+                    }
+                )
+                artifact = artifact.model_copy(
+                    update={
+                        "run_result": self._annotate_run_result(
+                            artifact.run_result,
+                            model_config=model_config,
+                            call_records=execution.call_records,
+                        )
+                    }
+                )
                 run_results.append(artifact.run_result)
                 case_artifacts.append((artifact, execution.call_records))
+                if execution_mode is BenchmarkExecutionMode.live:
+                    if artifact.run_result.estimated_cost is None:
+                        unknown_cost_run_count += 1
+                    else:
+                        accumulated_cost += artifact.run_result.estimated_cost
                 if fail_fast and artifact.run_result.status is not BenchmarkRunStatus.passed:
+                    stop_reason = "fail_fast"
                     break
             if fail_fast and run_results and run_results[-1].status is not BenchmarkRunStatus.passed:
+                break
+            if stopped_by_budget:
+                break
+            if stop_reason == "unknown_cost_limit":
                 break
 
         completed_at = datetime.now(UTC)
@@ -124,6 +172,7 @@ class NodeModelBenchmarkRunner:
             run_id=run_id,
             started_at=started_at,
             completed_at=completed_at,
+            execution_mode=execution_mode,
             selected_case_count=len(selected_cases),
             selected_model_count=len(selected_models),
             planned_run_count=len(selected_cases) * len(selected_models),
@@ -133,6 +182,27 @@ class NodeModelBenchmarkRunner:
             request_error_count=sum(
                 1 for result in run_results if result.status is BenchmarkRunStatus.request_error
             ),
+            provider_names=_unique_preserve_order([config.provider for config in selected_models]),
+            pricing_snapshot_ids=_unique_preserve_order(
+                [config.pricing_profile_id for config in selected_models if config.pricing_profile_id]
+            ),
+            max_budget_cny=max_budget_cny,
+            estimated_cost_cny=accumulated_cost if execution_mode is BenchmarkExecutionMode.live else None,
+            unknown_cost_run_count=unknown_cost_run_count if execution_mode is BenchmarkExecutionMode.live else 0,
+            stopped_by_budget=stopped_by_budget,
+            stop_reason=stop_reason,
+            live_confirmed=live_confirmed,
+            selected_model_details=[
+                {
+                    "config_id": config.config_id,
+                    "provider": config.provider,
+                    "model": config.model,
+                    "tier": config.tier.value,
+                    "thinking_mode": config.thinking_mode.value,
+                    "reasoning_effort": config.reasoning_effort.value if config.reasoning_effort else None,
+                }
+                for config in selected_models
+            ],
             capture_debug_artifacts=self.capture_debug_artifacts,
             output_directory=str(Path(self.output_root) / run_id),
         )
@@ -164,6 +234,31 @@ class NodeModelBenchmarkRunner:
             }
         )
         return report
+
+    def _annotate_observation(self, observation: Any, *, model_config: ModelBenchmarkConfig, call_records: list[Any]) -> Any:
+        return observation.model_copy(
+            update={
+                "estimated_cost": self._estimate_cost(model_config, call_records),
+                "model": model_config.model,
+                "thinking_mode": model_config.thinking_mode,
+            }
+        )
+
+    def _annotate_run_result(self, run_result: NodeBenchmarkRunResult, *, model_config: ModelBenchmarkConfig, call_records: list[Any]) -> NodeBenchmarkRunResult:
+        return run_result.model_copy(update={"estimated_cost": self._estimate_cost(model_config, call_records)})
+
+    @staticmethod
+    def _estimate_cost(model_config: ModelBenchmarkConfig, call_records: list[Any]) -> Decimal | None:
+        if not model_config.pricing_profile_id or not call_records:
+            return None
+        usage = getattr(call_records[-1], "usage", None)
+        if usage is None:
+            return None
+        return estimate_request_cost(
+            prompt_tokens=getattr(usage, "prompt_tokens", None),
+            completion_tokens=getattr(usage, "completion_tokens", None),
+            pricing_profile=get_pricing_profile(model_config.pricing_profile_id),
+        )
 
     def _filter_cases(self, case_ids: list[str] | None) -> list[NodeBenchmarkCase]:
         if not case_ids:
@@ -203,3 +298,13 @@ class NodeModelBenchmarkRunner:
             / artifact.model_config_id
             / artifact.node_name.value
         )
+
+
+def _unique_preserve_order(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        if value not in seen:
+            seen.add(value)
+            result.append(value)
+    return result

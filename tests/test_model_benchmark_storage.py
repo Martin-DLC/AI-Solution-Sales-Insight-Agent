@@ -62,3 +62,34 @@ def test_storage_writes_case_artifact_and_call_files(tmp_path: Path) -> None:
     result = json.loads(artifact_dir.joinpath("run_result.json").read_text(encoding="utf-8"))
     assert result["benchmark_case_id"] == case.benchmark_case_id
     assert result["status"] == "passed"
+
+
+def test_storage_safe_mode_omits_messages_and_raw_response(tmp_path: Path) -> None:
+    case = next(
+        case
+        for case in load_node_benchmark_cases(PROJECT_ROOT / "data/evaluation/model_benchmark/node_cases.jsonl")
+        if case.node_name is WorkflowNodeName.fact_extraction
+    )
+    config = _config()
+    factory = create_replay_client_factory(
+        replay_records=[_replay_record(case, _payload_for_case(case))]
+    )
+    execution = NodeModelBenchmarkExecutor().execute_case(
+        case,
+        config,
+        client=factory(config, case),
+        run_id="run-storage-safe",
+    )
+
+    artifact_dir = write_benchmark_case_artifact(
+        execution.artifact,
+        artifact_dir=tmp_path / "case-artifact-safe",
+        call_records=execution.call_records,
+        safe_mode=True,
+    )
+
+    call_dir = artifact_dir / "llm_calls/01_fact_extraction"
+    assert call_dir.joinpath("metadata.json").exists()
+    assert not call_dir.joinpath("messages.json").exists()
+    assert not call_dir.joinpath("raw_response.txt").exists()
+    assert not call_dir.joinpath("parsed_response.json").exists()

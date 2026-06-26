@@ -1,0 +1,135 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-IG-01",
+  "source_case_id": "DEV-05",
+  "node_name": "information_gap",
+  "state": {
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "华岳工业设备 工业设备制造 / 售后服务 电话报修, 微信, 区域销售人员, 400热线, Excel, 微信群, 个人笔记, ERP维修备注",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "郑强介绍，目前售后团队工作量很大，希望通过Agent自动接收客户问题、判断故障类型、分配工程师、查询备件、生成维修方案并通知客户。他希望Agent能够替代大部分400客服，并减少区域经理人工协调工作。林雪表示，目前客户报修时提供的信息经常不完整。有些客户只说“机器不能用了”，客服需要反复询问设备型号、故障代码、现场照片和停机情况。不同客服人员的提问方式和记录内容并不一致。赵经理补充，不同区域的派工方式不同。华东区域按客户等级和工程师技能分配，华南区域更看重地理距离，西部区域则经常由销售人员临时协调。公司没有统一的工程师技能标签，也没有实时更新工程师的位置和工作状态。彭工表示，设备故障处理高度依赖经验。同一种报警代码可能由多种原因造成，必须结合设备版本、运行环境、维修历史和现场照片判断。现有维修案例主要保存在个人电脑、微信群和纸质记录中，没有统一模板。郑强认为这些问题正说明需要Agent。他希望系统可以自动学习历史聊天和维修记录，并直接给客户维修建议。吴工对此表示担忧。公司目前连统一工单系统都没有，ERP中的设备编号也经常和销售系统中的客户名称对应不上。部分老设备没有完整电子档案，维修记录的数据质量很差。刘顾问询问售后流程是否有统一SOP。林雪表示400客服有一份基础登记表，但各区域实际处理方式差异很大。赵经理认为总部统一SOP不一定适合所有区域，因为客户等级和服务合同不同。郑强要求第一阶段尽量做到自动受理、自动诊断、自动派单和自动生成解决方案。他希望三个月内上线，并减少至少40%的客服和协调人员。吴工表示，目前公司没有批准新的售后系统预算，也没有确定哪个系统作为未来工单主系统。会议最后，郑强要求我方直接提供一套多Agent售后服务平台方案，并展示自动诊断和自动派工能力。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "客户痛点非常明显，而且售后总监明确希望减少40%的人员，我认为这是一个很大的降本项目。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "没有统一售后工单系统，报修入口分散，售后流程没有统一SOP。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "售后知识库RAG方案",
+          "content": "售后知识库RAG方案 is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "客户报修信息采集助手",
+          "content": "客户报修信息采集助手 is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    },
+    "context_sufficiency": {
+      "context_quality": "partially_sufficient",
+      "analysis_mode": "full_analysis",
+      "available_categories": [
+        "business_goal"
+      ],
+      "missing_categories": [
+        "budget"
+      ],
+      "blocking_gaps": [],
+      "reasoning_summary": "上下文足以继续节点级评测，但仍存在预算缺口。"
+    },
+    "fact_extraction": {
+      "facts": [
+        {
+          "fact_id": "FACT-01",
+          "category": "business_goal",
+          "statement": "通过Agent自动接收客户问题",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "MTG-01",
+              "source_type": "meeting_transcript",
+              "evidence_summary": "会议中明确提出该目标"
+            }
+          ]
+        },
+        {
+          "fact_id": "FACT-02",
+          "category": "constraint",
+          "statement": "没有统一售后工单系统，报修入口分散，售后流程没有统一SOP。",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "CONSTRAINT-01",
+              "source_type": "known_constraint",
+              "evidence_summary": "已知限制记录该约束"
+            }
+          ]
+        }
+      ],
+      "unknown_fields": [
+        "budget",
+        "decision_process"
+      ],
+      "customer_context_draft": {
+        "company_name": "华岳工业设备",
+        "industry": "工业设备制造 / 售后服务",
+        "company_size": "约2500名员工，售后服务人员约180人",
+        "current_systems": [
+          "电话报修",
+          "微信",
+          "区域销售人员",
+          "400热线",
+          "Excel",
+          "微信群",
+          "个人笔记",
+          "ERP维修备注"
+        ],
+        "sales_stage_input": "初步需求调研阶段",
+        "confirmed_constraints": [
+          "没有统一售后工单系统，报修入口分散，售后流程没有统一SOP。",
+          "不同区域派工规则不同。",
+          "没有统一工程师技能标签，也没有实时工程师状态数据。",
+          "设备、客户和维修数据无法稳定关联，历史维修知识高度分散且数据质量差。",
+          "故障诊断依赖现场环境和专家经验。",
+          "当前没有正式预算，也没有确定未来系统Owner。",
+          "三个月上线范围不现实，人员替代目标没有数据依据。"
+        ],
+        "context_quality": "partially_sufficient"
+      }
+    }
+  }
+}

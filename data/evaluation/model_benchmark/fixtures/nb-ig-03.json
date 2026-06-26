@@ -1,0 +1,125 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-IG-03",
+  "source_case_id": "DEV-11",
+  "node_name": "information_gap",
+  "state": {
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "星澄家电服务有限公司 家电售后服务 售后工单系统, 备件库存系统, 网点微信群",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "售后运营负责人说明，提升一次修复率是当前讨论的主要目标，现有售后工单系统与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n网点管理经理补充，团队目前依赖人工核对和经验判断，减少备件错带也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\n客服质检主管提醒，IT或系统集成负责人未参与，接口和数据权限无法确认。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "IT或系统集成负责人未参与，接口和数据权限无法确认。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "售后工单诊断助手",
+          "content": "售后工单诊断助手 is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "备件推荐知识库",
+          "content": "备件推荐知识库 is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    },
+    "context_sufficiency": {
+      "context_quality": "partially_sufficient",
+      "analysis_mode": "full_analysis",
+      "available_categories": [
+        "business_goal"
+      ],
+      "missing_categories": [
+        "budget"
+      ],
+      "blocking_gaps": [],
+      "reasoning_summary": "上下文足以继续节点级评测，但仍存在预算缺口。"
+    },
+    "fact_extraction": {
+      "facts": [
+        {
+          "fact_id": "FACT-01",
+          "category": "business_goal",
+          "statement": "提升一次修复率",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "MTG-01",
+              "source_type": "meeting_transcript",
+              "evidence_summary": "会议中明确提出该目标"
+            }
+          ]
+        },
+        {
+          "fact_id": "FACT-02",
+          "category": "constraint",
+          "statement": "IT或系统集成负责人未参与，接口和数据权限无法确认。",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "CONSTRAINT-01",
+              "source_type": "known_constraint",
+              "evidence_summary": "已知限制记录该约束"
+            }
+          ]
+        }
+      ],
+      "unknown_fields": [
+        "budget",
+        "decision_process"
+      ],
+      "customer_context_draft": {
+        "company_name": "星澄家电服务有限公司",
+        "industry": "家电售后服务",
+        "company_size": "约1200人，全国维修网点",
+        "current_systems": [
+          "售后工单系统",
+          "备件库存系统",
+          "网点微信群"
+        ],
+        "sales_stage_input": "早期发现，客户确认痛点但缺少系统负责人参与",
+        "confirmed_constraints": [
+          "IT或系统集成负责人未参与，接口和数据权限无法确认。",
+          "故障经验分散在群消息中，结构化程度不足。"
+        ],
+        "context_quality": "partially_sufficient"
+      }
+    }
+  }
+}

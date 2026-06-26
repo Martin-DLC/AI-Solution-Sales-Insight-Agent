@@ -1,0 +1,129 @@
+{
+  "fixture_version": "1.0",
+  "benchmark_case_id": "NB-UP-04",
+  "source_case_id": "DEV-13",
+  "node_name": "underlying_pain",
+  "state": {
+    "source_index": {
+      "items": [
+        {
+          "source_id": "PROFILE-01",
+          "source_type": "customer_profile",
+          "source_order": 1,
+          "title": "Customer profile",
+          "content": "锦舟跨境仓储有限公司 跨境电商仓储 WMS仓储系统, 订单履约平台, 异常件Excel台账",
+          "verified": true
+        },
+        {
+          "source_id": "MTG-01",
+          "source_type": "meeting_transcript",
+          "source_order": 2,
+          "title": "Meeting transcript",
+          "content": "仓储运营负责人说明，降低异常件处理时长是当前讨论的主要目标，现有WMS仓储系统与人工流程之间仍存在断点，需要评估AI是否能在低风险范围内提供帮助。\n异常件主管补充，团队目前依赖人工核对和经验判断，提升仓内调度效率也被反复提及，但会议没有把销售备注中的推测确认为客户事实。\nIT应用经理提醒，预算和费用归属未确认。 同时还需要确认数据、接口、预算或审批路径，不能在缺少证据时直接进入完整上线承诺。\n会议结论是继续做节点级评估和小范围验证，重点确认业务价值、数据可用性、责任人和下一步需要客户补充的信息。",
+          "verified": true
+        },
+        {
+          "source_id": "NOTE-01",
+          "source_type": "salesperson_note",
+          "source_order": 3,
+          "title": "Salesperson note",
+          "content": "销售备注仅代表内部判断，尚未经客户逐项确认。",
+          "verified": false
+        },
+        {
+          "source_id": "CONSTRAINT-01",
+          "source_type": "known_constraint",
+          "source_order": 4,
+          "title": "Known constraint",
+          "content": "预算和费用归属未确认。",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-01",
+          "source_type": "solution_library",
+          "source_order": 5,
+          "title": "仓储异常件处理建议Agent",
+          "content": "仓储异常件处理建议Agent is available for this development evaluation case.",
+          "verified": true
+        },
+        {
+          "source_id": "SOL-02",
+          "source_type": "solution_library",
+          "source_order": 6,
+          "title": "异常规则知识库",
+          "content": "异常规则知识库 is available for this development evaluation case.",
+          "verified": true
+        }
+      ],
+      "source_count": 6
+    },
+    "fact_extraction": {
+      "facts": [
+        {
+          "fact_id": "FACT-01",
+          "category": "business_goal",
+          "statement": "降低异常件处理时长",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "MTG-01",
+              "source_type": "meeting_transcript",
+              "evidence_summary": "会议中明确提出该目标"
+            }
+          ]
+        },
+        {
+          "fact_id": "FACT-02",
+          "category": "constraint",
+          "statement": "预算和费用归属未确认。",
+          "claim_type": "fact",
+          "confidence": "high",
+          "evidence": [
+            {
+              "source_id": "CONSTRAINT-01",
+              "source_type": "known_constraint",
+              "evidence_summary": "已知限制记录该约束"
+            }
+          ]
+        }
+      ],
+      "unknown_fields": [
+        "budget",
+        "decision_process"
+      ],
+      "customer_context_draft": {
+        "company_name": "锦舟跨境仓储有限公司",
+        "industry": "跨境电商仓储",
+        "company_size": "约700人，多个海外仓协同",
+        "current_systems": [
+          "WMS仓储系统",
+          "订单履约平台",
+          "异常件Excel台账"
+        ],
+        "sales_stage_input": "需求发现，业务痛点清楚但预算未确认",
+        "confirmed_constraints": [
+          "预算和费用归属未确认。",
+          "异常处理规则分散，缺少统一结构化规则库。"
+        ],
+        "context_quality": "partially_sufficient"
+      }
+    },
+    "explicit_needs": [
+      {
+        "need_id": "NEED-01",
+        "description": "降低异常件处理时长",
+        "priority": "high",
+        "claim_type": "fact",
+        "confidence": "high",
+        "evidence": [
+          {
+            "source_id": "MTG-01",
+            "source_type": "meeting_transcript",
+            "evidence_summary": "会议纪要支持该显性需求"
+          }
+        ]
+      }
+    ]
+  }
+}
