@@ -79,19 +79,19 @@ def _messages():
     return [LLMMessage(role=LLMRole.user, content="Return JSON object")]
 
 
-def test_non_thinking_request_includes_temperature_and_disabled_flag() -> None:
+def test_non_thinking_request_uses_supported_parameters_only() -> None:
     completions = FakeCompletions()
     client = DeepSeekBenchmarkClient(_config(), "NB-01", FakeSDK(completions))
 
     client.complete_json_for_node(WorkflowNodeName.fact_extraction, _messages())
 
     call = completions.calls[0]
-    assert call["thinking"] == {"type": "disabled"}
     assert call["temperature"] == 0
     assert "reasoning_effort" not in call
+    assert "thinking" not in call
 
 
-def test_thinking_request_includes_reasoning_effort_and_omits_temperature() -> None:
+def test_thinking_request_uses_reasoning_effort_and_omits_unsupported_fields() -> None:
     completions = FakeCompletions()
     client = DeepSeekBenchmarkClient(
         _config(thinking_mode="enabled", reasoning_effort="high", temperature=None),
@@ -102,9 +102,9 @@ def test_thinking_request_includes_reasoning_effort_and_omits_temperature() -> N
     client.complete_json_for_node(WorkflowNodeName.fact_extraction, _messages())
 
     call = completions.calls[0]
-    assert call["thinking"] == {"type": "enabled"}
     assert call["reasoning_effort"] == "high"
     assert "temperature" not in call
+    assert "thinking" not in call
 
 
 def test_usage_and_reasoning_content_are_captured_in_call_record() -> None:

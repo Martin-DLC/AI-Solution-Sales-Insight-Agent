@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,8 @@ from agent.workflow_c.state import WorkflowNodeName
 from evaluation.model_benchmark.models import (
     BenchmarkAssertion,
     BenchmarkAssertionType,
+    BenchmarkExecutionMode,
+    BenchmarkRunManifest,
     BenchmarkRunStatus,
     ModelBenchmarkConfig,
     ModelBenchmarkConfigCatalog,
@@ -130,7 +133,7 @@ def test_rates_remain_inside_unit_interval() -> None:
     with pytest.raises(ValidationError):
         ModelBenchmarkConfig(
             config_id="cfg-1",
-            provider="deepseek",
+            provider="replay",
             model="model-x",
             tier=ModelTier.fast,
             temperature=2.5,
@@ -145,7 +148,7 @@ def test_config_catalog_rejects_duplicate_config_ids() -> None:
             configs=[
                 ModelBenchmarkConfig(
                     config_id="cfg-1",
-                    provider="deepseek",
+                    provider="replay",
                     model="model-a",
                     tier=ModelTier.fast,
                     temperature=0.2,
@@ -154,7 +157,7 @@ def test_config_catalog_rejects_duplicate_config_ids() -> None:
                 ),
                 ModelBenchmarkConfig(
                     config_id="cfg-1",
-                    provider="deepseek",
+                    provider="replay",
                     model="model-b",
                     tier=ModelTier.balanced,
                     temperature=0.4,
@@ -184,7 +187,7 @@ def test_json_serialization_is_stable() -> None:
         prompt_tokens=10,
         completion_tokens=4,
         total_tokens=14,
-        estimated_cost=0.01,
+        estimated_cost=Decimal("0.01"),
     )
     assert result.model_dump(mode="json")["status"] == "passed"
     assert result.model_dump(mode="json")["node_name"] == "information_gap"
@@ -207,4 +210,56 @@ def test_input_fixture_must_be_relative() -> None:
                     blocking=True,
                 )
             ],
+        )
+
+
+def test_deepseek_thinking_config_requires_null_temperature() -> None:
+    with pytest.raises(ValidationError):
+        ModelBenchmarkConfig(
+            config_id="cfg-ds",
+            provider="deepseek",
+            model="deepseek-v4-pro",
+            tier=ModelTier.strong_reasoning,
+            thinking_mode="enabled",
+            reasoning_effort="high",
+            temperature=0,
+            max_tokens=8192,
+            pricing_profile_id="pro-v4-2026-06",
+            api_key_env="LLM_API_KEY",
+        )
+
+
+def test_old_replay_config_stays_backward_compatible() -> None:
+    config = ModelBenchmarkConfig(
+        config_id="cfg-replay",
+        provider="replay",
+        model="fixture-model",
+        tier=ModelTier.fast,
+        temperature=0,
+        max_tokens=1024,
+    )
+    assert config.thinking_mode.value == "disabled"
+    assert config.api_key_env is None
+
+
+def test_manifest_rejects_unknown_cost_stop_with_stopped_by_budget_true() -> None:
+    with pytest.raises(ValidationError):
+        BenchmarkRunManifest(
+            run_id="run-1",
+            started_at="2026-06-26T00:00:00Z",
+            completed_at="2026-06-26T00:00:01Z",
+            execution_mode=BenchmarkExecutionMode.live,
+            selected_case_count=1,
+            selected_model_count=1,
+            planned_run_count=1,
+            completed_run_count=1,
+            passed_count=0,
+            failed_count=0,
+            request_error_count=1,
+            provider_names=["deepseek"],
+            pricing_snapshot_ids=["pro-v4-2026-06"],
+            unknown_cost_run_count=1,
+            stopped_by_budget=True,
+            stop_reason="unknown_cost_limit",
+            output_directory="data/runtime/model_benchmark_runs/run-1",
         )

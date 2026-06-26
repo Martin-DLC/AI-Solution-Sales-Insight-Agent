@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from decimal import Decimal
+
 import pytest
 from pydantic import ValidationError
 
@@ -28,7 +30,7 @@ def _result(
     prompt_tokens: int | None = 10,
     completion_tokens: int | None = 5,
     total_tokens: int | None = 15,
-    estimated_cost: float | None = 0.01,
+    estimated_cost: Decimal | None = Decimal("0.01"),
     error_type: str | None = None,
     error_message: str | None = None,
 ) -> NodeBenchmarkRunResult:
