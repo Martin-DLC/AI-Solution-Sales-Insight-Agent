@@ -1,0 +1,466 @@
+{
+  "summary_version": "v1",
+  "formal_run_ids": [
+    "MB-20260626T174835Z-25d3d6a0",
+    "MB-20260626T172704Z-70afe0ec",
+    "MB-20260626T175832Z-371b721f",
+    "MB-20260626T173701Z-d68a9f15"
+  ],
+  "formal_run_paths": [
+    "data/runtime/model_benchmark_runs/MB-20260626T174835Z-25d3d6a0",
+    "data/runtime/model_benchmark_runs/MB-20260626T172704Z-70afe0ec",
+    "data/runtime/model_benchmark_runs/MB-20260626T175832Z-371b721f",
+    "data/runtime/model_benchmark_runs/MB-20260626T173701Z-d68a9f15"
+  ],
+  "totals": {
+    "planned": 48,
+    "completed": 48,
+    "passed": 43,
+    "failed": 5,
+    "request_errors": 0,
+    "unknown_cost_runs": 0,
+    "estimated_cost_cny": "0.893536"
+  },
+  "node_summaries": [
+    {
+      "node_name": "fact_extraction",
+      "run_id": "MB-20260626T174835Z-25d3d6a0",
+      "run_path": "data/runtime/model_benchmark_runs/MB-20260626T174835Z-25d3d6a0",
+      "planned_run_count": 12,
+      "completed_run_count": 12,
+      "passed_count": 10,
+      "failed_count": 2,
+      "request_error_count": 0,
+      "unknown_cost_run_count": 0,
+      "stopped_by_budget": false,
+      "estimated_cost_cny": "0.335680",
+      "model_summaries": [
+        {
+          "node_name": "fact_extraction",
+          "model_config_id": "ds-v4-flash-non-thinking",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 23856,
+          "average_tokens_per_case": 5964.0,
+          "estimated_total_cost_cny": "0.038932",
+          "average_cost_per_case_cny": "0.009733",
+          "average_latency_ms": 30132.25,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        },
+        {
+          "node_name": "fact_extraction",
+          "model_config_id": "ds-v4-pro-non-thinking",
+          "case_count": 4,
+          "passed_count": 2,
+          "failed_count": 2,
+          "pass_rate": "0.500000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "0.500000",
+          "business_rule_pass_rate": "0.500000",
+          "evidence_reference_pass_rate": "0.750000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 28111,
+          "average_tokens_per_case": 7027.75,
+          "estimated_total_cost_cny": "0.142326",
+          "average_cost_per_case_cny": "0.035582",
+          "average_latency_ms": 47633.5,
+          "eligible_for_routing": false,
+          "disqualification_reasons": [
+            "schema_validation_failure",
+            "blocking_assertion_failure",
+            "evidence_reference_failure"
+          ],
+          "request_error_count": 0
+        },
+        {
+          "node_name": "fact_extraction",
+          "model_config_id": "ds-v4-pro-thinking-high",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 30127,
+          "average_tokens_per_case": 7531.75,
+          "estimated_total_cost_cny": "0.154422",
+          "average_cost_per_case_cny": "0.038606",
+          "average_latency_ms": 48487.75,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        }
+      ]
+    },
+    {
+      "node_name": "underlying_pain",
+      "run_id": "MB-20260626T172704Z-70afe0ec",
+      "run_path": "data/runtime/model_benchmark_runs/MB-20260626T172704Z-70afe0ec",
+      "planned_run_count": 12,
+      "completed_run_count": 12,
+      "passed_count": 12,
+      "failed_count": 0,
+      "request_error_count": 0,
+      "unknown_cost_run_count": 0,
+      "stopped_by_budget": false,
+      "estimated_cost_cny": "0.205506",
+      "model_summaries": [
+        {
+          "node_name": "underlying_pain",
+          "model_config_id": "ds-v4-flash-non-thinking",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 13463,
+          "average_tokens_per_case": 3365.75,
+          "estimated_total_cost_cny": "0.017016",
+          "average_cost_per_case_cny": "0.004254",
+          "average_latency_ms": 8824.5,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        },
+        {
+          "node_name": "underlying_pain",
+          "model_config_id": "ds-v4-pro-non-thinking",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 20399,
+          "average_tokens_per_case": 5099.75,
+          "estimated_total_cost_cny": "0.092664",
+          "average_cost_per_case_cny": "0.023166",
+          "average_latency_ms": 29865.5,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        },
+        {
+          "node_name": "underlying_pain",
+          "model_config_id": "ds-v4-pro-thinking-high",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 20926,
+          "average_tokens_per_case": 5231.5,
+          "estimated_total_cost_cny": "0.095826",
+          "average_cost_per_case_cny": "0.023956",
+          "average_latency_ms": 31319.25,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        }
+      ]
+    },
+    {
+      "node_name": "information_gap",
+      "run_id": "MB-20260626T175832Z-371b721f",
+      "run_path": "data/runtime/model_benchmark_runs/MB-20260626T175832Z-371b721f",
+      "planned_run_count": 12,
+      "completed_run_count": 12,
+      "passed_count": 12,
+      "failed_count": 0,
+      "request_error_count": 0,
+      "unknown_cost_run_count": 0,
+      "stopped_by_budget": false,
+      "estimated_cost_cny": "0.188659",
+      "model_summaries": [
+        {
+          "node_name": "information_gap",
+          "model_config_id": "ds-v4-flash-non-thinking",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 12497,
+          "average_tokens_per_case": 3124.25,
+          "estimated_total_cost_cny": "0.016681",
+          "average_cost_per_case_cny": "0.004170",
+          "average_latency_ms": 14441.25,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        },
+        {
+          "node_name": "information_gap",
+          "model_config_id": "ds-v4-pro-non-thinking",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 17337,
+          "average_tokens_per_case": 4334.25,
+          "estimated_total_cost_cny": "0.079083",
+          "average_cost_per_case_cny": "0.019771",
+          "average_latency_ms": 28896.25,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        },
+        {
+          "node_name": "information_gap",
+          "model_config_id": "ds-v4-pro-thinking-high",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 19639,
+          "average_tokens_per_case": 4909.75,
+          "estimated_total_cost_cny": "0.092895",
+          "average_cost_per_case_cny": "0.023224",
+          "average_latency_ms": 33412.5,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        }
+      ]
+    },
+    {
+      "node_name": "solution_recommendation",
+      "run_id": "MB-20260626T173701Z-d68a9f15",
+      "run_path": "data/runtime/model_benchmark_runs/MB-20260626T173701Z-d68a9f15",
+      "planned_run_count": 12,
+      "completed_run_count": 12,
+      "passed_count": 9,
+      "failed_count": 3,
+      "request_error_count": 0,
+      "unknown_cost_run_count": 0,
+      "stopped_by_budget": false,
+      "estimated_cost_cny": "0.163691",
+      "model_summaries": [
+        {
+          "node_name": "solution_recommendation",
+          "model_config_id": "ds-v4-flash-non-thinking",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 12922,
+          "average_tokens_per_case": 3230.5,
+          "estimated_total_cost_cny": "0.017759",
+          "average_cost_per_case_cny": "0.004440",
+          "average_latency_ms": 13477.75,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        },
+        {
+          "node_name": "solution_recommendation",
+          "model_config_id": "ds-v4-pro-non-thinking",
+          "case_count": 4,
+          "passed_count": 1,
+          "failed_count": 3,
+          "pass_rate": "0.250000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "0.250000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "0.750000",
+          "total_tokens": 16677,
+          "average_tokens_per_case": 4169.25,
+          "estimated_total_cost_cny": "0.075807",
+          "average_cost_per_case_cny": "0.018952",
+          "average_latency_ms": 23070.0,
+          "eligible_for_routing": false,
+          "disqualification_reasons": [
+            "blocking_assertion_failure",
+            "candidate_boundary_failure"
+          ],
+          "request_error_count": 0
+        },
+        {
+          "node_name": "solution_recommendation",
+          "model_config_id": "ds-v4-pro-thinking-high",
+          "case_count": 4,
+          "passed_count": 4,
+          "failed_count": 0,
+          "pass_rate": "1.000000",
+          "json_parse_pass_rate": "1.000000",
+          "schema_pass_rate": "1.000000",
+          "business_rule_pass_rate": "1.000000",
+          "evidence_reference_pass_rate": "1.000000",
+          "candidate_boundary_pass_rate": "1.000000",
+          "total_tokens": 15730,
+          "average_tokens_per_case": 3932.5,
+          "estimated_total_cost_cny": "0.070125",
+          "average_cost_per_case_cny": "0.017531",
+          "average_latency_ms": 21199.0,
+          "eligible_for_routing": true,
+          "disqualification_reasons": [],
+          "request_error_count": 0
+        }
+      ]
+    }
+  ],
+  "model_overall_summary": [
+    {
+      "model_config_id": "ds-v4-flash-non-thinking",
+      "total_cases": 16,
+      "total_passed": 16,
+      "total_failed": 0,
+      "total_tokens": 62738,
+      "total_cost_cny": "0.090388",
+      "average_latency_ms": 16718.938
+    },
+    {
+      "model_config_id": "ds-v4-pro-non-thinking",
+      "total_cases": 16,
+      "total_passed": 11,
+      "total_failed": 5,
+      "total_tokens": 82524,
+      "total_cost_cny": "0.389880",
+      "average_latency_ms": 32366.312
+    },
+    {
+      "model_config_id": "ds-v4-pro-thinking-high",
+      "total_cases": 16,
+      "total_passed": 16,
+      "total_failed": 0,
+      "total_tokens": 86422,
+      "total_cost_cny": "0.413268",
+      "average_latency_ms": 33604.625
+    }
+  ],
+  "failure_taxonomy": {
+    "failure_total": 5,
+    "by_node": {
+      "fact_extraction": 2,
+      "solution_recommendation": 3
+    },
+    "by_model_config": {
+      "ds-v4-pro-non-thinking": 5
+    },
+    "by_error_type": {
+      "LLMJSONDecodeError": 1,
+      "business_rule_error": 3,
+      "schema_validation_error": 1
+    },
+    "by_assertion_type": {
+      "candidate_boundary_valid": 1,
+      "evidence_reference_valid": 1,
+      "schema_validation_success": 2
+    },
+    "blocking_failure_count": 4,
+    "non_blocking_failure_count": 0,
+    "schema_failure_count": 2,
+    "business_rule_failure_count": 5,
+    "evidence_reference_failure_count": 1,
+    "candidate_boundary_failure_count": 1,
+    "failed_cases": [
+      {
+        "benchmark_case_id": "NB-FE-01",
+        "node_name": "fact_extraction",
+        "model_config_id": "ds-v4-pro-non-thinking",
+        "error_type": "LLMJSONDecodeError",
+        "failed_assertion_ids": [
+          "A-schema",
+          "A-evidence"
+        ],
+        "failed_assertion_types": [
+          "schema_validation_success",
+          "evidence_reference_valid"
+        ],
+        "blocking_failure_count": 2,
+        "failure_summary": "error_type=LLMJSONDecodeError | assertions=evidence_reference_valid,schema_validation_success | LLM JSON response is not valid JSON at position 4184: Unterminated string starting at."
+      },
+      {
+        "benchmark_case_id": "NB-FE-02",
+        "node_name": "fact_extraction",
+        "model_config_id": "ds-v4-pro-non-thinking",
+        "error_type": "schema_validation_error",
+        "failed_assertion_ids": [
+          "A-schema"
+        ],
+        "failed_assertion_types": [
+          "schema_validation_success"
+        ],
+        "blocking_failure_count": 1,
+        "failure_summary": "error_type=schema_validation_error | assertions=schema_validation_success | 1 validation error for FactExtractionNodeOutput fact_extraction.customer_context_draft.company_size Value error, This fie..."
+      },
+      {
+        "benchmark_case_id": "NB-SR-01",
+        "node_name": "solution_recommendation",
+        "model_config_id": "ds-v4-pro-non-thinking",
+        "error_type": "business_rule_error",
+        "failed_assertion_ids": [],
+        "failed_assertion_types": [],
+        "blocking_failure_count": 0,
+        "failure_summary": "error_type=business_rule_error | Solution recommendation failed business validation."
+      },
+      {
+        "benchmark_case_id": "NB-SR-02",
+        "node_name": "solution_recommendation",
+        "model_config_id": "ds-v4-pro-non-thinking",
+        "error_type": "business_rule_error",
+        "failed_assertion_ids": [
+          "A-candidate"
+        ],
+        "failed_assertion_types": [
+          "candidate_boundary_valid"
+        ],
+        "blocking_failure_count": 1,
+        "failure_summary": "error_type=business_rule_error | assertions=candidate_boundary_valid | Solution recommendation failed business validation."
+      },
+      {
+        "benchmark_case_id": "NB-SR-04",
+        "node_name": "solution_recommendation",
+        "model_config_id": "ds-v4-pro-non-thinking",
+        "error_type": "business_rule_error",
+        "failed_assertion_ids": [],
+        "failed_assertion_types": [],
+        "blocking_failure_count": 0,
+        "failure_summary": "error_type=business_rule_error | Solution recommendation failed business validation."
+      }
+    ]
+  }
+}

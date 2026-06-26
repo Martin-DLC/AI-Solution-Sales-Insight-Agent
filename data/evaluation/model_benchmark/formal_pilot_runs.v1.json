@@ -1,0 +1,25 @@
+{
+  "version": "v1",
+  "runs": [
+    {
+      "node_name": "fact_extraction",
+      "run_id": "MB-20260626T174835Z-25d3d6a0",
+      "run_path": "data/runtime/model_benchmark_runs/MB-20260626T174835Z-25d3d6a0"
+    },
+    {
+      "node_name": "underlying_pain",
+      "run_id": "MB-20260626T172704Z-70afe0ec",
+      "run_path": "data/runtime/model_benchmark_runs/MB-20260626T172704Z-70afe0ec"
+    },
+    {
+      "node_name": "information_gap",
+      "run_id": "MB-20260626T175832Z-371b721f",
+      "run_path": "data/runtime/model_benchmark_runs/MB-20260626T175832Z-371b721f"
+    },
+    {
+      "node_name": "solution_recommendation",
+      "run_id": "MB-20260626T173701Z-d68a9f15",
+      "run_path": "data/runtime/model_benchmark_runs/MB-20260626T173701Z-d68a9f15"
+    }
+  ]
+}

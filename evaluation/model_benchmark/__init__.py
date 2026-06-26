@@ -60,6 +60,11 @@ from evaluation.model_benchmark.pricing import (
     get_pricing_profile,
 )
 from evaluation.model_benchmark.runner import BenchmarkPlan, NodeModelBenchmarkRunner, format_benchmark_plan
+from evaluation.model_benchmark.routing import (
+    build_formal_pilot_summary,
+    build_node_model_routing_matrix,
+    load_formal_pilot_runs,
+)
 from evaluation.model_benchmark.storage import write_benchmark_case_artifact, write_benchmark_run_report
 
 __all__ = [
@@ -105,10 +110,13 @@ __all__ = [
     "evaluate_benchmark_assertions",
     "format_benchmark_plan",
     "get_pricing_profile",
+    "build_formal_pilot_summary",
+    "build_node_model_routing_matrix",
     "load_development_cases",
     "load_model_benchmark_configs",
     "load_node_benchmark_cases",
     "load_node_input_fixture",
+    "load_formal_pilot_runs",
     "load_replay_records",
     "load_reference_packs",
     "resolve_api_key",
