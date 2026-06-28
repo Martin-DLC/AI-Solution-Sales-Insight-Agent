@@ -80,8 +80,10 @@ def test_load_model_routing_policy_rejects_same_primary_and_fallback(tmp_path: P
         },
     )
 
-    with pytest.raises(ModelRoutingError):
-        load_model_routing_policy(matrix_path=matrix_path, config_path=config_path)
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.chdir(tmp_path)
+        with pytest.raises(ModelRoutingError):
+            load_model_routing_policy(matrix_path=matrix_path.name, config_path=config_path.name)
 
 
 def test_load_model_routing_policy_rejects_unknown_config_id(tmp_path: Path) -> None:
@@ -95,8 +97,10 @@ def test_load_model_routing_policy_rejects_unknown_config_id(tmp_path: Path) -> 
         },
     )
 
-    with pytest.raises(ModelRoutingError):
-        load_model_routing_policy(matrix_path=matrix_path, config_path=config_path)
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.chdir(tmp_path)
+        with pytest.raises(ModelRoutingError):
+            load_model_routing_policy(matrix_path=matrix_path.name, config_path=config_path.name)
 
 
 def test_load_model_routing_policy_rejects_non_target_nodes(tmp_path: Path) -> None:
@@ -114,8 +118,10 @@ def test_load_model_routing_policy_rejects_non_target_nodes(tmp_path: Path) -> N
         ],
     )
 
-    with pytest.raises(ModelRoutingError):
-        load_model_routing_policy(matrix_path=matrix_path, config_path=config_path)
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.chdir(tmp_path)
+        with pytest.raises(ModelRoutingError):
+            load_model_routing_policy(matrix_path=matrix_path.name, config_path=config_path.name)
 
 
 def test_load_model_routing_policy_rejects_secret_fields(tmp_path: Path) -> None:
@@ -128,8 +134,10 @@ def test_load_model_routing_policy_rejects_secret_fields(tmp_path: Path) -> None
         },
     )
 
-    with pytest.raises(ModelRoutingError):
-        load_model_routing_policy(matrix_path=matrix_path, config_path=config_path)
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.chdir(tmp_path)
+        with pytest.raises(ModelRoutingError):
+            load_model_routing_policy(matrix_path=matrix_path.name, config_path=config_path.name)
 
 
 def test_no_eligible_model_must_not_define_primary_or_fallback(tmp_path: Path) -> None:
@@ -145,8 +153,10 @@ def test_no_eligible_model_must_not_define_primary_or_fallback(tmp_path: Path) -
         },
     )
 
-    with pytest.raises(ModelRoutingError):
-        load_model_routing_policy(matrix_path=matrix_path, config_path=config_path)
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.chdir(tmp_path)
+        with pytest.raises(ModelRoutingError):
+            load_model_routing_policy(matrix_path=matrix_path.name, config_path=config_path.name)
 
 
 def test_format_model_routing_plan_shows_unbenchmarked_nodes() -> None:
@@ -336,7 +346,9 @@ def test_primary_failure_without_fallback_does_not_retry(tmp_path: Path) -> None
             }
         },
     )
-    policy = load_model_routing_policy(matrix_path=matrix_path, config_path=config_path)
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.chdir(tmp_path)
+        policy = load_model_routing_policy(matrix_path=matrix_path.name, config_path=config_path.name)
     client = RoutedWorkflowLLMClient(
         default_client=FakeNodeLLMClient(),
         default_config=_default_config(),
@@ -362,7 +374,9 @@ def test_no_eligible_model_fails_closed_without_request(tmp_path: Path) -> None:
             }
         },
     )
-    policy = load_model_routing_policy(matrix_path=matrix_path, config_path=config_path)
+    with pytest.MonkeyPatch.context() as monkeypatch:
+        monkeypatch.chdir(tmp_path)
+        policy = load_model_routing_policy(matrix_path=matrix_path.name, config_path=config_path.name)
     default_client = FakeNodeLLMClient()
     client = RoutedWorkflowLLMClient(
         default_client=default_client,
@@ -480,6 +494,49 @@ def test_runner_metadata_collects_routing_fields(tmp_path: Path) -> None:
     assert result.metadata.fallback_call_count == 1
     assert result.metadata.models_used == ["model-b", "default-model"]
     assert str(result.metadata.estimated_cost_cny) == "0.42"
+    assert not Path(result.metadata.output_directory).is_absolute()
+
+
+def test_runner_metadata_defaults_remain_compatible_without_routing(tmp_path: Path) -> None:
+    class NonRoutingWorkflowLLM:
+        def __init__(self) -> None:
+            self.delegate = FakeWorkflowLLMClient.with_default_batch4b_responses()
+            self.config = _default_config()
+            self.call_records: list[WorkflowLLMCallRecord] = []
+
+        def complete_json_for_node(self, node_name, messages):
+            sequence = len(self.call_records) + 1
+            result = self.delegate.complete_json_for_node(node_name, messages)
+            self.call_records.append(
+                WorkflowLLMCallRecord.model_validate(
+                    {
+                        "sequence": sequence,
+                        "node_name": node_name.value,
+                        "status": "success",
+                        "started_at": "2026-06-28T00:00:00Z",
+                        "completed_at": "2026-06-28T00:00:00Z",
+                        "latency_ms": result.latency_ms,
+                        "configured_model": self.config.model,
+                        "response_model": result.model,
+                        "usage": result.usage.model_dump(mode="json"),
+                        "messages": [],
+                    }
+                )
+            )
+            return result
+
+    runner = ArchitectureCRunner(NonRoutingWorkflowLLM(), output_root=tmp_path / "runs")
+    result = runner.run_case(_dev_case())
+
+    assert result.metadata.model_routing_enabled is False
+    assert result.metadata.routing_policy_version is None
+    assert result.metadata.routing_matrix_file is None
+    assert result.metadata.model_configs_file is None
+    assert result.metadata.routed_nodes == []
+    assert result.metadata.unavailable_routed_nodes == []
+    assert result.metadata.fallback_call_count == 0
+    assert result.metadata.models_used == ["fake-workflow-model"]
+    assert not Path(result.metadata.output_directory).is_absolute()
 
 
 def _load_real_policy():
@@ -559,10 +616,8 @@ def _write_policy_fixture(
         "formal_run_ids": [],
         "nodes": nodes,
     }
-    fixture_root = Path.cwd() / ".tmp_model_routing_tests" / tmp_path.name
-    fixture_root.mkdir(parents=True, exist_ok=True)
-    matrix_path = fixture_root / "matrix.json"
-    config_path = fixture_root / "configs.json"
+    matrix_path = tmp_path / "matrix.json"
+    config_path = tmp_path / "configs.json"
     matrix_path.write_text(json.dumps(matrix), encoding="utf-8")
     config_path.write_text(json.dumps(config_items), encoding="utf-8")
     return matrix_path, config_path
