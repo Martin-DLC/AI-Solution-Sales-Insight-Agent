@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+import os
 import secrets
 import subprocess
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from decimal import Decimal
 from enum import Enum
 from pathlib import Path
 from typing import Literal
@@ -49,6 +51,15 @@ class WorkflowCRunMetadata(StrictBaseModel):
     total_tokens: int | None = None
     output_directory: str
     git_commit: str | None = None
+    estimated_cost_cny: Decimal | None = None
+    model_routing_enabled: bool = False
+    routing_policy_version: str | None = None
+    routing_matrix_file: str | None = None
+    model_configs_file: str | None = None
+    routed_nodes: list[str] = Field(default_factory=list)
+    unavailable_routed_nodes: list[str] = Field(default_factory=list)
+    fallback_call_count: int = 0
+    models_used: list[str] = Field(default_factory=list)
     error_type: str | None = None
     error_message: str | None = None
 
@@ -86,7 +97,7 @@ class ArchitectureCRunError(Exception):
 class ArchitectureCRunner:
     def __init__(
         self,
-        workflow_llm: RealWorkflowLLMClient,
+        workflow_llm: object,
         *,
         output_root: str | Path = "data/runtime/workflow_c_runs",
     ) -> None:
@@ -218,6 +229,7 @@ class ArchitectureCRunner:
             if model is not None
         ]
         final_validation = snapshot.final_validation_result if snapshot is not None else None
+        estimated_cost = _sum_costs(record.estimated_cost for record in call_records)
         return WorkflowCRunMetadata(
             run_id=run_id,
             architecture="C",
@@ -239,8 +251,17 @@ class ArchitectureCRunner:
             prompt_tokens=usage.prompt_tokens,
             completion_tokens=usage.completion_tokens,
             total_tokens=usage.total_tokens,
-            output_directory=str(output_directory),
+            estimated_cost_cny=estimated_cost,
+            output_directory=_relative_output_path(output_directory),
             git_commit=git_commit,
+            model_routing_enabled=bool(getattr(self.workflow_llm, "model_routing_enabled", False)),
+            routing_policy_version=getattr(self.workflow_llm, "routing_policy_version", None),
+            routing_matrix_file=getattr(self.workflow_llm, "routing_matrix_file", None),
+            model_configs_file=getattr(self.workflow_llm, "model_configs_file", None),
+            routed_nodes=list(getattr(self.workflow_llm, "routed_nodes", [])),
+            unavailable_routed_nodes=list(getattr(self.workflow_llm, "unavailable_routed_nodes", [])),
+            fallback_call_count=sum(1 for record in call_records if record.route_role == "fallback"),
+            models_used=_models_used(call_records),
             error_type=error_type,
             error_message=error_message,
         )
@@ -302,3 +323,31 @@ def _sum_optional(values) -> int | None:
     if not known:
         return None
     return sum(known)
+
+
+def _sum_costs(values) -> Decimal | None:
+    known = [value for value in values if value is not None]
+    if not known:
+        return None
+    return sum(known, Decimal("0"))
+
+
+def _models_used(call_records: list[WorkflowLLMCallRecord]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for record in call_records:
+        value = (
+            record.selected_model
+            or record.response_model
+            or record.selected_model_config_id
+            or record.configured_model
+        )
+        if value and value not in seen:
+            seen.add(value)
+            result.append(value)
+    return result
+
+
+def _relative_output_path(path: Path) -> str:
+    project_root = Path.cwd().resolve()
+    return os.path.relpath(path.resolve(), project_root)

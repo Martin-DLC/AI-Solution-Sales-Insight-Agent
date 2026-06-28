@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from decimal import Decimal
 from typing import Any
 
 from agent.workflow_c.failures import redact_secrets
@@ -26,6 +27,18 @@ class WorkflowLLMCallRecord(StrictBaseModel):
     parsed_json: dict[str, Any] | None = None
     error_type: str | None = None
     error_message: str | None = None
+    estimated_cost: Decimal | None = None
+    routing_enabled: bool = False
+    selected_model_config_id: str | None = None
+    selected_provider: str | None = None
+    selected_model: str | None = None
+    selected_tier: str | None = None
+    thinking_mode: str | None = None
+    reasoning_effort: str | None = None
+    route_role: str | None = None
+    fallback_used: bool = False
+    fallback_reason: str | None = None
+    routing_policy_version: str | None = None
 
 
 class RealWorkflowLLMClient:

@@ -102,6 +102,26 @@ flowchart LR
 - 当前 Live Final Report 成功率为 0，这一点不回避
 - 详细分析见 [A/B/C 实验总结](docs/08_Architecture_ABC_Experiment_Report_V1.md)
 
+## v1.1 进展
+
+- 12 个 Development Cases
+- 16 个 Node Benchmark Cases
+- 48 次 DeepSeek V4 节点 Pilot
+- Node Model Routing Matrix
+- Architecture C 运行时路由
+- Runtime 路由审计
+- DEV-01 和 DEV-05 路由 Live 复测
+
+## v1.1 实验结论
+
+- 48 次节点 Pilot 中 43 次通过、5 次失败
+- 0 request error
+- 总估算成本 0.893536 元
+- Routing Matrix 为 4 个节点选出 Primary 和 Fallback
+- 两次路由复测都推进到了更后的节点
+- 仍未生成 Live Final Report
+- 当前不能证明异构模型切换带来稳定质量增益
+
 ## Guardrails 设计亮点
 
 1. 未验证销售备注不能成为客户事实
@@ -206,3 +226,14 @@ tests/
 - [System Architecture and Workflow](docs/09_System_Architecture_and_Workflow_V1.md)
 - [Demo and Reproduction Guide](docs/10_Demo_and_Reproduction_Guide_V1.md)
 - [Data Sync SOP](docs/06_Dataset_Sync_SOP_V1.md)
+- [Node Model Routing Matrix V1](docs/15_Node_Model_Routing_Matrix_V1.md)
+- [Architecture C Model Routing V1](docs/16_Architecture_C_Model_Routing_V1.md)
+- [Architecture C Model Routing Live Comparison V1](docs/17_Architecture_C_Model_Routing_Live_Comparison_V1.md)
+
+## Roadmap
+
+- v1.0: Architecture A/B/C 与可审计 Workflow，完成
+- v1.1: Model Evaluation & Routing，完成
+- v1.2: Enterprise Knowledge Base & RAG，下一阶段
+- v1.3: Agent Skills & MCP
+- v1.4: Harness、权限与成本优化
