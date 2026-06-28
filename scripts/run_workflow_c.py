@@ -10,6 +10,14 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from agent.workflow_c.failures import redact_secrets  # noqa: E402
+from agent.workflow_c.model_routing import (  # noqa: E402
+    DEFAULT_MODEL_CONFIGS_PATH,
+    DEFAULT_ROUTING_MATRIX_PATH,
+    ModelRoutingError,
+    RoutedWorkflowLLMClient,
+    format_model_routing_plan,
+    load_model_routing_policy,
+)
 from agent.workflow_c.real_llm import RealWorkflowLLMClient  # noqa: E402
 from agent.workflow_c.runtime import ArchitectureCRunError, ArchitectureCRunner  # noqa: E402
 from dataio.runtime_cases import load_runtime_cases  # noqa: E402
@@ -49,6 +57,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--cases-file", default=str(DEFAULT_CASES_FILE))
     parser.add_argument("--output-root", default="data/runtime/workflow_c_runs")
     parser.add_argument("--live", action="store_true")
+    parser.add_argument("--model-routing", action="store_true")
+    parser.add_argument("--routing-matrix", default=DEFAULT_ROUTING_MATRIX_PATH)
+    parser.add_argument("--model-configs", default=DEFAULT_MODEL_CONFIGS_PATH)
     args = parser.parse_args(argv)
 
     try:
@@ -61,21 +72,44 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Case ID not found: {args.case_id}", file=sys.stderr)
         return 1
 
+    routing_policy = None
+    if args.model_routing:
+        try:
+            routing_policy = load_model_routing_policy(
+                matrix_path=args.routing_matrix,
+                config_path=args.model_configs,
+            )
+        except ModelRoutingError as exc:
+            print(f"Model routing setup failed: {exc}", file=sys.stderr)
+            return 1
+
     if not args.live:
         print(f"Case ID: {case.case_id}")
         print("Architecture: C")
         print(f"Workflow version: {WORKFLOW_VERSION}")
         print(f"Expected LLM nodes: {', '.join(EXPECTED_LLM_NODES)}")
         print(f"Expected deterministic nodes: {', '.join(EXPECTED_DETERMINISTIC_NODES)}")
+        if routing_policy is not None:
+            print(format_model_routing_plan(routing_policy))
         print("Live model call is disabled. Re-run with --live to continue.")
         return 0
 
     try:
         config = LLMConfig.from_env()
         llm_client = create_llm_client(config)
-        workflow_llm = RealWorkflowLLMClient(llm_client=llm_client, config=config)
+        if routing_policy is not None:
+            workflow_llm = RoutedWorkflowLLMClient(
+                default_client=llm_client,
+                default_config=config,
+                policy=routing_policy,
+            )
+        else:
+            workflow_llm = RealWorkflowLLMClient(llm_client=llm_client, config=config)
         runner = ArchitectureCRunner(workflow_llm, output_root=args.output_root)
         result = runner.run_case(case)
+    except ModelRoutingError as exc:
+        print(f"Model routing setup failed: {exc}", file=sys.stderr)
+        return 1
     except ArchitectureCRunError as exc:
         metadata = exc.result.metadata
         print(f"Architecture C run failed: {metadata.error_type}: {metadata.error_message}", file=sys.stderr)
@@ -99,6 +133,9 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Total tokens: {metadata.total_tokens}")
     print(f"Configured model: {metadata.configured_model}")
     print(f"Response models: {', '.join(metadata.response_models)}")
+    print(f"Model routing enabled: {metadata.model_routing_enabled}")
+    print(f"Fallback calls: {metadata.fallback_call_count}")
+    print(f"Models used: {', '.join(metadata.models_used)}")
     print(f"Output directory: {metadata.output_directory}")
     print(f"Run status: {metadata.status.value}")
     return 0
