@@ -71,6 +71,8 @@ IGNORED_CHECK_SUFFIXES = {
     "latency_ms",
     "average_latency_ms",
     "corpus_embedding_build_ms",
+    "cache_hit_count",
+    "cache_miss_count",
     "generated_at",
 }
 

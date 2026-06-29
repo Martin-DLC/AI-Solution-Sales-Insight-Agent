@@ -25,3 +25,17 @@ def test_diff_json_objects_ignoring_paths_keeps_score_difference() -> None:
     actual = {"latency_ms": 9, "score": 0.8}
 
     assert diff_json_objects_ignoring_paths(expected, actual, ignored_suffixes={"latency_ms"}) == ["score"]
+
+
+def test_diff_json_objects_ignoring_paths_ignores_cache_hit_and_miss_counts() -> None:
+    expected = {"cache_hit_count": 0, "cache_miss_count": 40, "score": 0.5}
+    actual = {"cache_hit_count": 40, "cache_miss_count": 0, "score": 0.5}
+
+    assert (
+        diff_json_objects_ignoring_paths(
+            expected,
+            actual,
+            ignored_suffixes={"cache_hit_count", "cache_miss_count"},
+        )
+        == []
+    )
