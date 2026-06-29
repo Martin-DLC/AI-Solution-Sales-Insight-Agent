@@ -1,0 +1,23 @@
+{
+  "active_statuses": [
+    "approved"
+  ],
+  "baseline_version": "vector_v1",
+  "batch_size": 16,
+  "cache_directory": "data/runtime/retrieval_embeddings",
+  "cache_enabled": true,
+  "candidate_k": 20,
+  "device": "cpu",
+  "document_prefix": "passage: ",
+  "embedding_provider": "sentence_transformers",
+  "evaluation_date": "2026-06-29",
+  "model_name_or_path": "intfloat/multilingual-e5-small",
+  "model_revision": null,
+  "normalize_embeddings": true,
+  "query_prefix": "query: ",
+  "retrieval_method": "dense_cosine",
+  "score_round_digits": 8,
+  "synthetic_data": true,
+  "tie_break_rule": "score_desc_document_id_asc_chunk_id_asc",
+  "top_k": 5
+}

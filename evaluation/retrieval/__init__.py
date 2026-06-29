@@ -1,3 +1,8 @@
+from evaluation.retrieval.comparison import (
+    RetrievalMethodComparison,
+    RetrievalMethodComparisonEntry,
+    select_retrieval_method,
+)
 from evaluation.retrieval.dataset import (
     load_retrieval_evaluation_cases,
     validate_retrieval_evaluation_dataset,
@@ -29,6 +34,8 @@ __all__ = [
     "RetrievalEvaluationDataset",
     "RetrievalEvaluationSummary",
     "RetrievalMethod",
+    "RetrievalMethodComparison",
+    "RetrievalMethodComparisonEntry",
     "RetrievalQueryType",
     "RetrievalRunResult",
     "evaluate_retrieval_case",
@@ -37,6 +44,7 @@ __all__ = [
     "mean_reciprocal_rank",
     "precision_at_k",
     "recall_at_k",
+    "select_retrieval_method",
     "solution_boundary_violation_rate",
     "summarize_case_mix",
     "summarize_retrieval_results",

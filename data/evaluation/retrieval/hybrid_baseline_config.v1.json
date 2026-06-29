@@ -1,0 +1,15 @@
+{
+  "baseline_version": "hybrid_rrf_v1",
+  "lexical_candidate_k": 20,
+  "lexical_method": "weighted_bm25",
+  "lexical_weight": 1.0,
+  "output_top_k": 5,
+  "retrieval_method": "lexical_vector_rrf",
+  "rrf_k": 60,
+  "score_round_digits": 8,
+  "synthetic_data": true,
+  "tie_break_rule": "rrf_score_desc_document_id_asc_chunk_id_asc",
+  "vector_candidate_k": 20,
+  "vector_method": "dense_cosine",
+  "vector_weight": 1.0
+}
