@@ -31,6 +31,8 @@ Lexical 基线已经提供了一个可解释、可复现、零模型依赖的基
 - 同时适合中英混合查询
 - Query / Passage 前缀约定成熟
 - 模型体量适合作为第一轮公开 Demo 基线
+- 冻结模型 revision：
+  `614241f622f53c4eeff9890bdc4f31cfecc418b3`
 
 ## 4. Query 与 Passage 前缀
 
@@ -135,6 +137,8 @@ vector_weight / (rrf_k + vector_rank)
 - 当前不生成正式 Vector / Hybrid 结果文件
 - 当前不下载模型，除非后续显式允许
 - 当前不默认 Vector 或 Hybrid 优于 Lexical
+- 正式 `run/check` 必须从固定 revision 的本地 snapshot 离线加载
+- 正式路径不得再直接用 Hub repo ID 初始化 Sentence Transformers
 
 ## 13. 数据、Gold 与 Runtime 隔离
 
@@ -148,8 +152,8 @@ vector_weight / (rrf_k + vector_rank)
 - 当前没有 Vector Database
 - 当前没有 Reranker
 - 当前没有接入 Architecture C
-- `model_revision` 当前未固定
-- 模型首次运行可能需要本地已有缓存，或在后续显式允许下载
+- `model_revision` 已固定到冻结 commit
+- 正式路径依赖本地 snapshot、`local_files_only=True` 与离线环境变量三重防线
 
 ## 15. v1.2D2真实实验步骤
 

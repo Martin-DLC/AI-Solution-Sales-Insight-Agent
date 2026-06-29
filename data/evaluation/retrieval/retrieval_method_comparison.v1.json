@@ -1,0 +1,135 @@
+{
+  "comparison_limitations": [
+    "Selection is limited to the current 16 synthetic retrieval cases."
+  ],
+  "entries": [
+    {
+      "average_latency_ms": 0.9375,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-009"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "implementation_complexity": "low",
+      "mean_reciprocal_rank": 1.0,
+      "precision_at_3": 0.9375,
+      "precision_at_5": 0.796875,
+      "recall_at_1": 0.25,
+      "recall_at_3": 0.703125,
+      "recall_at_5": 0.921875,
+      "retrieval_method": "lexical_v1",
+      "runtime_dependencies": [
+        "weighted_bm25"
+      ],
+      "solution_boundary_violation_rate": 0.4375
+    },
+    {
+      "average_latency_ms": 217.8125,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "empty_query_tokens",
+        "solution_boundary_violation",
+        "forbidden_document_hit"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-007",
+        "RET-008",
+        "RET-009",
+        "RET-010",
+        "RET-011",
+        "RET-012",
+        "RET-013",
+        "RET-014",
+        "RET-015",
+        "RET-016"
+      ],
+      "forbidden_hit_rate": 0.0625,
+      "implementation_complexity": "medium",
+      "mean_reciprocal_rank": 0.96875,
+      "precision_at_3": 0.9583333333333334,
+      "precision_at_5": 0.775,
+      "recall_at_1": 0.234375,
+      "recall_at_3": 0.71875,
+      "recall_at_5": 0.90625,
+      "retrieval_method": "vector_v1",
+      "runtime_dependencies": [
+        "sentence_transformers",
+        "torch",
+        "transformers",
+        "numpy"
+      ],
+      "solution_boundary_violation_rate": 0.625
+    },
+    {
+      "average_latency_ms": 136.5625,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "empty_query_tokens",
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-007",
+        "RET-008",
+        "RET-009",
+        "RET-010",
+        "RET-011",
+        "RET-012",
+        "RET-013",
+        "RET-014",
+        "RET-015",
+        "RET-016"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "implementation_complexity": "medium_high",
+      "mean_reciprocal_rank": 1.0,
+      "precision_at_3": 0.9583333333333334,
+      "precision_at_5": 0.775,
+      "recall_at_1": 0.25,
+      "recall_at_3": 0.71875,
+      "recall_at_5": 0.90625,
+      "retrieval_method": "hybrid_v1",
+      "runtime_dependencies": [
+        "weighted_bm25",
+        "sentence_transformers",
+        "torch",
+        "transformers",
+        "numpy"
+      ],
+      "solution_boundary_violation_rate": 0.5
+    }
+  ],
+  "rejected_methods": [
+    "lexical_v1",
+    "vector_v1",
+    "hybrid_v1"
+  ],
+  "selected_method": null,
+  "selection_reasons": [
+    "No retrieval method passed the frozen blocking gate."
+  ],
+  "selection_status": "no_eligible_method"
+}

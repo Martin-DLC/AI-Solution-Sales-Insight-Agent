@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-from statistics import mean
 from typing import Any
 
 from pydantic import Field
@@ -10,14 +8,19 @@ from evaluation.retrieval.metrics import evaluate_retrieval_case, summarize_retr
 from evaluation.retrieval.models import (
     RetrievalCaseScore,
     RetrievalEvaluationCase,
+    RetrievalFormalCaseResult,
+    RetrievalFormalSummary,
     RetrievalEvaluationSummary,
     RetrievalMethod,
     RetrievalRunResult,
+    RetrievalDependencyVersions,
     summarize_case_mix,
 )
 from knowledge_base.models import KnowledgeBaseManifest
 from knowledge_base.dataset import DemoSolutionScope
 from knowledge_base.retrieval.lexical import LexicalBaselineConfig, WeightedBM25Retriever
+from knowledge_base.retrieval.vector import VectorBaselineConfig
+from knowledge_base.retrieval.hybrid import HybridBaselineConfig
 from schemas.common_models import StrictBaseModel
 
 
@@ -42,7 +45,7 @@ class LexicalRetrievalEvaluationReport(StrictBaseModel):
 def run_retrieval_evaluation(
     *,
     cases: list[RetrievalEvaluationCase],
-    retriever: WeightedBM25Retriever,
+    retriever: Any,
     method_id: str,
     top_k: int,
 ) -> LexicalRetrievalEvaluationReport:
@@ -156,6 +159,92 @@ def build_summary_payload(
             "No embeddings, reranking, query rewriting, or hybrid retrieval are used in lexical_v1.",
         ],
     }
+
+
+def build_formal_case_results(report: LexicalRetrievalEvaluationReport) -> list[RetrievalFormalCaseResult]:
+    case_scores_by_id = {score.retrieval_case_id: score for score in report.case_scores}
+    run_results_by_id = {result.retrieval_case_id: result for result in report.run_results}
+    results: list[RetrievalFormalCaseResult] = []
+    for case_result in report.case_results:
+        case_score = case_scores_by_id[case_result.retrieval_case_id]
+        run_result = run_results_by_id[case_result.retrieval_case_id]
+        results.append(
+            RetrievalFormalCaseResult(
+                retrieval_case_id=case_result.retrieval_case_id,
+                query_type=case_result.query_type,
+                retrieval_method=case_result.retrieval_method,
+                top_k=case_result.top_k,
+                retrieved_candidates=case_result.retrieved_candidates,
+                recall_at_1=case_score.recall_at_1,
+                recall_at_3=case_score.recall_at_3,
+                recall_at_5=case_score.recall_at_5,
+                precision_at_3=case_score.precision_at_3,
+                precision_at_5=case_score.precision_at_5,
+                reciprocal_rank=case_score.reciprocal_rank,
+                forbidden_hit=case_score.forbidden_hit,
+                solution_boundary_violation=case_score.solution_boundary_violation,
+                passed_blocking_gate=case_result.passed_blocking_gate,
+                failure_reasons=list(case_result.failure_reasons),
+                latency_ms=run_result.latency_ms,
+                error_type=run_result.error_type,
+                error_message=run_result.error_message,
+            )
+        )
+    return results
+
+
+def build_formal_summary_payload(
+    *,
+    cases: list[RetrievalEvaluationCase],
+    config: VectorBaselineConfig | HybridBaselineConfig,
+    config_file: str,
+    manifest: KnowledgeBaseManifest,
+    demo_scope: DemoSolutionScope,
+    report: LexicalRetrievalEvaluationReport,
+    model_name: str,
+    resolved_model_revision: str,
+    embedding_dimension: int,
+    dependency_versions: dict[str, str | None],
+    corpus_embedding_count: int,
+    cache_hit_count: int,
+    cache_miss_count: int,
+    corpus_embedding_build_ms: int,
+    limitations: list[str],
+) -> RetrievalFormalSummary:
+    failed_case_ids = [
+        result.retrieval_case_id for result in report.case_results if not result.passed_blocking_gate
+    ]
+    return RetrievalFormalSummary(
+        baseline_version=config.baseline_version,
+        retrieval_method=RetrievalMethod("vector_v1" if config.baseline_version == "vector_v1" else "hybrid_v1"),
+        config_file=config_file,
+        knowledge_base_version=manifest.knowledge_base_version,
+        demo_solution_scope_version=demo_scope.scope_version,
+        model_name=model_name,
+        resolved_model_revision=resolved_model_revision,
+        embedding_dimension=embedding_dimension,
+        dependency_versions=RetrievalDependencyVersions.model_validate(dependency_versions),
+        case_count=report.summary.case_count,
+        query_type_counts=summarize_case_mix(cases),
+        recall_at_1=report.summary.recall_at_1,
+        recall_at_3=report.summary.recall_at_3,
+        recall_at_5=report.summary.recall_at_5,
+        precision_at_3=report.summary.precision_at_3,
+        precision_at_5=report.summary.precision_at_5,
+        mean_reciprocal_rank=report.summary.mean_reciprocal_rank,
+        forbidden_hit_rate=report.summary.forbidden_hit_rate,
+        solution_boundary_violation_rate=report.summary.solution_boundary_violation_rate,
+        average_latency_ms=report.summary.average_latency_ms,
+        corpus_embedding_count=corpus_embedding_count,
+        cache_hit_count=cache_hit_count,
+        cache_miss_count=cache_miss_count,
+        corpus_embedding_build_ms=corpus_embedding_build_ms,
+        eligible_for_rag=report.summary.eligible_for_rag,
+        disqualification_reasons=list(report.summary.disqualification_reasons),
+        failed_case_ids=failed_case_ids,
+        generated_from_synthetic_data=True,
+        limitations=limitations,
+    )
 
 
 def _classify_failure_reasons(

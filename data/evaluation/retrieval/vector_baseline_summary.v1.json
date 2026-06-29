@@ -1,0 +1,69 @@
+{
+  "average_latency_ms": 217.8125,
+  "baseline_version": "vector_v1",
+  "cache_hit_count": 0,
+  "cache_miss_count": 40,
+  "case_count": 16,
+  "config_file": "data/evaluation/retrieval/vector_baseline_config.v1.json",
+  "corpus_embedding_build_ms": 46855,
+  "corpus_embedding_count": 40,
+  "demo_solution_scope_version": "1.0",
+  "dependency_versions": {
+    "numpy": "1.26.4",
+    "sentence_transformers": "5.6.0",
+    "torch": "2.2.2",
+    "transformers": "4.57.6"
+  },
+  "disqualification_reasons": [
+    "empty_query_tokens",
+    "solution_boundary_violation",
+    "forbidden_document_hit"
+  ],
+  "eligible_for_rag": false,
+  "embedding_dimension": 384,
+  "failed_case_ids": [
+    "RET-001",
+    "RET-002",
+    "RET-003",
+    "RET-004",
+    "RET-005",
+    "RET-006",
+    "RET-007",
+    "RET-008",
+    "RET-009",
+    "RET-010",
+    "RET-011",
+    "RET-012",
+    "RET-013",
+    "RET-014",
+    "RET-015",
+    "RET-016"
+  ],
+  "forbidden_hit_rate": 0.0625,
+  "generated_from_synthetic_data": true,
+  "knowledge_base_version": "kb-demo-v1",
+  "limitations": [
+    "This benchmark uses the 6-solution synthetic demo scope only.",
+    "No reranker, FAISS, or vector database is included in vector_v1."
+  ],
+  "mean_reciprocal_rank": 0.96875,
+  "model_name": "intfloat/multilingual-e5-small",
+  "precision_at_3": 0.9583333333333334,
+  "precision_at_5": 0.775,
+  "query_type_counts": {
+    "capability_check": 2,
+    "case_study_search": 2,
+    "compliance_requirement": 2,
+    "customer_readiness": 2,
+    "implementation_risk": 2,
+    "integration_requirement": 2,
+    "solution_boundary": 2,
+    "solution_discovery": 2
+  },
+  "recall_at_1": 0.234375,
+  "recall_at_3": 0.71875,
+  "recall_at_5": 0.90625,
+  "resolved_model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "retrieval_method": "vector_v1",
+  "solution_boundary_violation_rate": 0.625
+}

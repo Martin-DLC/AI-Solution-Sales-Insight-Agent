@@ -13,7 +13,11 @@ from pydantic import Field, field_validator, model_validator
 
 from evaluation.retrieval.models import RetrievalCandidate, RetrievalMethod
 from knowledge_base.models import KnowledgeChunk, KnowledgeDocument, KnowledgeSourceStatus
-from knowledge_base.retrieval.embeddings import EmbeddingProvider
+from knowledge_base.retrieval.embeddings import (
+    DEFAULT_EMBEDDING_MODEL,
+    DEFAULT_EMBEDDING_REVISION,
+    EmbeddingProvider,
+)
 from schemas.common_models import StrictBaseModel
 
 
@@ -78,6 +82,10 @@ class VectorBaselineConfig(StrictBaseModel):
             raise ValueError("Vector retrieval_method must be dense_cosine.")
         if self.embedding_provider != "sentence_transformers":
             raise ValueError("Vector embedding_provider must be sentence_transformers.")
+        if self.model_name_or_path != DEFAULT_EMBEDDING_MODEL:
+            raise ValueError("Vector model_name_or_path must stay fixed to the frozen multilingual-e5-small model.")
+        if self.model_revision != DEFAULT_EMBEDDING_REVISION:
+            raise ValueError("Vector model_revision must stay fixed to the frozen multilingual-e5-small revision.")
         if self.top_k != 5:
             raise ValueError("Vector top_k must be fixed at 5.")
         if self.candidate_k != 20:
@@ -117,6 +125,10 @@ class ExactVectorRetriever:
             "filtered_candidate_count": 0,
             "elapsed_ms": 0,
         }
+        self._cache_hit_count = 0
+        self._cache_miss_count = 0
+        self._corpus_embedding_count = 0
+        self._corpus_embedding_build_ms = 0
 
     @property
     def config(self) -> VectorBaselineConfig:
@@ -126,6 +138,22 @@ class ExactVectorRetriever:
     def last_retrieval_debug(self) -> dict[str, Any]:
         return dict(self._last_retrieval_debug)
 
+    @property
+    def cache_hit_count(self) -> int:
+        return self._cache_hit_count
+
+    @property
+    def cache_miss_count(self) -> int:
+        return self._cache_miss_count
+
+    @property
+    def corpus_embedding_count(self) -> int:
+        return self._corpus_embedding_count
+
+    @property
+    def corpus_embedding_build_ms(self) -> int:
+        return self._corpus_embedding_build_ms
+
     def build_index(
         self,
         *,
@@ -133,12 +161,15 @@ class ExactVectorRetriever:
         chunks: list[KnowledgeChunk],
         knowledge_base_version: str,
     ) -> None:
+        started = time.perf_counter()
         self._documents_by_id = {document.document_id: document for document in documents}
         if len(self._documents_by_id) != len(documents):
             raise ValueError("Exact vector retriever requires unique knowledge document IDs.")
 
         missing_chunks: list[KnowledgeChunk] = []
         cached_embeddings: dict[str, list[float]] = {}
+        self._cache_hit_count = 0
+        self._cache_miss_count = 0
         for chunk in chunks:
             document = self._documents_by_id.get(chunk.document_id)
             if document is None:
@@ -150,10 +181,12 @@ class ExactVectorRetriever:
                 )
                 if cached is not None:
                     cached_embeddings[chunk.chunk_id] = cached
+                    self._cache_hit_count += 1
                     continue
             missing_chunks.append(chunk)
 
         if missing_chunks:
+            self._cache_miss_count = len(missing_chunks)
             encoded_vectors = self._embedding_provider.encode_documents([chunk.content for chunk in missing_chunks])
             for chunk, embedding in zip(missing_chunks, encoded_vectors):
                 cached_embeddings[chunk.chunk_id] = embedding
@@ -172,6 +205,8 @@ class ExactVectorRetriever:
                 raise ValueError(f"Missing cached vector embedding for chunk {chunk.chunk_id}.")
             entries.append(_VectorIndexEntry(chunk=chunk, document=document, embedding=embedding))
         self._entries = entries
+        self._corpus_embedding_count = len(entries)
+        self._corpus_embedding_build_ms = max(0, int((time.perf_counter() - started) * 1000))
 
     def retrieve(
         self,
@@ -298,7 +333,9 @@ class ExactVectorRetriever:
             "content_hash": hashlib.sha1(chunk.content.encode("utf-8")).hexdigest(),
             "provider_id": self._embedding_provider.provider_id,
             "model_name": getattr(self._embedding_provider, "model_name", self._embedding_provider.provider_id),
+            "resolved_revision": getattr(self._embedding_provider, "resolved_revision", "unresolved"),
             "normalize_embeddings": self._config.normalize_embeddings,
+            "encoding_mode": "passage",
         }
         digest = hashlib.sha1(json.dumps(key, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
         return self._project_root / self._config.cache_directory / f"{digest}.json"
@@ -338,6 +375,7 @@ class ExactVectorRetriever:
             "knowledge_base_version": knowledge_base_version,
             "chunk_id": chunk.chunk_id,
             "provider_id": self._embedding_provider.provider_id,
+            "resolved_revision": getattr(self._embedding_provider, "resolved_revision", "unresolved"),
             "dimension": self._embedding_provider.dimension,
             "vector": embedding,
         }

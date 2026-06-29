@@ -8,6 +8,7 @@ from knowledge_base.retrieval.embeddings import (
     FakeEmbeddingProvider,
     SentenceTransformerEmbeddingProvider,
     get_embedding_dependency_report,
+    get_embedding_dependency_versions,
     is_local_sentence_transformer_model_available,
 )
 from knowledge_base.retrieval.hybrid import HybridBaselineConfig, ReciprocalRankFusionRetriever
@@ -24,6 +25,7 @@ __all__ = [
     "EmbeddingProviderError",
     "ExactVectorRetriever",
     "FakeEmbeddingProvider",
+    "get_embedding_dependency_versions",
     "HybridBaselineConfig",
     "ReciprocalRankFusionRetriever",
     "SentenceTransformerEmbeddingProvider",

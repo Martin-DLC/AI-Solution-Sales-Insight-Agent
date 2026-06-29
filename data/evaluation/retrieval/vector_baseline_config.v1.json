@@ -12,7 +12,7 @@
   "embedding_provider": "sentence_transformers",
   "evaluation_date": "2026-06-29",
   "model_name_or_path": "intfloat/multilingual-e5-small",
-  "model_revision": null,
+  "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
   "normalize_embeddings": true,
   "query_prefix": "query: ",
   "retrieval_method": "dense_cosine",
