@@ -1,0 +1,45 @@
+{
+  "average_latency_ms": 0.9375,
+  "baseline_version": "lexical_v1",
+  "case_count": 16,
+  "config_file": "data/evaluation/retrieval/lexical_baseline_config.v1.json",
+  "demo_solution_scope_version": "1.0",
+  "disqualification_reasons": [
+    "solution_boundary_violation"
+  ],
+  "eligible_for_rag": false,
+  "failed_case_ids": [
+    "RET-001",
+    "RET-002",
+    "RET-003",
+    "RET-004",
+    "RET-005",
+    "RET-006",
+    "RET-009"
+  ],
+  "forbidden_hit_rate": 0.0,
+  "generated_from_synthetic_data": true,
+  "knowledge_base_version": "kb-demo-v1",
+  "limitations": [
+    "Lexical baseline uses deterministic token overlap and weighted BM25 only.",
+    "This benchmark covers the 6-solution public demo scope, not a future enterprise master catalog.",
+    "No embeddings, reranking, query rewriting, or hybrid retrieval are used in lexical_v1."
+  ],
+  "mean_reciprocal_rank": 1.0,
+  "precision_at_3": 0.9375,
+  "precision_at_5": 0.796875,
+  "query_type_counts": {
+    "capability_check": 2,
+    "case_study_search": 2,
+    "compliance_requirement": 2,
+    "customer_readiness": 2,
+    "implementation_risk": 2,
+    "integration_requirement": 2,
+    "solution_boundary": 2,
+    "solution_discovery": 2
+  },
+  "recall_at_1": 0.25,
+  "recall_at_3": 0.703125,
+  "recall_at_5": 0.921875,
+  "solution_boundary_violation_rate": 0.4375
+}
