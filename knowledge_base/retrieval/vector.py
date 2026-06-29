@@ -13,7 +13,11 @@ from pydantic import Field, field_validator, model_validator
 
 from evaluation.retrieval.models import RetrievalCandidate, RetrievalMethod
 from knowledge_base.models import KnowledgeChunk, KnowledgeDocument, KnowledgeSourceStatus
-from knowledge_base.retrieval.embeddings import EmbeddingProvider
+from knowledge_base.retrieval.embeddings import (
+    DEFAULT_EMBEDDING_MODEL,
+    DEFAULT_EMBEDDING_REVISION,
+    EmbeddingProvider,
+)
 from schemas.common_models import StrictBaseModel
 
 
@@ -78,6 +82,10 @@ class VectorBaselineConfig(StrictBaseModel):
             raise ValueError("Vector retrieval_method must be dense_cosine.")
         if self.embedding_provider != "sentence_transformers":
             raise ValueError("Vector embedding_provider must be sentence_transformers.")
+        if self.model_name_or_path != DEFAULT_EMBEDDING_MODEL:
+            raise ValueError("Vector model_name_or_path must stay fixed to the frozen multilingual-e5-small model.")
+        if self.model_revision != DEFAULT_EMBEDDING_REVISION:
+            raise ValueError("Vector model_revision must stay fixed to the frozen multilingual-e5-small revision.")
         if self.top_k != 5:
             raise ValueError("Vector top_k must be fixed at 5.")
         if self.candidate_k != 20:

@@ -1,18 +1,31 @@
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import importlib
 import importlib.util
 from importlib import metadata
 import math
+import os
 from pathlib import Path
 from typing import Any, Protocol
 
 
 DEFAULT_EMBEDDING_MODEL = "intfloat/multilingual-e5-small"
+DEFAULT_EMBEDDING_REVISION = "614241f622f53c4eeff9890bdc4f31cfecc418b3"
 DEFAULT_QUERY_PREFIX = "query: "
 DEFAULT_DOCUMENT_PREFIX = "passage: "
 DEFAULT_E5_SMALL_DIMENSION = 384
+_HF_OFFLINE_ENV = {
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1",
+    "HF_HUB_DISABLE_TELEMETRY": "1",
+}
+_REQUIRED_SNAPSHOT_FILES = (
+    "config.json",
+    "modules.json",
+    "tokenizer_config.json",
+)
 
 
 class EmbeddingProviderError(RuntimeError):
@@ -99,6 +112,7 @@ class SentenceTransformerEmbeddingProvider:
         self,
         *,
         model_name_or_path: str = DEFAULT_EMBEDDING_MODEL,
+        local_snapshot_path: str | Path | None = None,
         batch_size: int = 16,
         device: str = "cpu",
         normalize_embeddings: bool = True,
@@ -106,6 +120,7 @@ class SentenceTransformerEmbeddingProvider:
         query_prefix: str = DEFAULT_QUERY_PREFIX,
         document_prefix: str = DEFAULT_DOCUMENT_PREFIX,
         expected_dimension: int = DEFAULT_E5_SMALL_DIMENSION,
+        expected_revision: str | None = None,
     ) -> None:
         if not model_name_or_path.strip():
             raise ValueError("Embedding model_name_or_path cannot be empty.")
@@ -114,6 +129,7 @@ class SentenceTransformerEmbeddingProvider:
         if expected_dimension <= 0:
             raise ValueError("Embedding expected_dimension must be greater than 0.")
         self._model_name_or_path = model_name_or_path
+        self._local_snapshot_path = Path(local_snapshot_path) if local_snapshot_path is not None else None
         self._batch_size = batch_size
         self._device = device
         self._normalize_embeddings = normalize_embeddings
@@ -121,9 +137,10 @@ class SentenceTransformerEmbeddingProvider:
         self._query_prefix = query_prefix
         self._document_prefix = document_prefix
         self._expected_dimension = expected_dimension
+        self._expected_revision = expected_revision
         self._model: Any | None = None
         self._loaded_dimension: int | None = None
-        self._resolved_revision = "unresolved"
+        self._resolved_revision = expected_revision or "unresolved"
 
     @property
     def provider_id(self) -> str:
@@ -136,6 +153,10 @@ class SentenceTransformerEmbeddingProvider:
     @property
     def model_name(self) -> str:
         return self._model_name_or_path
+
+    @property
+    def local_snapshot_path(self) -> Path | None:
+        return self._local_snapshot_path
 
     @property
     def allow_model_download(self) -> bool:
@@ -183,9 +204,10 @@ class SentenceTransformerEmbeddingProvider:
 
         try:
             model = sentence_transformer_cls(
-                self._model_name_or_path,
+                str(self._local_snapshot_path or self._model_name_or_path),
                 device=self._device,
                 local_files_only=not self._allow_model_download,
+                trust_remote_code=False,
             )
         except Exception as exc:
             if not self._allow_model_download:
@@ -195,7 +217,9 @@ class SentenceTransformerEmbeddingProvider:
             raise EmbeddingProviderError("Failed to load the sentence-transformers model.") from exc
 
         self._model = model
-        model_dimension = getattr(model, "get_sentence_embedding_dimension", None)
+        model_dimension = getattr(model, "get_embedding_dimension", None)
+        if not callable(model_dimension):
+            model_dimension = getattr(model, "get_sentence_embedding_dimension", None)
         if callable(model_dimension):
             loaded_dimension = model_dimension()
             if isinstance(loaded_dimension, int) and loaded_dimension > 0:
@@ -206,7 +230,10 @@ class SentenceTransformerEmbeddingProvider:
             revision = getattr(model_card, "base_model_revision", None)
         if not revision:
             revision = getattr(model, "revision", None)
-        self._resolved_revision = str(revision).strip() if revision else "unresolved"
+        if revision:
+            self._resolved_revision = str(revision).strip()
+        elif self._expected_revision:
+            self._resolved_revision = self._expected_revision
         return model
 
     def _encode_with_model(
@@ -290,7 +317,15 @@ def get_embedding_dependency_versions() -> dict[str, str | None]:
     return versions
 
 
-def is_local_sentence_transformer_model_available(model_name_or_path: str) -> bool:
+def is_local_sentence_transformer_model_available(
+    model_name_or_path: str,
+    *,
+    revision: str | None = None,
+) -> bool:
+    if Path(model_name_or_path).exists():
+        return True
+    if revision:
+        return find_local_sentence_transformer_snapshot(model_name_or_path, revision=revision) is not None
     normalized = model_name_or_path.replace("/", "--")
     candidates = [
         Path.home() / ".cache/huggingface/hub" / f"models--{normalized}",
@@ -300,6 +335,93 @@ def is_local_sentence_transformer_model_available(model_name_or_path: str) -> bo
         if candidate.exists():
             return True
     return False
+
+
+def find_local_sentence_transformer_snapshot(
+    model_name_or_path: str,
+    *,
+    revision: str,
+) -> Path | None:
+    normalized = model_name_or_path.replace("/", "--")
+    candidates = [
+        Path.home() / ".cache/huggingface/hub" / f"models--{normalized}" / "snapshots" / revision,
+        Path.home() / "Library" / "Caches" / "huggingface" / "hub" / f"models--{normalized}" / "snapshots" / revision,
+    ]
+    for candidate in candidates:
+        if candidate.is_dir():
+            return candidate
+    return None
+
+
+def resolve_local_model_snapshot(
+    *,
+    repo_id: str,
+    revision: str,
+    cache_dir: str | Path | None = None,
+) -> Path:
+    huggingface_hub_module = _import_optional_dependency("huggingface_hub")
+    if huggingface_hub_module is None:
+        raise EmbeddingDependencyError(
+            "huggingface_hub is not installed. Install the project requirements before running vector retrieval."
+        )
+
+    snapshot_download = getattr(huggingface_hub_module, "snapshot_download", None)
+    if snapshot_download is None:
+        raise EmbeddingDependencyError("huggingface_hub is installed but snapshot_download is unavailable.")
+
+    try:
+        resolved_path = Path(
+            snapshot_download(
+                repo_id=repo_id,
+                revision=revision,
+                cache_dir=str(cache_dir) if cache_dir is not None else None,
+                local_files_only=True,
+            )
+        )
+    except Exception as exc:
+        raise EmbeddingModelUnavailableError(
+            "Frozen local embedding snapshot is unavailable for the configured model revision."
+        ) from exc
+
+    _validate_snapshot_directory(path=resolved_path, repo_id=repo_id, revision=revision)
+    return resolved_path
+
+
+@contextlib.contextmanager
+def huggingface_offline_environment(enabled: bool = True):
+    if not enabled:
+        yield
+        return
+
+    previous = {key: os.environ.get(key) for key in _HF_OFFLINE_ENV}
+    try:
+        os.environ.update(_HF_OFFLINE_ENV)
+        yield
+    finally:
+        for key, value in previous.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+
+
+def validate_local_embedding_manifest(
+    *,
+    repo_id: str,
+    revision: str,
+    dimension: int,
+    manifest_payload: dict[str, Any] | None,
+) -> None:
+    if manifest_payload is None:
+        raise EmbeddingModelUnavailableError("Embedding model manifest is missing. Re-run model preparation first.")
+    if manifest_payload.get("repo_id") != repo_id:
+        raise EmbeddingModelUnavailableError("Embedding model manifest repo_id does not match the frozen configuration.")
+    if manifest_payload.get("resolved_revision") != revision:
+        raise EmbeddingModelUnavailableError("Embedding model manifest revision does not match the frozen configuration.")
+    if manifest_payload.get("embedding_dimension") != dimension:
+        raise EmbeddingModelUnavailableError("Embedding model manifest dimension does not match the frozen configuration.")
+    if manifest_payload.get("local_snapshot_available") is not True:
+        raise EmbeddingModelUnavailableError("Embedding model manifest does not confirm a local snapshot is available.")
 
 
 def _import_optional_dependency(module_name: str) -> Any | None:
@@ -342,3 +464,13 @@ def _normalize_vector(values: list[float]) -> list[float]:
     if norm == 0:
         raise EmbeddingProviderError("Embedding vector norm must be greater than 0.")
     return [value / norm for value in values]
+
+
+def _validate_snapshot_directory(*, path: Path, repo_id: str, revision: str) -> None:
+    if not path.exists() or not path.is_dir():
+        raise EmbeddingModelUnavailableError("Frozen local embedding snapshot path is missing or invalid.")
+    missing_files = [name for name in _REQUIRED_SNAPSHOT_FILES if not (path / name).exists()]
+    if missing_files:
+        raise EmbeddingModelUnavailableError(
+            f"Frozen local embedding snapshot is incomplete for {repo_id}@{revision}."
+        )

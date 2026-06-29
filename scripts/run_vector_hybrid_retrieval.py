@@ -1,9 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
+import math
+import os
+import socket
 import sys
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -44,6 +49,12 @@ from knowledge_base.retrieval import (
     get_embedding_dependency_versions,
     is_local_sentence_transformer_model_available,
 )
+from knowledge_base.retrieval.embeddings import (
+    DEFAULT_EMBEDDING_REVISION,
+    huggingface_offline_environment,
+    resolve_local_model_snapshot,
+    validate_local_embedding_manifest,
+)
 
 
 LEXICAL_CONFIG_PATH = Path("data/evaluation/retrieval/lexical_baseline_config.v1.json")
@@ -55,6 +66,7 @@ VECTOR_SUMMARY_PATH = Path("data/evaluation/retrieval/vector_baseline_summary.v1
 HYBRID_RESULTS_PATH = Path("data/evaluation/retrieval/hybrid_baseline_results.v1.jsonl")
 HYBRID_SUMMARY_PATH = Path("data/evaluation/retrieval/hybrid_baseline_summary.v1.json")
 COMPARISON_PATH = Path("data/evaluation/retrieval/retrieval_method_comparison.v1.json")
+MODEL_MANIFEST_PATH = Path("data/runtime/retrieval_models/model_manifest.v1.json")
 IGNORED_CHECK_SUFFIXES = {
     "latency_ms",
     "average_latency_ms",
@@ -71,6 +83,7 @@ def main() -> int:
     parser.add_argument("--run", action="store_true", help="Run the frozen vector and hybrid retrieval experiments.")
     parser.add_argument("--write", action="store_true", help="Write formal vector/hybrid result artifacts.")
     parser.add_argument("--check", action="store_true", help="Re-run vector/hybrid retrieval and compare with tracked artifacts.")
+    parser.add_argument("--offline-model-smoke", action="store_true", help="Load the frozen local embedding model in strict offline mode and run a synthetic probe.")
     parser.add_argument(
         "--allow-model-download",
         action="store_true",
@@ -78,9 +91,9 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    active_modes = [args.validate, args.fake_smoke, args.prepare_model, args.run, args.check]
+    active_modes = [args.validate, args.fake_smoke, args.prepare_model, args.run, args.check, args.offline_model_smoke]
     if sum(bool(value) for value in active_modes) > 1:
-        print("Choose only one of --validate, --fake-smoke, --prepare-model, --run, or --check.", file=sys.stderr)
+        print("Choose only one of --validate, --fake-smoke, --prepare-model, --run, --check, or --offline-model-smoke.", file=sys.stderr)
         return 2
     if args.write and not args.run:
         print("--write must be used together with --run.", file=sys.stderr)
@@ -95,11 +108,15 @@ def main() -> int:
         print("--check cannot be combined with other modes.", file=sys.stderr)
         return 2
 
-    context = _load_context()
+    vector_config = _load_vector_config()
     dependency_report = get_embedding_dependency_report()
-    local_model_available = is_local_sentence_transformer_model_available(context["vector_config"].model_name_or_path)
+    local_model_available = is_local_sentence_transformer_model_available(
+        vector_config.model_name_or_path,
+        revision=vector_config.model_revision,
+    )
 
     if args.validate:
+        context = _load_context()
         payload = {
             "mode": "validate",
             "knowledge_base_version": context["manifest"].knowledge_base_version,
@@ -116,17 +133,20 @@ def main() -> int:
         return 0
 
     if args.fake_smoke:
+        context = _load_context()
         return _run_fake_smoke(context=context)
 
     if args.prepare_model:
         provider = SentenceTransformerEmbeddingProvider(
-            model_name_or_path=context["vector_config"].model_name_or_path,
-            batch_size=context["vector_config"].batch_size,
-            device=context["vector_config"].device,
-            normalize_embeddings=context["vector_config"].normalize_embeddings,
+            model_name_or_path=vector_config.model_name_or_path,
+            batch_size=vector_config.batch_size,
+            device=vector_config.device,
+            normalize_embeddings=vector_config.normalize_embeddings,
             allow_model_download=args.allow_model_download,
-            query_prefix=context["vector_config"].query_prefix,
-            document_prefix=context["vector_config"].document_prefix,
+            query_prefix=vector_config.query_prefix,
+            document_prefix=vector_config.document_prefix,
+            expected_dimension=384,
+            expected_revision=vector_config.model_revision,
         )
         if not args.allow_model_download and not local_model_available:
             print(
@@ -136,10 +156,24 @@ def main() -> int:
             return 1
         summary = provider.prepare_model()
         summary["dependency_versions"] = get_embedding_dependency_versions()
+        summary["local_snapshot_available"] = is_local_sentence_transformer_model_available(
+            vector_config.model_name_or_path,
+            revision=vector_config.model_revision,
+        )
+        _write_model_manifest(summary)
         print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
         return 0
 
+    if args.offline_model_smoke:
+        if not local_model_available:
+            print("Local embedding model is unavailable for --offline-model-smoke.", file=sys.stderr)
+            return 1
+        payload = _run_offline_model_smoke(vector_config=vector_config)
+        print(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
+
     if args.check:
+        context = _load_context()
         missing = [path for path in _formal_output_paths() if not path.exists()]
         if missing:
             print("Formal vector/hybrid result files do not exist yet.", file=sys.stderr)
@@ -157,6 +191,7 @@ def main() -> int:
         return 0
 
     if args.run:
+        context = _load_context()
         if not local_model_available:
             print("Local embedding model is unavailable. Formal run does not permit implicit downloads.", file=sys.stderr)
             return 1
@@ -176,6 +211,7 @@ def main() -> int:
         )
         return 0
 
+    context = _load_context()
     payload = {
         "mode": "plan",
         "lexical_baseline_metrics": context["lexical_summary"],
@@ -197,7 +233,7 @@ def main() -> int:
 def _load_context() -> dict[str, Any]:
     lexical_summary = json.loads(LEXICAL_SUMMARY_PATH.read_text(encoding="utf-8"))
     lexical_config = LexicalBaselineConfig.model_validate(json.loads(LEXICAL_CONFIG_PATH.read_text(encoding="utf-8")))
-    vector_config = VectorBaselineConfig.model_validate(json.loads(VECTOR_CONFIG_PATH.read_text(encoding="utf-8")))
+    vector_config = _load_vector_config()
     hybrid_config = HybridBaselineConfig.model_validate(json.loads(HYBRID_CONFIG_PATH.read_text(encoding="utf-8")))
     documents = load_knowledge_documents("data/knowledge_base/documents.v1.jsonl")
     chunks = load_knowledge_chunks("data/knowledge_base/chunks.v1.jsonl")
@@ -215,6 +251,10 @@ def _load_context() -> dict[str, Any]:
         "demo_scope": demo_scope,
         "cases": cases,
     }
+
+
+def _load_vector_config() -> VectorBaselineConfig:
+    return VectorBaselineConfig.model_validate(json.loads(VECTOR_CONFIG_PATH.read_text(encoding="utf-8")))
 
 
 def _run_fake_smoke(*, context: dict[str, Any]) -> int:
@@ -286,109 +326,121 @@ def _run_fake_smoke(*, context: dict[str, Any]) -> int:
 
 
 def _run_formal(*, context: dict[str, Any], write: bool) -> dict[str, Any]:
-    provider = SentenceTransformerEmbeddingProvider(
-        model_name_or_path=context["vector_config"].model_name_or_path,
-        batch_size=context["vector_config"].batch_size,
-        device=context["vector_config"].device,
-        normalize_embeddings=context["vector_config"].normalize_embeddings,
-        allow_model_download=False,
-        query_prefix=context["vector_config"].query_prefix,
-        document_prefix=context["vector_config"].document_prefix,
-    )
+    vector_config = context["vector_config"]
     lexical_retriever = _build_lexical_retriever(
         lexical_config=context["lexical_config"],
         documents=context["documents"],
         chunks=context["chunks"],
     )
-    vector_retriever = ExactVectorRetriever(
-        config=context["vector_config"],
-        embedding_provider=provider,
-        project_root=PROJECT_ROOT,
-    )
-    vector_retriever.build_index(
-        documents=context["documents"],
-        chunks=context["chunks"],
-        knowledge_base_version=context["manifest"].knowledge_base_version,
-    )
-    hybrid_retriever = ReciprocalRankFusionRetriever(
-        config=context["hybrid_config"],
-        lexical_retriever=lexical_retriever,
-        vector_retriever=vector_retriever,
-    )
+    with huggingface_offline_environment():
+        local_snapshot_path = _resolve_frozen_local_snapshot(vector_config=vector_config)
+        validate_local_embedding_manifest(
+            repo_id=vector_config.model_name_or_path,
+            revision=vector_config.model_revision or DEFAULT_EMBEDDING_REVISION,
+            dimension=384,
+            manifest_payload=_load_model_manifest(),
+        )
+        provider = SentenceTransformerEmbeddingProvider(
+            model_name_or_path=vector_config.model_name_or_path,
+            local_snapshot_path=local_snapshot_path,
+            batch_size=vector_config.batch_size,
+            device=vector_config.device,
+            normalize_embeddings=vector_config.normalize_embeddings,
+            allow_model_download=False,
+            query_prefix=vector_config.query_prefix,
+            document_prefix=vector_config.document_prefix,
+            expected_dimension=384,
+            expected_revision=vector_config.model_revision,
+        )
+        vector_retriever = ExactVectorRetriever(
+            config=context["vector_config"],
+            embedding_provider=provider,
+            project_root=PROJECT_ROOT,
+        )
+        vector_retriever.build_index(
+            documents=context["documents"],
+            chunks=context["chunks"],
+            knowledge_base_version=context["manifest"].knowledge_base_version,
+        )
+        hybrid_retriever = ReciprocalRankFusionRetriever(
+            config=context["hybrid_config"],
+            lexical_retriever=lexical_retriever,
+            vector_retriever=vector_retriever,
+        )
 
-    vector_report = run_retrieval_evaluation(
-        cases=context["cases"],
-        retriever=vector_retriever,
-        method_id="vector_v1",
-        top_k=context["vector_config"].top_k,
-    )
-    hybrid_report = run_retrieval_evaluation(
-        cases=context["cases"],
-        retriever=hybrid_retriever,
-        method_id="hybrid_v1",
-        top_k=context["hybrid_config"].output_top_k,
-    )
+        vector_report = run_retrieval_evaluation(
+            cases=context["cases"],
+            retriever=vector_retriever,
+            method_id="vector_v1",
+            top_k=context["vector_config"].top_k,
+        )
+        hybrid_report = run_retrieval_evaluation(
+            cases=context["cases"],
+            retriever=hybrid_retriever,
+            method_id="hybrid_v1",
+            top_k=context["hybrid_config"].output_top_k,
+        )
 
-    dependency_versions = get_embedding_dependency_versions()
-    vector_results = [result.model_dump(mode="json") for result in build_formal_case_results(vector_report)]
-    hybrid_results = [result.model_dump(mode="json") for result in build_formal_case_results(hybrid_report)]
-    vector_summary = build_formal_summary_payload(
-        cases=context["cases"],
-        config=context["vector_config"],
-        config_file="data/evaluation/retrieval/vector_baseline_config.v1.json",
-        manifest=context["manifest"],
-        demo_scope=context["demo_scope"],
-        report=vector_report,
-        model_name=provider.model_name,
-        resolved_model_revision=provider.resolved_revision,
-        embedding_dimension=provider.dimension,
-        dependency_versions=dependency_versions,
-        corpus_embedding_count=vector_retriever.corpus_embedding_count,
-        cache_hit_count=vector_retriever.cache_hit_count,
-        cache_miss_count=vector_retriever.cache_miss_count,
-        corpus_embedding_build_ms=vector_retriever.corpus_embedding_build_ms,
-        limitations=[
-            "This benchmark uses the 6-solution synthetic demo scope only.",
-            "No reranker, FAISS, or vector database is included in vector_v1.",
-        ],
-    ).model_dump(mode="json")
-    hybrid_summary = build_formal_summary_payload(
-        cases=context["cases"],
-        config=context["hybrid_config"],
-        config_file="data/evaluation/retrieval/hybrid_baseline_config.v1.json",
-        manifest=context["manifest"],
-        demo_scope=context["demo_scope"],
-        report=hybrid_report,
-        model_name=provider.model_name,
-        resolved_model_revision=provider.resolved_revision,
-        embedding_dimension=provider.dimension,
-        dependency_versions=dependency_versions,
-        corpus_embedding_count=vector_retriever.corpus_embedding_count,
-        cache_hit_count=vector_retriever.cache_hit_count,
-        cache_miss_count=vector_retriever.cache_miss_count,
-        corpus_embedding_build_ms=vector_retriever.corpus_embedding_build_ms,
-        limitations=[
-            "Hybrid_v1 uses frozen weighted BM25 plus frozen dense cosine retrieval.",
-            "Hybrid_v1 does not rerank or relax the frozen blocking gate.",
-        ],
-    ).model_dump(mode="json")
-    comparison = select_retrieval_method(
-        [
-            _lexical_entry(context["lexical_summary"]),
-            _to_comparison_entry(
-                method_id="vector_v1",
-                report=vector_report,
-                failed_case_ids=vector_summary["failed_case_ids"],
-                runtime_dependencies=["sentence_transformers", "torch", "transformers", "numpy"],
-            ),
-            _to_comparison_entry(
-                method_id="hybrid_v1",
-                report=hybrid_report,
-                failed_case_ids=hybrid_summary["failed_case_ids"],
-                runtime_dependencies=["weighted_bm25", "sentence_transformers", "torch", "transformers", "numpy"],
-            ),
-        ]
-    ).model_dump(mode="json")
+        dependency_versions = get_embedding_dependency_versions()
+        vector_results = [result.model_dump(mode="json") for result in build_formal_case_results(vector_report)]
+        hybrid_results = [result.model_dump(mode="json") for result in build_formal_case_results(hybrid_report)]
+        vector_summary = build_formal_summary_payload(
+            cases=context["cases"],
+            config=context["vector_config"],
+            config_file="data/evaluation/retrieval/vector_baseline_config.v1.json",
+            manifest=context["manifest"],
+            demo_scope=context["demo_scope"],
+            report=vector_report,
+            model_name=provider.model_name,
+            resolved_model_revision=provider.resolved_revision,
+            embedding_dimension=provider.dimension,
+            dependency_versions=dependency_versions,
+            corpus_embedding_count=vector_retriever.corpus_embedding_count,
+            cache_hit_count=vector_retriever.cache_hit_count,
+            cache_miss_count=vector_retriever.cache_miss_count,
+            corpus_embedding_build_ms=vector_retriever.corpus_embedding_build_ms,
+            limitations=[
+                "This benchmark uses the 6-solution synthetic demo scope only.",
+                "No reranker, FAISS, or vector database is included in vector_v1.",
+            ],
+        ).model_dump(mode="json")
+        hybrid_summary = build_formal_summary_payload(
+            cases=context["cases"],
+            config=context["hybrid_config"],
+            config_file="data/evaluation/retrieval/hybrid_baseline_config.v1.json",
+            manifest=context["manifest"],
+            demo_scope=context["demo_scope"],
+            report=hybrid_report,
+            model_name=provider.model_name,
+            resolved_model_revision=provider.resolved_revision,
+            embedding_dimension=provider.dimension,
+            dependency_versions=dependency_versions,
+            corpus_embedding_count=vector_retriever.corpus_embedding_count,
+            cache_hit_count=vector_retriever.cache_hit_count,
+            cache_miss_count=vector_retriever.cache_miss_count,
+            corpus_embedding_build_ms=vector_retriever.corpus_embedding_build_ms,
+            limitations=[
+                "Hybrid_v1 uses frozen weighted BM25 plus frozen dense cosine retrieval.",
+                "Hybrid_v1 does not rerank or relax the frozen blocking gate.",
+            ],
+        ).model_dump(mode="json")
+        comparison = select_retrieval_method(
+            [
+                _lexical_entry(context["lexical_summary"]),
+                _to_comparison_entry(
+                    method_id="vector_v1",
+                    report=vector_report,
+                    failed_case_ids=vector_summary["failed_case_ids"],
+                    runtime_dependencies=["sentence_transformers", "torch", "transformers", "numpy"],
+                ),
+                _to_comparison_entry(
+                    method_id="hybrid_v1",
+                    report=hybrid_report,
+                    failed_case_ids=hybrid_summary["failed_case_ids"],
+                    runtime_dependencies=["weighted_bm25", "sentence_transformers", "torch", "transformers", "numpy"],
+                ),
+            ]
+        ).model_dump(mode="json")
 
     payload = {
         "vector_results": vector_results,
@@ -513,6 +565,104 @@ def _to_json(payload: dict[str, Any]) -> str:
 def _is_safe_cache_directory(value: str) -> bool:
     path = Path(value)
     return not path.is_absolute() and ".." not in path.parts and path.parts[:2] == ("data", "runtime")
+
+
+def _resolve_frozen_local_snapshot(*, vector_config: VectorBaselineConfig) -> Path:
+    return resolve_local_model_snapshot(
+        repo_id=vector_config.model_name_or_path,
+        revision=vector_config.model_revision or DEFAULT_EMBEDDING_REVISION,
+    )
+
+
+def _run_offline_model_smoke(*, vector_config: VectorBaselineConfig) -> dict[str, Any]:
+    with _network_guard(), huggingface_offline_environment():
+        local_snapshot_path = _resolve_frozen_local_snapshot(vector_config=vector_config)
+        provider = SentenceTransformerEmbeddingProvider(
+            model_name_or_path=vector_config.model_name_or_path,
+            local_snapshot_path=local_snapshot_path,
+            batch_size=vector_config.batch_size,
+            device=vector_config.device,
+            normalize_embeddings=vector_config.normalize_embeddings,
+            allow_model_download=False,
+            query_prefix=vector_config.query_prefix,
+            document_prefix=vector_config.document_prefix,
+            expected_dimension=384,
+            expected_revision=vector_config.model_revision,
+        )
+        query_vectors = provider.encode_queries(["synthetic offline query probe"])
+        document_vectors = provider.encode_documents(["synthetic offline document probe"])
+
+    _validate_probe_vectors(query_vectors, expected_dimension=384)
+    _validate_probe_vectors(document_vectors, expected_dimension=384)
+    summary = {
+        "mode": "offline_model_smoke",
+        "configured_model_name": vector_config.model_name_or_path,
+        "resolved_model_revision": provider.resolved_revision,
+        "embedding_dimension": provider.dimension,
+        "device": vector_config.device,
+        "normalization": vector_config.normalize_embeddings,
+        "query_prefix": vector_config.query_prefix,
+        "document_prefix": vector_config.document_prefix,
+        "query_probe_count": len(query_vectors),
+        "document_probe_count": len(document_vectors),
+        "local_snapshot_available": True,
+        "dependency_versions": get_embedding_dependency_versions(),
+        "synthetic_probe_passed": True,
+    }
+    _write_model_manifest(summary)
+    return summary
+
+
+def _validate_probe_vectors(vectors: list[list[float]], *, expected_dimension: int) -> None:
+    if not vectors:
+        raise RuntimeError("Offline model smoke did not produce any vectors.")
+    for vector in vectors:
+        if len(vector) != expected_dimension:
+            raise RuntimeError("Offline model smoke returned an unexpected embedding dimension.")
+        for value in vector:
+            if not math.isfinite(value):
+                raise RuntimeError("Offline model smoke returned NaN or infinity.")
+
+
+def _load_model_manifest() -> dict[str, Any] | None:
+    if not MODEL_MANIFEST_PATH.exists():
+        return None
+    return json.loads(MODEL_MANIFEST_PATH.read_text(encoding="utf-8"))
+
+
+def _write_model_manifest(summary: dict[str, Any]) -> None:
+    payload = {
+        "repo_id": summary["configured_model_name"],
+        "resolved_revision": summary["resolved_model_revision"],
+        "embedding_dimension": summary["embedding_dimension"],
+        "local_snapshot_available": summary["local_snapshot_available"],
+        "dependency_versions": summary["dependency_versions"],
+        "prepared_at": datetime.now(timezone.utc).isoformat(),
+        "synthetic_probe_passed": bool(summary.get("synthetic_probe_passed", True)),
+        "snapshot_fingerprint": summary["resolved_model_revision"],
+    }
+    MODEL_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
+    MODEL_MANIFEST_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+@contextlib.contextmanager
+def _network_guard():
+    original_create_connection = socket.create_connection
+    original_connect = socket.socket.connect
+
+    def blocked_create_connection(*args, **kwargs):
+        raise RuntimeError("Offline model smoke blocked a network connection attempt.")
+
+    def blocked_connect(self, *args, **kwargs):
+        raise RuntimeError("Offline model smoke blocked a socket connection attempt.")
+
+    socket.create_connection = blocked_create_connection
+    socket.socket.connect = blocked_connect
+    try:
+        yield
+    finally:
+        socket.create_connection = original_create_connection
+        socket.socket.connect = original_connect
 
 
 if __name__ == "__main__":

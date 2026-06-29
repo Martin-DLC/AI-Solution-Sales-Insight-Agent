@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 import json
+import socket
 from pathlib import Path
+
+import pytest
 
 import scripts.run_vector_hybrid_retrieval as cli
 
 
 def test_cli_plan_mode_does_not_load_model(monkeypatch, capsys) -> None:
     monkeypatch.setattr(cli, "get_embedding_dependency_report", lambda: {"sentence_transformers": False})
-    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: False)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: False)
     monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py"])
 
     exit_code = cli.main()
@@ -20,7 +23,7 @@ def test_cli_plan_mode_does_not_load_model(monkeypatch, capsys) -> None:
 
 def test_cli_validate_mode_reports_dependency_status(monkeypatch, capsys) -> None:
     monkeypatch.setattr(cli, "get_embedding_dependency_report", lambda: {"sentence_transformers": False})
-    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: False)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: False)
     monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--validate"])
 
     exit_code = cli.main()
@@ -33,7 +36,7 @@ def test_cli_validate_mode_reports_dependency_status(monkeypatch, capsys) -> Non
 
 def test_cli_fake_smoke_succeeds(monkeypatch, capsys) -> None:
     monkeypatch.setattr(cli, "get_embedding_dependency_report", lambda: {"sentence_transformers": False})
-    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: False)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: False)
     monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--fake-smoke"])
 
     exit_code = cli.main()
@@ -44,7 +47,7 @@ def test_cli_fake_smoke_succeeds(monkeypatch, capsys) -> None:
 
 
 def test_cli_prepare_model_without_download_permission_fails_when_model_missing(monkeypatch, capsys) -> None:
-    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: False)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: False)
     monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--prepare-model"])
 
     exit_code = cli.main()
@@ -73,7 +76,7 @@ def test_cli_prepare_model_uses_provider_prepare_only(monkeypatch, capsys) -> No
             }
 
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", StubProvider)
-    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: True)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2"})
     monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--prepare-model"])
 
@@ -104,7 +107,7 @@ def test_cli_allow_download_requires_run(monkeypatch, capsys) -> None:
 
 
 def test_cli_run_refuses_missing_local_model(monkeypatch, capsys) -> None:
-    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: False)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: False)
     monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--run"])
 
     exit_code = cli.main()
@@ -135,8 +138,19 @@ def test_cli_run_write_uses_real_provider_interface_and_writes_files(tmp_path: P
 
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", fake_provider)
     monkeypatch.setattr(cli, "FakeEmbeddingProvider", fake_provider_guard)
-    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: True)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
+    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "snapshot")
+    monkeypatch.setattr(
+        cli,
+        "_load_model_manifest",
+        lambda: {
+            "repo_id": "intfloat/multilingual-e5-small",
+            "resolved_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+            "embedding_dimension": 384,
+            "local_snapshot_available": True,
+        },
+    )
     monkeypatch.setattr(cli, "PROJECT_ROOT", tmp_path)
     monkeypatch.setattr(cli, "VECTOR_RESULTS_PATH", tmp_path / "vector.jsonl")
     monkeypatch.setattr(cli, "VECTOR_SUMMARY_PATH", tmp_path / "vector.json")
@@ -179,8 +193,19 @@ def test_cli_check_ignores_latency_but_not_score(tmp_path: Path, monkeypatch, ca
             return [[1.0] + [0.0] * 7 for _ in texts]
 
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
-    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: True)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
+    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "snapshot")
+    monkeypatch.setattr(
+        cli,
+        "_load_model_manifest",
+        lambda: {
+            "repo_id": "intfloat/multilingual-e5-small",
+            "resolved_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+            "embedding_dimension": 384,
+            "local_snapshot_available": True,
+        },
+    )
     monkeypatch.setattr(cli, "PROJECT_ROOT", tmp_path)
     monkeypatch.setattr(cli, "VECTOR_RESULTS_PATH", tmp_path / "vector.jsonl")
     monkeypatch.setattr(cli, "VECTOR_SUMMARY_PATH", tmp_path / "vector.json")
@@ -210,3 +235,34 @@ def test_cli_check_ignores_latency_but_not_score(tmp_path: Path, monkeypatch, ca
     exit_code = cli.main()
 
     assert exit_code == 0
+
+
+def test_cli_offline_model_smoke_uses_local_snapshot_only(monkeypatch, capsys) -> None:
+    called = {"count": 0}
+
+    def fake_offline_smoke(*, vector_config):
+        called["count"] += 1
+        return {
+            "mode": "offline_model_smoke",
+            "configured_model_name": "intfloat/multilingual-e5-small",
+            "resolved_model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+            "embedding_dimension": 384,
+            "synthetic_probe_passed": True,
+        }
+
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
+    monkeypatch.setattr(cli, "_run_offline_model_smoke", fake_offline_smoke)
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--offline-model-smoke"])
+
+    exit_code = cli.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert called["count"] == 1
+    assert payload["mode"] == "offline_model_smoke"
+
+
+def test_network_guard_blocks_socket_connections() -> None:
+    with cli._network_guard():  # noqa: SLF001
+        with pytest.raises(RuntimeError, match="blocked"):
+            socket.create_connection(("127.0.0.1", 80), timeout=0.01)
