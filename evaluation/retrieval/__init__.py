@@ -22,7 +22,6 @@ from evaluation.retrieval.models import (
     RetrievalRunResult,
     summarize_case_mix,
 )
-
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
