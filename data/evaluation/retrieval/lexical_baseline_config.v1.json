@@ -1,0 +1,23 @@
+{
+  "active_statuses": [
+    "approved"
+  ],
+  "b": 0.75,
+  "baseline_version": "lexical_v1",
+  "evaluation_date": "2026-06-29",
+  "field_weights": {
+    "citation_label": 2,
+    "content": 1,
+    "document_type": 1,
+    "industries": 1,
+    "solution_ids": 3,
+    "tags": 2
+  },
+  "k1": 1.5,
+  "retrieval_method": "weighted_bm25",
+  "score_round_digits": 6,
+  "synthetic_data": true,
+  "tie_break_rule": "score_desc_document_id_asc_chunk_id_asc",
+  "tokenizer_version": "mixed_lexical_v1",
+  "top_k": 5
+}
