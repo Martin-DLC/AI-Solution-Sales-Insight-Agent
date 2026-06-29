@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import scripts.run_vector_hybrid_retrieval as cli
 
@@ -42,6 +43,48 @@ def test_cli_fake_smoke_succeeds(monkeypatch, capsys) -> None:
     assert payload["mode"] == "fake_smoke"
 
 
+def test_cli_prepare_model_without_download_permission_fails_when_model_missing(monkeypatch, capsys) -> None:
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: False)
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--prepare-model"])
+
+    exit_code = cli.main()
+
+    assert exit_code == 1
+    assert "Local embedding model is unavailable" in capsys.readouterr().err
+
+
+def test_cli_prepare_model_uses_provider_prepare_only(monkeypatch, capsys) -> None:
+    called = {"prepare": 0}
+
+    class StubProvider:
+        def __init__(self, **kwargs):
+            pass
+
+        def prepare_model(self):
+            called["prepare"] += 1
+            return {
+                "configured_model_name": "intfloat/multilingual-e5-small",
+                "resolved_model_revision": "unresolved",
+                "embedding_dimension": 384,
+                "device": "cpu",
+                "query_prefix": "query: ",
+                "document_prefix": "passage: ",
+                "normalization": True,
+            }
+
+    monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", StubProvider)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: True)
+    monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2"})
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--prepare-model"])
+
+    exit_code = cli.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert called["prepare"] == 1
+    assert payload["configured_model_name"] == "intfloat/multilingual-e5-small"
+
+
 def test_cli_write_requires_run(monkeypatch, capsys) -> None:
     monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--write"])
 
@@ -57,7 +100,7 @@ def test_cli_allow_download_requires_run(monkeypatch, capsys) -> None:
     exit_code = cli.main()
 
     assert exit_code == 2
-    assert "--allow-model-download must be used together with --run." in capsys.readouterr().err
+    assert "--allow-model-download can only be used together with --prepare-model." in capsys.readouterr().err
 
 
 def test_cli_run_refuses_missing_local_model(monkeypatch, capsys) -> None:
@@ -68,3 +111,102 @@ def test_cli_run_refuses_missing_local_model(monkeypatch, capsys) -> None:
 
     assert exit_code == 1
     assert "Local embedding model is unavailable" in capsys.readouterr().err
+
+
+def test_cli_run_write_uses_real_provider_interface_and_writes_files(tmp_path: Path, monkeypatch, capsys) -> None:
+    class StubProvider:
+        def __init__(self, **kwargs):
+            self.model_name = "intfloat/multilingual-e5-small"
+            self.resolved_revision = "unresolved"
+            self.dimension = 8
+            self.provider_id = "sentence_transformers:intfloat/multilingual-e5-small"
+
+        def encode_documents(self, texts):
+            return [[1.0] + [0.0] * 7 for _ in texts]
+
+        def encode_queries(self, texts):
+            return [[1.0] + [0.0] * 7 for _ in texts]
+
+    def fake_provider(*args, **kwargs):
+        return StubProvider()
+
+    def fake_provider_guard(*args, **kwargs):
+        raise AssertionError("Fake provider must not be used in formal run")
+
+    monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", fake_provider)
+    monkeypatch.setattr(cli, "FakeEmbeddingProvider", fake_provider_guard)
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: True)
+    monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
+    monkeypatch.setattr(cli, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(cli, "VECTOR_RESULTS_PATH", tmp_path / "vector.jsonl")
+    monkeypatch.setattr(cli, "VECTOR_SUMMARY_PATH", tmp_path / "vector.json")
+    monkeypatch.setattr(cli, "HYBRID_RESULTS_PATH", tmp_path / "hybrid.jsonl")
+    monkeypatch.setattr(cli, "HYBRID_SUMMARY_PATH", tmp_path / "hybrid.json")
+    monkeypatch.setattr(cli, "COMPARISON_PATH", tmp_path / "comparison.json")
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--run", "--write"])
+
+    original_load_context = cli._load_context  # noqa: SLF001
+
+    def isolated_context():
+        context = original_load_context()
+        context["vector_config"] = context["vector_config"].model_copy(
+            update={"cache_enabled": False, "cache_directory": "data/runtime/test-cli-cache"}
+        )
+        return context
+
+    monkeypatch.setattr(cli, "_load_context", isolated_context)
+    exit_code = cli.main()
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert payload["mode"] == "run"
+    assert (tmp_path / "vector.jsonl").exists()
+    assert (tmp_path / "comparison.json").exists()
+
+
+def test_cli_check_ignores_latency_but_not_score(tmp_path: Path, monkeypatch, capsys) -> None:
+    class StubProvider:
+        def __init__(self, **kwargs):
+            self.model_name = "intfloat/multilingual-e5-small"
+            self.resolved_revision = "unresolved"
+            self.dimension = 8
+            self.provider_id = "sentence_transformers:intfloat/multilingual-e5-small"
+
+        def encode_documents(self, texts):
+            return [[1.0] + [0.0] * 7 for _ in texts]
+
+        def encode_queries(self, texts):
+            return [[1.0] + [0.0] * 7 for _ in texts]
+
+    monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda _: True)
+    monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
+    monkeypatch.setattr(cli, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(cli, "VECTOR_RESULTS_PATH", tmp_path / "vector.jsonl")
+    monkeypatch.setattr(cli, "VECTOR_SUMMARY_PATH", tmp_path / "vector.json")
+    monkeypatch.setattr(cli, "HYBRID_RESULTS_PATH", tmp_path / "hybrid.jsonl")
+    monkeypatch.setattr(cli, "HYBRID_SUMMARY_PATH", tmp_path / "hybrid.json")
+    monkeypatch.setattr(cli, "COMPARISON_PATH", tmp_path / "comparison.json")
+    context = cli._load_context()  # noqa: SLF001
+    context["vector_config"] = context["vector_config"].model_copy(
+        update={"cache_enabled": False, "cache_directory": "data/runtime/test-cli-cache"}
+    )
+    payload = cli._run_formal(context=context, write=True)  # noqa: SLF001
+    first_vector = payload["vector_results"][0]
+    first_vector["latency_ms"] += 99
+    (tmp_path / "vector.jsonl").write_text(
+        "\n".join(json.dumps(item, ensure_ascii=False, sort_keys=True, separators=(",", ":")) for item in payload["vector_results"]) + "\n",
+        encoding="utf-8",
+    )
+    for file_name, key in [("vector.json", "vector_summary"), ("hybrid.jsonl", "hybrid_results"), ("hybrid.json", "hybrid_summary"), ("comparison.json", "comparison")]:
+        path = tmp_path / file_name
+        value = payload[key]
+        if isinstance(value, list):
+            path.write_text("\n".join(json.dumps(item, ensure_ascii=False, sort_keys=True, separators=(",", ":")) for item in value) + "\n", encoding="utf-8")
+        else:
+            path.write_text(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--check"])
+    exit_code = cli.main()
+
+    assert exit_code == 0

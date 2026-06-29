@@ -18,6 +18,18 @@ def write_json_atomic(path: str | Path, payload: dict[str, Any]) -> None:
     _atomic_write_text(Path(path), content)
 
 
+def write_many_atomic(items: list[tuple[str | Path, str]]) -> None:
+    written_temp_paths: list[tuple[Path, Path]] = []
+    for raw_path, content in items:
+        path = Path(raw_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temp_path = path.with_suffix(path.suffix + ".tmp")
+        temp_path.write_text(content, encoding="utf-8")
+        written_temp_paths.append((path, temp_path))
+    for path, temp_path in written_temp_paths:
+        temp_path.replace(path)
+
+
 def load_jsonl_records(path: str | Path) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for line in Path(path).read_text(encoding="utf-8").splitlines():
@@ -70,6 +82,17 @@ def diff_json_objects(
     if expected != actual:
         return [path or "$"]
     return []
+
+
+def diff_json_objects_ignoring_paths(
+    expected: Any,
+    actual: Any,
+    *,
+    ignored_suffixes: set[str],
+    path: str = "",
+) -> list[str]:
+    differences = diff_json_objects(expected, actual, path=path)
+    return [difference for difference in differences if not any(difference.endswith(suffix) for suffix in ignored_suffixes)]
 
 
 def _atomic_write_text(path: Path, content: str) -> None:

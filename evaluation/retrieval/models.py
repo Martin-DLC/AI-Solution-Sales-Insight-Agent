@@ -273,6 +273,66 @@ class RetrievalEvaluationSummary(StrictBaseModel):
         return _deduplicate_text(values, "Retrieval summary disqualification reasons")
 
 
+class RetrievalFormalCaseResult(StrictBaseModel):
+    retrieval_case_id: str
+    query_type: RetrievalQueryType
+    retrieval_method: RetrievalMethod
+    top_k: int
+    retrieved_candidates: list[dict[str, Any]] = Field(default_factory=list)
+    recall_at_1: float
+    recall_at_3: float
+    recall_at_5: float
+    precision_at_3: float
+    precision_at_5: float
+    reciprocal_rank: float
+    forbidden_hit: bool
+    solution_boundary_violation: bool
+    passed_blocking_gate: bool
+    failure_reasons: list[str] = Field(default_factory=list)
+    latency_ms: int
+    error_type: str | None = None
+    error_message: str | None = None
+
+
+class RetrievalDependencyVersions(StrictBaseModel):
+    sentence_transformers: str | None = None
+    torch: str | None = None
+    transformers: str | None = None
+    numpy: str | None = None
+
+
+class RetrievalFormalSummary(StrictBaseModel):
+    baseline_version: str
+    retrieval_method: RetrievalMethod
+    config_file: str
+    knowledge_base_version: str
+    demo_solution_scope_version: str
+    model_name: str
+    resolved_model_revision: str
+    embedding_dimension: int
+    dependency_versions: RetrievalDependencyVersions
+    case_count: int
+    query_type_counts: dict[str, int]
+    recall_at_1: float
+    recall_at_3: float
+    recall_at_5: float
+    precision_at_3: float
+    precision_at_5: float
+    mean_reciprocal_rank: float
+    forbidden_hit_rate: float
+    solution_boundary_violation_rate: float
+    average_latency_ms: float
+    corpus_embedding_count: int
+    cache_hit_count: int
+    cache_miss_count: int
+    corpus_embedding_build_ms: int
+    eligible_for_rag: bool
+    disqualification_reasons: list[str] = Field(default_factory=list)
+    failed_case_ids: list[str] = Field(default_factory=list)
+    generated_from_synthetic_data: bool
+    limitations: list[str] = Field(default_factory=list)
+
+
 class RetrievalEvaluationDataset(StrictBaseModel):
     cases: list[RetrievalEvaluationCase] = Field(default_factory=list)
 

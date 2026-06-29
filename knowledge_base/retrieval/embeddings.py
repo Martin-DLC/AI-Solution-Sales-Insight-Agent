@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import importlib
 import importlib.util
+from importlib import metadata
 import math
 from pathlib import Path
 from typing import Any, Protocol
@@ -43,6 +44,9 @@ class EmbeddingProvider(Protocol):
         texts: list[str],
     ) -> list[list[float]]: ...
 
+    @property
+    def resolved_revision(self) -> str: ...
+
 
 class FakeEmbeddingProvider:
     def __init__(
@@ -65,6 +69,10 @@ class FakeEmbeddingProvider:
     @property
     def dimension(self) -> int:
         return self._dimension
+
+    @property
+    def resolved_revision(self) -> str:
+        return "fake"
 
     def encode_queries(self, texts: list[str]) -> list[list[float]]:
         self.query_calls += 1
@@ -115,6 +123,7 @@ class SentenceTransformerEmbeddingProvider:
         self._expected_dimension = expected_dimension
         self._model: Any | None = None
         self._loaded_dimension: int | None = None
+        self._resolved_revision = "unresolved"
 
     @property
     def provider_id(self) -> str:
@@ -131,6 +140,10 @@ class SentenceTransformerEmbeddingProvider:
     @property
     def allow_model_download(self) -> bool:
         return self._allow_model_download
+
+    @property
+    def resolved_revision(self) -> str:
+        return self._resolved_revision
 
     def encode_queries(self, texts: list[str]) -> list[list[float]]:
         if not texts:
@@ -187,6 +200,13 @@ class SentenceTransformerEmbeddingProvider:
             loaded_dimension = model_dimension()
             if isinstance(loaded_dimension, int) and loaded_dimension > 0:
                 self._loaded_dimension = loaded_dimension
+        revision = None
+        model_card = getattr(model, "model_card_data", None)
+        if model_card is not None:
+            revision = getattr(model_card, "base_model_revision", None)
+        if not revision:
+            revision = getattr(model, "revision", None)
+        self._resolved_revision = str(revision).strip() if revision else "unresolved"
         return model
 
     def _encode_with_model(
@@ -223,6 +243,32 @@ class SentenceTransformerEmbeddingProvider:
             )
         return _coerce_vectors(raw_vectors)
 
+    def prepare_model(self) -> dict[str, Any]:
+        model = self._load_model()
+        query_vectors = self._encode_with_model(
+            model=model,
+            texts=["synthetic retrieval query probe"],
+            mode="query",
+        )
+        document_vectors = self._encode_with_model(
+            model=model,
+            texts=["synthetic retrieval document probe"],
+            mode="document",
+        )
+        validated_query = _validate_vectors(query_vectors, expected_dimension=self.dimension)
+        validated_document = _validate_vectors(document_vectors, expected_dimension=self.dimension)
+        return {
+            "configured_model_name": self.model_name,
+            "resolved_model_revision": self.resolved_revision,
+            "embedding_dimension": self.dimension,
+            "device": self._device,
+            "query_prefix": self._query_prefix,
+            "document_prefix": self._document_prefix,
+            "normalization": self._normalize_embeddings,
+            "query_probe_count": len(validated_query),
+            "document_probe_count": len(validated_document),
+        }
+
 
 def get_embedding_dependency_report() -> dict[str, bool]:
     return {
@@ -231,6 +277,17 @@ def get_embedding_dependency_report() -> dict[str, bool]:
         "transformers": importlib.util.find_spec("transformers") is not None,
         "numpy": importlib.util.find_spec("numpy") is not None,
     }
+
+
+def get_embedding_dependency_versions() -> dict[str, str | None]:
+    packages = ("sentence-transformers", "torch", "transformers", "numpy")
+    versions: dict[str, str | None] = {}
+    for package in packages:
+        try:
+            versions[package.replace("-", "_")] = metadata.version(package)
+        except metadata.PackageNotFoundError:
+            versions[package.replace("-", "_")] = None
+    return versions
 
 
 def is_local_sentence_transformer_model_available(model_name_or_path: str) -> bool:
