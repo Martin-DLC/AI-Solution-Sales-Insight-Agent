@@ -1,3 +1,7 @@
+from evaluation.retrieval.dataset import (
+    load_retrieval_evaluation_cases,
+    validate_retrieval_evaluation_dataset,
+)
 from evaluation.retrieval.metrics import (
     evaluate_retrieval_case,
     forbidden_hit_rate,
@@ -30,10 +34,12 @@ __all__ = [
     "RetrievalRunResult",
     "evaluate_retrieval_case",
     "forbidden_hit_rate",
+    "load_retrieval_evaluation_cases",
     "mean_reciprocal_rank",
     "precision_at_k",
     "recall_at_k",
     "solution_boundary_violation_rate",
     "summarize_case_mix",
     "summarize_retrieval_results",
+    "validate_retrieval_evaluation_dataset",
 ]

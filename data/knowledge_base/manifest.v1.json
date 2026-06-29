@@ -1,0 +1,29 @@
+{
+  "chunk_count": 40,
+  "document_count": 20,
+  "document_type_counts": {
+    "capability": 2,
+    "case_study": 2,
+    "commercial_rule": 1,
+    "delivery_constraint": 1,
+    "implementation_playbook": 2,
+    "integration_requirement": 2,
+    "readiness_requirement": 2,
+    "security_compliance": 1,
+    "solution": 6,
+    "unsupported_scenario": 1
+  },
+  "generated_at": "2026-06-29T00:00:00Z",
+  "knowledge_base_version": "kb-demo-v1",
+  "solution_ids": [
+    "合规政策RAG检索助手",
+    "客户身份统一与数据集成方案",
+    "商品知识库RAG方案",
+    "客服辅助回复方案",
+    "服务工单系统集成方案",
+    "私有化大模型部署方案"
+  ],
+  "source_mode": "local_static",
+  "synthetic_data": true,
+  "validation_status": "valid"
+}
