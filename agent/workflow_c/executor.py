@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import time
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from pydantic import ValidationError
@@ -37,6 +37,7 @@ def execute_node(
     services: WorkflowServices,
 ) -> dict[str, Any]:
     started_at = datetime.now(UTC)
+    started_perf = time.perf_counter()
     try:
         _ensure_dependencies(node, state)
         raw_patch = node.run(dict(state), services)
@@ -49,11 +50,17 @@ def execute_node(
             for field in node.contract.produced_state_fields
         }
         completed_at = datetime.now(UTC)
+        completed_at, latency_ms = _normalize_record_timestamps(
+            started_at=started_at,
+            completed_at=completed_at,
+            started_perf=started_perf,
+        )
         record = _record(
             node_name=node.contract.name,
             status=NodeStatus.succeeded,
             started_at=started_at,
             completed_at=completed_at,
+            latency_ms=latency_ms,
             prompt_version=node.contract.prompt_version,
             output_model=node.contract.output_model.__name__,
         )
@@ -65,7 +72,12 @@ def execute_node(
         }
     except Exception as exc:
         completed_at = datetime.now(UTC)
-        return _failure_patch(node, exc, started_at, completed_at)
+        completed_at, latency_ms = _normalize_record_timestamps(
+            started_at=started_at,
+            completed_at=completed_at,
+            started_perf=started_perf,
+        )
+        return _failure_patch(node, exc, started_at, completed_at, latency_ms)
 
 
 def _ensure_dependencies(node: WorkflowNode, state: ArchitectureCGraphState) -> None:
@@ -99,6 +111,7 @@ def _failure_patch(
     error: Exception,
     started_at: datetime,
     completed_at: datetime,
+    latency_ms: int,
 ) -> dict[str, Any]:
     failure_id = f"failure-{uuid.uuid4().hex}"
     category = _failure_category(node.contract.name, error)
@@ -125,6 +138,7 @@ def _failure_patch(
         status=NodeStatus.failed,
         started_at=started_at,
         completed_at=completed_at,
+        latency_ms=latency_ms,
         prompt_version=node.contract.prompt_version,
         output_model=node.contract.output_model.__name__,
         failure_id=failure_id,
@@ -170,6 +184,7 @@ def _record(
     status: NodeStatus,
     started_at: datetime,
     completed_at: datetime,
+    latency_ms: int,
     prompt_version: str | None,
     output_model: str,
     failure_id: str | None = None,
@@ -179,10 +194,7 @@ def _record(
         status=status,
         started_at=started_at,
         completed_at=completed_at,
-        latency_ms=max(0, int((time.perf_counter_ns()) * 0)) + max(
-            0,
-            int((completed_at - started_at).total_seconds() * 1000),
-        ),
+        latency_ms=latency_ms,
         prompt_version=prompt_version,
         model_name=None,
         usage=LLMUsage(),
@@ -194,3 +206,16 @@ def _record(
 
 def _safe_error_message(error: Exception) -> str:
     return redact_secrets(str(error) or error.__class__.__name__)
+
+
+def _normalize_record_timestamps(
+    *,
+    started_at: datetime,
+    completed_at: datetime,
+    started_perf: float,
+) -> tuple[datetime, int]:
+    elapsed_ms = max(0, int((time.perf_counter() - started_perf) * 1000))
+    monotonic_completed_at = started_at + timedelta(milliseconds=elapsed_ms)
+    safe_completed_at = max(completed_at, monotonic_completed_at)
+    latency_ms = max(0, int((safe_completed_at - started_at).total_seconds() * 1000))
+    return safe_completed_at, latency_ms

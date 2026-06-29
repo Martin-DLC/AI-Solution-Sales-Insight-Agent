@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from pydantic import BaseModel
 
+import agent.workflow_c.executor as executor_module
 from agent.workflow_c.contracts import NodeContract, NodeFailurePolicy
 from agent.workflow_c.executor import execute_node
 from agent.workflow_c.services import WorkflowServices
@@ -45,6 +47,14 @@ class DummyNode:
 
 def services() -> WorkflowServices:
     return WorkflowServices(llm=FakeWorkflowLLMClient.with_default_fact_response())
+
+
+class FrozenClock:
+    def __init__(self, values: list[datetime]) -> None:
+        self._values = iter(values)
+
+    def now(self, tz: object | None = None) -> datetime:
+        return next(self._values)
 
 
 def test_success_node_returns_business_patch() -> None:
@@ -136,3 +146,44 @@ def test_latency_is_non_negative() -> None:
     patch = execute_node(DummyNode(), {"input": "x"}, services())
 
     assert patch["node_records"][0].latency_ms >= 0
+
+
+def test_success_path_node_record_normalizes_backwards_wall_clock(monkeypatch) -> None:
+    started_at = datetime(2026, 6, 28, 12, 0, tzinfo=UTC)
+    clock = FrozenClock([started_at, started_at - timedelta(seconds=2)])
+    perf_counter_values = iter([100.0, 100.004])
+    monkeypatch.setattr(executor_module, "datetime", clock)
+    monkeypatch.setattr(
+        executor_module.time,
+        "perf_counter",
+        lambda: next(perf_counter_values),
+    )
+
+    patch = execute_node(DummyNode(), {"input": "x"}, services())
+    record = patch["node_records"][0]
+
+    assert record.started_at == started_at
+    assert record.completed_at >= record.started_at
+    assert record.latency_ms >= 0
+    assert record.completed_at == started_at + timedelta(milliseconds=4)
+
+
+def test_failure_path_node_record_normalizes_backwards_wall_clock(monkeypatch) -> None:
+    started_at = datetime(2026, 6, 28, 12, 0, tzinfo=UTC)
+    clock = FrozenClock([started_at, started_at - timedelta(seconds=3)])
+    perf_counter_values = iter([200.0, 200.006])
+    monkeypatch.setattr(executor_module, "datetime", clock)
+    monkeypatch.setattr(
+        executor_module.time,
+        "perf_counter",
+        lambda: next(perf_counter_values),
+    )
+
+    patch = execute_node(DummyNode(error=RuntimeError("boom")), {"input": "x"}, services())
+    record = patch["node_records"][0]
+
+    assert patch["failures"][0].occurred_at == record.completed_at
+    assert record.started_at == started_at
+    assert record.completed_at >= record.started_at
+    assert record.latency_ms >= 0
+    assert record.completed_at == started_at + timedelta(milliseconds=6)
