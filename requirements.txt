@@ -4,3 +4,4 @@ tenacity
 rich
 openai==2.41.0
 langgraph==1.2.5
+sentence-transformers>=5.2,<6
