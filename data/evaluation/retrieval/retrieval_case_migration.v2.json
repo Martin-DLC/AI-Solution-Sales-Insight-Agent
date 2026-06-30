@@ -1,0 +1,778 @@
+{
+  "case_migrations": [
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-01",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-SOL-001#chunk-000-29777128c730",
+          "KB-SEC-001#chunk-000-f8c40d662005"
+        ],
+        "documents": [
+          "KB-SOL-001",
+          "KB-SEC-001"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": [
+          "客服辅助回复方案"
+        ]
+      },
+      "source_retrieval_case_id": "RET-001",
+      "target_case_id": "RET2-001",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-SOL-001#chunk-000-29777128c730",
+          "KB-SEC-001#chunk-000-f8c40d662005"
+        ],
+        "documents": [
+          "KB-SOL-001",
+          "KB-SEC-001"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": [
+          "客服辅助回复方案"
+        ]
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-12",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-SOL-002#chunk-000-7c0d6600d6d0",
+          "KB-PLAY-001#chunk-000-0015819a0dd7"
+        ],
+        "documents": [
+          "KB-SOL-002",
+          "KB-PLAY-001"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-006"
+        ],
+        "solutions": [
+          "私有化大模型部署方案"
+        ]
+      },
+      "source_retrieval_case_id": "RET-002",
+      "target_case_id": "RET2-002",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-SOL-002#chunk-000-7c0d6600d6d0",
+          "KB-PLAY-001#chunk-000-0015819a0dd7"
+        ],
+        "documents": [
+          "KB-SOL-002",
+          "KB-PLAY-001"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-006"
+        ],
+        "solutions": [
+          "私有化大模型部署方案"
+        ]
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-10",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "KB-SOL-004#chunk-001-d15a10f713d4"
+        ],
+        "documents": [
+          "KB-CAP-001",
+          "KB-SOL-004"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-006"
+        ],
+        "solutions": [
+          "私有化大模型部署方案"
+        ]
+      },
+      "source_retrieval_case_id": "RET-003",
+      "target_case_id": "RET2-003",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "KB-SOL-004#chunk-001-d15a10f713d4"
+        ],
+        "documents": [
+          "KB-CAP-001",
+          "KB-SOL-004"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-006"
+        ],
+        "solutions": [
+          "私有化大模型部署方案"
+        ]
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-14",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-SOL-005#chunk-000-4f2912ff7d30",
+          "KB-INT-002#chunk-000-37797d7945a6"
+        ],
+        "documents": [
+          "KB-SOL-005",
+          "KB-INT-002"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-001"
+        ],
+        "solutions": [
+          "合规政策RAG检索助手"
+        ]
+      },
+      "source_retrieval_case_id": "RET-004",
+      "target_case_id": "RET2-004",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-SOL-005#chunk-000-4f2912ff7d30",
+          "KB-INT-002#chunk-000-37797d7945a6"
+        ],
+        "documents": [
+          "KB-SOL-005",
+          "KB-INT-002"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-001"
+        ],
+        "solutions": [
+          "合规政策RAG检索助手"
+        ]
+      }
+    },
+    {
+      "boundary_changed": true,
+      "gold_changed": true,
+      "migration_reason": "Replaced forbidden-scope unsupported/security expectations with compliance-only solution and capability evidence while preserving the legal-judgment business question.",
+      "migration_status": "adjusted_expected_ids_for_boundary_safety",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-05",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-UNS-001#chunk-000-29c7c8c2317d",
+          "KB-SOL-001#chunk-001-5b4fdfa84476"
+        ],
+        "documents": [
+          "KB-UNS-001",
+          "KB-SOL-001"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": [
+          "客服辅助回复方案",
+          "私有化大模型部署方案"
+        ]
+      },
+      "source_retrieval_case_id": "RET-005",
+      "target_case_id": "RET2-005",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-SOL-001#chunk-001-5b4fdfa84476",
+          "KB-CAP-001#chunk-001-bcb4fc0bf316"
+        ],
+        "documents": [
+          "KB-SOL-001"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": [
+          "客服辅助回复方案",
+          "私有化大模型部署方案"
+        ]
+      }
+    },
+    {
+      "boundary_changed": true,
+      "gold_changed": true,
+      "migration_reason": "Replaced v1 conflicting unsupported/readiness expectations with solution-specific boundary evidence for product knowledge and assistive reply under the same business scenario.",
+      "migration_status": "rewritten_for_feasibility",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-08",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-UNS-001#chunk-001-6221cccec3f8",
+          "KB-READY-001#chunk-000-c25bf83f023f"
+        ],
+        "documents": [
+          "KB-UNS-001",
+          "KB-READY-001"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-001"
+        ],
+        "solutions": [
+          "合规政策RAG检索助手"
+        ]
+      },
+      "source_retrieval_case_id": "RET-006",
+      "target_case_id": "RET2-006",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-SOL-003#chunk-001-adb6d47feec4",
+          "KB-SOL-004#chunk-001-d15a10f713d4"
+        ],
+        "documents": [
+          "KB-SOL-003",
+          "KB-SOL-004"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-001"
+        ],
+        "solutions": [
+          "合规政策RAG检索助手"
+        ]
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-06",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-PLAY-002#chunk-001-22fb4bafb8ba",
+          "KB-SEC-001#chunk-001-d88fdb994b4e"
+        ],
+        "documents": [
+          "KB-PLAY-002",
+          "KB-SEC-001"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": []
+      },
+      "source_retrieval_case_id": "RET-007",
+      "target_case_id": "RET2-007",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-PLAY-002#chunk-001-22fb4bafb8ba",
+          "KB-SEC-001#chunk-001-d88fdb994b4e"
+        ],
+        "documents": [
+          "KB-PLAY-002",
+          "KB-SEC-001"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": []
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-11",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "KB-SOL-005#chunk-001-c46ac3709e0c"
+        ],
+        "documents": [
+          "KB-PLAY-001",
+          "KB-SOL-005"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": []
+      },
+      "source_retrieval_case_id": "RET-008",
+      "target_case_id": "RET2-008",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "KB-SOL-005#chunk-001-c46ac3709e0c"
+        ],
+        "documents": [
+          "KB-PLAY-001",
+          "KB-SOL-005"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": []
+      }
+    },
+    {
+      "boundary_changed": true,
+      "gold_changed": true,
+      "migration_reason": "Replaced a mixed-solution capability/document expectation with compliance-safe citation and escalation evidence while preserving the compliance auditability scenario.",
+      "migration_status": "rewritten_for_feasibility",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-04",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-SEC-001#chunk-000-f8c40d662005",
+          "KB-CAP-001#chunk-001-bcb4fc0bf316"
+        ],
+        "documents": [
+          "KB-SEC-001",
+          "KB-CAP-001"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": [
+          "客服辅助回复方案"
+        ]
+      },
+      "source_retrieval_case_id": "RET-009",
+      "target_case_id": "RET2-009",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-SEC-001#chunk-000-f8c40d662005",
+          "KB-CAP-001#chunk-001-bcb4fc0bf316"
+        ],
+        "documents": [
+          "KB-SEC-001",
+          "KB-SOL-001"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": [
+          "客服辅助回复方案"
+        ]
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-13",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-SEC-001#chunk-000-f8c40d662005",
+          "KB-SOL-006#chunk-000-c4df6924db79"
+        ],
+        "documents": [
+          "KB-SEC-001",
+          "KB-SOL-006"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-003"
+        ],
+        "solutions": [
+          "商品知识库RAG方案"
+        ]
+      },
+      "source_retrieval_case_id": "RET-010",
+      "target_case_id": "RET2-010",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-SEC-001#chunk-000-f8c40d662005",
+          "KB-SOL-006#chunk-000-c4df6924db79"
+        ],
+        "documents": [
+          "KB-SEC-001",
+          "KB-SOL-006"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-003"
+        ],
+        "solutions": [
+          "商品知识库RAG方案"
+        ]
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-07",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-INT-001#chunk-000-17c42e00f4ee",
+          "KB-SOL-002#chunk-001-c241403338a2"
+        ],
+        "documents": [
+          "KB-INT-001",
+          "KB-SOL-002"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-006"
+        ],
+        "solutions": []
+      },
+      "source_retrieval_case_id": "RET-011",
+      "target_case_id": "RET2-011",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-INT-001#chunk-000-17c42e00f4ee",
+          "KB-SOL-002#chunk-001-c241403338a2"
+        ],
+        "documents": [
+          "KB-INT-001",
+          "KB-SOL-002"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-006"
+        ],
+        "solutions": []
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-09",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-INT-002#chunk-000-37797d7945a6",
+          "KB-SOL-005#chunk-001-c46ac3709e0c"
+        ],
+        "documents": [
+          "KB-INT-002",
+          "KB-SOL-005"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-001"
+        ],
+        "solutions": [
+          "合规政策RAG检索助手"
+        ]
+      },
+      "source_retrieval_case_id": "RET-012",
+      "target_case_id": "RET2-012",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-INT-002#chunk-000-37797d7945a6",
+          "KB-SOL-005#chunk-001-c46ac3709e0c"
+        ],
+        "documents": [
+          "KB-INT-002",
+          "KB-SOL-005"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-001"
+        ],
+        "solutions": [
+          "合规政策RAG检索助手"
+        ]
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-12",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-READY-001#chunk-000-c25bf83f023f",
+          "KB-SOL-003#chunk-001-adb6d47feec4"
+        ],
+        "documents": [
+          "KB-READY-001",
+          "KB-SOL-003"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": []
+      },
+      "source_retrieval_case_id": "RET-013",
+      "target_case_id": "RET2-013",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-READY-001#chunk-000-c25bf83f023f",
+          "KB-SOL-003#chunk-001-adb6d47feec4"
+        ],
+        "documents": [
+          "KB-READY-001",
+          "KB-SOL-003"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": []
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-14",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-READY-002#chunk-000-be9fffe3ad6d",
+          "KB-SOL-006#chunk-001-f56196b3f373"
+        ],
+        "documents": [
+          "KB-READY-002",
+          "KB-SOL-006"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": [
+          "客服辅助回复方案"
+        ]
+      },
+      "source_retrieval_case_id": "RET-014",
+      "target_case_id": "RET2-014",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-READY-002#chunk-000-be9fffe3ad6d",
+          "KB-SOL-006#chunk-001-f56196b3f373"
+        ],
+        "documents": [
+          "KB-READY-002",
+          "KB-SOL-006"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-SOL-004"
+        ],
+        "solutions": [
+          "客服辅助回复方案"
+        ]
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-10",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-CASE-001#chunk-000-d5868a3597d2",
+          "KB-CASE-001#chunk-001-77cb36877788"
+        ],
+        "documents": [
+          "KB-CASE-001",
+          "KB-SOL-003"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-CASE-002"
+        ],
+        "solutions": []
+      },
+      "source_retrieval_case_id": "RET-015",
+      "target_case_id": "RET2-015",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-CASE-001#chunk-000-d5868a3597d2",
+          "KB-CASE-001#chunk-001-77cb36877788"
+        ],
+        "documents": [
+          "KB-CASE-001",
+          "KB-SOL-003"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-CASE-002"
+        ],
+        "solutions": []
+      }
+    },
+    {
+      "boundary_changed": false,
+      "gold_changed": false,
+      "migration_reason": "Query and business semantics stay the same; runtime-visible filters are separated from evaluation gold in v2.",
+      "migration_status": "unchanged_with_runtime_gold_split",
+      "minimum_relevant_hits_changed": false,
+      "query_changed": false,
+      "runtime_context_changed": true,
+      "source_case_id": "DEV-11",
+      "source_expected_ids": {
+        "chunks": [
+          "KB-CASE-002#chunk-000-2c2107739c83",
+          "KB-CASE-002#chunk-001-036ea7b824d0"
+        ],
+        "documents": [
+          "KB-CASE-002",
+          "KB-SOL-005"
+        ]
+      },
+      "source_forbidden_ids": {
+        "documents": [
+          "KB-CASE-001"
+        ],
+        "solutions": []
+      },
+      "source_retrieval_case_id": "RET-016",
+      "target_case_id": "RET2-016",
+      "target_expected_ids": {
+        "chunks": [
+          "KB-CASE-002#chunk-000-2c2107739c83",
+          "KB-CASE-002#chunk-001-036ea7b824d0"
+        ],
+        "documents": [
+          "KB-CASE-002",
+          "KB-SOL-005"
+        ]
+      },
+      "target_forbidden_ids": {
+        "documents": [
+          "KB-CASE-001"
+        ],
+        "solutions": []
+      }
+    }
+  ],
+  "migration_version": "1.0",
+  "retrieval_contract_version": "v2_method_aware",
+  "source_v1_hashes": {
+    "failure_analysis_v1": "eef01bd8f6faf525c8fb8da168f4b657aa61b88bc44e182fd5a1d4a770a76749",
+    "migration_plan_v1": "29c389631ae9a12b01a211cc9f7a4b9e15a32770b6ba3734d266c4710563d04a",
+    "retrieval_cases_v1": "af311ef504217c437a8dda4ebca9e20050b52f700971c6a23ab21a1278105df8"
+  },
+  "special_case_audit": {
+    "RET-001": {
+      "details": "Expected items stayed unchanged; v2 method-aware scope keeps compliance evidence separate from forbidden customer-service scope.",
+      "result": "natural_resolution_under_v2_scope"
+    },
+    "RET-002": {
+      "details": "Expected identity and playbook evidence remained boundary-safe without changing gold semantics.",
+      "result": "natural_resolution_under_v2_scope"
+    },
+    "RET-005": {
+      "details": "The forbidden multi-solution expectation was replaced by compliance-safe solution evidence plus a compliance-only capability chunk.",
+      "result": "gold_adjusted_for_boundary_safety"
+    },
+    "RET-006": {
+      "details": "v1 expected items conflicted with forbidden compliance scope; v2 now uses product-knowledge and assistive-reply boundary chunks.",
+      "result": "rewritten_for_feasibility"
+    },
+    "RET-009": {
+      "details": "v1 expected items mixed compliance and customer-service scope; v2 keeps only compliance-safe citation and escalation evidence.",
+      "result": "rewritten_for_feasibility"
+    }
+  }
+}

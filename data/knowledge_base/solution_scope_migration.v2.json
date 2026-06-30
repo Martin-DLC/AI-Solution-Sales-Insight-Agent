@@ -1,0 +1,926 @@
+{
+  "chunk_scope_migrations": [
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+      "document_id": "KB-SOL-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+      "document_id": "KB-SOL-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案"
+      ],
+      "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+      "document_id": "KB-SOL-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案"
+      ],
+      "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+      "document_id": "KB-SOL-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案"
+      ],
+      "chunk_id": "KB-SOL-003#chunk-000-4b0032016c40",
+      "document_id": "KB-SOL-003",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案"
+      ],
+      "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+      "document_id": "KB-SOL-003",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "客服辅助回复方案"
+      ],
+      "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+      "document_id": "KB-SOL-004",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "客服辅助回复方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "客服辅助回复方案"
+      ],
+      "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+      "document_id": "KB-SOL-004",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "客服辅助回复方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+      "document_id": "KB-SOL-005",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+      "document_id": "KB-SOL-005",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-SOL-006#chunk-000-c4df6924db79",
+      "document_id": "KB-SOL-006",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "私有化大模型部署方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+      "document_id": "KB-SOL-006",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Single-solution document chunks preserve the exact v1 business applicability in v2.",
+      "primary_solution_id": "私有化大模型部署方案",
+      "scope_notes": "Chunk inherits single-solution document scope without widening.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "客服辅助回复方案"
+      ],
+      "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+      "document_id": "KB-CAP-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk content explicitly serves both cited-answer scenarios.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "The capability description spans cited compliance retrieval and assistive reply.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+      "document_id": "KB-CAP-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": false,
+      "migration_reason": "The chunk is reused for compliance requirement evaluation and must not carry unrelated assistive-reply scope into forbidden-boundary checks.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "This acceptance chunk is narrowed to compliance retrieval because citation-chain and high-risk send control are the benchmarked compliance concern.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "商品知识库RAG方案",
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-CAP-002#chunk-000-8171eccaf5f9",
+      "document_id": "KB-CAP-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk content explicitly names identity, product knowledge, and work-order context assembly together.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "The capability overview remains shared across all three orchestration-related solutions.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "商品知识库RAG方案",
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-CAP-002#chunk-001-12c93bdaf623",
+      "document_id": "KB-CAP-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "The deprecation note remains about the same three-solution orchestration pattern.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "The deprecation boundary still belongs to the same three-solution context-assembly capability.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案",
+        "客服辅助回复方案"
+      ],
+      "chunk_id": "KB-CASE-001#chunk-000-d5868a3597d2",
+      "document_id": "KB-CASE-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Problem framing covers both knowledge-governance and assistive reply workflow.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "The case-study background stays shared between product knowledge and assistive reply.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案",
+        "客服辅助回复方案"
+      ],
+      "chunk_id": "KB-CASE-001#chunk-001-77cb36877788",
+      "document_id": "KB-CASE-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "The chunk narrates the paired use of product knowledge retrieval and assistive reply.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "The solution-and-limits case-study chunk remains shared across the paired rollout.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-CASE-002#chunk-000-2c2107739c83",
+      "document_id": "KB-CASE-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk content frames the joint service-operations problem for two solutions.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "The service-operations background stays shared across identity and work-order coordination.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-CASE-002#chunk-001-036ea7b824d0",
+      "document_id": "KB-CASE-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk content narrates the paired implementation outcome for identity and work-order integration.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "The solution-and-limits case-study chunk remains shared across the two integration solutions.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+      "document_id": "KB-PLAY-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk content explicitly coordinates source-system mapping with work-order authority design.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Implementation steps remain shared across identity mapping and work-order authority setup.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+      "document_id": "KB-PLAY-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "The rework risks stay coupled to both master-data ownership and work-order integration delivery.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Risk and delivery constraints remain shared across identity and work-order integration.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-PLAY-002#chunk-000-b5afe84948ef",
+      "document_id": "KB-PLAY-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk content explicitly sequences knowledge governance before private deployment.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Governance-first sequencing remains shared across compliance retrieval and private deployment.",
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-PLAY-002#chunk-001-22fb4bafb8ba",
+      "document_id": "KB-PLAY-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": false,
+      "migration_reason": "The chunk focuses on deployment acceptance, patching, and run-maintenance ownership, which are private-deployment-specific.",
+      "primary_solution_id": "私有化大模型部署方案",
+      "scope_notes": "This delivery-risk chunk is narrowed to private deployment acceptance and maintenance readiness.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+      "document_id": "KB-SEC-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "The chunk lists shared control requirements for both solutions.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Core security requirements remain shared across controlled retrieval and private deployment.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+      "document_id": "KB-SEC-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "The chunk describes shared go/no-go behavior for governance and isolated runtime approvals.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Escalation behavior when controls are missing remains shared across both controlled environments.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-DEL-001#chunk-000-ed0ad536a5c8",
+      "document_id": "KB-DEL-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "The chunk documents a shared expired delivery backdrop for two solutions.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "Historical delivery constraints remain shared across service integration and private deployment.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-DEL-001#chunk-001-1946c97670c2",
+      "document_id": "KB-DEL-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "The chunk carries current-state delivery limits shared by integration and deployment work.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "Current-state delivery boundary remains shared across the same two delivery-sensitive solutions.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "客服辅助回复方案"
+      ],
+      "chunk_id": "KB-INT-001#chunk-000-17c42e00f4ee",
+      "document_id": "KB-INT-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk content directly links identity integration prerequisites to assistive reply context quality.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "The prerequisite integration chunk stays shared across identity unification and assistive reply.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案"
+      ],
+      "chunk_id": "KB-INT-001#chunk-001-87ede957932e",
+      "document_id": "KB-INT-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": false,
+      "migration_reason": "This chunk is primarily about validating identity integration quality, not a standalone assistive reply capability.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Validation metrics for identity hit rate and cross-channel consistency are narrowed to the identity-integration solution.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案",
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-INT-002#chunk-000-37797d7945a6",
+      "document_id": "KB-INT-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk content couples work-order fields with knowledge-scope filtering.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "The prerequisite integration chunk remains shared across work-order state and product-knowledge retrieval.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "服务工单系统集成方案"
+      ],
+      "chunk_id": "KB-INT-002#chunk-001-260073642291",
+      "document_id": "KB-INT-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": false,
+      "migration_reason": "Chunk content focuses on field availability, status delay, and fallback behavior in the service workflow.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "The validation and fallback chunk is narrowed to service work-order integration.",
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "客户身份统一与数据集成方案",
+        "商品知识库RAG方案",
+        "客服辅助回复方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-COM-001#chunk-000-c29de4d33d60",
+      "document_id": "KB-COM-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk text states that pricing, discounting, and launch commitments require human approval for the entire demo scope.",
+      "primary_solution_id": null,
+      "scope_notes": "Commercial demo boundary applies globally across all six demo solutions.",
+      "target_scope_type": "global_policy"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "客户身份统一与数据集成方案",
+        "商品知识库RAG方案",
+        "客服辅助回复方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-COM-001#chunk-001-6e514bb768c3",
+      "document_id": "KB-COM-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk text explicitly says the commercial promise boundary applies to the entire demo solution set.",
+      "primary_solution_id": null,
+      "scope_notes": "No-auto-commitment policy applies globally across all six demo solutions.",
+      "target_scope_type": "global_policy"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "客服辅助回复方案",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+      "document_id": "KB-UNS-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk text explicitly enumerates unsupported claims for three different solutions in one shared boundary note.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Unsupported-scenario enumeration remains shared across three bounded solutions.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "客服辅助回复方案",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+      "document_id": "KB-UNS-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk text discusses clarifying governance, approvals, deployment responsibility, and human review across the three bounded scenarios.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Clarification-only fallback guidance remains shared across the same three bounded solutions.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案",
+        "合规政策RAG检索助手"
+      ],
+      "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+      "document_id": "KB-READY-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk text explicitly references product knowledge and policy knowledge governance together.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "Readiness prerequisites remain shared across product and policy knowledge governance.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案",
+        "合规政策RAG检索助手"
+      ],
+      "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+      "document_id": "KB-READY-001",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk text discusses shared remediation steps for incomplete knowledge-governance readiness.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "Remediation guidance remains shared across product and policy knowledge governance readiness.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-READY-002#chunk-000-be9fffe3ad6d",
+      "document_id": "KB-READY-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk text explicitly names responsibility teams, interfaces, and deployment cadence across three solutions.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Readiness prerequisites remain shared across identity, service integration, and private deployment.",
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "chunk_id": "KB-READY-002#chunk-001-a9c933dcf327",
+      "document_id": "KB-READY-002",
+      "excluded_solution_ids": [],
+      "inherits_document_scope": true,
+      "migration_reason": "Chunk text discusses missing budget, deployment responsibility, and interface readiness across the same three solutions.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Remediation guidance remains shared across identity, service integration, and private deployment readiness.",
+      "target_scope_type": "cross_cutting_requirement"
+    }
+  ],
+  "contract_version": "v2",
+  "demo_solution_scope_version": "1.0",
+  "document_scope_migrations": [
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "decision_source": "Deterministic single-solution migration rule from D4B.",
+      "document_id": "KB-SOL-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "Single-solution v1 documents keep their exact business applicability in v2.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Single-solution v1 document remains solution_specific in v2.",
+      "source_v1_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案"
+      ],
+      "decision_source": "Deterministic single-solution migration rule from D4B.",
+      "document_id": "KB-SOL-002",
+      "excluded_solution_ids": [],
+      "migration_reason": "Single-solution v1 documents keep their exact business applicability in v2.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Single-solution v1 document remains solution_specific in v2.",
+      "source_v1_solution_ids": [
+        "客户身份统一与数据集成方案"
+      ],
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案"
+      ],
+      "decision_source": "Deterministic single-solution migration rule from D4B.",
+      "document_id": "KB-SOL-003",
+      "excluded_solution_ids": [],
+      "migration_reason": "Single-solution v1 documents keep their exact business applicability in v2.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "Single-solution v1 document remains solution_specific in v2.",
+      "source_v1_solution_ids": [
+        "商品知识库RAG方案"
+      ],
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "客服辅助回复方案"
+      ],
+      "decision_source": "Deterministic single-solution migration rule from D4B.",
+      "document_id": "KB-SOL-004",
+      "excluded_solution_ids": [],
+      "migration_reason": "Single-solution v1 documents keep their exact business applicability in v2.",
+      "primary_solution_id": "客服辅助回复方案",
+      "scope_notes": "Single-solution v1 document remains solution_specific in v2.",
+      "source_v1_solution_ids": [
+        "客服辅助回复方案"
+      ],
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "服务工单系统集成方案"
+      ],
+      "decision_source": "Deterministic single-solution migration rule from D4B.",
+      "document_id": "KB-SOL-005",
+      "excluded_solution_ids": [],
+      "migration_reason": "Single-solution v1 documents keep their exact business applicability in v2.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "Single-solution v1 document remains solution_specific in v2.",
+      "source_v1_solution_ids": [
+        "服务工单系统集成方案"
+      ],
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "私有化大模型部署方案"
+      ],
+      "decision_source": "Deterministic single-solution migration rule from D4B.",
+      "document_id": "KB-SOL-006",
+      "excluded_solution_ids": [],
+      "migration_reason": "Single-solution v1 documents keep their exact business applicability in v2.",
+      "primary_solution_id": "私有化大模型部署方案",
+      "scope_notes": "Single-solution v1 document remains solution_specific in v2.",
+      "source_v1_solution_ids": [
+        "私有化大模型部署方案"
+      ],
+      "target_scope_type": "solution_specific"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "客服辅助回复方案"
+      ],
+      "decision_source": "Document title, summary, and chunk content explicitly reference both cited reply scenarios.",
+      "document_id": "KB-CAP-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "Shared answer-with-citation capability remains multi-solution, not global.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Citation-visible answer support spans compliance retrieval and assistive customer-service reply.",
+      "source_v1_solution_ids": [
+        "合规政策RAG检索助手",
+        "客服辅助回复方案"
+      ],
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "商品知识库RAG方案",
+        "服务工单系统集成方案"
+      ],
+      "decision_source": "Document content explicitly references customer identity, product knowledge, and work-order context together.",
+      "document_id": "KB-CAP-002",
+      "excluded_solution_ids": [],
+      "migration_reason": "The document is shared across three named solutions, but does not apply to all six demo solutions.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Deprecated context-assembly capability remains limited to the three workflow solutions it names.",
+      "source_v1_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "商品知识库RAG方案",
+        "服务工单系统集成方案"
+      ],
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案",
+        "客服辅助回复方案"
+      ],
+      "decision_source": "Document title and content explicitly pair retail knowledge governance with assistive reply use.",
+      "document_id": "KB-CASE-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "The case study narrates a paired rollout for product knowledge and service reply assistance.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "Synthetic retail case study remains limited to product knowledge and assistive reply.",
+      "source_v1_solution_ids": [
+        "商品知识库RAG方案",
+        "客服辅助回复方案"
+      ],
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "decision_source": "Document title and both chunks explicitly name service-operation integration with customer identity.",
+      "document_id": "KB-CASE-002",
+      "excluded_solution_ids": [],
+      "migration_reason": "The case study is about the interaction between identity unification and work-order collaboration.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Synthetic service-operations case study remains limited to identity and work-order integration.",
+      "source_v1_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "decision_source": "Document title and chunk text explicitly reference key mapping plus work-order authority decisions.",
+      "document_id": "KB-PLAY-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "The playbook coordinates two implementation streams and is not a universal policy document.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Implementation steps stay limited to identity integration plus service work-order integration.",
+      "source_v1_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "私有化大模型部署方案"
+      ],
+      "decision_source": "Document title and content explicitly combine compliance retrieval controls with deployment sequencing.",
+      "document_id": "KB-PLAY-002",
+      "excluded_solution_ids": [],
+      "migration_reason": "The playbook ties knowledge governance readiness to private deployment execution.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Implementation sequencing spans controlled compliance retrieval and private deployment only.",
+      "source_v1_solution_ids": [
+        "合规政策RAG检索助手",
+        "私有化大模型部署方案"
+      ],
+      "target_scope_type": "multi_solution"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "私有化大模型部署方案"
+      ],
+      "decision_source": "Both chunks describe access control, logs, approvals, and high-risk escalation requirements shared by two solutions.",
+      "document_id": "KB-SEC-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "The document defines shared control requirements rather than a standalone solution payload.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Security and compliance requirements apply across controlled retrieval and private deployment readiness.",
+      "source_v1_solution_ids": [
+        "合规政策RAG检索助手",
+        "私有化大模型部署方案"
+      ],
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "decision_source": "Document title and chunks discuss delivery-state history for integration and deployment only.",
+      "document_id": "KB-DEL-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "The document records historical delivery constraints across two named delivery-heavy solutions.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "Expired delivery constraints stay limited to service integration and private deployment delivery planning.",
+      "source_v1_solution_ids": [
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "客服辅助回复方案"
+      ],
+      "decision_source": "Chunk content links identity unification, cross-channel state, and assistive reply behavior.",
+      "document_id": "KB-INT-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "The document defines preconditions shared by identity integration and assistive reply usage.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Integration requirements apply to customer identity unification feeding assistive service reply.",
+      "source_v1_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "客服辅助回复方案"
+      ],
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案",
+        "服务工单系统集成方案"
+      ],
+      "decision_source": "Chunk content explicitly couples work-order fields with product-knowledge retrieval scope.",
+      "document_id": "KB-INT-002",
+      "excluded_solution_ids": [],
+      "migration_reason": "The document describes the integration seam between work-order state and product knowledge filtering.",
+      "primary_solution_id": "服务工单系统集成方案",
+      "scope_notes": "Integration requirements apply to work-order workflow plus scoped product-knowledge retrieval.",
+      "source_v1_solution_ids": [
+        "商品知识库RAG方案",
+        "服务工单系统集成方案"
+      ],
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "客户身份统一与数据集成方案",
+        "商品知识库RAG方案",
+        "客服辅助回复方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "decision_source": "Document title and both chunks state that the rule applies across all six demo solutions.",
+      "document_id": "KB-COM-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "This document encodes demo-wide commercial rules and explicit no-auto-commitment policy.",
+      "primary_solution_id": null,
+      "scope_notes": "Global commercial boundary for the full public demo scope; not a six-solution mixed answer payload.",
+      "source_v1_solution_ids": [
+        "合规政策RAG检索助手",
+        "客户身份统一与数据集成方案",
+        "商品知识库RAG方案",
+        "客服辅助回复方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "target_scope_type": "global_policy"
+    },
+    {
+      "applicable_solution_ids": [
+        "合规政策RAG检索助手",
+        "客服辅助回复方案",
+        "私有化大模型部署方案"
+      ],
+      "decision_source": "Chunk text enumerates unsupported promises, legal judgments, and inferred security-control claims.",
+      "document_id": "KB-UNS-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "The document defines explicit unsupported boundaries across three named solutions.",
+      "primary_solution_id": "合规政策RAG检索助手",
+      "scope_notes": "Unsupported-scenario guidance spans controlled compliance retrieval, assistive reply, and private deployment.",
+      "source_v1_solution_ids": [
+        "合规政策RAG检索助手",
+        "客服辅助回复方案",
+        "私有化大模型部署方案"
+      ],
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "商品知识库RAG方案",
+        "合规政策RAG检索助手"
+      ],
+      "decision_source": "Both chunks explicitly reference product knowledge plus policy knowledge governance and citation-chain readiness.",
+      "document_id": "KB-READY-001",
+      "excluded_solution_ids": [],
+      "migration_reason": "The document defines shared knowledge-governance prerequisites for two retrieval-oriented solutions.",
+      "primary_solution_id": "商品知识库RAG方案",
+      "scope_notes": "Readiness requirements span product-knowledge governance and policy-knowledge governance.",
+      "source_v1_solution_ids": [
+        "商品知识库RAG方案",
+        "合规政策RAG检索助手"
+      ],
+      "target_scope_type": "cross_cutting_requirement"
+    },
+    {
+      "applicable_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "decision_source": "Chunk content explicitly references responsibility teams, interfaces, and deployment duties across three solutions.",
+      "document_id": "KB-READY-002",
+      "excluded_solution_ids": [],
+      "migration_reason": "The document is a shared readiness gate for responsibility, interfaces, and deployment cadence.",
+      "primary_solution_id": "客户身份统一与数据集成方案",
+      "scope_notes": "Delivery readiness spans identity integration, service integration, and private deployment preparation.",
+      "source_v1_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "target_scope_type": "cross_cutting_requirement"
+    }
+  ],
+  "migration_version": "1.0",
+  "source_v1_hashes": {
+    "chunks_v1": "147bc27845dcebdc37fc69d084c7aaa5176bb76bcf2379daa5746a033c670c9d",
+    "demo_scope_v1": "82eee0e798028340a2747b7a2d717bdec019c5ab8154223dd77ed07fdb13d2d7",
+    "documents_v1": "71d0f06d9168782f5df46ffd0aec0d0df680c0f778a67ec660a5a9d33b75b147",
+    "manifest_v1": "66376d380fe04b05ed5161dc195afde9a448eaef03fa52686d0783cda44a32a4"
+  },
+  "stats": {
+    "chunk_count": 40,
+    "cross_cutting_chunk_count": 12,
+    "document_count": 20,
+    "global_policy_chunk_count": 2,
+    "inherited_scope_chunk_count": 36,
+    "multi_solution_chunk_count": 10,
+    "multi_solution_document_count": 14,
+    "narrowed_scope_chunk_count": 4,
+    "solution_specific_chunk_count": 16
+  }
+}

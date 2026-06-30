@@ -1,0 +1,19 @@
+{
+  "build_tool_version": "retrieval_benchmark_v2_builder_v1",
+  "chunk_count": 40,
+  "chunks_v2_hash": "cab598740630873cb69c3b79020f64ae4cb34ced0fc42973884463bea2fea070",
+  "contract_version": "v2",
+  "demo_solution_count": 6,
+  "document_count": 20,
+  "documents_v2_hash": "81b3cd9de38eb654600dcea68ca9bb98c53ce7340e56438a01ceb3f4be7203f3",
+  "knowledge_base_version": "kb-demo-v2",
+  "manifest_version": "1.0",
+  "solution_scope_migration_hash": "8a702857b5a7fbe1029f4316a95fd67a3f2892c0bd122d9678f55fb8a29aa10c",
+  "source_v1_hashes": {
+    "chunks_v1": "147bc27845dcebdc37fc69d084c7aaa5176bb76bcf2379daa5746a033c670c9d",
+    "demo_scope_v1": "82eee0e798028340a2747b7a2d717bdec019c5ab8154223dd77ed07fdb13d2d7",
+    "documents_v1": "71d0f06d9168782f5df46ffd0aec0d0df680c0f778a67ec660a5a9d33b75b147",
+    "manifest_v1": "66376d380fe04b05ed5161dc195afde9a448eaef03fa52686d0783cda44a32a4"
+  },
+  "source_v1_manifest_hash": "66376d380fe04b05ed5161dc195afde9a448eaef03fa52686d0783cda44a32a4"
+}

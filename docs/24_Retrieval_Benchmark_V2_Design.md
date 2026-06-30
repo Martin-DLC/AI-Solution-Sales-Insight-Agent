@@ -154,6 +154,37 @@ v2 允许 Chunk 比 Document 更窄，但不允许更宽：
 
 这正是为了解决 v1 中 Chunk 机械继承 Document 范围的问题。
 
+### 完整载荷合同
+
+v2 的 `KnowledgeDocumentV2` 和 `KnowledgeChunkV2` 必须承载完整的业务载荷，而不只是 Scope 元数据。
+
+这意味着：
+
+- `documents.v2.jsonl` 保留 v1 的标题、摘要、正文、来源、状态、日期、标签、行业等业务字段；
+- `chunks.v2.jsonl` 保留 v1 的 chunk 正文、chunk_index、citation_label、metadata 等业务字段；
+- v2 正式对象继续使用 `extra="forbid"`；
+- 但不再把 v1 的 legacy `solution_ids` 作为正式边界真源持久化到 v2 对象中。
+
+因此，v2 采用“完整业务载荷 + 新 Scope 真源”的平面结构，而不是“继承 v1 并继续暴露 legacy scope”。
+
+### Legacy Scope 处理
+
+v1 中的 `solution_ids` 仍然是迁移输入的重要参考，但它在 v2 中只用于：
+
+- `from_v1(...)` 转换输入；
+- `solution_scope_migration.v2.json` 审计记录；
+- 投影一致性和内容对比的迁移上下文。
+
+它**不是** v2 正式 Boundary 的真源。
+
+v2 正式 Boundary 只由以下字段表达：
+
+- `primary_solution_id`
+- `applicable_solution_ids`
+- `excluded_solution_ids`
+- `scope_type`
+- `scope_notes`
+
 ## 9. Global Policy 语义
 
 `global_policy` 用于表达全局约束、商业规则或跨 Solution 通用政策。
