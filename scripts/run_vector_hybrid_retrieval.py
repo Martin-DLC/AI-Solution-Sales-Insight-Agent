@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+from dataclasses import dataclass
 import json
 import math
 import os
@@ -53,7 +54,6 @@ from knowledge_base.retrieval.embeddings import (
     DEFAULT_EMBEDDING_REVISION,
     huggingface_offline_environment,
     resolve_local_model_snapshot,
-    validate_local_embedding_manifest,
 )
 
 
@@ -63,6 +63,7 @@ VECTOR_CONFIG_PATH = Path("data/evaluation/retrieval/vector_baseline_config.v1.j
 HYBRID_CONFIG_PATH = Path("data/evaluation/retrieval/hybrid_baseline_config.v1.json")
 VECTOR_RESULTS_PATH = Path("data/evaluation/retrieval/vector_baseline_results.v1.jsonl")
 VECTOR_SUMMARY_PATH = Path("data/evaluation/retrieval/vector_baseline_summary.v1.json")
+VECTOR_IDENTITY_SUMMARY_PATH = Path("data/evaluation/retrieval/vector_baseline_summary.v1.json")
 HYBRID_RESULTS_PATH = Path("data/evaluation/retrieval/hybrid_baseline_results.v1.jsonl")
 HYBRID_SUMMARY_PATH = Path("data/evaluation/retrieval/hybrid_baseline_summary.v1.json")
 COMPARISON_PATH = Path("data/evaluation/retrieval/retrieval_method_comparison.v1.json")
@@ -75,6 +76,16 @@ IGNORED_CHECK_SUFFIXES = {
     "cache_miss_count",
     "generated_at",
 }
+_UNRESOLVED_REVISION_VALUES = {"", "unresolved", "unknown", "null"}
+
+
+@dataclass(frozen=True)
+class LocalEmbeddingRuntime:
+    repo_id: str
+    configured_revision: str
+    resolved_revision: str
+    snapshot_path: Path
+    embedding_dimension: int
 
 
 def main() -> int:
@@ -335,13 +346,13 @@ def _run_formal(*, context: dict[str, Any], write: bool) -> dict[str, Any]:
         chunks=context["chunks"],
     )
     with huggingface_offline_environment():
-        local_snapshot_path = _resolve_frozen_local_snapshot(vector_config=vector_config)
-        validate_local_embedding_manifest(
-            repo_id=vector_config.model_name_or_path,
-            revision=vector_config.model_revision or DEFAULT_EMBEDDING_REVISION,
-            dimension=384,
-            manifest_payload=_load_model_manifest(),
+        local_embedding_runtime = _resolve_verified_local_embedding_runtime(
+            vector_config=vector_config,
+            expected_dimension=384,
+            expected_summary_path=VECTOR_IDENTITY_SUMMARY_PATH,
+            allow_manifest_rebuild=True,
         )
+        local_snapshot_path = local_embedding_runtime.snapshot_path
         provider = SentenceTransformerEmbeddingProvider(
             model_name_or_path=vector_config.model_name_or_path,
             local_snapshot_path=local_snapshot_path,
@@ -576,6 +587,106 @@ def _resolve_frozen_local_snapshot(*, vector_config: VectorBaselineConfig) -> Pa
     )
 
 
+def _resolve_verified_local_embedding_runtime(
+    *,
+    vector_config: VectorBaselineConfig,
+    expected_dimension: int,
+    expected_summary_path: Path,
+    allow_manifest_rebuild: bool,
+) -> LocalEmbeddingRuntime:
+    configured_revision = vector_config.model_revision or DEFAULT_EMBEDDING_REVISION
+    expected_summary = load_json_record(expected_summary_path)
+    summary_revision = _normalize_revision(expected_summary.get("resolved_model_revision"))
+    if summary_revision != configured_revision:
+        raise EmbeddingModelUnavailableError(
+            "Frozen vector summary revision does not match the frozen configuration."
+        )
+    summary_dimension = expected_summary.get("embedding_dimension")
+    if summary_dimension != expected_dimension:
+        raise EmbeddingModelUnavailableError(
+            "Frozen vector summary dimension does not match the frozen configuration."
+        )
+
+    snapshot_path = _resolve_frozen_local_snapshot(vector_config=vector_config)
+    snapshot_revision = _normalize_revision(snapshot_path.name)
+    if snapshot_revision != configured_revision:
+        raise EmbeddingModelUnavailableError(
+            "Frozen local embedding snapshot revision does not match the frozen configuration."
+        )
+
+    manifest_payload = _load_model_manifest()
+    runtime = LocalEmbeddingRuntime(
+        repo_id=vector_config.model_name_or_path,
+        configured_revision=configured_revision,
+        resolved_revision=configured_revision,
+        snapshot_path=snapshot_path,
+        embedding_dimension=expected_dimension,
+    )
+    if _manifest_matches_runtime(manifest_payload=manifest_payload, runtime=runtime):
+        return runtime
+    if not allow_manifest_rebuild:
+        raise EmbeddingModelUnavailableError(
+            "Embedding model manifest is stale and manifest rebuild is disabled."
+        )
+
+    _write_model_manifest_payload(
+        _build_runtime_manifest_payload(
+            runtime=runtime,
+            dependency_versions=get_embedding_dependency_versions(),
+            synthetic_probe_passed=bool(manifest_payload and manifest_payload.get("synthetic_probe_passed") is True),
+        )
+    )
+    return runtime
+
+
+def _manifest_matches_runtime(
+    *,
+    manifest_payload: dict[str, Any] | None,
+    runtime: LocalEmbeddingRuntime,
+) -> bool:
+    if manifest_payload is None:
+        return False
+    if manifest_payload.get("repo_id") != runtime.repo_id:
+        return False
+    if _normalize_revision(manifest_payload.get("configured_revision")) not in {None, runtime.configured_revision}:
+        return False
+    if _normalize_revision(manifest_payload.get("resolved_revision")) != runtime.resolved_revision:
+        return False
+    if manifest_payload.get("embedding_dimension") != runtime.embedding_dimension:
+        return False
+    if manifest_payload.get("local_snapshot_available") is not True:
+        return False
+    return True
+
+
+def _build_runtime_manifest_payload(
+    *,
+    runtime: LocalEmbeddingRuntime,
+    dependency_versions: dict[str, str | None],
+    synthetic_probe_passed: bool,
+) -> dict[str, Any]:
+    return {
+        "configured_revision": runtime.configured_revision,
+        "dependency_versions": dependency_versions,
+        "embedding_dimension": runtime.embedding_dimension,
+        "local_snapshot_available": True,
+        "prepared_at": datetime.now(timezone.utc).isoformat(),
+        "repo_id": runtime.repo_id,
+        "resolved_revision": runtime.resolved_revision,
+        "snapshot_fingerprint": runtime.snapshot_path.name,
+        "synthetic_probe_passed": synthetic_probe_passed,
+    }
+
+
+def _normalize_revision(value: Any) -> str | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if text.casefold() in _UNRESOLVED_REVISION_VALUES:
+        return None
+    return text
+
+
 def _run_offline_model_smoke(*, vector_config: VectorBaselineConfig) -> dict[str, Any]:
     with _network_guard(), huggingface_offline_environment():
         local_snapshot_path = _resolve_frozen_local_snapshot(vector_config=vector_config)
@@ -599,6 +710,7 @@ def _run_offline_model_smoke(*, vector_config: VectorBaselineConfig) -> dict[str
     summary = {
         "mode": "offline_model_smoke",
         "configured_model_name": vector_config.model_name_or_path,
+        "configured_revision": vector_config.model_revision or DEFAULT_EMBEDDING_REVISION,
         "resolved_model_revision": provider.resolved_revision,
         "embedding_dimension": provider.dimension,
         "device": vector_config.device,
@@ -627,24 +739,49 @@ def _validate_probe_vectors(vectors: list[list[float]], *, expected_dimension: i
 
 
 def _load_model_manifest() -> dict[str, Any] | None:
-    if not MODEL_MANIFEST_PATH.exists():
+    manifest_path = _model_manifest_path()
+    if not manifest_path.exists():
         return None
-    return json.loads(MODEL_MANIFEST_PATH.read_text(encoding="utf-8"))
+    return json.loads(manifest_path.read_text(encoding="utf-8"))
 
 
 def _write_model_manifest(summary: dict[str, Any]) -> None:
+    configured_revision = _normalize_revision(summary.get("configured_revision")) or DEFAULT_EMBEDDING_REVISION
+    resolved_revision = _normalize_revision(summary.get("resolved_model_revision"))
+    if resolved_revision is None:
+        resolved_revision = configured_revision
     payload = {
+        "configured_revision": configured_revision,
         "repo_id": summary["configured_model_name"],
-        "resolved_revision": summary["resolved_model_revision"],
+        "resolved_revision": resolved_revision,
         "embedding_dimension": summary["embedding_dimension"],
         "local_snapshot_available": summary["local_snapshot_available"],
         "dependency_versions": summary["dependency_versions"],
         "prepared_at": datetime.now(timezone.utc).isoformat(),
         "synthetic_probe_passed": bool(summary.get("synthetic_probe_passed", True)),
-        "snapshot_fingerprint": summary["resolved_model_revision"],
+        "snapshot_fingerprint": resolved_revision,
     }
-    MODEL_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-    MODEL_MANIFEST_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    _write_model_manifest_payload(payload)
+
+
+def _write_model_manifest_payload(payload: dict[str, Any]) -> None:
+    manifest_path = _model_manifest_path()
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    write_many_atomic(
+        [
+            (
+                manifest_path,
+                json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            )
+        ]
+    )
+
+
+def _model_manifest_path() -> Path:
+    override = os.environ.get("RETRIEVAL_MODEL_MANIFEST_PATH")
+    if override:
+        return Path(override)
+    return MODEL_MANIFEST_PATH
 
 
 @contextlib.contextmanager

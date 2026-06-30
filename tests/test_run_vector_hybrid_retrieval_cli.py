@@ -9,6 +9,13 @@ import pytest
 import scripts.run_vector_hybrid_retrieval as cli
 
 
+@pytest.fixture
+def isolated_manifest_path(tmp_path: Path, monkeypatch) -> Path:
+    manifest_path = tmp_path / "model_manifest.v1.json"
+    monkeypatch.setenv("RETRIEVAL_MODEL_MANIFEST_PATH", str(manifest_path))
+    return manifest_path
+
+
 def test_cli_plan_mode_does_not_load_model(monkeypatch, capsys) -> None:
     monkeypatch.setattr(cli, "get_embedding_dependency_report", lambda: {"sentence_transformers": False})
     monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: False)
@@ -56,7 +63,9 @@ def test_cli_prepare_model_without_download_permission_fails_when_model_missing(
     assert "Local embedding model is unavailable" in capsys.readouterr().err
 
 
-def test_cli_prepare_model_uses_provider_prepare_only(monkeypatch, capsys) -> None:
+def test_cli_prepare_model_uses_provider_prepare_only(
+    monkeypatch, capsys, isolated_manifest_path: Path
+) -> None:
     called = {"prepare": 0}
 
     class StubProvider:
@@ -86,6 +95,9 @@ def test_cli_prepare_model_uses_provider_prepare_only(monkeypatch, capsys) -> No
     assert exit_code == 0
     assert called["prepare"] == 1
     assert payload["configured_model_name"] == "intfloat/multilingual-e5-small"
+    manifest_payload = json.loads(isolated_manifest_path.read_text(encoding="utf-8"))
+    assert manifest_payload["configured_revision"] == "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    assert manifest_payload["resolved_revision"] == "614241f622f53c4eeff9890bdc4f31cfecc418b3"
 
 
 def test_cli_write_requires_run(monkeypatch, capsys) -> None:
@@ -140,7 +152,9 @@ def test_cli_run_write_uses_real_provider_interface_and_writes_files(tmp_path: P
     monkeypatch.setattr(cli, "FakeEmbeddingProvider", fake_provider_guard)
     monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
-    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "snapshot")
+    monkeypatch.setattr(
+        cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    )
     monkeypatch.setattr(
         cli,
         "_load_model_manifest",
@@ -195,7 +209,9 @@ def test_cli_check_ignores_latency_but_not_score(tmp_path: Path, monkeypatch, ca
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
     monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
-    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "snapshot")
+    monkeypatch.setattr(
+        cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    )
     monkeypatch.setattr(
         cli,
         "_load_model_manifest",
@@ -254,7 +270,9 @@ def test_cli_check_ignores_cache_hit_and_miss_counts(tmp_path: Path, monkeypatch
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
     monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
-    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "snapshot")
+    monkeypatch.setattr(
+        cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    )
     monkeypatch.setattr(
         cli,
         "_load_model_manifest",
@@ -320,7 +338,9 @@ def test_cli_check_keeps_resolved_revision_strict(tmp_path: Path, monkeypatch, c
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
     monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
-    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "snapshot")
+    monkeypatch.setattr(
+        cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    )
     monkeypatch.setattr(
         cli,
         "_load_model_manifest",
@@ -363,6 +383,164 @@ def test_cli_check_keeps_resolved_revision_strict(tmp_path: Path, monkeypatch, c
 
     assert exit_code == 1
     assert "vector_summary:resolved_model_revision" in capsys.readouterr().err
+
+
+def test_check_rebuilds_missing_manifest(tmp_path: Path, monkeypatch, capsys) -> None:
+    class StubProvider:
+        def __init__(self, **kwargs):
+            self.model_name = "intfloat/multilingual-e5-small"
+            self.resolved_revision = "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+            self.dimension = 384
+            self.provider_id = "sentence_transformers:intfloat/multilingual-e5-small"
+
+        def encode_documents(self, texts):
+            return [[1.0] + [0.0] * 383 for _ in texts]
+
+        def encode_queries(self, texts):
+            return [[1.0] + [0.0] * 383 for _ in texts]
+
+    manifest_path = tmp_path / "model_manifest.v1.json"
+    monkeypatch.setenv("RETRIEVAL_MODEL_MANIFEST_PATH", str(manifest_path))
+    monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
+    monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
+    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3")
+    monkeypatch.setattr(cli, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(cli, "VECTOR_RESULTS_PATH", tmp_path / "vector.jsonl")
+    monkeypatch.setattr(cli, "VECTOR_SUMMARY_PATH", tmp_path / "vector.json")
+    monkeypatch.setattr(cli, "HYBRID_RESULTS_PATH", tmp_path / "hybrid.jsonl")
+    monkeypatch.setattr(cli, "HYBRID_SUMMARY_PATH", tmp_path / "hybrid.json")
+    monkeypatch.setattr(cli, "COMPARISON_PATH", tmp_path / "comparison.json")
+    context = cli._load_context()  # noqa: SLF001
+    context["vector_config"] = context["vector_config"].model_copy(
+        update={"cache_enabled": False, "cache_directory": "data/runtime/test-cli-cache"}
+    )
+    payload = cli._run_formal(context=context, write=True)  # noqa: SLF001
+    for file_name, key in [
+        ("vector.jsonl", "vector_results"),
+        ("vector.json", "vector_summary"),
+        ("hybrid.jsonl", "hybrid_results"),
+        ("hybrid.json", "hybrid_summary"),
+        ("comparison.json", "comparison"),
+    ]:
+        path = tmp_path / file_name
+        value = payload[key]
+        if isinstance(value, list):
+            path.write_text(
+                "\n".join(json.dumps(item, ensure_ascii=False, sort_keys=True, separators=(",", ":")) for item in value) + "\n",
+                encoding="utf-8",
+            )
+        else:
+            path.write_text(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    manifest_path.unlink()
+
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--check"])
+    exit_code = cli.main()
+
+    assert exit_code == 0
+    manifest_payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest_payload["resolved_revision"] == "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    assert manifest_payload["configured_revision"] == "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+
+
+def test_check_rebuilds_stale_manifest_without_failing(tmp_path: Path, monkeypatch, capsys) -> None:
+    class StubProvider:
+        def __init__(self, **kwargs):
+            self.model_name = "intfloat/multilingual-e5-small"
+            self.resolved_revision = "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+            self.dimension = 384
+            self.provider_id = "sentence_transformers:intfloat/multilingual-e5-small"
+
+        def encode_documents(self, texts):
+            return [[1.0] + [0.0] * 383 for _ in texts]
+
+        def encode_queries(self, texts):
+            return [[1.0] + [0.0] * 383 for _ in texts]
+
+    manifest_path = tmp_path / "model_manifest.v1.json"
+    monkeypatch.setenv("RETRIEVAL_MODEL_MANIFEST_PATH", str(manifest_path))
+    monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
+    monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2", "numpy": "1.26.4"})
+    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3")
+    monkeypatch.setattr(cli, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(cli, "VECTOR_RESULTS_PATH", tmp_path / "vector.jsonl")
+    monkeypatch.setattr(cli, "VECTOR_SUMMARY_PATH", tmp_path / "vector.json")
+    monkeypatch.setattr(cli, "HYBRID_RESULTS_PATH", tmp_path / "hybrid.jsonl")
+    monkeypatch.setattr(cli, "HYBRID_SUMMARY_PATH", tmp_path / "hybrid.json")
+    monkeypatch.setattr(cli, "COMPARISON_PATH", tmp_path / "comparison.json")
+    context = cli._load_context()  # noqa: SLF001
+    context["vector_config"] = context["vector_config"].model_copy(
+        update={"cache_enabled": False, "cache_directory": "data/runtime/test-cli-cache"}
+    )
+    payload = cli._run_formal(context=context, write=True)  # noqa: SLF001
+    for file_name, key in [
+        ("vector.jsonl", "vector_results"),
+        ("vector.json", "vector_summary"),
+        ("hybrid.jsonl", "hybrid_results"),
+        ("hybrid.json", "hybrid_summary"),
+        ("comparison.json", "comparison"),
+    ]:
+        path = tmp_path / file_name
+        value = payload[key]
+        if isinstance(value, list):
+            path.write_text(
+                "\n".join(json.dumps(item, ensure_ascii=False, sort_keys=True, separators=(",", ":")) for item in value) + "\n",
+                encoding="utf-8",
+            )
+        else:
+            path.write_text(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "repo_id": "intfloat/multilingual-e5-small",
+                "configured_revision": None,
+                "resolved_revision": "unresolved",
+                "embedding_dimension": 384,
+                "local_snapshot_available": True,
+                "synthetic_probe_passed": True,
+            },
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--check"])
+    exit_code = cli.main()
+
+    assert exit_code == 0
+    manifest_payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert manifest_payload["resolved_revision"] == "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    assert manifest_payload["configured_revision"] == "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+
+
+def test_cli_plan_mode_does_not_write_manifest(
+    monkeypatch, capsys, isolated_manifest_path: Path
+) -> None:
+    monkeypatch.setattr(cli, "get_embedding_dependency_report", lambda: {"sentence_transformers": False})
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: False)
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py"])
+
+    exit_code = cli.main()
+
+    assert exit_code == 0
+    assert isolated_manifest_path.exists() is False
+
+
+def test_cli_validate_mode_does_not_write_manifest(
+    monkeypatch, capsys, isolated_manifest_path: Path
+) -> None:
+    monkeypatch.setattr(cli, "get_embedding_dependency_report", lambda: {"sentence_transformers": False})
+    monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: False)
+    monkeypatch.setattr(cli.sys, "argv", ["run_vector_hybrid_retrieval.py", "--validate"])
+
+    exit_code = cli.main()
+
+    assert exit_code == 0
+    assert isolated_manifest_path.exists() is False
 
 
 def test_cli_offline_model_smoke_uses_local_snapshot_only(monkeypatch, capsys) -> None:

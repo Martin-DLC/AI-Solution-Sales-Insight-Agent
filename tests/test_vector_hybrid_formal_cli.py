@@ -32,7 +32,9 @@ def test_run_without_write_does_not_create_files(tmp_path: Path, monkeypatch, ca
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
     monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2"})
-    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "snapshot")
+    monkeypatch.setattr(
+        cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    )
     monkeypatch.setattr(
         cli,
         "_load_model_manifest",
@@ -82,7 +84,9 @@ def test_formal_outputs_do_not_include_embeddings(tmp_path: Path, monkeypatch) -
 
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", lambda **kwargs: StubProvider())
     monkeypatch.setattr(cli, "get_embedding_dependency_versions", lambda: {"torch": "2.2.2"})
-    monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "snapshot")
+    monkeypatch.setattr(
+        cli, "_resolve_frozen_local_snapshot", lambda **kwargs: tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3"
+    )
     monkeypatch.setattr(
         cli,
         "_load_model_manifest",
@@ -124,6 +128,7 @@ def test_prepare_model_does_not_write_formal_outputs(tmp_path: Path, monkeypatch
 
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", StubProvider)
     monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
+    monkeypatch.setenv("RETRIEVAL_MODEL_MANIFEST_PATH", str(tmp_path / "model_manifest.v1.json"))
     monkeypatch.setattr(cli, "VECTOR_RESULTS_PATH", tmp_path / "vector.jsonl")
     monkeypatch.setattr(cli, "VECTOR_SUMMARY_PATH", tmp_path / "vector.json")
     monkeypatch.setattr(cli, "HYBRID_RESULTS_PATH", tmp_path / "hybrid.jsonl")
@@ -154,7 +159,7 @@ def test_formal_run_passes_local_snapshot_path_to_provider(tmp_path: Path, monke
         def encode_queries(self, texts):
             return [[1.0] + [0.0] * 383 for _ in texts]
 
-    snapshot_path = tmp_path / "snapshot"
+    snapshot_path = tmp_path / "614241f622f53c4eeff9890bdc4f31cfecc418b3"
     monkeypatch.setattr(cli, "SentenceTransformerEmbeddingProvider", StubProvider)
     monkeypatch.setattr(cli, "is_local_sentence_transformer_model_available", lambda *args, **kwargs: True)
     monkeypatch.setattr(cli, "_resolve_frozen_local_snapshot", lambda **kwargs: snapshot_path)

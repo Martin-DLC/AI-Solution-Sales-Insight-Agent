@@ -1,0 +1,5544 @@
+{
+  "analysis_version": "retrieval_failure_analysis_v1",
+  "benchmark_feasibility": {
+    "feasible_case_ids": [
+      "RET-001",
+      "RET-002",
+      "RET-003",
+      "RET-004",
+      "RET-005",
+      "RET-007",
+      "RET-008",
+      "RET-010",
+      "RET-011",
+      "RET-012",
+      "RET-013",
+      "RET-014",
+      "RET-015",
+      "RET-016"
+    ],
+    "infeasibility_reasons_by_case": {
+      "RET-006": [
+        "minimum_relevant_hits_exceeds_safe_expected_items",
+        "expected_relevant_items_conflict_with_boundary"
+      ],
+      "RET-009": [
+        "minimum_relevant_hits_exceeds_safe_expected_items",
+        "expected_relevant_items_conflict_with_boundary"
+      ]
+    },
+    "infeasible_case_ids": [
+      "RET-006",
+      "RET-009"
+    ],
+    "per_case": {
+      "RET-001": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 2,
+        "infeasibility_reasons": [
+          "expected_relevant_items_conflict_with_boundary"
+        ],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 2
+      },
+      "RET-002": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 2,
+        "infeasibility_reasons": [
+          "expected_relevant_items_conflict_with_boundary"
+        ],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 2
+      },
+      "RET-003": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-004": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-005": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 2,
+        "infeasibility_reasons": [
+          "expected_relevant_items_conflict_with_boundary"
+        ],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 2
+      },
+      "RET-006": {
+        "benchmark_case_infeasible": true,
+        "conflicting_expected_item_count": 4,
+        "infeasibility_reasons": [
+          "minimum_relevant_hits_exceeds_safe_expected_items",
+          "expected_relevant_items_conflict_with_boundary"
+        ],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 0
+      },
+      "RET-007": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-008": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-009": {
+        "benchmark_case_infeasible": true,
+        "conflicting_expected_item_count": 4,
+        "infeasibility_reasons": [
+          "minimum_relevant_hits_exceeds_safe_expected_items",
+          "expected_relevant_items_conflict_with_boundary"
+        ],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 0
+      },
+      "RET-010": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-011": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-012": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-013": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-014": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-015": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      },
+      "RET-016": {
+        "benchmark_case_infeasible": false,
+        "conflicting_expected_item_count": 0,
+        "infeasibility_reasons": [],
+        "minimum_relevant_hits": 2,
+        "safe_expected_item_count": 4
+      }
+    }
+  },
+  "blocking_gate_findings": {
+    "assessment": [
+      "Removing empty_query_tokens from vector_v1 or hybrid_v1 does not create an eligible retrieval method.",
+      "The frozen blocking gate remains internally consistent with the frozen v1 result files."
+    ],
+    "benchmark_infeasible_case_ids": [
+      "RET-006",
+      "RET-009"
+    ],
+    "counterfactual_changes_eligibility": {
+      "hybrid_case_level_all_still_fail": false,
+      "hybrid_method_still_ineligible": true,
+      "vector_case_level_all_still_fail": false,
+      "vector_method_still_ineligible": true
+    },
+    "selected_method": null,
+    "selection_reasons": [
+      "No retrieval method passed the frozen blocking gate."
+    ],
+    "selection_status": "no_eligible_method"
+  },
+  "boundary_cause_counts": {
+    "hybrid": {
+      "candidate_level": {
+        "cross_solution_retrieval": 19,
+        "expected_document_contains_forbidden_solution": 13,
+        "gold_boundary_overconstraint": 13,
+        "multi_solution_document_overlap": 14,
+        "operational_filter_gap": 19
+      },
+      "case_level": {
+        "cross_solution_retrieval": 8,
+        "expected_document_contains_forbidden_solution": 5,
+        "gold_boundary_overconstraint": 5,
+        "multi_solution_document_overlap": 6,
+        "operational_filter_gap": 8
+      }
+    },
+    "lexical": {
+      "candidate_level": {
+        "cross_solution_retrieval": 18,
+        "expected_document_contains_forbidden_solution": 14,
+        "gold_boundary_overconstraint": 14,
+        "multi_solution_document_overlap": 14,
+        "operational_filter_gap": 18
+      },
+      "case_level": {
+        "cross_solution_retrieval": 7,
+        "expected_document_contains_forbidden_solution": 5,
+        "gold_boundary_overconstraint": 5,
+        "multi_solution_document_overlap": 5,
+        "operational_filter_gap": 7
+      }
+    },
+    "vector": {
+      "candidate_level": {
+        "cross_solution_retrieval": 21,
+        "expected_document_contains_forbidden_solution": 13,
+        "gold_boundary_overconstraint": 13,
+        "multi_solution_document_overlap": 14,
+        "operational_filter_gap": 21
+      },
+      "case_level": {
+        "cross_solution_retrieval": 10,
+        "expected_document_contains_forbidden_solution": 5,
+        "gold_boundary_overconstraint": 5,
+        "multi_solution_document_overlap": 6,
+        "operational_filter_gap": 10
+      }
+    }
+  },
+  "boundary_violation_summary": {
+    "hybrid": {
+      "affected_case_count": 8,
+      "affected_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-009",
+        "RET-012"
+      ],
+      "candidate_violation_count": 19
+    },
+    "lexical": {
+      "affected_case_count": 7,
+      "affected_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-009"
+      ],
+      "candidate_violation_count": 18
+    },
+    "vector": {
+      "affected_case_count": 10,
+      "affected_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-009",
+        "RET-012",
+        "RET-013",
+        "RET-015"
+      ],
+      "candidate_violation_count": 21
+    }
+  },
+  "dataset_scope": {
+    "chunk_count": 40,
+    "demo_solution_count": 6,
+    "demo_solution_ids": [
+      "合规政策RAG检索助手",
+      "客户身份统一与数据集成方案",
+      "商品知识库RAG方案",
+      "客服辅助回复方案",
+      "服务工单系统集成方案",
+      "私有化大模型部署方案"
+    ],
+    "document_count": 20,
+    "methods": [
+      "lexical",
+      "vector",
+      "hybrid"
+    ],
+    "retrieval_case_count": 16
+  },
+  "empty_query_tokens_audit": {
+    "classification": "failure_taxonomy_misclassification",
+    "hybrid_all_cases_have_candidates": true,
+    "hybrid_candidate_count": 76,
+    "hybrid_candidates_with_empty_matched_terms": 1,
+    "hybrid_case_count": 16,
+    "hybrid_case_ids_with_candidates": [
+      "RET-001",
+      "RET-002",
+      "RET-003",
+      "RET-004",
+      "RET-005",
+      "RET-006",
+      "RET-007",
+      "RET-008",
+      "RET-009",
+      "RET-010",
+      "RET-011",
+      "RET-012",
+      "RET-013",
+      "RET-014",
+      "RET-015",
+      "RET-016"
+    ],
+    "hybrid_debug_contract_includes_query_tokens": false,
+    "hybrid_empty_query_tokens_case_ids": [
+      "RET-001",
+      "RET-002",
+      "RET-003",
+      "RET-004",
+      "RET-005",
+      "RET-006",
+      "RET-007",
+      "RET-008",
+      "RET-009",
+      "RET-010",
+      "RET-011",
+      "RET-012",
+      "RET-013",
+      "RET-014",
+      "RET-015",
+      "RET-016"
+    ],
+    "impacts_eligible_for_rag": false,
+    "impacts_failed_case_ids": false,
+    "impacts_failure_reasons": true,
+    "impacts_formal_ranking_or_metric_values": false,
+    "impacts_summary_disqualification_reasons": true,
+    "query_tokens_is_lexical_debug_field": true,
+    "raw_query_empty_case_ids": [],
+    "runner_trigger": "not retrieval_debug.get('query_tokens')",
+    "vector_all_cases_have_candidates": true,
+    "vector_candidate_count": 76,
+    "vector_candidates_with_empty_matched_terms": 76,
+    "vector_case_count": 16,
+    "vector_case_ids_with_candidates": [
+      "RET-001",
+      "RET-002",
+      "RET-003",
+      "RET-004",
+      "RET-005",
+      "RET-006",
+      "RET-007",
+      "RET-008",
+      "RET-009",
+      "RET-010",
+      "RET-011",
+      "RET-012",
+      "RET-013",
+      "RET-014",
+      "RET-015",
+      "RET-016"
+    ],
+    "vector_debug_contract_includes_query_tokens": false,
+    "vector_empty_query_tokens_case_ids": [
+      "RET-001",
+      "RET-002",
+      "RET-003",
+      "RET-004",
+      "RET-005",
+      "RET-006",
+      "RET-007",
+      "RET-008",
+      "RET-009",
+      "RET-010",
+      "RET-011",
+      "RET-012",
+      "RET-013",
+      "RET-014",
+      "RET-015",
+      "RET-016"
+    ]
+  },
+  "empty_query_tokens_counterfactual": {
+    "counterfactual_only": true,
+    "excluded_failure_reasons": [
+      "empty_query_tokens"
+    ],
+    "hybrid": {
+      "all_cases_still_fail_case_level": false,
+      "case_level_pass_count_after_exclusion": 8,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "failed_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-009",
+        "RET-012"
+      ],
+      "method_still_ineligible_due_to_frozen_summary_metrics": true,
+      "per_case_remaining_failure_reasons": {
+        "RET-001": [
+          "solution_boundary_violation"
+        ],
+        "RET-002": [
+          "solution_boundary_violation"
+        ],
+        "RET-003": [
+          "solution_boundary_violation"
+        ],
+        "RET-004": [
+          "solution_boundary_violation"
+        ],
+        "RET-005": [
+          "solution_boundary_violation"
+        ],
+        "RET-006": [
+          "solution_boundary_violation"
+        ],
+        "RET-007": [],
+        "RET-008": [],
+        "RET-009": [
+          "solution_boundary_violation"
+        ],
+        "RET-010": [],
+        "RET-011": [],
+        "RET-012": [
+          "solution_boundary_violation"
+        ],
+        "RET-013": [],
+        "RET-014": [],
+        "RET-015": [],
+        "RET-016": []
+      }
+    },
+    "vector": {
+      "all_cases_still_fail_case_level": false,
+      "case_level_pass_count_after_exclusion": 6,
+      "disqualification_reasons": [
+        "solution_boundary_violation",
+        "forbidden_document_hit"
+      ],
+      "failed_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-009",
+        "RET-012",
+        "RET-013",
+        "RET-015"
+      ],
+      "method_still_ineligible_due_to_frozen_summary_metrics": true,
+      "per_case_remaining_failure_reasons": {
+        "RET-001": [
+          "solution_boundary_violation"
+        ],
+        "RET-002": [
+          "solution_boundary_violation"
+        ],
+        "RET-003": [
+          "solution_boundary_violation"
+        ],
+        "RET-004": [
+          "solution_boundary_violation"
+        ],
+        "RET-005": [
+          "solution_boundary_violation"
+        ],
+        "RET-006": [
+          "solution_boundary_violation"
+        ],
+        "RET-007": [],
+        "RET-008": [],
+        "RET-009": [
+          "solution_boundary_violation"
+        ],
+        "RET-010": [],
+        "RET-011": [],
+        "RET-012": [
+          "solution_boundary_violation"
+        ],
+        "RET-013": [
+          "forbidden_document_hit",
+          "solution_boundary_violation"
+        ],
+        "RET-014": [],
+        "RET-015": [
+          "solution_boundary_violation"
+        ],
+        "RET-016": []
+      }
+    }
+  },
+  "evaluation_contract_findings": {
+    "benchmark_case_infeasible_count": 2,
+    "benchmark_case_infeasible_ids": [
+      "RET-006",
+      "RET-009"
+    ],
+    "expected_relevant_boundary_conflict_case_ids": [
+      "RET-001",
+      "RET-002",
+      "RET-005",
+      "RET-006",
+      "RET-009"
+    ],
+    "notes": [
+      "Boundary evaluation is candidate-level, while forbidden and required solution semantics are encoded at case level.",
+      "Expected relevant items can themselves carry forbidden or out-of-required solution metadata."
+    ]
+  },
+  "frozen_artifact_hashes": {
+    "demo_solution_scope": "82eee0e798028340a2747b7a2d717bdec019c5ab8154223dd77ed07fdb13d2d7",
+    "hybrid_results": "1e8fce62aaf6c49034888191db5fa867a3fc85565f2b1034035873faa9e17294",
+    "hybrid_summary": "80c4ca73b60884c60b0703df119eff7b6b25c81c2f58ee29f7729d4b46858a6d",
+    "knowledge_chunks": "147bc27845dcebdc37fc69d084c7aaa5176bb76bcf2379daa5746a033c670c9d",
+    "knowledge_documents": "71d0f06d9168782f5df46ffd0aec0d0df680c0f778a67ec660a5a9d33b75b147",
+    "lexical_results": "df5509833b5792c0f92152a9860492a9f931ad9d7120ef440de70157559e7166",
+    "lexical_summary": "e0ccc4e85ef80004111883a5244bb9c855efb9db8ef8fcde4ab6ffcd0d12bd85",
+    "method_comparison": "c9c8a95c2cc08d17f34465c254660d5a0ac5f184610a34ab4380fc9b84f1fea4",
+    "retrieval_cases": "af311ef504217c437a8dda4ebca9e20050b52f700971c6a23ab21a1278105df8",
+    "vector_results": "ab635f37c2c34cb9f25e4ea6cd4aca0d8dfd4fa02334bd6844fe30406e432fc2",
+    "vector_summary": "8464a5bc40279d1c0c59e0bdea6bc9bba25290cc2fc953cffd2f396e3f12fd0d"
+  },
+  "knowledge_metadata_findings": {
+    "chunk_inherits_document_solution_scope": true,
+    "document_solution_cardinality_distribution": {
+      "1": 6,
+      "2": 10,
+      "3": 3,
+      "6": 1
+    },
+    "multi_solution_document_count": 14,
+    "multi_solution_document_type_counts": {
+      "capability": 2,
+      "case_study": 2,
+      "commercial_rule": 1,
+      "delivery_constraint": 1,
+      "implementation_playbook": 2,
+      "integration_requirement": 2,
+      "readiness_requirement": 2,
+      "security_compliance": 1,
+      "unsupported_scenario": 1
+    },
+    "multi_solution_documents": [
+      {
+        "document_id": "KB-CAP-001",
+        "document_type": "capability",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "合规政策RAG检索助手",
+          "客服辅助回复方案"
+        ]
+      },
+      {
+        "document_id": "KB-CAP-002",
+        "document_type": "capability",
+        "solution_id_count": 3,
+        "solution_ids": [
+          "客户身份统一与数据集成方案",
+          "商品知识库RAG方案",
+          "服务工单系统集成方案"
+        ]
+      },
+      {
+        "document_id": "KB-CASE-001",
+        "document_type": "case_study",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "商品知识库RAG方案",
+          "客服辅助回复方案"
+        ]
+      },
+      {
+        "document_id": "KB-CASE-002",
+        "document_type": "case_study",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "客户身份统一与数据集成方案",
+          "服务工单系统集成方案"
+        ]
+      },
+      {
+        "document_id": "KB-PLAY-001",
+        "document_type": "implementation_playbook",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "客户身份统一与数据集成方案",
+          "服务工单系统集成方案"
+        ]
+      },
+      {
+        "document_id": "KB-PLAY-002",
+        "document_type": "implementation_playbook",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "合规政策RAG检索助手",
+          "私有化大模型部署方案"
+        ]
+      },
+      {
+        "document_id": "KB-SEC-001",
+        "document_type": "security_compliance",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "合规政策RAG检索助手",
+          "私有化大模型部署方案"
+        ]
+      },
+      {
+        "document_id": "KB-DEL-001",
+        "document_type": "delivery_constraint",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "服务工单系统集成方案",
+          "私有化大模型部署方案"
+        ]
+      },
+      {
+        "document_id": "KB-INT-001",
+        "document_type": "integration_requirement",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "客户身份统一与数据集成方案",
+          "客服辅助回复方案"
+        ]
+      },
+      {
+        "document_id": "KB-INT-002",
+        "document_type": "integration_requirement",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "商品知识库RAG方案",
+          "服务工单系统集成方案"
+        ]
+      },
+      {
+        "document_id": "KB-COM-001",
+        "document_type": "commercial_rule",
+        "solution_id_count": 6,
+        "solution_ids": [
+          "合规政策RAG检索助手",
+          "客户身份统一与数据集成方案",
+          "商品知识库RAG方案",
+          "客服辅助回复方案",
+          "服务工单系统集成方案",
+          "私有化大模型部署方案"
+        ]
+      },
+      {
+        "document_id": "KB-UNS-001",
+        "document_type": "unsupported_scenario",
+        "solution_id_count": 3,
+        "solution_ids": [
+          "合规政策RAG检索助手",
+          "客服辅助回复方案",
+          "私有化大模型部署方案"
+        ]
+      },
+      {
+        "document_id": "KB-READY-001",
+        "document_type": "readiness_requirement",
+        "solution_id_count": 2,
+        "solution_ids": [
+          "商品知识库RAG方案",
+          "合规政策RAG检索助手"
+        ]
+      },
+      {
+        "document_id": "KB-READY-002",
+        "document_type": "readiness_requirement",
+        "solution_id_count": 3,
+        "solution_ids": [
+          "客户身份统一与数据集成方案",
+          "服务工单系统集成方案",
+          "私有化大模型部署方案"
+        ]
+      }
+    ],
+    "v2_metadata_candidates": [
+      "primary_solution_id",
+      "applicable_solution_ids",
+      "excluded_solution_ids",
+      "chunk_level_solution_scope",
+      "scope_type"
+    ]
+  },
+  "no_input_artifacts_modified": true,
+  "original_method_summaries": {
+    "comparison": {
+      "comparison_limitations": [
+        "Selection is limited to the current 16 synthetic retrieval cases."
+      ],
+      "rejected_methods": [
+        "lexical_v1",
+        "vector_v1",
+        "hybrid_v1"
+      ],
+      "selected_method": null,
+      "selection_reasons": [
+        "No retrieval method passed the frozen blocking gate."
+      ],
+      "selection_status": "no_eligible_method"
+    },
+    "hybrid": {
+      "average_latency_ms": 136.5625,
+      "disqualification_reasons": [
+        "empty_query_tokens",
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "embedding_dimension": 384,
+      "failed_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-007",
+        "RET-008",
+        "RET-009",
+        "RET-010",
+        "RET-011",
+        "RET-012",
+        "RET-013",
+        "RET-014",
+        "RET-015",
+        "RET-016"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "mean_reciprocal_rank": 1.0,
+      "precision_at_3": 0.9583333333333334,
+      "precision_at_5": 0.775,
+      "recall_at_1": 0.25,
+      "recall_at_3": 0.71875,
+      "recall_at_5": 0.90625,
+      "resolved_model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+      "solution_boundary_violation_rate": 0.5
+    },
+    "lexical": {
+      "average_latency_ms": 0.9375,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-009"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "mean_reciprocal_rank": 1.0,
+      "precision_at_3": 0.9375,
+      "precision_at_5": 0.796875,
+      "recall_at_1": 0.25,
+      "recall_at_3": 0.703125,
+      "recall_at_5": 0.921875,
+      "solution_boundary_violation_rate": 0.4375
+    },
+    "vector": {
+      "average_latency_ms": 217.8125,
+      "disqualification_reasons": [
+        "empty_query_tokens",
+        "solution_boundary_violation",
+        "forbidden_document_hit"
+      ],
+      "eligible_for_rag": false,
+      "embedding_dimension": 384,
+      "failed_case_ids": [
+        "RET-001",
+        "RET-002",
+        "RET-003",
+        "RET-004",
+        "RET-005",
+        "RET-006",
+        "RET-007",
+        "RET-008",
+        "RET-009",
+        "RET-010",
+        "RET-011",
+        "RET-012",
+        "RET-013",
+        "RET-014",
+        "RET-015",
+        "RET-016"
+      ],
+      "forbidden_hit_rate": 0.0625,
+      "mean_reciprocal_rank": 0.96875,
+      "precision_at_3": 0.9583333333333334,
+      "precision_at_5": 0.775,
+      "recall_at_1": 0.234375,
+      "recall_at_3": 0.71875,
+      "recall_at_5": 0.90625,
+      "resolved_model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+      "solution_boundary_violation_rate": 0.625
+    }
+  },
+  "per_case_analysis": [
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 2,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "security_compliance"
+            ],
+            "industries": [
+              "enterprise_shared_services"
+            ]
+          },
+          "query_type": "solution_discovery",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-001",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 2,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "lexical": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 2,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "security_compliance"
+            ],
+            "industries": [
+              "enterprise_shared_services"
+            ]
+          },
+          "query_type": "solution_discovery",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-001",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 2,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 3,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "security_compliance"
+            ],
+            "industries": [
+              "enterprise_shared_services"
+            ]
+          },
+          "query_type": "solution_discovery",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-001",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 2,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-SOL-001#chunk-000-29777128c730",
+        "KB-SEC-001#chunk-000-f8c40d662005"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-SOL-001",
+        "KB-SEC-001"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-004"
+      ],
+      "forbidden_solution_ids": [
+        "客服辅助回复方案"
+      ],
+      "infeasibility_reasons": [
+        "expected_relevant_items_conflict_with_boundary"
+      ],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "solution_discovery",
+      "required_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "retrieval_case_id": "RET-001",
+      "source_case_id": "DEV-01"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 3,
+          "forbidden_solution_ids": [
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "implementation_playbook"
+            ],
+            "industries": [
+              "retail",
+              "field_services"
+            ]
+          },
+          "query_type": "solution_discovery",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案"
+          ],
+          "retrieval_case_id": "RET-002",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 3,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 3,
+              "solution_ids": [
+                "服务工单系统集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "document_type": "implementation_playbook",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "客户身份统一与数据集成方案",
+                "服务工单系统集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "lexical": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 3,
+          "forbidden_solution_ids": [
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "implementation_playbook"
+            ],
+            "industries": [
+              "retail",
+              "field_services"
+            ]
+          },
+          "query_type": "solution_discovery",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案"
+          ],
+          "retrieval_case_id": "RET-002",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+              "document_id": "KB-PLAY-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 3,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 3,
+              "solution_ids": [
+                "服务工单系统集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+              "document_id": "KB-PLAY-001",
+              "document_type": "implementation_playbook",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "客户身份统一与数据集成方案",
+                "服务工单系统集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "document_type": "implementation_playbook",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 5,
+              "solution_ids": [
+                "客户身份统一与数据集成方案",
+                "服务工单系统集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 3,
+          "forbidden_solution_ids": [
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "implementation_playbook"
+            ],
+            "industries": [
+              "retail",
+              "field_services"
+            ]
+          },
+          "query_type": "solution_discovery",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案"
+          ],
+          "retrieval_case_id": "RET-002",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 3,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "document_type": "implementation_playbook",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "客户身份统一与数据集成方案",
+                "服务工单系统集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 4,
+              "solution_ids": [
+                "服务工单系统集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-SOL-002#chunk-000-7c0d6600d6d0",
+        "KB-PLAY-001#chunk-000-0015819a0dd7"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-SOL-002",
+        "KB-PLAY-001"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-006"
+      ],
+      "forbidden_solution_ids": [
+        "私有化大模型部署方案"
+      ],
+      "infeasibility_reasons": [
+        "expected_relevant_items_conflict_with_boundary"
+      ],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.5,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "solution_discovery",
+      "required_solution_ids": [
+        "客户身份统一与数据集成方案"
+      ],
+      "retrieval_case_id": "RET-002",
+      "source_case_id": "DEV-12"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "capability",
+              "solution"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "capability_check",
+          "required_solution_ids": [
+            "客服辅助回复方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-003",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+              "document_id": "KB-SOL-004",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "商品知识库RAG方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "lexical": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "capability",
+              "solution"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "capability_check",
+          "required_solution_ids": [
+            "客服辅助回复方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-003",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+              "document_id": "KB-SOL-004",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "商品知识库RAG方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "capability",
+              "solution"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "capability_check",
+          "required_solution_ids": [
+            "客服辅助回复方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-003",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+              "document_id": "KB-SOL-004",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客户身份统一与数据集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-CAP-001#chunk-000-4a0d2db10fea",
+        "KB-SOL-004#chunk-001-d15a10f713d4"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-CAP-001",
+        "KB-SOL-004"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-006"
+      ],
+      "forbidden_solution_ids": [
+        "私有化大模型部署方案"
+      ],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "capability_check",
+      "required_solution_ids": [
+        "客服辅助回复方案",
+        "合规政策RAG检索助手"
+      ],
+      "retrieval_case_id": "RET-003",
+      "source_case_id": "DEV-10"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "integration_requirement"
+            ],
+            "industries": [
+              "field_services"
+            ]
+          },
+          "query_type": "capability_check",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-004",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-002#chunk-000-37797d7945a6",
+              "document_id": "KB-INT-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-INT-002#chunk-001-260073642291",
+              "document_id": "KB-INT-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客户身份统一与数据集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "lexical": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "integration_requirement"
+            ],
+            "industries": [
+              "field_services"
+            ]
+          },
+          "query_type": "capability_check",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-004",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-002#chunk-000-37797d7945a6",
+              "document_id": "KB-INT-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-INT-002#chunk-001-260073642291",
+              "document_id": "KB-INT-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客户身份统一与数据集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "solution",
+              "integration_requirement"
+            ],
+            "industries": [
+              "field_services"
+            ]
+          },
+          "query_type": "capability_check",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-004",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-002#chunk-000-37797d7945a6",
+              "document_id": "KB-INT-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-INT-002#chunk-001-260073642291",
+              "document_id": "KB-INT-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客户身份统一与数据集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-SOL-005#chunk-000-4f2912ff7d30",
+        "KB-INT-002#chunk-000-37797d7945a6"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-SOL-005",
+        "KB-INT-002"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-001"
+      ],
+      "forbidden_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "capability_check",
+      "required_solution_ids": [
+        "服务工单系统集成方案",
+        "商品知识库RAG方案"
+      ],
+      "retrieval_case_id": "RET-004",
+      "source_case_id": "DEV-14"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 3,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "unsupported_scenario",
+              "solution"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "solution_boundary",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-005",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 3,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            }
+          ]
+        },
+        "lexical": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 2,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "unsupported_scenario",
+              "solution"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "solution_boundary",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-005",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 3,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            }
+          ]
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 3,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "unsupported_scenario",
+              "solution"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "solution_boundary",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-005",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 3,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [
+                "私有化大模型部署方案"
+              ],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-UNS-001#chunk-000-29c7c8c2317d",
+        "KB-SOL-001#chunk-001-5b4fdfa84476"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-UNS-001",
+        "KB-SOL-001"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-004"
+      ],
+      "forbidden_solution_ids": [
+        "客服辅助回复方案",
+        "私有化大模型部署方案"
+      ],
+      "infeasibility_reasons": [
+        "expected_relevant_items_conflict_with_boundary"
+      ],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "solution_boundary",
+      "required_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "retrieval_case_id": "RET-005",
+      "source_case_id": "DEV-05"
+    },
+    {
+      "benchmark_case_infeasible": true,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 1,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "unsupported_scenario",
+              "readiness_requirement"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "solution_boundary",
+          "required_solution_ids": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-006",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 4,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 1,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "document_type": "readiness_requirement",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "商品知识库RAG方案",
+                "合规政策RAG检索助手"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "document_type": "readiness_requirement",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "商品知识库RAG方案",
+                "合规政策RAG检索助手"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            }
+          ]
+        },
+        "lexical": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 1,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "unsupported_scenario",
+              "readiness_requirement"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "solution_boundary",
+          "required_solution_ids": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-006",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 4,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 1,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "document_type": "readiness_requirement",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "商品知识库RAG方案",
+                "合规政策RAG检索助手"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "document_type": "readiness_requirement",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "商品知识库RAG方案",
+                "合规政策RAG检索助手"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            }
+          ]
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 1,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "unsupported_scenario",
+              "readiness_requirement"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "solution_boundary",
+          "required_solution_ids": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-006",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 4,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 1,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "document_type": "readiness_requirement",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "商品知识库RAG方案",
+                "合规政策RAG检索助手"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+              "document_id": "KB-UNS-001",
+              "document_type": "unsupported_scenario",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "document_type": "readiness_requirement",
+              "forbidden_solution_overlap": [
+                "合规政策RAG检索助手"
+              ],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "商品知识库RAG方案",
+                "合规政策RAG检索助手"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-UNS-001#chunk-001-6221cccec3f8",
+        "KB-READY-001#chunk-000-c25bf83f023f"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-UNS-001",
+        "KB-READY-001"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-001"
+      ],
+      "forbidden_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "infeasibility_reasons": [
+        "minimum_relevant_hits_exceeds_safe_expected_items",
+        "expected_relevant_items_conflict_with_boundary"
+      ],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "solution_boundary",
+      "required_solution_ids": [
+        "客服辅助回复方案",
+        "商品知识库RAG方案"
+      ],
+      "retrieval_case_id": "RET-006",
+      "source_case_id": "DEV-08"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "implementation_playbook",
+              "security_compliance"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "implementation_risk",
+          "required_solution_ids": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-007",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-PLAY-002#chunk-001-22fb4bafb8ba",
+              "document_id": "KB-PLAY-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-PLAY-002#chunk-000-b5afe84948ef",
+              "document_id": "KB-PLAY-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "implementation_playbook",
+              "security_compliance"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "implementation_risk",
+          "required_solution_ids": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-007",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-PLAY-002#chunk-001-22fb4bafb8ba",
+              "document_id": "KB-PLAY-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-PLAY-002#chunk-000-b5afe84948ef",
+              "document_id": "KB-PLAY-002",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "implementation_playbook",
+              "security_compliance"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "implementation_risk",
+          "required_solution_ids": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-007",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-PLAY-002#chunk-000-b5afe84948ef",
+              "document_id": "KB-PLAY-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-PLAY-002#chunk-001-22fb4bafb8ba",
+              "document_id": "KB-PLAY-002",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-PLAY-002#chunk-001-22fb4bafb8ba",
+        "KB-SEC-001#chunk-001-d88fdb994b4e"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-PLAY-002",
+        "KB-SEC-001"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-004"
+      ],
+      "forbidden_solution_ids": [],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "implementation_risk",
+      "required_solution_ids": [
+        "私有化大模型部署方案",
+        "合规政策RAG检索助手"
+      ],
+      "retrieval_case_id": "RET-007",
+      "source_case_id": "DEV-06"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "implementation_playbook",
+              "solution"
+            ],
+            "industries": [
+              "field_services"
+            ]
+          },
+          "query_type": "implementation_risk",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "retrieval_case_id": "RET-008",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+              "document_id": "KB-PLAY-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "implementation_playbook",
+              "solution"
+            ],
+            "industries": [
+              "field_services"
+            ]
+          },
+          "query_type": "implementation_risk",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "retrieval_case_id": "RET-008",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+              "document_id": "KB-PLAY-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "implementation_playbook",
+              "solution"
+            ],
+            "industries": [
+              "field_services"
+            ]
+          },
+          "query_type": "implementation_risk",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "retrieval_case_id": "RET-008",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+              "document_id": "KB-PLAY-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+              "document_id": "KB-PLAY-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-PLAY-001#chunk-001-e90933b01fb0",
+        "KB-SOL-005#chunk-001-c46ac3709e0c"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-PLAY-001",
+        "KB-SOL-005"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-004"
+      ],
+      "forbidden_solution_ids": [],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "implementation_risk",
+      "required_solution_ids": [
+        "服务工单系统集成方案",
+        "客户身份统一与数据集成方案"
+      ],
+      "retrieval_case_id": "RET-008",
+      "source_case_id": "DEV-11"
+    },
+    {
+      "benchmark_case_infeasible": true,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 1,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "security_compliance",
+              "capability"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "compliance_requirement",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-009",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 4,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 1,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "document_type": "capability",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "document_type": "capability",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "lexical": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 1,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "security_compliance",
+              "capability"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "compliance_requirement",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-009",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 4,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 1,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "document_type": "capability",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "document_type": "capability",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            }
+          ]
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "expected_document_contains_forbidden_solution",
+            "gold_boundary_overconstraint",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 1,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "security_compliance",
+              "capability"
+            ],
+            "industries": [
+              "financial_services"
+            ]
+          },
+          "query_type": "compliance_requirement",
+          "required_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-009",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 4,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 1,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+              "document_id": "KB-CAP-001",
+              "document_type": "capability",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 2,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+              "document_id": "KB-CAP-001",
+              "document_type": "capability",
+              "forbidden_solution_overlap": [
+                "客服辅助回复方案"
+              ],
+              "is_expected_relevant": true,
+              "rank": 3,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": true,
+              "violates_required": true
+            },
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "expected_document_contains_forbidden_solution",
+                "gold_boundary_overconstraint",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "document_type": "security_compliance",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": true,
+              "rank": 4,
+              "solution_ids": [
+                "合规政策RAG检索助手",
+                "私有化大模型部署方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-SEC-001#chunk-000-f8c40d662005",
+        "KB-CAP-001#chunk-001-bcb4fc0bf316"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-SEC-001",
+        "KB-CAP-001"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-004"
+      ],
+      "forbidden_solution_ids": [
+        "客服辅助回复方案"
+      ],
+      "infeasibility_reasons": [
+        "minimum_relevant_hits_exceeds_safe_expected_items",
+        "expected_relevant_items_conflict_with_boundary"
+      ],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "compliance_requirement",
+      "required_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "retrieval_case_id": "RET-009",
+      "source_case_id": "DEV-04"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [
+            "商品知识库RAG方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "security_compliance",
+              "solution"
+            ],
+            "industries": [
+              "manufacturing",
+              "financial_services"
+            ]
+          },
+          "query_type": "compliance_requirement",
+          "required_solution_ids": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-010",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-006#chunk-000-c4df6924db79",
+              "document_id": "KB-SOL-006",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [
+            "商品知识库RAG方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "security_compliance",
+              "solution"
+            ],
+            "industries": [
+              "manufacturing",
+              "financial_services"
+            ]
+          },
+          "query_type": "compliance_requirement",
+          "required_solution_ids": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-010",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-006#chunk-000-c4df6924db79",
+              "document_id": "KB-SOL-006",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 4
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [
+            "商品知识库RAG方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "security_compliance",
+              "solution"
+            ],
+            "industries": [
+              "manufacturing",
+              "financial_services"
+            ]
+          },
+          "query_type": "compliance_requirement",
+          "required_solution_ids": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-010",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-001#chunk-000-29777128c730",
+              "document_id": "KB-SOL-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-006#chunk-000-c4df6924db79",
+              "document_id": "KB-SOL-006",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+              "document_id": "KB-SEC-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+              "document_id": "KB-SEC-001",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-SEC-001#chunk-000-f8c40d662005",
+        "KB-SOL-006#chunk-000-c4df6924db79"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-SEC-001",
+        "KB-SOL-006"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-003"
+      ],
+      "forbidden_solution_ids": [
+        "商品知识库RAG方案"
+      ],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 0.5
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "compliance_requirement",
+      "required_solution_ids": [
+        "私有化大模型部署方案",
+        "合规政策RAG检索助手"
+      ],
+      "retrieval_case_id": "RET-010",
+      "source_case_id": "DEV-13"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "integration_requirement",
+              "solution"
+            ],
+            "industries": [
+              "retail",
+              "property_services"
+            ]
+          },
+          "query_type": "integration_requirement",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "客服辅助回复方案"
+          ],
+          "retrieval_case_id": "RET-011",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-001#chunk-000-17c42e00f4ee",
+              "document_id": "KB-INT-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-INT-001#chunk-001-87ede957932e",
+              "document_id": "KB-INT-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+              "document_id": "KB-SOL-004",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "integration_requirement",
+              "solution"
+            ],
+            "industries": [
+              "retail",
+              "property_services"
+            ]
+          },
+          "query_type": "integration_requirement",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "客服辅助回复方案"
+          ],
+          "retrieval_case_id": "RET-011",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-001#chunk-000-17c42e00f4ee",
+              "document_id": "KB-INT-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-INT-001#chunk-001-87ede957932e",
+              "document_id": "KB-INT-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+              "document_id": "KB-SOL-004",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "integration_requirement",
+              "solution"
+            ],
+            "industries": [
+              "retail",
+              "property_services"
+            ]
+          },
+          "query_type": "integration_requirement",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "客服辅助回复方案"
+          ],
+          "retrieval_case_id": "RET-011",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-001#chunk-000-17c42e00f4ee",
+              "document_id": "KB-INT-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-INT-001#chunk-001-87ede957932e",
+              "document_id": "KB-INT-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+              "document_id": "KB-SOL-004",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-INT-001#chunk-000-17c42e00f4ee",
+        "KB-SOL-002#chunk-001-c241403338a2"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-INT-001",
+        "KB-SOL-002"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-006"
+      ],
+      "forbidden_solution_ids": [],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "integration_requirement",
+      "required_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "客服辅助回复方案"
+      ],
+      "retrieval_case_id": "RET-011",
+      "source_case_id": "DEV-07"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "integration_requirement",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "retail"
+            ]
+          },
+          "query_type": "integration_requirement",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-012",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-002#chunk-000-37797d7945a6",
+              "document_id": "KB-INT-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-INT-002#chunk-001-260073642291",
+              "document_id": "KB-INT-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-INT-001#chunk-001-87ede957932e",
+              "document_id": "KB-INT-001",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-INT-001#chunk-001-87ede957932e",
+              "document_id": "KB-INT-001",
+              "document_type": "integration_requirement",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客户身份统一与数据集成方案",
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "integration_requirement",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "retail"
+            ]
+          },
+          "query_type": "integration_requirement",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-012",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-002#chunk-000-37797d7945a6",
+              "document_id": "KB-INT-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-INT-002#chunk-001-260073642291",
+              "document_id": "KB-INT-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-000-4b0032016c40",
+              "document_id": "KB-SOL-003",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "multi_solution_document_overlap",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [
+            "合规政策RAG检索助手"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "integration_requirement",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "retail"
+            ]
+          },
+          "query_type": "integration_requirement",
+          "required_solution_ids": [
+            "服务工单系统集成方案",
+            "商品知识库RAG方案"
+          ],
+          "retrieval_case_id": "RET-012",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-INT-002#chunk-000-37797d7945a6",
+              "document_id": "KB-INT-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-INT-002#chunk-001-260073642291",
+              "document_id": "KB-INT-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-INT-001#chunk-001-87ede957932e",
+              "document_id": "KB-INT-001",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "multi_solution_document_overlap",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-INT-001#chunk-001-87ede957932e",
+              "document_id": "KB-INT-001",
+              "document_type": "integration_requirement",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客户身份统一与数据集成方案",
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-INT-002#chunk-000-37797d7945a6",
+        "KB-SOL-005#chunk-001-c46ac3709e0c"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-INT-002",
+        "KB-SOL-005"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-001"
+      ],
+      "forbidden_solution_ids": [
+        "合规政策RAG检索助手"
+      ],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "integration_requirement",
+      "required_solution_ids": [
+        "服务工单系统集成方案",
+        "商品知识库RAG方案"
+      ],
+      "retrieval_case_id": "RET-012",
+      "source_case_id": "DEV-09"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "readiness_requirement",
+              "solution"
+            ],
+            "industries": [
+              "retail",
+              "financial_services"
+            ]
+          },
+          "query_type": "customer_readiness",
+          "required_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-013",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-000-4b0032016c40",
+              "document_id": "KB-SOL-003",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "readiness_requirement",
+              "solution"
+            ],
+            "industries": [
+              "retail",
+              "financial_services"
+            ]
+          },
+          "query_type": "customer_readiness",
+          "required_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-013",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-000-4b0032016c40",
+              "document_id": "KB-SOL-003",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "readiness_requirement",
+              "solution"
+            ],
+            "industries": [
+              "retail",
+              "financial_services"
+            ]
+          },
+          "query_type": "customer_readiness",
+          "required_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "retrieval_case_id": "RET-013",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+              "document_id": "KB-READY-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+              "document_id": "KB-READY-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-001#chunk-001-5b4fdfa84476",
+              "document_id": "KB-SOL-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-004#chunk-001-d15a10f713d4",
+              "document_id": "KB-SOL-004",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客服辅助回复方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-READY-001#chunk-000-c25bf83f023f",
+        "KB-SOL-003#chunk-001-adb6d47feec4"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-READY-001",
+        "KB-SOL-003"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-004"
+      ],
+      "forbidden_solution_ids": [],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "forbidden_document_hit",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "customer_readiness",
+      "required_solution_ids": [
+        "商品知识库RAG方案",
+        "合规政策RAG检索助手"
+      ],
+      "retrieval_case_id": "RET-013",
+      "source_case_id": "DEV-12"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "readiness_requirement",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "manufacturing"
+            ]
+          },
+          "query_type": "customer_readiness",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案",
+            "私有化大模型部署方案"
+          ],
+          "retrieval_case_id": "RET-014",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-READY-002#chunk-000-be9fffe3ad6d",
+              "document_id": "KB-READY-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-READY-002#chunk-001-a9c933dcf327",
+              "document_id": "KB-READY-002",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "readiness_requirement",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "manufacturing"
+            ]
+          },
+          "query_type": "customer_readiness",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案",
+            "私有化大模型部署方案"
+          ],
+          "retrieval_case_id": "RET-014",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-READY-002#chunk-000-be9fffe3ad6d",
+              "document_id": "KB-READY-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-READY-002#chunk-001-a9c933dcf327",
+              "document_id": "KB-READY-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [
+            "客服辅助回复方案"
+          ],
+          "operational_filters": {
+            "document_types": [
+              "readiness_requirement",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "manufacturing"
+            ]
+          },
+          "query_type": "customer_readiness",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案",
+            "私有化大模型部署方案"
+          ],
+          "retrieval_case_id": "RET-014",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-SOL-006#chunk-001-f56196b3f373",
+              "document_id": "KB-SOL-006",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-READY-002#chunk-001-a9c933dcf327",
+              "document_id": "KB-READY-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-READY-002#chunk-000-be9fffe3ad6d",
+              "document_id": "KB-READY-002",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-READY-002#chunk-000-be9fffe3ad6d",
+        "KB-SOL-006#chunk-001-f56196b3f373"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-READY-002",
+        "KB-SOL-006"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-SOL-004"
+      ],
+      "forbidden_solution_ids": [
+        "客服辅助回复方案"
+      ],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "customer_readiness",
+      "required_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案",
+        "私有化大模型部署方案"
+      ],
+      "retrieval_case_id": "RET-014",
+      "source_case_id": "DEV-14"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "case_study",
+              "solution"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "case_study_search",
+          "required_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "retrieval_case_id": "RET-015",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CASE-001#chunk-000-d5868a3597d2",
+              "document_id": "KB-CASE-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-000-4b0032016c40",
+              "document_id": "KB-SOL-003",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-CASE-001#chunk-001-77cb36877788",
+              "document_id": "KB-CASE-001",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+              "document_id": "KB-SOL-004",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "case_study",
+              "solution"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "case_study_search",
+          "required_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "retrieval_case_id": "RET-015",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CASE-001#chunk-000-d5868a3597d2",
+              "document_id": "KB-CASE-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-CASE-001#chunk-001-77cb36877788",
+              "document_id": "KB-CASE-001",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-000-4b0032016c40",
+              "document_id": "KB-SOL-003",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-004#chunk-000-a8e1467e7923",
+              "document_id": "KB-SOL-004",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [
+            "cross_solution_retrieval",
+            "operational_filter_gap"
+          ],
+          "first_violation_rank": 5,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "case_study",
+              "solution"
+            ],
+            "industries": [
+              "retail"
+            ]
+          },
+          "query_type": "case_study_search",
+          "required_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "retrieval_case_id": "RET-015",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CASE-001#chunk-000-d5868a3597d2",
+              "document_id": "KB-CASE-001",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-000-4b0032016c40",
+              "document_id": "KB-SOL-003",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-003#chunk-001-adb6d47feec4",
+              "document_id": "KB-SOL-003",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-CASE-001#chunk-001-77cb36877788",
+              "document_id": "KB-CASE-001",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 1,
+          "violation_candidates": [
+            {
+              "cause_tags": [
+                "cross_solution_retrieval",
+                "operational_filter_gap"
+              ],
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "document_type": "solution",
+              "forbidden_solution_overlap": [],
+              "is_expected_relevant": false,
+              "rank": 5,
+              "solution_ids": [
+                "客户身份统一与数据集成方案"
+              ],
+              "violates_forbidden": false,
+              "violates_required": true
+            }
+          ]
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-CASE-001#chunk-000-d5868a3597d2",
+        "KB-CASE-001#chunk-001-77cb36877788"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-CASE-001",
+        "KB-SOL-003"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-CASE-002"
+      ],
+      "forbidden_solution_ids": [],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens",
+            "solution_boundary_violation"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "case_study_search",
+      "required_solution_ids": [
+        "商品知识库RAG方案",
+        "客服辅助回复方案"
+      ],
+      "retrieval_case_id": "RET-015",
+      "source_case_id": "DEV-10"
+    },
+    {
+      "benchmark_case_infeasible": false,
+      "boundary_analysis": {
+        "hybrid": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "case_study",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "property_services"
+            ]
+          },
+          "query_type": "case_study_search",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "retrieval_case_id": "RET-016",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CASE-002#chunk-000-2c2107739c83",
+              "document_id": "KB-CASE-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-CASE-002#chunk-001-036ea7b824d0",
+              "document_id": "KB-CASE-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "lexical": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "case_study",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "property_services"
+            ]
+          },
+          "query_type": "case_study_search",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "retrieval_case_id": "RET-016",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CASE-002#chunk-000-2c2107739c83",
+              "document_id": "KB-CASE-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-CASE-002#chunk-001-036ea7b824d0",
+              "document_id": "KB-CASE-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-001-c46ac3709e0c",
+              "document_id": "KB-SOL-005",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        },
+        "vector": {
+          "case_level_cause_tags": [],
+          "first_violation_rank": null,
+          "forbidden_solution_ids": [],
+          "operational_filters": {
+            "document_types": [
+              "case_study",
+              "solution"
+            ],
+            "industries": [
+              "field_services",
+              "property_services"
+            ]
+          },
+          "query_type": "case_study_search",
+          "required_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "retrieval_case_id": "RET-016",
+          "top_5_candidate_ids": [
+            {
+              "chunk_id": "KB-CASE-002#chunk-000-2c2107739c83",
+              "document_id": "KB-CASE-002",
+              "rank": 1
+            },
+            {
+              "chunk_id": "KB-CASE-002#chunk-001-036ea7b824d0",
+              "document_id": "KB-CASE-002",
+              "rank": 2
+            },
+            {
+              "chunk_id": "KB-SOL-005#chunk-000-4f2912ff7d30",
+              "document_id": "KB-SOL-005",
+              "rank": 3
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-000-7c0d6600d6d0",
+              "document_id": "KB-SOL-002",
+              "rank": 4
+            },
+            {
+              "chunk_id": "KB-SOL-002#chunk-001-c241403338a2",
+              "document_id": "KB-SOL-002",
+              "rank": 5
+            }
+          ],
+          "violation_candidate_count": 0,
+          "violation_candidates": []
+        }
+      },
+      "expected_relevant_chunk_ids": [
+        "KB-CASE-002#chunk-000-2c2107739c83",
+        "KB-CASE-002#chunk-001-036ea7b824d0"
+      ],
+      "expected_relevant_document_ids": [
+        "KB-CASE-002",
+        "KB-SOL-005"
+      ],
+      "expected_relevant_item_count": 4,
+      "forbidden_document_ids": [
+        "KB-CASE-001"
+      ],
+      "forbidden_solution_ids": [],
+      "infeasibility_reasons": [],
+      "method_metrics": {
+        "hybrid": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "lexical": {
+          "failure_reasons": [],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        },
+        "vector": {
+          "failure_reasons": [
+            "empty_query_tokens"
+          ],
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 0.75,
+          "reciprocal_rank": 1.0
+        }
+      },
+      "minimum_relevant_hits": 2,
+      "query_type": "case_study_search",
+      "required_solution_ids": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "retrieval_case_id": "RET-016",
+      "source_case_id": "DEV-11"
+    }
+  ],
+  "retriever_quality_findings": {
+    "hybrid_cases_below_recall_at_5": [
+      "RET-002",
+      "RET-010",
+      "RET-011",
+      "RET-014",
+      "RET-015",
+      "RET-016"
+    ],
+    "hybrid_forbidden_hit_case_ids": [],
+    "lexical_cases_below_recall_at_5": [
+      "RET-010",
+      "RET-011",
+      "RET-014",
+      "RET-015",
+      "RET-016"
+    ],
+    "mrr_vs_recall_explanation": {
+      "explanation": "MRR measures the rank of the first relevant result, while recall measures how much of the full relevant set is covered within top-k.",
+      "hybrid_cases_with_rr1": 16,
+      "lexical_cases_with_rr1": 16,
+      "vector_cases_with_rr1": 15
+    },
+    "vector_cases_below_recall_at_5": [
+      "RET-002",
+      "RET-010",
+      "RET-013",
+      "RET-014",
+      "RET-015",
+      "RET-016"
+    ],
+    "vector_forbidden_hit_case_ids": [
+      "RET-013"
+    ]
+  },
+  "v2_recommendations": {
+    "A_must_fix_technical_bug": [
+      "Do not derive vector_v1 or hybrid_v1 empty-query failures from the lexical-only query_tokens debug field.",
+      "Rename or split failure taxonomy so empty_query_tokens means an actually empty tokenized query, not a missing debug field."
+    ],
+    "B_versioned_data_contract_improvements": [
+      "Create a v2 knowledge corpus with chunk-level solution scope instead of inheriting all solution_ids from each document.",
+      "Add primary_solution_id, applicable_solution_ids, excluded_solution_ids, and scope_type to the v2 knowledge metadata contract."
+    ],
+    "C_versioned_evaluation_improvements": [
+      "Define v2 boundary evaluation separately for expected relevant content versus candidate-level scope violations.",
+      "Add a v2 case audit that rejects infeasible cases before formal benchmarking.",
+      "Do not mutate v1 retrieval cases or v1 metrics; version the evaluation dataset forward."
+    ],
+    "D_retriever_improvements": [
+      "Re-evaluate vector and hybrid retrieval only after v2 metadata and v2 evaluation contracts are frozen.",
+      "Investigate whether forbidden hits remain after boundary-safe chunk scope is introduced in v2."
+    ],
+    "E_blocking_gate_notes": [
+      "Keep the frozen v1 blocking gate unchanged for auditability.",
+      "Only allow Architecture C retrieval integration after a v2 method reaches eligible_for_rag=true under the versioned v2 benchmark."
+    ],
+    "infeasible_case_ids": [
+      "RET-006",
+      "RET-009"
+    ],
+    "knowledge_metadata_pressure_points": [
+      "KB-CAP-002",
+      "KB-COM-001",
+      "KB-UNS-001",
+      "KB-READY-002"
+    ]
+  }
+}
