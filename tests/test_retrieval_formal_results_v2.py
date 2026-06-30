@@ -295,10 +295,19 @@ def test_check_accepts_runtime_only_field_drift_but_rejects_rank_drift(monkeypat
     payloads_with_runtime_drift["vector_results"][0]["latency_ms"] = 999
     _write_payloads(output_paths, payloads_with_runtime_drift)
 
-    monkeypatch.setattr(cli, "build_validate_payload", lambda: {"mode": "validate"})
-    monkeypatch.setattr(cli, "formal_v2_results_exist", lambda: True)
+    monkeypatch.setattr(cli, "_build_core_validation_payload", lambda: {"mode": "validate"})
     monkeypatch.setattr(cli, "formal_v2_output_paths", lambda: output_paths)
     monkeypatch.setattr(cli, "build_formal_payloads", lambda: payloads)
+    monkeypatch.setattr(
+        cli,
+        "inspect_formal_result_state",
+        lambda: {
+            "state": cli.FORMAL_RESULT_STATE_COMPLETE,
+            "existing_paths": {name: str(path) for name, path in output_paths.items()},
+            "missing_paths": {},
+            "formal_results_exist": True,
+        },
+    )
 
     payload, ok = cli.build_check_payload()
     assert ok is True
@@ -321,10 +330,56 @@ def test_check_accepts_runtime_only_field_drift_but_rejects_rank_drift(monkeypat
     assert ok is False
     assert any("vector_summary" in item for item in payload["differences"])
 
-    payloads_with_dimension_drift = json.loads(json.dumps(payloads))
-    payloads_with_dimension_drift["vector_summary"]["embedding_dimension"] = 256
-    _write_payloads(output_paths, payloads_with_dimension_drift)
+
+def test_check_reports_partial_formal_results(monkeypatch, tmp_path) -> None:
+    output_paths = {key: tmp_path / f"{key}.json" for key in cli.formal_v2_output_paths()}
+    output_paths["lexical_results"] = tmp_path / "lexical_results.jsonl"
+    output_paths["vector_results"] = tmp_path / "vector_results.jsonl"
+    output_paths["hybrid_results"] = tmp_path / "hybrid_results.jsonl"
+
+    monkeypatch.setattr(cli, "_build_core_validation_payload", lambda: {"mode": "validate"})
+    monkeypatch.setattr(cli, "formal_v2_output_paths", lambda: output_paths)
+    monkeypatch.setattr(
+        cli,
+        "inspect_formal_result_state",
+        lambda: {
+            "state": cli.FORMAL_RESULT_STATE_PARTIAL,
+            "existing_paths": {"lexical_results": str(output_paths["lexical_results"])},
+            "missing_paths": {"comparison": str(output_paths["comparison"])},
+            "formal_results_exist": True,
+        },
+    )
 
     payload, ok = cli.build_check_payload()
+
     assert ok is False
-    assert any("vector_summary" in item for item in payload["differences"])
+    assert payload["status"] == "partial_formal_results_detected"
+    assert payload["formal_result_state"] == cli.FORMAL_RESULT_STATE_PARTIAL
+    assert "lexical_results" in payload["existing_formal_output_paths"]
+    assert "comparison" in payload["missing_formal_output_paths"]
+
+
+def test_check_reports_not_generated_without_requiring_absence_validation(monkeypatch, tmp_path) -> None:
+    output_paths = {key: tmp_path / f"{key}.json" for key in cli.formal_v2_output_paths()}
+    output_paths["lexical_results"] = tmp_path / "lexical_results.jsonl"
+    output_paths["vector_results"] = tmp_path / "vector_results.jsonl"
+    output_paths["hybrid_results"] = tmp_path / "hybrid_results.jsonl"
+
+    monkeypatch.setattr(cli, "_build_core_validation_payload", lambda: {"mode": "validate"})
+    monkeypatch.setattr(cli, "formal_v2_output_paths", lambda: output_paths)
+    monkeypatch.setattr(
+        cli,
+        "inspect_formal_result_state",
+        lambda: {
+            "state": cli.FORMAL_RESULT_STATE_NOT_GENERATED,
+            "existing_paths": {},
+            "missing_paths": {name: str(path) for name, path in output_paths.items()},
+            "formal_results_exist": False,
+        },
+    )
+
+    payload, ok = cli.build_check_payload()
+
+    assert ok is True
+    assert payload["status"] == "formal_results_not_generated"
+    assert payload["formal_result_state"] == cli.FORMAL_RESULT_STATE_NOT_GENERATED
