@@ -148,7 +148,7 @@ Blocking Gate 维持与 v1 同等级：
 
 ## 10. 正式结果路径
 
-本轮只规划，不创建：
+正式实验未来一次性发布 7 个固定文件：
 
 - `lexical_baseline_results.v2.jsonl`
 - `lexical_baseline_summary.v2.json`
@@ -158,13 +158,30 @@ Blocking Gate 维持与 v1 同等级：
 - `hybrid_baseline_summary.v2.json`
 - `retrieval_method_comparison.v2.json`
 
-## 11. 一次性正式实验纪律
+Runner 会先在 Git 忽略的 Runtime 临时目录生成候选文件，完成结构校验与一致性校验后，再一次性发布到这些正式路径。
+
+## 11. 原子写入与失败恢复
+
+正式 `--run --write` 使用两阶段发布：
+
+1. 先在 Runtime staging 目录生成 7 个候选文件
+2. 对候选文件重新执行条数、顺序、Summary 重算、Comparison 一致性与安全字段检查
+3. 全部通过后发布到正式路径
+
+如果中途任一环节失败：
+
+- 不覆盖已存在的正式结果
+- 不保留部分正式文件
+- 只在 Git 忽略的 Runtime Attempt 审计目录留下技术失败元数据
+
+## 12. 一次性正式实验纪律
 
 正式 v2 实验开始前必须先通过：
 
 - Validate
 - Fake Smoke
 - Offline Model Smoke
+- Formal Readiness
 - Check 前置
 
 正式实验开始后：
@@ -174,7 +191,35 @@ Blocking Gate 维持与 v1 同等级：
 - 不得修改 Scope
 - 不得修改 Blocking Gate
 
-## 12. 技术失败与算法失败
+## 13. Formal Readiness
+
+`python scripts/run_retrieval_benchmark_v2.py --formal-readiness` 只检查：
+
+- 数据与配置 Hash
+- 20 / 40 / 16 数量
+- 16 条 Case 全部 Feasible
+- 7 个正式结果文件尚不存在
+- 本地固定 Embedding Snapshot 可用
+- 网络被禁用
+- Runtime 目录与 Embedding Cache 目录可写
+
+它不运行正式 Case，也不生成正式结果。
+
+## 14. Attempt 审计语义
+
+未来正式运行会在 Git 忽略的 Runtime 审计目录记录：
+
+- `attempt_id`
+- `attempt_number`
+- `status`
+- `started_at`
+- `completed_at`
+- `technical_failure`
+- `formal_results_published`
+
+技术失败允许在不发布正式结果的前提下进入下一次 Attempt；指标不好不属于技术失败，也不允许重跑。
+
+## 15. 技术失败与算法失败
 
 技术失败示例：
 
@@ -190,7 +235,28 @@ Blocking Gate 维持与 v1 同等级：
 
 两者必须在结果中分开记录。
 
-## 13. 当前状态
+## 16. Check 语义
+
+正式结果不存在时，`--check` 必须明确返回：
+
+- `formal_results_not_generated`
+
+正式结果存在时，`--check` 会重新执行确定性评测路径，并严格比较：
+
+- Case 结果顺序、ID、rank、score、boundary 标记与 metrics
+- Summary metrics、Failure Taxonomy、Eligibility 与模型修订信息
+- Comparison 的选择结果与限制说明
+
+只允许忽略显式声明的运行时字段：
+
+- `generated_at`
+- `latency_ms`
+- `average_latency_ms`
+- `corpus_embedding_build_ms`
+- `cache_hit_count`
+- `cache_miss_count`
+
+## 17. 当前状态
 
 当前尚未运行正式 v2 实验，也不能据此声称 v2 性能提升。
 
@@ -200,9 +266,11 @@ Runner 只提供：
 - 结构验证
 - 假烟测试
 - 离线模型探测
+- Formal Readiness
 - 正式结果缺失状态检查
+- 正式结果发布后的严格 Check 能力
 
-## 14. 与 Architecture C 的关系
+## 18. 与 Architecture C 的关系
 
 Architecture C 当前仍未接入 Retrieval Benchmark v2。
 

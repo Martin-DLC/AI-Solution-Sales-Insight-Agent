@@ -64,6 +64,80 @@ class RetrievalRunnerV2Report(StrictBaseModel):
     summary: RetrievalEvaluationSummary
 
 
+class RetrievalFormalCandidateV2(StrictBaseModel):
+    rank: int
+    document_id: str
+    chunk_id: str | None = None
+    document_type: str
+    score: float
+    scope_type: str
+    applicable_solution_ids: list[str] = Field(default_factory=list)
+    boundary_violation: bool
+    lexical_rank: int | None = None
+    vector_rank: int | None = None
+    lexical_score: float | None = None
+    vector_score: float | None = None
+    rrf_score: float | None = None
+
+
+class RetrievalFormalCaseMetricsV2(StrictBaseModel):
+    recall_at_1: float
+    recall_at_3: float
+    recall_at_5: float
+    precision_at_3: float
+    precision_at_5: float
+    reciprocal_rank: float
+    forbidden_hit: bool
+    solution_boundary_violation: bool
+    request_error: bool
+
+
+class RetrievalFormalCaseResultV2(StrictBaseModel):
+    retrieval_case_id: str
+    source_case_id: str
+    retrieval_method: RetrievalMethod
+    query_type: str
+    candidate_count: int
+    candidates: list[RetrievalFormalCandidateV2] = Field(default_factory=list)
+    case_metrics: RetrievalFormalCaseMetricsV2
+    failure_reasons: list[str] = Field(default_factory=list)
+    passed_blocking_gate: bool
+    latency_ms: int
+    error_type: str | None = None
+    error_message: str | None = None
+
+
+class RetrievalFormalSummaryV2(StrictBaseModel):
+    benchmark_version: str
+    retrieval_method: RetrievalMethod
+    method_config_hash: str
+    benchmark_config_hash: str
+    document_count: int
+    chunk_count: int
+    case_count: int
+    recall_at_1: float
+    recall_at_3: float
+    recall_at_5: float
+    precision_at_3: float
+    precision_at_5: float
+    mean_reciprocal_rank: float
+    forbidden_hit_rate: float
+    solution_boundary_violation_rate: float
+    request_error_count: int
+    failed_case_ids: list[str] = Field(default_factory=list)
+    failure_taxonomy: dict[str, int] = Field(default_factory=dict)
+    eligible_for_rag: bool
+    disqualification_reasons: list[str] = Field(default_factory=list)
+    average_latency_ms: float
+    model_name: str | None = None
+    resolved_model_revision: str | None = None
+    embedding_dimension: int | None = None
+    corpus_embedding_count: int | None = None
+    corpus_embedding_build_ms: int | None = None
+    cache_hit_count: int | None = None
+    cache_miss_count: int | None = None
+
+
 def make_runtime_input_v2(
     *,
     case: RetrievalEvaluationCaseV2,
@@ -391,6 +465,207 @@ def _summarize_failure_reasons(case_results: list[RetrievalRunnerV2CaseResult]) 
             if reason not in ordered:
                 ordered.append(reason)
     return ordered
+
+
+def build_formal_case_results_v2(
+    *,
+    report: RetrievalRunnerV2Report,
+    cases: list[RetrievalEvaluationCaseV2],
+    documents: list[KnowledgeDocumentV2],
+    chunks: list[KnowledgeChunkV2],
+) -> list[RetrievalFormalCaseResultV2]:
+    cases_by_id = {case.retrieval_case_id: case for case in cases}
+    documents_by_id = {document.document_id: document for document in documents}
+    chunks_by_id = {chunk.chunk_id: chunk for chunk in chunks}
+    run_results_by_id = {run_result.retrieval_case_id: run_result for run_result in report.run_results}
+    formal_results: list[RetrievalFormalCaseResultV2] = []
+    for case_result in report.case_results:
+        case = cases_by_id[case_result.retrieval_case_id]
+        run_result = run_results_by_id[case_result.retrieval_case_id]
+        candidates: list[RetrievalFormalCandidateV2] = []
+        for index, candidate in enumerate(run_result.retrieved_candidates):
+            document = documents_by_id[candidate.document_id]
+            chunk = chunks_by_id.get(candidate.chunk_id) if candidate.chunk_id else None
+            source = chunk if chunk is not None else document
+            boundary_reasons = case_result.candidate_boundary_reasons[index] if index < len(case_result.candidate_boundary_reasons) else []
+            metadata = dict(candidate.metadata)
+            candidates.append(
+                RetrievalFormalCandidateV2(
+                    rank=candidate.rank,
+                    document_id=candidate.document_id,
+                    chunk_id=candidate.chunk_id,
+                    document_type=document.document_type,
+                    score=candidate.score,
+                    scope_type=source.scope_type,
+                    applicable_solution_ids=list(source.applicable_solution_ids),
+                    boundary_violation="solution_boundary_violation" in boundary_reasons,
+                    lexical_rank=_optional_int(metadata.get("lexical_rank")),
+                    vector_rank=_optional_int(metadata.get("vector_rank")),
+                    lexical_score=_optional_float(metadata.get("lexical_score")),
+                    vector_score=_optional_float(metadata.get("vector_score")),
+                    rrf_score=_optional_float(metadata.get("rrf_score")),
+                )
+            )
+        formal_results.append(
+            RetrievalFormalCaseResultV2(
+                retrieval_case_id=case_result.retrieval_case_id,
+                source_case_id=case.source_case_id,
+                retrieval_method=case_result.retrieval_method,
+                query_type=case.query_type.value,
+                candidate_count=len(candidates),
+                candidates=candidates,
+                case_metrics=RetrievalFormalCaseMetricsV2(
+                    recall_at_1=case_result.case_metrics["recall_at_1"],
+                    recall_at_3=case_result.case_metrics["recall_at_3"],
+                    recall_at_5=case_result.case_metrics["recall_at_5"],
+                    precision_at_3=case_result.case_metrics["precision_at_3"],
+                    precision_at_5=case_result.case_metrics["precision_at_5"],
+                    reciprocal_rank=case_result.case_metrics["reciprocal_rank"],
+                    forbidden_hit=case_result.case_metrics["forbidden_hit"],
+                    solution_boundary_violation=case_result.case_metrics["solution_boundary_violation"],
+                    request_error=case_result.case_metrics["request_error"],
+                ),
+                failure_reasons=list(case_result.failure_taxonomy),
+                passed_blocking_gate=case_result.passed_blocking_gate,
+                latency_ms=run_result.latency_ms,
+                error_type=run_result.error_type,
+                error_message=run_result.error_message,
+            )
+        )
+    return formal_results
+
+
+def build_formal_summary_v2(
+    *,
+    benchmark_version: str,
+    benchmark_config_hash: str,
+    method_config_hash: str,
+    retrieval_method: RetrievalMethod,
+    report: RetrievalRunnerV2Report,
+    document_count: int,
+    chunk_count: int,
+    model_name: str | None = None,
+    resolved_model_revision: str | None = None,
+    embedding_dimension: int | None = None,
+    corpus_embedding_count: int | None = None,
+    corpus_embedding_build_ms: int | None = None,
+    cache_hit_count: int | None = None,
+    cache_miss_count: int | None = None,
+) -> RetrievalFormalSummaryV2:
+    failed_case_ids = [result.retrieval_case_id for result in report.case_results if not result.passed_blocking_gate]
+    return RetrievalFormalSummaryV2(
+        benchmark_version=benchmark_version,
+        retrieval_method=retrieval_method,
+        method_config_hash=method_config_hash,
+        benchmark_config_hash=benchmark_config_hash,
+        document_count=document_count,
+        chunk_count=chunk_count,
+        case_count=report.summary.case_count,
+        recall_at_1=report.summary.recall_at_1,
+        recall_at_3=report.summary.recall_at_3,
+        recall_at_5=report.summary.recall_at_5,
+        precision_at_3=report.summary.precision_at_3,
+        precision_at_5=report.summary.precision_at_5,
+        mean_reciprocal_rank=report.summary.mean_reciprocal_rank,
+        forbidden_hit_rate=report.summary.forbidden_hit_rate,
+        solution_boundary_violation_rate=report.summary.solution_boundary_violation_rate,
+        request_error_count=report.summary.request_error_count,
+        failed_case_ids=failed_case_ids,
+        failure_taxonomy=_summarize_failure_taxonomy_counts(report.case_results),
+        eligible_for_rag=report.summary.eligible_for_rag,
+        disqualification_reasons=list(report.summary.disqualification_reasons),
+        average_latency_ms=report.summary.average_latency_ms,
+        model_name=model_name,
+        resolved_model_revision=resolved_model_revision,
+        embedding_dimension=embedding_dimension,
+        corpus_embedding_count=corpus_embedding_count,
+        corpus_embedding_build_ms=corpus_embedding_build_ms,
+        cache_hit_count=cache_hit_count,
+        cache_miss_count=cache_miss_count,
+    )
+
+
+def recompute_summary_metrics_from_formal_results_v2(
+    results: list[RetrievalFormalCaseResultV2],
+) -> dict[str, Any]:
+    case_count = len(results)
+    if case_count == 0:
+        raise ValueError("Formal v2 results must contain at least one case.")
+    failed_case_ids = [result.retrieval_case_id for result in results if not result.passed_blocking_gate]
+    request_error_count = sum(1 for result in results if result.error_type is not None)
+    forbidden_hit_rate = sum(1.0 if result.case_metrics.forbidden_hit else 0.0 for result in results) / case_count
+    solution_boundary_violation_rate = (
+        sum(1.0 if result.case_metrics.solution_boundary_violation else 0.0 for result in results) / case_count
+    )
+    return {
+        "case_count": case_count,
+        "recall_at_1": sum(result.case_metrics.recall_at_1 for result in results) / case_count,
+        "recall_at_3": sum(result.case_metrics.recall_at_3 for result in results) / case_count,
+        "recall_at_5": sum(result.case_metrics.recall_at_5 for result in results) / case_count,
+        "precision_at_3": sum(result.case_metrics.precision_at_3 for result in results) / case_count,
+        "precision_at_5": sum(result.case_metrics.precision_at_5 for result in results) / case_count,
+        "mean_reciprocal_rank": sum(result.case_metrics.reciprocal_rank for result in results) / case_count,
+        "forbidden_hit_rate": forbidden_hit_rate,
+        "solution_boundary_violation_rate": solution_boundary_violation_rate,
+        "request_error_count": request_error_count,
+        "failed_case_ids": failed_case_ids,
+        "failure_taxonomy": _summarize_formal_failure_taxonomy(results),
+        "eligible_for_rag": (
+            case_count > 0
+            and all(result.passed_blocking_gate for result in results)
+            and forbidden_hit_rate == 0.0
+            and solution_boundary_violation_rate == 0.0
+            and request_error_count == 0
+            and (sum(result.case_metrics.recall_at_5 for result in results) / case_count) == 1.0
+        ),
+        "average_latency_ms": sum(result.latency_ms for result in results) / case_count,
+        "disqualification_reasons": _ordered_formal_failure_reasons(results),
+    }
+
+
+def _summarize_failure_taxonomy_counts(case_results: list[RetrievalRunnerV2CaseResult]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for case_result in case_results:
+        seen_for_case: set[str] = set()
+        for reason in case_result.failure_taxonomy:
+            if reason in seen_for_case:
+                continue
+            counts[reason] = counts.get(reason, 0) + 1
+            seen_for_case.add(reason)
+    return dict(sorted(counts.items()))
+
+
+def _summarize_formal_failure_taxonomy(results: list[RetrievalFormalCaseResultV2]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for result in results:
+        seen_for_case: set[str] = set()
+        for reason in result.failure_reasons:
+            if reason in seen_for_case:
+                continue
+            counts[reason] = counts.get(reason, 0) + 1
+            seen_for_case.add(reason)
+    return dict(sorted(counts.items()))
+
+
+def _ordered_formal_failure_reasons(results: list[RetrievalFormalCaseResultV2]) -> list[str]:
+    ordered: list[str] = []
+    for result in results:
+        for reason in result.failure_reasons:
+            if reason not in ordered:
+                ordered.append(reason)
+    return ordered
+
+
+def _optional_int(value: Any) -> int | None:
+    if value is None:
+        return None
+    return int(value)
+
+
+def _optional_float(value: Any) -> float | None:
+    if value is None:
+        return None
+    return float(value)
 
 
 def _build_debug_payload(

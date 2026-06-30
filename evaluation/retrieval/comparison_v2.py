@@ -7,7 +7,9 @@ from schemas.common_models import StrictBaseModel
 
 
 class RetrievalMethodComparisonV2(StrictBaseModel):
+    benchmark_version: str | None = None
     entries: list[RetrievalMethodComparisonEntry] = Field(default_factory=list)
+    method_summaries: list[RetrievalMethodComparisonEntry] = Field(default_factory=list)
     selected_method: str | None = None
     selection_status: str
     selection_reasons: list[str] = Field(default_factory=list)
@@ -23,6 +25,7 @@ class RetrievalMethodComparisonV2(StrictBaseModel):
 def select_retrieval_method_v2(
     *,
     entries: list[RetrievalMethodComparisonEntry],
+    benchmark_version: str | None = None,
     benchmark_config_hash: str,
     method_config_hashes: dict[str, str],
     retrieval_contract_version: str,
@@ -31,7 +34,9 @@ def select_retrieval_method_v2(
 ) -> RetrievalMethodComparisonV2:
     comparison = select_retrieval_method(entries)
     return RetrievalMethodComparisonV2(
+        benchmark_version=benchmark_version,
         entries=entries,
+        method_summaries=entries,
         selected_method=comparison.selected_method.value if comparison.selected_method else None,
         selection_status=comparison.selection_status,
         selection_reasons=list(comparison.selection_reasons),

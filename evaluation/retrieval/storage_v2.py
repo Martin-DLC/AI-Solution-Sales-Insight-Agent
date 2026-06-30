@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +26,7 @@ FORMAL_V2_OUTPUT_PATHS = {
     "hybrid_summary": Path("data/evaluation/retrieval/hybrid_baseline_summary.v2.json"),
     "comparison": Path("data/evaluation/retrieval/retrieval_method_comparison.v2.json"),
 }
+FORMAL_V2_ATTEMPT_ROOT = Path("data/runtime/retrieval_benchmark_v2_attempts")
 
 
 def formal_v2_output_paths() -> dict[str, Path]:
@@ -32,6 +35,75 @@ def formal_v2_output_paths() -> dict[str, Path]:
 
 def formal_v2_results_exist() -> bool:
     return any(path.exists() for path in FORMAL_V2_OUTPUT_PATHS.values())
+
+
+def formal_v2_missing_outputs() -> list[Path]:
+    return [path for path in FORMAL_V2_OUTPUT_PATHS.values() if not path.exists()]
+
+
+def create_formal_v2_stage_dir(stage_root: str | Path | None = None) -> Path:
+    root = Path(stage_root) if stage_root is not None else FORMAL_V2_ATTEMPT_ROOT
+    root.mkdir(parents=True, exist_ok=True)
+    return Path(tempfile.mkdtemp(prefix="formal_v2_publish_", dir=root))
+
+
+def stage_formal_v2_outputs(
+    *,
+    serialized_outputs: dict[str, str],
+    output_paths: dict[str, Path] | None = None,
+    stage_root: str | Path | None = None,
+) -> tuple[Path, dict[str, Path]]:
+    resolved_paths = output_paths or formal_v2_output_paths()
+    stage_dir = create_formal_v2_stage_dir(stage_root)
+    staged_paths: dict[str, Path] = {}
+    for key, final_path in resolved_paths.items():
+        if key not in serialized_outputs:
+            raise ValueError(f"Missing serialized output for {key}.")
+        staged_path = stage_dir / final_path.name
+        staged_path.write_text(serialized_outputs[key], encoding="utf-8")
+        staged_paths[key] = staged_path
+    return stage_dir, staged_paths
+
+
+def publish_staged_formal_v2_outputs(
+    *,
+    staged_paths: dict[str, Path],
+    output_paths: dict[str, Path] | None = None,
+) -> None:
+    resolved_paths = output_paths or formal_v2_output_paths()
+    existing = [path for path in resolved_paths.values() if path.exists()]
+    if existing:
+        joined = ", ".join(str(path) for path in existing)
+        raise FileExistsError(f"Formal v2 results already exist and cannot be overwritten: {joined}")
+
+    published_paths: list[Path] = []
+    try:
+        for key, final_path in resolved_paths.items():
+            staged_path = staged_paths[key]
+            final_path.parent.mkdir(parents=True, exist_ok=True)
+            staged_path.replace(final_path)
+            published_paths.append(final_path)
+    except Exception:
+        for path in published_paths:
+            if path.exists():
+                path.unlink()
+        raise
+
+
+def remove_formal_v2_stage_dir(stage_dir: str | Path) -> None:
+    shutil.rmtree(Path(stage_dir), ignore_errors=True)
+
+
+def write_attempt_metadata(
+    *,
+    attempt_root: str | Path,
+    payload: dict[str, Any],
+) -> Path:
+    root = Path(attempt_root)
+    root.mkdir(parents=True, exist_ok=True)
+    path = root / "attempt_metadata.json"
+    path.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    return path
 
 
 def compute_file_sha256(path: str | Path) -> str:
