@@ -3,9 +3,25 @@ from evaluation.retrieval.comparison import (
     RetrievalMethodComparisonEntry,
     select_retrieval_method,
 )
+from evaluation.retrieval.contracts_v2 import (
+    CandidateBoundaryDecisionV2,
+    FeasibilityResult,
+    RetrievalEvaluationCaseV2,
+    RetrievalEvaluationGoldV2,
+    RetrievalRuntimeContextV2,
+    evaluate_candidate_boundary_v2,
+    validate_retrieval_case_feasibility_v2,
+)
 from evaluation.retrieval.dataset import (
     load_retrieval_evaluation_cases,
     validate_retrieval_evaluation_dataset,
+)
+from evaluation.retrieval.failure_taxonomy import (
+    RetrievalContractVersion,
+    RetrievalFailureReason,
+    classify_retrieval_failures_v1_legacy,
+    classify_retrieval_failures_v2,
+    missing_required_debug_fields_v2,
 )
 from evaluation.retrieval.metrics import (
     evaluate_retrieval_case,
@@ -33,9 +49,13 @@ from evaluation.retrieval.models import (
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
+    "RetrievalContractVersion",
     "RetrievalEvaluationCase",
+    "RetrievalEvaluationCaseV2",
     "RetrievalEvaluationDataset",
+    "RetrievalEvaluationGoldV2",
     "RetrievalEvaluationSummary",
+    "RetrievalFailureReason",
     "RetrievalFormalCaseResult",
     "RetrievalFormalSummary",
     "RetrievalDependencyVersions",
@@ -43,11 +63,18 @@ __all__ = [
     "RetrievalMethodComparison",
     "RetrievalMethodComparisonEntry",
     "RetrievalQueryType",
+    "RetrievalRuntimeContextV2",
     "RetrievalRunResult",
+    "CandidateBoundaryDecisionV2",
+    "FeasibilityResult",
+    "classify_retrieval_failures_v1_legacy",
+    "classify_retrieval_failures_v2",
     "evaluate_retrieval_case",
+    "evaluate_candidate_boundary_v2",
     "forbidden_hit_rate",
     "load_retrieval_evaluation_cases",
     "mean_reciprocal_rank",
+    "missing_required_debug_fields_v2",
     "precision_at_k",
     "recall_at_k",
     "select_retrieval_method",
@@ -55,4 +82,5 @@ __all__ = [
     "summarize_case_mix",
     "summarize_retrieval_results",
     "validate_retrieval_evaluation_dataset",
+    "validate_retrieval_case_feasibility_v2",
 ]

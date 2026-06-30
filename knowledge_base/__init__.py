@@ -19,23 +19,33 @@ from knowledge_base.models import (
     build_manifest,
 )
 from knowledge_base.chunking import build_knowledge_chunks
+from knowledge_base.contracts_v2 import (
+    KnowledgeChunkV2,
+    KnowledgeDocumentV2,
+    SolutionScopeType,
+    validate_chunk_scope_against_document_v2,
+)
 
 __all__ = [
     "DemoSolutionScope",
     "KnowledgeBaseCorpus",
     "KnowledgeBaseManifest",
     "KnowledgeChunk",
+    "KnowledgeChunkV2",
     "KnowledgeConfidentiality",
     "KnowledgeDocument",
+    "KnowledgeDocumentV2",
     "KnowledgeDocumentType",
     "KnowledgeSourceMode",
     "KnowledgeSourceStatus",
     "KnowledgeValidationStatus",
+    "SolutionScopeType",
     "build_manifest",
     "build_knowledge_chunks",
     "load_demo_solution_scope",
     "load_knowledge_chunks",
     "load_knowledge_documents",
     "load_knowledge_manifest",
+    "validate_chunk_scope_against_document_v2",
     "validate_knowledge_base_dataset",
 ]
