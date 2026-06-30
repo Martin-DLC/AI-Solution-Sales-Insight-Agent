@@ -89,6 +89,24 @@ Retriever 不得看到：
 
 Gold 只在候选返回后进入 Evaluation 阶段。
 
+## 5.1 Relevant Item 身份规则
+
+v2 Retrieval Metrics 的相关项身份固定为：
+
+- Document Gold 与 Chunk Gold 共同组成 Relevant Item 集合
+- Candidate 最多只能命中一个 Relevant Item
+- 如果 Candidate 的 `chunk_id` 命中 Expected Chunk，则该 Chunk 身份优先
+- 否则如果 Candidate 的 `document_id` 命中 Expected Document，则按 Document 身份命中
+- 不允许同一 Candidate 同时为一个 Document Gold 和一个 Chunk Gold 贡献两个 Relevant Hits
+- Recall / Precision / MRR 都基于上述单一 Relevant Item 身份规则计算
+
+这套规则同时用于：
+
+- 单条 Case Metrics
+- Summary 聚合
+- staging 校验
+- 正式结果 `--check`
+
 ## 6. v2 Scope 过滤语义
 
 Runner v2 使用：
@@ -145,6 +163,20 @@ Blocking Gate 维持与 v1 同等级：
 - `solution_boundary_violation_rate == 0`
 - `request_error_count == 0`
 - 所有 case 通过 blocking gate
+
+Summary 聚合的唯一真源是 Case Metrics 的宏平均：
+
+- `recall_at_1`
+- `recall_at_3`
+- `recall_at_5`
+- `precision_at_3`
+- `precision_at_5`
+- `mean_reciprocal_rank`
+- `forbidden_hit_rate`
+- `solution_boundary_violation_rate`
+- `average_latency_ms`
+
+staging 校验与正式结果 `--check` 必须复用同一套重算逻辑，不能再维护独立的第二套 Summary 聚合实现。
 
 ## 10. 正式结果路径
 
