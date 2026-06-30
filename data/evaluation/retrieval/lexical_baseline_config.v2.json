@@ -1,0 +1,43 @@
+{
+  "algorithm_config": {
+    "active_statuses": [
+      "approved"
+    ],
+    "b": 0.75,
+    "baseline_version": "lexical_v1",
+    "evaluation_date": "2026-06-29",
+    "field_weights": {
+      "citation_label": 2,
+      "content": 1,
+      "document_type": 1,
+      "industries": 1,
+      "solution_ids": 3,
+      "tags": 2
+    },
+    "k1": 1.5,
+    "retrieval_method": "weighted_bm25",
+    "score_round_digits": 6,
+    "synthetic_data": true,
+    "tie_break_rule": "score_desc_document_id_asc_chunk_id_asc",
+    "tokenizer_version": "mixed_lexical_v1",
+    "top_k": 5
+  },
+  "benchmark_config_file": "data/evaluation/retrieval/retrieval_benchmark_config.v2.json",
+  "benchmark_config_hash": "ca2aed9590fc0fef39cd3b478e50874933cc74d9e13921edb619de63e1f8afd8",
+  "boundary_contract_version": "v2",
+  "case_file": "data/evaluation/retrieval/retrieval_cases.v2.jsonl",
+  "chunk_file": "data/knowledge_base/chunks.v2.jsonl",
+  "config_version": "1.0",
+  "document_file": "data/knowledge_base/documents.v2.jsonl",
+  "failure_taxonomy_version": "v2_method_aware",
+  "formal_output_paths": {
+    "results": "data/evaluation/retrieval/lexical_baseline_results.v2.jsonl",
+    "summary": "data/evaluation/retrieval/lexical_baseline_summary.v2.json"
+  },
+  "knowledge_contract_version": "v2",
+  "method_config_id": "lexical_v2",
+  "retrieval_contract_version": "v2_method_aware",
+  "retrieval_method": "lexical_v1",
+  "source_v1_config_file": "data/evaluation/retrieval/lexical_baseline_config.v1.json",
+  "source_v1_config_hash": "c8ef0031cb4ee7484d8f42fd52f5fd0887a6cc59d0ef96fb43216a6bb78e7e65"
+}

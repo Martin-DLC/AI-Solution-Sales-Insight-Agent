@@ -3,6 +3,10 @@ from evaluation.retrieval.comparison import (
     RetrievalMethodComparisonEntry,
     select_retrieval_method,
 )
+from evaluation.retrieval.comparison_v2 import (
+    RetrievalMethodComparisonV2,
+    select_retrieval_method_v2,
+)
 from evaluation.retrieval.contracts_v2 import (
     CandidateBoundaryDecisionV2,
     FeasibilityResult,
@@ -46,6 +50,25 @@ from evaluation.retrieval.models import (
     RetrievalRunResult,
     summarize_case_mix,
 )
+from evaluation.retrieval.runner_v2 import (
+    RetrievalRunnerV2CaseResult,
+    RetrievalRunnerV2Report,
+    RetrievalRuntimeInputV2,
+    evaluate_retrieval_case_v2,
+    make_runtime_input_v2,
+    project_v2_chunks_to_legacy_runtime_inputs,
+    project_v2_documents_to_legacy_runtime_inputs,
+    run_retrieval_evaluation_v2,
+    runtime_input_has_gold_leak,
+    runtime_input_to_retriever_filters,
+)
+from evaluation.retrieval.storage_v2 import (
+    NON_DETERMINISTIC_RESULT_FIELDS_V2,
+    compare_payloads_ignoring_runtime_fields,
+    compute_file_sha256,
+    formal_v2_output_paths,
+    formal_v2_results_exist,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -62,9 +85,13 @@ __all__ = [
     "RetrievalMethod",
     "RetrievalMethodComparison",
     "RetrievalMethodComparisonEntry",
+    "RetrievalMethodComparisonV2",
     "RetrievalQueryType",
+    "RetrievalRuntimeInputV2",
     "RetrievalRuntimeContextV2",
     "RetrievalRunResult",
+    "RetrievalRunnerV2CaseResult",
+    "RetrievalRunnerV2Report",
     "CandidateBoundaryDecisionV2",
     "FeasibilityResult",
     "classify_retrieval_failures_v1_legacy",
@@ -78,9 +105,22 @@ __all__ = [
     "precision_at_k",
     "recall_at_k",
     "select_retrieval_method",
+    "select_retrieval_method_v2",
     "solution_boundary_violation_rate",
     "summarize_case_mix",
     "summarize_retrieval_results",
+    "run_retrieval_evaluation_v2",
+    "make_runtime_input_v2",
+    "runtime_input_to_retriever_filters",
+    "runtime_input_has_gold_leak",
+    "project_v2_documents_to_legacy_runtime_inputs",
+    "project_v2_chunks_to_legacy_runtime_inputs",
+    "evaluate_retrieval_case_v2",
+    "formal_v2_output_paths",
+    "formal_v2_results_exist",
+    "compute_file_sha256",
+    "compare_payloads_ignoring_runtime_fields",
+    "NON_DETERMINISTIC_RESULT_FIELDS_V2",
     "validate_retrieval_evaluation_dataset",
     "validate_retrieval_case_feasibility_v2",
 ]
