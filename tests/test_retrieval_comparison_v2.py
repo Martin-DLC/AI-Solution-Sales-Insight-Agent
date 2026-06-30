@@ -37,6 +37,7 @@ def test_v2_comparison_selects_best_eligible_method_with_metadata() -> None:
 
     assert comparison.selected_method == "lexical_v1"
     assert comparison.benchmark_config_hash == "bench"
+    assert comparison.method_summaries[0].retrieval_method == "lexical_v1"
 
 
 def test_v2_comparison_returns_no_eligible_method_when_all_fail_gate() -> None:
