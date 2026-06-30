@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
+from statistics import mean
 from typing import Any, Mapping
 
 from pydantic import Field
@@ -11,7 +12,6 @@ from evaluation.retrieval.metrics import (
     mean_reciprocal_rank,
     precision_at_k,
     recall_at_k,
-    summarize_retrieval_results,
 )
 from evaluation.retrieval.models import (
     RetrievalCandidate,
@@ -337,7 +337,7 @@ def run_retrieval_evaluation_v2(
             )
         )
 
-    summary = summarize_retrieval_results(case_scores)
+    summary = aggregate_summary_metrics_v2(case_scores)
     summary.eligible_for_rag = _passes_blocking_gate_v2(summary=summary, case_results=case_results)
     summary.disqualification_reasons = _summarize_failure_reasons(case_results)
     return RetrievalRunnerV2Report(
@@ -355,7 +355,7 @@ def evaluate_retrieval_case_v2(
     documents_by_id: dict[str, KnowledgeDocumentV2],
     chunks_by_id: dict[str, KnowledgeChunkV2],
 ) -> tuple[RetrievalCaseScore, list[list[str]]]:
-    relevant_ids = set(case.evaluation_gold.expected_relevant_document_ids) | set(case.evaluation_gold.expected_relevant_chunk_ids)
+    relevant_ids = _relevant_ids_v2(case)
     retrieved_document_ids = [candidate.document_id for candidate in result.retrieved_candidates]
     retrieved_ids = [
         _candidate_relevance_id_v2(
@@ -393,20 +393,15 @@ def evaluate_retrieval_case_v2(
         reasons.append("minimum_relevant_hits_not_met")
 
     return (
-        RetrievalCaseScore(
+        _build_case_score_v2(
             retrieval_case_id=case.retrieval_case_id,
             retrieval_method=result.retrieval_method,
-            recall_at_1=recall_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=1),
-            recall_at_3=recall_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=3),
-            recall_at_5=recall5,
-            precision_at_3=precision_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=3),
-            precision_at_5=precision_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=5),
-            reciprocal_rank=mean_reciprocal_rank(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids),
+            relevant_ids=relevant_ids,
+            retrieved_ids=retrieved_ids,
             forbidden_hit=forbidden_hit,
             solution_boundary_violation=solution_boundary_violation,
             request_error=request_error,
             latency_ms=result.latency_ms,
-            eligible_for_rag=not reasons,
             disqualification_reasons=reasons,
         ),
         boundary_reasons,
@@ -430,6 +425,13 @@ def _count_relevant_hits_v2(
     return hits
 
 
+def _relevant_ids_v2(case: RetrievalEvaluationCaseV2) -> set[str]:
+    # Relevant items are the union of document-level gold IDs and chunk-level gold IDs.
+    # A candidate may satisfy at most one relevant item identity: if it matches an expected
+    # chunk ID, that chunk identity wins; otherwise an expected document ID may match.
+    return set(case.evaluation_gold.expected_relevant_document_ids) | set(case.evaluation_gold.expected_relevant_chunk_ids)
+
+
 def _candidate_relevance_id_v2(
     *,
     document_id: str,
@@ -442,6 +444,72 @@ def _candidate_relevance_id_v2(
     if document_id in expected_document_ids:
         return document_id
     return chunk_id or document_id
+
+
+def _build_case_score_v2(
+    *,
+    retrieval_case_id: str,
+    retrieval_method: RetrievalMethod,
+    relevant_ids: set[str],
+    retrieved_ids: list[str],
+    forbidden_hit: bool,
+    solution_boundary_violation: bool,
+    request_error: bool,
+    latency_ms: int,
+    disqualification_reasons: list[str],
+) -> RetrievalCaseScore:
+    return RetrievalCaseScore(
+        retrieval_case_id=retrieval_case_id,
+        retrieval_method=retrieval_method,
+        recall_at_1=recall_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=1),
+        recall_at_3=recall_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=3),
+        recall_at_5=recall_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=5),
+        precision_at_3=precision_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=3),
+        precision_at_5=precision_at_k(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids, k=5),
+        reciprocal_rank=mean_reciprocal_rank(relevant_ids=relevant_ids, retrieved_ids=retrieved_ids),
+        forbidden_hit=forbidden_hit,
+        solution_boundary_violation=solution_boundary_violation,
+        request_error=request_error,
+        latency_ms=latency_ms,
+        eligible_for_rag=not disqualification_reasons,
+        disqualification_reasons=list(disqualification_reasons),
+    )
+
+
+def aggregate_summary_metrics_v2(
+    case_scores: list[RetrievalCaseScore],
+) -> RetrievalEvaluationSummary:
+    if not case_scores:
+        raise ValueError("Retrieval summary requires at least one case result.")
+
+    methods = {result.retrieval_method for result in case_scores}
+    if len(methods) != 1:
+        raise ValueError("Retrieval summary requires a single retrieval_method; mixed methods are not supported.")
+
+    request_error_count = sum(1 for result in case_scores if result.request_error)
+    disqualification_reasons: list[str] = []
+    for result in case_scores:
+        for reason in result.disqualification_reasons:
+            if reason not in disqualification_reasons:
+                disqualification_reasons.append(reason)
+
+    summary = RetrievalEvaluationSummary(
+        retrieval_method=next(iter(methods)),
+        case_count=len(case_scores),
+        recall_at_1=mean(result.recall_at_1 for result in case_scores),
+        recall_at_3=mean(result.recall_at_3 for result in case_scores),
+        recall_at_5=mean(result.recall_at_5 for result in case_scores),
+        precision_at_3=mean(result.precision_at_3 for result in case_scores),
+        precision_at_5=mean(result.precision_at_5 for result in case_scores),
+        mean_reciprocal_rank=mean(result.reciprocal_rank for result in case_scores),
+        forbidden_hit_rate=mean(1.0 if result.forbidden_hit else 0.0 for result in case_scores),
+        solution_boundary_violation_rate=mean(1.0 if result.solution_boundary_violation else 0.0 for result in case_scores),
+        average_latency_ms=mean(result.latency_ms for result in case_scores),
+        request_error_count=request_error_count,
+        eligible_for_rag=False,
+        disqualification_reasons=disqualification_reasons,
+    )
+    return summary
 
 
 def _passes_blocking_gate_v2(
@@ -588,38 +656,53 @@ def build_formal_summary_v2(
 def recompute_summary_metrics_from_formal_results_v2(
     results: list[RetrievalFormalCaseResultV2],
 ) -> dict[str, Any]:
-    case_count = len(results)
-    if case_count == 0:
+    if not results:
         raise ValueError("Formal v2 results must contain at least one case.")
+    case_scores = [
+        RetrievalCaseScore(
+            retrieval_case_id=result.retrieval_case_id,
+            retrieval_method=result.retrieval_method,
+            recall_at_1=result.case_metrics.recall_at_1,
+            recall_at_3=result.case_metrics.recall_at_3,
+            recall_at_5=result.case_metrics.recall_at_5,
+            precision_at_3=result.case_metrics.precision_at_3,
+            precision_at_5=result.case_metrics.precision_at_5,
+            reciprocal_rank=result.case_metrics.reciprocal_rank,
+            forbidden_hit=result.case_metrics.forbidden_hit,
+            solution_boundary_violation=result.case_metrics.solution_boundary_violation,
+            request_error=result.case_metrics.request_error,
+            latency_ms=result.latency_ms,
+            eligible_for_rag=result.passed_blocking_gate,
+            disqualification_reasons=list(result.failure_reasons),
+        )
+        for result in results
+    ]
+    summary = aggregate_summary_metrics_v2(case_scores)
     failed_case_ids = [result.retrieval_case_id for result in results if not result.passed_blocking_gate]
     request_error_count = sum(1 for result in results if result.error_type is not None)
-    forbidden_hit_rate = sum(1.0 if result.case_metrics.forbidden_hit else 0.0 for result in results) / case_count
-    solution_boundary_violation_rate = (
-        sum(1.0 if result.case_metrics.solution_boundary_violation else 0.0 for result in results) / case_count
+    summary.eligible_for_rag = (
+        summary.recall_at_5 == 1.0
+        and summary.forbidden_hit_rate == 0.0
+        and summary.solution_boundary_violation_rate == 0.0
+        and request_error_count == 0
+        and all(result.passed_blocking_gate for result in results)
     )
     return {
-        "case_count": case_count,
-        "recall_at_1": sum(result.case_metrics.recall_at_1 for result in results) / case_count,
-        "recall_at_3": sum(result.case_metrics.recall_at_3 for result in results) / case_count,
-        "recall_at_5": sum(result.case_metrics.recall_at_5 for result in results) / case_count,
-        "precision_at_3": sum(result.case_metrics.precision_at_3 for result in results) / case_count,
-        "precision_at_5": sum(result.case_metrics.precision_at_5 for result in results) / case_count,
-        "mean_reciprocal_rank": sum(result.case_metrics.reciprocal_rank for result in results) / case_count,
-        "forbidden_hit_rate": forbidden_hit_rate,
-        "solution_boundary_violation_rate": solution_boundary_violation_rate,
+        "case_count": summary.case_count,
+        "recall_at_1": summary.recall_at_1,
+        "recall_at_3": summary.recall_at_3,
+        "recall_at_5": summary.recall_at_5,
+        "precision_at_3": summary.precision_at_3,
+        "precision_at_5": summary.precision_at_5,
+        "mean_reciprocal_rank": summary.mean_reciprocal_rank,
+        "forbidden_hit_rate": summary.forbidden_hit_rate,
+        "solution_boundary_violation_rate": summary.solution_boundary_violation_rate,
         "request_error_count": request_error_count,
         "failed_case_ids": failed_case_ids,
         "failure_taxonomy": _summarize_formal_failure_taxonomy(results),
-        "eligible_for_rag": (
-            case_count > 0
-            and all(result.passed_blocking_gate for result in results)
-            and forbidden_hit_rate == 0.0
-            and solution_boundary_violation_rate == 0.0
-            and request_error_count == 0
-            and (sum(result.case_metrics.recall_at_5 for result in results) / case_count) == 1.0
-        ),
-        "average_latency_ms": sum(result.latency_ms for result in results) / case_count,
-        "disqualification_reasons": _ordered_formal_failure_reasons(results),
+        "eligible_for_rag": summary.eligible_for_rag,
+        "average_latency_ms": summary.average_latency_ms,
+        "disqualification_reasons": list(summary.disqualification_reasons),
     }
 
 
