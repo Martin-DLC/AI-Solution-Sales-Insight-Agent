@@ -22,7 +22,11 @@ from knowledge_base.chunking import build_knowledge_chunks
 from knowledge_base.contracts_v2 import (
     KnowledgeChunkV2,
     KnowledgeDocumentV2,
+    SolutionScopeV2,
     SolutionScopeType,
+    chunk_content_projection_v1,
+    content_projection_hash,
+    document_content_projection_v1,
     validate_chunk_scope_against_document_v2,
 )
 
@@ -39,9 +43,13 @@ __all__ = [
     "KnowledgeSourceMode",
     "KnowledgeSourceStatus",
     "KnowledgeValidationStatus",
+    "SolutionScopeV2",
     "SolutionScopeType",
     "build_manifest",
     "build_knowledge_chunks",
+    "chunk_content_projection_v1",
+    "content_projection_hash",
+    "document_content_projection_v1",
     "load_demo_solution_scope",
     "load_knowledge_chunks",
     "load_knowledge_documents",
