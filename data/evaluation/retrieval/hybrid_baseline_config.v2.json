@@ -1,0 +1,35 @@
+{
+  "algorithm_config": {
+    "baseline_version": "hybrid_rrf_v1",
+    "lexical_candidate_k": 20,
+    "lexical_method": "weighted_bm25",
+    "lexical_weight": 1.0,
+    "output_top_k": 5,
+    "retrieval_method": "lexical_vector_rrf",
+    "rrf_k": 60,
+    "score_round_digits": 8,
+    "synthetic_data": true,
+    "tie_break_rule": "rrf_score_desc_document_id_asc_chunk_id_asc",
+    "vector_candidate_k": 20,
+    "vector_method": "dense_cosine",
+    "vector_weight": 1.0
+  },
+  "benchmark_config_file": "data/evaluation/retrieval/retrieval_benchmark_config.v2.json",
+  "benchmark_config_hash": "ca2aed9590fc0fef39cd3b478e50874933cc74d9e13921edb619de63e1f8afd8",
+  "boundary_contract_version": "v2",
+  "case_file": "data/evaluation/retrieval/retrieval_cases.v2.jsonl",
+  "chunk_file": "data/knowledge_base/chunks.v2.jsonl",
+  "config_version": "1.0",
+  "document_file": "data/knowledge_base/documents.v2.jsonl",
+  "failure_taxonomy_version": "v2_method_aware",
+  "formal_output_paths": {
+    "results": "data/evaluation/retrieval/hybrid_baseline_results.v2.jsonl",
+    "summary": "data/evaluation/retrieval/hybrid_baseline_summary.v2.json"
+  },
+  "knowledge_contract_version": "v2",
+  "method_config_id": "hybrid_v2",
+  "retrieval_contract_version": "v2_method_aware",
+  "retrieval_method": "hybrid_v1",
+  "source_v1_config_file": "data/evaluation/retrieval/hybrid_baseline_config.v1.json",
+  "source_v1_config_hash": "0a74e2e866ae206685b22a77c1536afc1b869f15abc4fa2e496b3f692805e1d2"
+}

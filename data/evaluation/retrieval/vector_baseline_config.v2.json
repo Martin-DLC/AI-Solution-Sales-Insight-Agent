@@ -1,0 +1,43 @@
+{
+  "algorithm_config": {
+    "active_statuses": [
+      "approved"
+    ],
+    "baseline_version": "vector_v1",
+    "batch_size": 16,
+    "cache_directory": "data/runtime/retrieval_embeddings",
+    "cache_enabled": true,
+    "candidate_k": 20,
+    "device": "cpu",
+    "document_prefix": "passage: ",
+    "embedding_provider": "sentence_transformers",
+    "evaluation_date": "2026-06-29",
+    "model_name_or_path": "intfloat/multilingual-e5-small",
+    "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "normalize_embeddings": true,
+    "query_prefix": "query: ",
+    "retrieval_method": "dense_cosine",
+    "score_round_digits": 8,
+    "synthetic_data": true,
+    "tie_break_rule": "score_desc_document_id_asc_chunk_id_asc",
+    "top_k": 5
+  },
+  "benchmark_config_file": "data/evaluation/retrieval/retrieval_benchmark_config.v2.json",
+  "benchmark_config_hash": "ca2aed9590fc0fef39cd3b478e50874933cc74d9e13921edb619de63e1f8afd8",
+  "boundary_contract_version": "v2",
+  "case_file": "data/evaluation/retrieval/retrieval_cases.v2.jsonl",
+  "chunk_file": "data/knowledge_base/chunks.v2.jsonl",
+  "config_version": "1.0",
+  "document_file": "data/knowledge_base/documents.v2.jsonl",
+  "failure_taxonomy_version": "v2_method_aware",
+  "formal_output_paths": {
+    "results": "data/evaluation/retrieval/vector_baseline_results.v2.jsonl",
+    "summary": "data/evaluation/retrieval/vector_baseline_summary.v2.json"
+  },
+  "knowledge_contract_version": "v2",
+  "method_config_id": "vector_v2",
+  "retrieval_contract_version": "v2_method_aware",
+  "retrieval_method": "vector_v1",
+  "source_v1_config_file": "data/evaluation/retrieval/vector_baseline_config.v1.json",
+  "source_v1_config_hash": "403362baee5d18091311239d9ec38ce3350222123f7f58f733f62e3260407ff5"
+}
