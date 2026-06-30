@@ -66,6 +66,11 @@ HYBRID_CONFIG_V2_PATH = Path("data/evaluation/retrieval/hybrid_baseline_config.v
 BENCHMARK_CONFIG_V2_PATH = Path("data/evaluation/retrieval/retrieval_benchmark_config.v2.json")
 
 
+FORMAL_RESULT_STATE_NOT_GENERATED = "not_generated"
+FORMAL_RESULT_STATE_COMPLETE = "complete"
+FORMAL_RESULT_STATE_PARTIAL = "partial"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Plan, validate, smoke, readiness check, or formally run Retrieval Benchmark v2.")
     parser.add_argument("--validate", action="store_true")
@@ -136,6 +141,10 @@ def build_plan_payload() -> dict[str, Any]:
 
 
 def build_validate_payload() -> dict[str, Any]:
+    return _build_core_validation_payload()
+
+
+def _build_core_validation_payload() -> dict[str, Any]:
     benchmark_config = load_json_record(BENCHMARK_CONFIG_V2_PATH)
     method_configs = _load_method_configs()
     _validate_method_configs_against_v1(method_configs)
@@ -145,8 +154,6 @@ def build_validate_payload() -> dict[str, Any]:
     feasibility = load_json_record(Path(benchmark_config["feasibility_file"]))
     if feasibility["summary"]["infeasible_case_count"] != 0:
         raise ValueError("Retrieval Benchmark v2 validate requires all 16 cases to be feasible.")
-    if formal_v2_results_exist():
-        raise ValueError("Formal v2 result files already exist; validate expects them to be absent before the first formal run.")
     return {
         "mode": "validate",
         "benchmark_config_hash": compute_file_sha256(BENCHMARK_CONFIG_V2_PATH),
@@ -154,7 +161,7 @@ def build_validate_payload() -> dict[str, Any]:
         "chunk_count": len(chunks),
         "case_count": len(cases),
         "feasible_case_count": feasibility["summary"]["feasible_case_count"],
-        "formal_results_exist": False,
+        "formal_results_exist": formal_v2_results_exist(),
         "dependency_report": get_embedding_dependency_report(),
         "method_configs": {
             name: {
@@ -167,8 +174,27 @@ def build_validate_payload() -> dict[str, Any]:
     }
 
 
+def inspect_formal_result_state() -> dict[str, Any]:
+    output_paths = formal_v2_output_paths()
+    existing = {name: str(path) for name, path in output_paths.items() if path.exists()}
+    missing = {name: str(path) for name, path in output_paths.items() if not path.exists()}
+    if not existing:
+        state = FORMAL_RESULT_STATE_NOT_GENERATED
+    elif not missing:
+        state = FORMAL_RESULT_STATE_COMPLETE
+    else:
+        state = FORMAL_RESULT_STATE_PARTIAL
+    return {
+        "state": state,
+        "existing_paths": existing,
+        "missing_paths": missing,
+        "formal_results_exist": bool(existing),
+    }
+
+
 def build_formal_readiness_payload() -> dict[str, Any]:
-    validate_payload = build_validate_payload()
+    validate_payload = _build_core_validation_payload()
+    formal_result_state = inspect_formal_result_state()
     vector_config = _load_vector_config()
     runtime_root = Path("data/runtime/retrieval_benchmark_v2_attempts")
     cache_dir = PROJECT_ROOT / vector_config.cache_directory
@@ -178,8 +204,30 @@ def build_formal_readiness_payload() -> dict[str, Any]:
     )
     runtime_root.mkdir(parents=True, exist_ok=True)
     cache_dir.mkdir(parents=True, exist_ok=True)
+    readiness_reasons: list[str] = []
+    if formal_result_state["state"] != FORMAL_RESULT_STATE_NOT_GENERATED:
+        if formal_result_state["state"] == FORMAL_RESULT_STATE_COMPLETE:
+            readiness_reasons.append("formal_results_already_exist")
+        else:
+            readiness_reasons.append("partial_formal_results_detected")
+    if validate_payload["case_count"] != 16:
+        readiness_reasons.append("unexpected_case_count")
+    if validate_payload["document_count"] != 20:
+        readiness_reasons.append("unexpected_document_count")
+    if validate_payload["chunk_count"] != 40:
+        readiness_reasons.append("unexpected_chunk_count")
+    if validate_payload["feasible_case_count"] != 16:
+        readiness_reasons.append("infeasible_cases_present")
+    if not snapshot_available:
+        readiness_reasons.append("local_snapshot_unavailable")
+    if not _network_is_blocked():
+        readiness_reasons.append("network_not_blocked")
+    if not _directory_writable(runtime_root):
+        readiness_reasons.append("runtime_directory_not_writable")
+    if not _directory_writable(cache_dir):
+        readiness_reasons.append("cache_directory_not_writable")
     ready = (
-        validate_payload["formal_results_exist"] is False
+        formal_result_state["state"] == FORMAL_RESULT_STATE_NOT_GENERATED
         and validate_payload["case_count"] == 16
         and validate_payload["document_count"] == 20
         and validate_payload["chunk_count"] == 40
@@ -192,7 +240,11 @@ def build_formal_readiness_payload() -> dict[str, Any]:
     return {
         "mode": "formal_readiness",
         "ready_for_single_formal_run": ready,
-        "formal_results_exist": False,
+        "formal_results_exist": formal_result_state["formal_results_exist"],
+        "formal_result_state": formal_result_state["state"],
+        "readiness_reasons": readiness_reasons,
+        "existing_formal_output_paths": formal_result_state["existing_paths"],
+        "missing_formal_output_paths": formal_result_state["missing_paths"],
         "network_blocked": _network_is_blocked(),
         "local_snapshot_available": snapshot_available,
         "runtime_directory_writable": _directory_writable(runtime_root),
@@ -335,18 +387,35 @@ def run_offline_model_smoke() -> dict[str, Any]:
 
 
 def build_check_payload() -> tuple[dict[str, Any], bool]:
-    validate_payload = build_validate_payload()
-    if not formal_v2_results_exist():
+    validate_payload = _build_core_validation_payload()
+    formal_result_state = inspect_formal_result_state()
+    if formal_result_state["state"] == FORMAL_RESULT_STATE_NOT_GENERATED:
         return (
             {
                 "mode": "check",
                 "status": "formal_results_not_generated",
                 "formal_output_paths": {name: str(path) for name, path in formal_v2_output_paths().items()},
                 "formal_results_exist": False,
+                "formal_result_state": formal_result_state["state"],
                 "non_deterministic_result_fields": sorted(NON_DETERMINISTIC_RESULT_FIELDS_V2),
                 "validate": validate_payload,
             },
             True,
+        )
+    if formal_result_state["state"] == FORMAL_RESULT_STATE_PARTIAL:
+        return (
+            {
+                "mode": "check",
+                "status": "partial_formal_results_detected",
+                "formal_results_exist": True,
+                "formal_result_state": formal_result_state["state"],
+                "formal_output_paths": {name: str(path) for name, path in formal_v2_output_paths().items()},
+                "existing_formal_output_paths": formal_result_state["existing_paths"],
+                "missing_formal_output_paths": formal_result_state["missing_paths"],
+                "non_deterministic_result_fields": sorted(NON_DETERMINISTIC_RESULT_FIELDS_V2),
+                "validate": validate_payload,
+            },
+            False,
         )
 
     generated_payloads = build_formal_payloads()
@@ -358,6 +427,7 @@ def build_check_payload() -> tuple[dict[str, Any], bool]:
             "mode": "check",
             "status": "formal_results_match" if ok else "formal_results_mismatch",
             "formal_results_exist": True,
+            "formal_result_state": formal_result_state["state"],
             "formal_output_paths": {name: str(path) for name, path in formal_v2_output_paths().items()},
             "non_deterministic_result_fields": sorted(NON_DETERMINISTIC_RESULT_FIELDS_V2),
             "validate": validate_payload,
