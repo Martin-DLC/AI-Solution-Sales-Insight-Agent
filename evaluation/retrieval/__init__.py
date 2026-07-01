@@ -82,6 +82,19 @@ from evaluation.retrieval.storage_v2 import (
     stage_formal_v2_outputs,
     write_attempt_metadata,
 )
+from evaluation.retrieval.diagnostics_v2 import (
+    DIAGNOSIS_DOC_PATH,
+    DIAGNOSIS_OUTPUT_PATH,
+    TOP_K_DIAGNOSTIC,
+    TOP_K_FORMAL,
+    build_case_recall_feasibility,
+    build_diagnosis_payload,
+    build_plan_payload as build_retrieval_v2_failure_diagnosis_plan_payload,
+    check_diagnosis_outputs,
+    compute_formal_result_hashes,
+    render_diagnosis_markdown,
+    write_diagnosis_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -147,6 +160,17 @@ __all__ = [
     "publish_staged_formal_v2_outputs",
     "remove_formal_v2_stage_dir",
     "write_attempt_metadata",
+    "TOP_K_FORMAL",
+    "TOP_K_DIAGNOSTIC",
+    "DIAGNOSIS_OUTPUT_PATH",
+    "DIAGNOSIS_DOC_PATH",
+    "build_case_recall_feasibility",
+    "build_diagnosis_payload",
+    "build_retrieval_v2_failure_diagnosis_plan_payload",
+    "check_diagnosis_outputs",
+    "compute_formal_result_hashes",
+    "render_diagnosis_markdown",
+    "write_diagnosis_outputs",
     "validate_retrieval_evaluation_dataset",
     "validate_retrieval_case_feasibility_v2",
 ]
