@@ -1,0 +1,4494 @@
+{
+  "analysis_version": "retrieval_v2_candidate_generation_analysis_v1",
+  "architecture_c_status": "blocked",
+  "best_candidate_generation_variant": {
+    "candidate_recall_at_10": 0.96875,
+    "candidate_recall_at_20": 0.96875,
+    "candidate_recall_at_5": 0.921875,
+    "eligible_corpus_size": 8,
+    "expected_item_full_corpus_ranks": {
+      "RET2-001": {
+        "KB-SEC-001": 4,
+        "KB-SEC-001#chunk-000-f8c40d662005": 3,
+        "KB-SOL-001": 2,
+        "KB-SOL-001#chunk-000-29777128c730": 1
+      },
+      "RET2-002": {
+        "KB-PLAY-001": 4,
+        "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+        "KB-SOL-002": 2,
+        "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+      },
+      "RET2-003": {
+        "KB-CAP-001": 4,
+        "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+        "KB-SOL-004": 2,
+        "KB-SOL-004#chunk-001-d15a10f713d4": 3
+      },
+      "RET2-004": {
+        "KB-INT-002": 2,
+        "KB-INT-002#chunk-000-37797d7945a6": 1,
+        "KB-SOL-005": 3,
+        "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+      },
+      "RET2-005": {
+        "KB-CAP-001#chunk-001-bcb4fc0bf316": 5,
+        "KB-SOL-001": 2,
+        "KB-SOL-001#chunk-001-5b4fdfa84476": 3
+      },
+      "RET2-006": {
+        "KB-SOL-003": 8,
+        "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+        "KB-SOL-004": 7,
+        "KB-SOL-004#chunk-001-d15a10f713d4": 3
+      },
+      "RET2-007": {
+        "KB-PLAY-002": 2,
+        "KB-PLAY-002#chunk-001-22fb4bafb8ba": 4,
+        "KB-SEC-001": 1,
+        "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+      },
+      "RET2-008": {
+        "KB-PLAY-001": 2,
+        "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+        "KB-SOL-005": 4,
+        "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+      },
+      "RET2-009": {
+        "KB-CAP-001#chunk-001-bcb4fc0bf316": 4,
+        "KB-SEC-001": 2,
+        "KB-SEC-001#chunk-000-f8c40d662005": 1,
+        "KB-SOL-001": 3
+      },
+      "RET2-010": {
+        "KB-SEC-001": 3,
+        "KB-SEC-001#chunk-000-f8c40d662005": 4,
+        "KB-SOL-006": 5,
+        "KB-SOL-006#chunk-000-c4df6924db79": 2
+      },
+      "RET2-011": {
+        "KB-INT-001": 2,
+        "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+        "KB-SOL-002": 3,
+        "KB-SOL-002#chunk-001-c241403338a2": 4
+      },
+      "RET2-012": {
+        "KB-INT-002": 2,
+        "KB-INT-002#chunk-000-37797d7945a6": 1,
+        "KB-SOL-005": 3,
+        "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+      },
+      "RET2-013": {
+        "KB-READY-001": 2,
+        "KB-READY-001#chunk-000-c25bf83f023f": 1,
+        "KB-SOL-003": 5,
+        "KB-SOL-003#chunk-001-adb6d47feec4": 3
+      },
+      "RET2-014": {
+        "KB-READY-002": 1,
+        "KB-READY-002#chunk-000-be9fffe3ad6d": 3,
+        "KB-SOL-006": 7,
+        "KB-SOL-006#chunk-001-f56196b3f373": 2
+      },
+      "RET2-015": {
+        "KB-CASE-001": null,
+        "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+        "KB-CASE-001#chunk-001-77cb36877788": 2,
+        "KB-SOL-003": 3
+      },
+      "RET2-016": {
+        "KB-CASE-002": null,
+        "KB-CASE-002#chunk-000-2c2107739c83": 1,
+        "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+        "KB-SOL-005": 3
+      }
+    },
+    "failed_case_ids": [
+      "RET2-001",
+      "RET2-002",
+      "RET2-005",
+      "RET2-006",
+      "RET2-009",
+      "RET2-015",
+      "RET2-016"
+    ],
+    "forbidden_hit_rate_at_20": 0.0,
+    "full_recall_case_count_at_10": 14,
+    "full_recall_case_count_at_20": 14,
+    "full_recall_case_count_at_5": 12,
+    "method_id": "vector_v1",
+    "missing_relevant_items_at_20": [
+      {
+        "case_id": "RET2-015",
+        "item_id": "KB-CASE-001",
+        "rank": null
+      },
+      {
+        "case_id": "RET2-016",
+        "item_id": "KB-CASE-002",
+        "rank": null
+      }
+    ],
+    "request_error_count": 0,
+    "solution_boundary_violation_rate_at_20": 0.3125,
+    "top5_summary_recall_at_5": 0.921875,
+    "variant_id": "G2"
+  },
+  "candidate_generation_ready": false,
+  "candidate_recall_at_20": {
+    "G0": {
+      "hybrid_v1": 0.96875,
+      "lexical_v1": 0.9322916666666667,
+      "vector_v1": 0.96875
+    },
+    "G1": {
+      "hybrid_v1": 0.875,
+      "lexical_v1": 0.8385416666666666,
+      "vector_v1": 0.875
+    },
+    "G2": {
+      "hybrid_v1": 0.96875,
+      "lexical_v1": 0.96875,
+      "vector_v1": 0.96875
+    },
+    "G3": {
+      "hybrid_v1": 0.96875,
+      "lexical_v1": 0.96875,
+      "vector_v1": 0.96875
+    },
+    "G4": {
+      "hybrid_v1": 0.96875,
+      "lexical_v1": 0.96875,
+      "vector_v1": 0.96875
+    },
+    "G5": {
+      "hybrid_v1": 0.96875,
+      "lexical_v1": 0.8541666666666666,
+      "vector_v1": 0.875
+    },
+    "G6": {
+      "hybrid_v1": 0.96875,
+      "lexical_v1": 0.875,
+      "vector_v1": 0.875
+    }
+  },
+  "counterfactual_analysis_hash": "6c3c2cad7023b3db95cbeb7c2a9144d687ef42362e64fa7694b79362cdb95803",
+  "current_candidate_generation_audit": {
+    "candidate_pool_truncation": {
+      "hybrid": "lexical_candidate_k=20 and vector_candidate_k=20 before fusion, then output_top_k=5",
+      "lexical": "top_k on scored chunk list",
+      "vector": "top_k on scored chunk list"
+    },
+    "hybrid_merge_strategy": "lexical top-20 union vector top-20, then fixed RRF dedupe by (document_id, chunk_id)",
+    "lexical_scoring_fields": [
+      "content",
+      "citation_label",
+      "tags",
+      "industries",
+      "solution_ids",
+      "document_type"
+    ],
+    "parent_document_context_in_chunk_vector_representation": false,
+    "retrieval_unit": "chunk for lexical, vector, and hybrid",
+    "runtime_filter_stage": "before scoring, but only with legacy document_types / industries / solution_ids / tags / statuses / effective_on filters",
+    "runtime_scope_metadata_used_before_scoring": false,
+    "section_heading_participates_in_lexical_scoring": "only through citation_label",
+    "section_heading_participates_in_vector_scoring": false,
+    "summary_participates_in_lexical_scoring": false,
+    "summary_participates_in_vector_scoring": false,
+    "title_participates_in_lexical_scoring": false,
+    "title_participates_in_vector_scoring": false,
+    "vector_document_prefix": "passage: ",
+    "vector_query_prefix": "query: ",
+    "vector_scoring_text": "chunk.content only"
+  },
+  "diagnostic_only": true,
+  "embedding_change_supported": false,
+  "formal_result_hashes": {
+    "comparison": "92c405e623246dacc154d935f31069f4e31b96e55c8886eea9ec9d314aea618d",
+    "hybrid_results": "c5a3ace3ce08914fc7af7426e2c20143863d123b9e5ea3cfff314c0cd8dc5c46",
+    "hybrid_summary": "d9543f66c64ff065ba5be0e6cc80a1a97dcafc1caa3fcb4622b6704052679d74",
+    "lexical_results": "41bfa53dda9a65e78f82eeab064e0a9436b47bb423b3c52d995e3b661e552bad",
+    "lexical_summary": "c5a48e917a897bd3ab76b2f815fdc07796e69ff0c9117534e50d0b13058f67e0",
+    "vector_results": "9db04530b0240d00175dd5f386b7cc4cea030266ba90bb3180063a5c320244c4",
+    "vector_summary": "766801ae928598de3e9ed23097f497764eeeac84e09da56ad6ee60b61cc8d585"
+  },
+  "full_recall_case_counts": {
+    "G0": {
+      "hybrid_v1": 14,
+      "lexical_v1": 12,
+      "vector_v1": 14
+    },
+    "G1": {
+      "hybrid_v1": 11,
+      "lexical_v1": 9,
+      "vector_v1": 11
+    },
+    "G2": {
+      "hybrid_v1": 14,
+      "lexical_v1": 14,
+      "vector_v1": 14
+    },
+    "G3": {
+      "hybrid_v1": 14,
+      "lexical_v1": 14,
+      "vector_v1": 14
+    },
+    "G4": {
+      "hybrid_v1": 14,
+      "lexical_v1": 14,
+      "vector_v1": 14
+    },
+    "G5": {
+      "hybrid_v1": 14,
+      "lexical_v1": 10,
+      "vector_v1": 11
+    },
+    "G6": {
+      "hybrid_v1": 14,
+      "lexical_v1": 11,
+      "vector_v1": 11
+    }
+  },
+  "limitations": [
+    "This analysis is diagnostic-only and does not modify formal retrieval results or production retrievers.",
+    "All experiments reuse the frozen v2 dataset and frozen model configuration in strict offline mode.",
+    "Gold is used only for evaluation; candidate generation and ranking variants do not consume gold IDs.",
+    "Document-level retrieval and dual-granularity union are non-formal experiments for candidate-pool diagnosis only."
+  ],
+  "missing_items_by_variant": {
+    "G0": {
+      "hybrid_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "lexical_v1": [
+        {
+          "case_id": "RET2-005",
+          "item_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-010",
+          "item_id": "KB-SOL-006",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "vector_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ]
+    },
+    "G1": {
+      "hybrid_v1": [
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "lexical_v1": [
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-005",
+          "item_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-010",
+          "item_id": "KB-SOL-006",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "vector_v1": [
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ]
+    },
+    "G2": {
+      "hybrid_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "lexical_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "vector_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ]
+    },
+    "G3": {
+      "hybrid_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "lexical_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "vector_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ]
+    },
+    "G4": {
+      "hybrid_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "lexical_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "vector_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ]
+    },
+    "G5": {
+      "hybrid_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "lexical_v1": [
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-005",
+          "item_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "vector_v1": [
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ]
+    },
+    "G6": {
+      "hybrid_v1": [
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "lexical_v1": [
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ],
+      "vector_v1": [
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-001",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-002",
+          "item_id": "KB-PLAY-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-009",
+          "item_id": "KB-SEC-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-015",
+          "item_id": "KB-CASE-001",
+          "rank": null
+        },
+        {
+          "case_id": "RET2-016",
+          "item_id": "KB-CASE-002",
+          "rank": null
+        }
+      ]
+    }
+  },
+  "per_variant_method_metrics": {
+    "G0": {
+      "hybrid_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.8854166666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 2,
+            "KB-SOL-001": 3,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 1
+          },
+          "RET2-006": {
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 8,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 3
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 4
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 5,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 2,
+            "KB-SEC-001": 5,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 3
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 4,
+            "KB-SOL-006": 6,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 3,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 5,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 3,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 7,
+            "KB-SOL-006#chunk-001-f56196b3f373": 2
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 3,
+            "KB-SOL-003": 2
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 9,
+        "method_id": "hybrid_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.8854166666666666,
+        "variant_id": "G0"
+      },
+      "lexical_v1": {
+        "candidate_recall_at_10": 0.9322916666666667,
+        "candidate_recall_at_20": 0.9322916666666667,
+        "candidate_recall_at_5": 0.8854166666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 2,
+            "KB-SOL-001": 4,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 3,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 4,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 1,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 3,
+            "KB-SOL-004": 2,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": null,
+            "KB-SOL-001": 3,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 1
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 8,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 4,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 2
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 3,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 5,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 2
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 2,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 4
+          },
+          "RET2-010": {
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 4,
+            "KB-SOL-006": null,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 4,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 5,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 1,
+            "KB-READY-001#chunk-000-c25bf83f023f": 2,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 6,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-010",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 12,
+        "full_recall_case_count_at_20": 12,
+        "full_recall_case_count_at_5": 9,
+        "method_id": "lexical_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-005",
+            "item_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-010",
+            "item_id": "KB-SOL-006",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.8854166666666666,
+        "variant_id": "G0"
+      },
+      "vector_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.8697916666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 3,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 2,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 1,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 6,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 7,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 2
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 1,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 4
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 5,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 6,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 2
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 5,
+            "KB-SOL-006": 6,
+            "KB-SOL-006#chunk-000-c4df6924db79": 2
+          },
+          "RET2-011": {
+            "KB-INT-001": 3,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-001-c241403338a2": 4
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 3,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 5,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 2
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 3,
+            "KB-SOL-006": 8,
+            "KB-SOL-006#chunk-001-f56196b3f373": 1
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 4,
+            "KB-SOL-003": 2
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 9,
+        "method_id": "vector_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.8697916666666666,
+        "variant_id": "G0"
+      }
+    },
+    "G1": {
+      "hybrid_v1": {
+        "candidate_recall_at_10": 0.875,
+        "candidate_recall_at_20": 0.875,
+        "candidate_recall_at_5": 0.828125,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": null,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": null,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SOL-001": 1,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 4,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 2
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 4
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 5,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 1,
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 4,
+            "KB-SOL-006": 6,
+            "KB-SOL-006#chunk-000-c4df6924db79": 2
+          },
+          "RET2-011": {
+            "KB-INT-001": 4,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 5,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 7,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 3,
+            "KB-SOL-003": 2
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 11,
+        "full_recall_case_count_at_20": 11,
+        "full_recall_case_count_at_5": 8,
+        "method_id": "hybrid_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.0,
+        "top5_summary_recall_at_5": 0.828125,
+        "variant_id": "G1"
+      },
+      "lexical_v1": {
+        "candidate_recall_at_10": 0.8385416666666666,
+        "candidate_recall_at_20": 0.8385416666666666,
+        "candidate_recall_at_5": 0.8072916666666666,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": null,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": null,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 1,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 3,
+            "KB-SOL-004": 2,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 1
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 4,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 2
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 4,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 2
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 5,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 1,
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 4,
+            "KB-SOL-006": null,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 5,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 4,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 1,
+            "KB-READY-001#chunk-000-c25bf83f023f": 2,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 6,
+            "KB-SOL-006#chunk-001-f56196b3f373": 4
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-009",
+          "RET2-010",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 9,
+        "full_recall_case_count_at_20": 9,
+        "full_recall_case_count_at_5": 7,
+        "method_id": "lexical_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-005",
+            "item_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-010",
+            "item_id": "KB-SOL-006",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.0,
+        "top5_summary_recall_at_5": 0.8072916666666666,
+        "variant_id": "G1"
+      },
+      "vector_v1": {
+        "candidate_recall_at_10": 0.875,
+        "candidate_recall_at_20": 0.875,
+        "candidate_recall_at_5": 0.84375,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": null,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": null,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 3,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 2,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SOL-001": 1,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 4,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 2
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 1,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 4
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 5,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 2,
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 1
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 5,
+            "KB-SOL-006": 6,
+            "KB-SOL-006#chunk-000-c4df6924db79": 2
+          },
+          "RET2-011": {
+            "KB-INT-001": 3,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-001-c241403338a2": 4
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 3,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 5,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 2
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 3,
+            "KB-SOL-006": 8,
+            "KB-SOL-006#chunk-001-f56196b3f373": 1
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 4,
+            "KB-SOL-003": 2
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 11,
+        "full_recall_case_count_at_20": 11,
+        "full_recall_case_count_at_5": 9,
+        "method_id": "vector_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.0,
+        "top5_summary_recall_at_5": 0.84375,
+        "variant_id": "G1"
+      }
+    },
+    "G2": {
+      "hybrid_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9166666666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 2,
+            "KB-SOL-001": 3,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 3,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 5,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 8,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 3
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 4,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 2,
+            "KB-SEC-001": 1,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 5,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 4
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 4,
+            "KB-SOL-006": 5,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 5
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 5,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 2,
+            "KB-SOL-006": 6,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 11,
+        "method_id": "hybrid_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9166666666666666,
+        "variant_id": "G2"
+      },
+      "lexical_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9010416666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 2,
+            "KB-SOL-001": 3,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 3,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 4,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 1,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 2,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 4,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 8,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 4,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 2
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 3,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 5,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 2
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 4
+          },
+          "RET2-010": {
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 4,
+            "KB-SOL-006": 5,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 5,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 1,
+            "KB-READY-001#chunk-000-c25bf83f023f": 2,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 6,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 10,
+        "method_id": "lexical_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9010416666666666,
+        "variant_id": "G2"
+      },
+      "vector_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.921875,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 4,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 2,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 3
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 5,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 3
+          },
+          "RET2-006": {
+            "KB-SOL-003": 8,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 7,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 3
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 4,
+            "KB-SEC-001": 1,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 4,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 3
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 4,
+            "KB-SOL-006": 5,
+            "KB-SOL-006#chunk-000-c4df6924db79": 2
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 4
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 5,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 3,
+            "KB-SOL-006": 7,
+            "KB-SOL-006#chunk-001-f56196b3f373": 2
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 12,
+        "method_id": "vector_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.921875,
+        "variant_id": "G2"
+      }
+    },
+    "G3": {
+      "hybrid_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9010416666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 3
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 6,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 5
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 3,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 4
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 5
+          },
+          "RET2-010": {
+            "KB-SEC-001": 5,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 3,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 10,
+        "method_id": "hybrid_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9010416666666666,
+        "variant_id": "G3"
+      },
+      "lexical_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9166666666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 3,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 4,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 1,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 2,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 4,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 3
+          },
+          "RET2-006": {
+            "KB-SOL-003": 2,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 6,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 5
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 5
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 4,
+            "KB-SOL-006": 2,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 5,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 1,
+            "KB-READY-001#chunk-000-c25bf83f023f": 2,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 11,
+        "method_id": "lexical_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9166666666666666,
+        "variant_id": "G3"
+      },
+      "vector_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9166666666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 1,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3,
+            "KB-SOL-004": 6,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 5
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 3,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 4,
+            "KB-SEC-001": 1,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 2
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 5
+          },
+          "RET2-010": {
+            "KB-SEC-001": 5,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-000-c4df6924db79": 3
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 4
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 2,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 11,
+        "method_id": "vector_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9166666666666666,
+        "variant_id": "G3"
+      }
+    },
+    "G4": {
+      "hybrid_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9010416666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 3,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 7,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 5
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 1,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 2,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 4
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 4
+          },
+          "RET2-010": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 3,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 2,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 10,
+        "method_id": "hybrid_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9010416666666666,
+        "variant_id": "G4"
+      },
+      "lexical_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9166666666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 3,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 4,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 1,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 2,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 4,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 2,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 6,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 5
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 5
+          },
+          "RET2-010": {
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-000-f8c40d662005": 5,
+            "KB-SOL-006": 2,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 5,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 1,
+            "KB-READY-001#chunk-000-c25bf83f023f": 2,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 11,
+        "method_id": "lexical_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9166666666666666,
+        "variant_id": "G4"
+      },
+      "vector_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9166666666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 1,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 5,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 2,
+            "KB-SOL-004": 7,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 4,
+            "KB-SEC-001": 1,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 4,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 3
+          },
+          "RET2-010": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 5,
+            "KB-SOL-006#chunk-000-c4df6924db79": 3
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 4
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 3,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 2
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 11,
+        "method_id": "vector_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9166666666666666,
+        "variant_id": "G4"
+      }
+    },
+    "G5": {
+      "hybrid_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9010416666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 3,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 7,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 5
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 1,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 2,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 4
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 4
+          },
+          "RET2-010": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 3,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 2,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 10,
+        "method_id": "hybrid_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9010416666666666,
+        "variant_id": "G5"
+      },
+      "lexical_v1": {
+        "candidate_recall_at_10": 0.8541666666666666,
+        "candidate_recall_at_20": 0.8541666666666666,
+        "candidate_recall_at_5": 0.8229166666666666,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": null,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": null,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 1,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 2,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 1
+          },
+          "RET2-006": {
+            "KB-SOL-003": 2,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 4,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 3
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 2,
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 1
+          },
+          "RET2-010": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 2,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 5,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 1,
+            "KB-READY-001#chunk-000-c25bf83f023f": 2,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 5,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 10,
+        "full_recall_case_count_at_20": 10,
+        "full_recall_case_count_at_5": 8,
+        "method_id": "lexical_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-005",
+            "item_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.0,
+        "top5_summary_recall_at_5": 0.8229166666666666,
+        "variant_id": "G5"
+      },
+      "vector_v1": {
+        "candidate_recall_at_10": 0.875,
+        "candidate_recall_at_20": 0.875,
+        "candidate_recall_at_5": 0.859375,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": null,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": null,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SOL-001": 1,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 2,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 4,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 3
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 4,
+            "KB-SEC-001": 1,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 1
+          },
+          "RET2-010": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 5,
+            "KB-SOL-006#chunk-000-c4df6924db79": 3
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 4
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 3,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 2
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 11,
+        "full_recall_case_count_at_20": 11,
+        "full_recall_case_count_at_5": 10,
+        "method_id": "vector_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.0,
+        "top5_summary_recall_at_5": 0.859375,
+        "variant_id": "G5"
+      }
+    },
+    "G6": {
+      "hybrid_v1": {
+        "candidate_recall_at_10": 0.96875,
+        "candidate_recall_at_20": 0.96875,
+        "candidate_recall_at_5": 0.9010416666666667,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": 4,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": 3,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 6,
+            "KB-SOL-001": 3,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 3,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 7,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 5
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 1,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 2,
+            "KB-SEC-001": 3,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 4
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": 2,
+            "KB-SEC-001#chunk-000-f8c40d662005": 1,
+            "KB-SOL-001": 4
+          },
+          "RET2-010": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 3,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 2,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-005",
+          "RET2-006",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 14,
+        "full_recall_case_count_at_20": 14,
+        "full_recall_case_count_at_5": 10,
+        "method_id": "hybrid_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.3125,
+        "top5_summary_recall_at_5": 0.9010416666666666,
+        "variant_id": "G6"
+      },
+      "lexical_v1": {
+        "candidate_recall_at_10": 0.875,
+        "candidate_recall_at_20": 0.875,
+        "candidate_recall_at_5": 0.84375,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": null,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": null,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 1,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 2,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 4
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 1
+          },
+          "RET2-006": {
+            "KB-SOL-003": 2,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 4,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 3
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 2,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 1,
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 3
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 2,
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 1
+          },
+          "RET2-010": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 2,
+            "KB-SOL-006#chunk-000-c4df6924db79": 1
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 5,
+            "KB-SOL-002#chunk-001-c241403338a2": 6
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 1,
+            "KB-READY-001#chunk-000-c25bf83f023f": 2,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 2,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 1,
+            "KB-SOL-006": 5,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 11,
+        "full_recall_case_count_at_20": 11,
+        "full_recall_case_count_at_5": 9,
+        "method_id": "lexical_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.0,
+        "top5_summary_recall_at_5": 0.84375,
+        "variant_id": "G6"
+      },
+      "vector_v1": {
+        "candidate_recall_at_10": 0.875,
+        "candidate_recall_at_20": 0.875,
+        "candidate_recall_at_5": 0.859375,
+        "eligible_corpus_size": 8,
+        "expected_item_full_corpus_ranks": {
+          "RET2-001": {
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 2,
+            "KB-SOL-001#chunk-000-29777128c730": 1
+          },
+          "RET2-002": {
+            "KB-PLAY-001": null,
+            "KB-PLAY-001#chunk-000-0015819a0dd7": null,
+            "KB-SOL-002": 2,
+            "KB-SOL-002#chunk-000-7c0d6600d6d0": 1
+          },
+          "RET2-003": {
+            "KB-CAP-001": 2,
+            "KB-CAP-001#chunk-000-4a0d2db10fea": 1,
+            "KB-SOL-004": 3,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 4
+          },
+          "RET2-004": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-000-4f2912ff7d30": 3
+          },
+          "RET2-005": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SOL-001": 1,
+            "KB-SOL-001#chunk-001-5b4fdfa84476": 2
+          },
+          "RET2-006": {
+            "KB-SOL-003": 2,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 1,
+            "KB-SOL-004": 4,
+            "KB-SOL-004#chunk-001-d15a10f713d4": 3
+          },
+          "RET2-007": {
+            "KB-PLAY-002": 3,
+            "KB-PLAY-002#chunk-001-22fb4bafb8ba": 4,
+            "KB-SEC-001": 1,
+            "KB-SEC-001#chunk-001-d88fdb994b4e": 2
+          },
+          "RET2-008": {
+            "KB-PLAY-001": 2,
+            "KB-PLAY-001#chunk-001-e90933b01fb0": 1,
+            "KB-SOL-005": 4,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 3
+          },
+          "RET2-009": {
+            "KB-CAP-001#chunk-001-bcb4fc0bf316": 3,
+            "KB-SEC-001": null,
+            "KB-SEC-001#chunk-000-f8c40d662005": null,
+            "KB-SOL-001": 1
+          },
+          "RET2-010": {
+            "KB-SEC-001": 4,
+            "KB-SEC-001#chunk-000-f8c40d662005": 6,
+            "KB-SOL-006": 5,
+            "KB-SOL-006#chunk-000-c4df6924db79": 3
+          },
+          "RET2-011": {
+            "KB-INT-001": 2,
+            "KB-INT-001#chunk-000-17c42e00f4ee": 1,
+            "KB-SOL-002": 3,
+            "KB-SOL-002#chunk-001-c241403338a2": 4
+          },
+          "RET2-012": {
+            "KB-INT-002": 2,
+            "KB-INT-002#chunk-000-37797d7945a6": 1,
+            "KB-SOL-005": 3,
+            "KB-SOL-005#chunk-001-c46ac3709e0c": 4
+          },
+          "RET2-013": {
+            "KB-READY-001": 2,
+            "KB-READY-001#chunk-000-c25bf83f023f": 1,
+            "KB-SOL-003": 4,
+            "KB-SOL-003#chunk-001-adb6d47feec4": 3
+          },
+          "RET2-014": {
+            "KB-READY-002": 1,
+            "KB-READY-002#chunk-000-be9fffe3ad6d": 2,
+            "KB-SOL-006": 4,
+            "KB-SOL-006#chunk-001-f56196b3f373": 3
+          },
+          "RET2-015": {
+            "KB-CASE-001": null,
+            "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+            "KB-CASE-001#chunk-001-77cb36877788": 2,
+            "KB-SOL-003": 3
+          },
+          "RET2-016": {
+            "KB-CASE-002": null,
+            "KB-CASE-002#chunk-000-2c2107739c83": 1,
+            "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+            "KB-SOL-005": 3
+          }
+        },
+        "failed_case_ids": [
+          "RET2-001",
+          "RET2-002",
+          "RET2-009",
+          "RET2-015",
+          "RET2-016"
+        ],
+        "forbidden_hit_rate_at_20": 0.0,
+        "full_recall_case_count_at_10": 11,
+        "full_recall_case_count_at_20": 11,
+        "full_recall_case_count_at_5": 10,
+        "method_id": "vector_v1",
+        "missing_relevant_items_at_20": [
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-001",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-002",
+            "item_id": "KB-PLAY-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001#chunk-000-f8c40d662005",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-009",
+            "item_id": "KB-SEC-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-015",
+            "item_id": "KB-CASE-001",
+            "rank": null
+          },
+          {
+            "case_id": "RET2-016",
+            "item_id": "KB-CASE-002",
+            "rank": null
+          }
+        ],
+        "request_error_count": 0,
+        "solution_boundary_violation_rate_at_20": 0.0,
+        "top5_summary_recall_at_5": 0.859375,
+        "variant_id": "G6"
+      }
+    }
+  },
+  "prefilter_vs_postfilter_comparison": {
+    "hybrid_v1": {
+      "postfilter_candidate_recall_at_20": 0.828125,
+      "prefilter_candidate_recall_at_20": 0.875,
+      "prefilter_improves_candidate_recall": true
+    },
+    "lexical_v1": {
+      "postfilter_candidate_recall_at_20": 0.8072916666666666,
+      "prefilter_candidate_recall_at_20": 0.8385416666666666,
+      "prefilter_improves_candidate_recall": true
+    },
+    "vector_v1": {
+      "postfilter_candidate_recall_at_20": 0.84375,
+      "prefilter_candidate_recall_at_20": 0.875,
+      "prefilter_improves_candidate_recall": true
+    }
+  },
+  "query_rewrite_required": true,
+  "recommended_next_step": "continue_candidate_generation_diagnosis_before_query_rewrite",
+  "rerank_required": false,
+  "unresolved_case_analysis": {
+    "hybrid_v1": [
+      {
+        "because_chunk_context_insufficient": false,
+        "because_expected_sibling_chunk_substitution": false,
+        "because_parent_document_signal_missing": false,
+        "because_runtime_ineligible_candidates_occupy_pool": false,
+        "because_summary_not_indexed": false,
+        "because_title_not_indexed": false,
+        "case_id": "RET2-015",
+        "chunk_keyword_tokens": [
+          "合成",
+          "成行",
+          "行业",
+          "业背",
+          "背景",
+          "景与",
+          "与问",
+          "问题",
+          "这是",
+          "是一",
+          "一个",
+          "个公"
+        ],
+        "chunk_section": "",
+        "completely_no_lexical_overlap": false,
+        "current_method_rank": null,
+        "current_runtime_filter_excluded": true,
+        "current_top20_missing": true,
+        "document_summary": "公开合成案例，用于说明商品知识治理与问答上线条件。",
+        "document_title": "合成零售商品知识治理案例",
+        "dual_granularity_rank": null,
+        "enriched_method_rank": null,
+        "expected_chunk_id": null,
+        "expected_document_id": "KB-CASE-001",
+        "expected_item_id": "KB-CASE-001",
+        "expected_item_text_fields_summary": "## 合成行业背景与问题\n这是一个公开合成零售案例：品牌方有多渠道商品资料、促销说明与客服FAQ，但内容版本不一致，导致导购问答和活动说明口径反复偏差。团队希望先统一知识治理，再决定哪些问答可以上线给坐席辅助。\n\n## 采用方案与限制\n案例中使用商品知识库RAG方案与客服辅助回复方案，并要求活动说明只能在可审计引用存在",
+        "full_corpus_rank": null,
+        "lexical_matched_terms": [],
+        "prefilter_method_rank": null,
+        "query_tokens": [
+          "请找",
+          "找一",
+          "一个",
+          "个公",
+          "公开",
+          "开合",
+          "合成",
+          "成案",
+          "案例",
+          "能说",
+          "说明",
+          "明商",
+          "商品",
+          "品资",
+          "资料",
+          "料治",
+          "治理",
+          "理后",
+          "后再",
+          "再做",
+          "做导",
+          "导购",
+          "购或",
+          "或客",
+          "客服",
+          "服问",
+          "问答",
+          "答的",
+          "的实",
+          "实施",
+          "施前",
+          "前提",
+          "提与",
+          "与限",
+          "限制"
+        ],
+        "root_cause": "hybrid_candidate_union_gap",
+        "runtime_ineligible_crowding_count": 0,
+        "source_case_id": "DEV-10",
+        "vector_similarity_clearly_low": false
+      },
+      {
+        "because_chunk_context_insufficient": false,
+        "because_expected_sibling_chunk_substitution": false,
+        "because_parent_document_signal_missing": false,
+        "because_runtime_ineligible_candidates_occupy_pool": false,
+        "because_summary_not_indexed": false,
+        "because_title_not_indexed": false,
+        "case_id": "RET2-016",
+        "chunk_keyword_tokens": [
+          "合成",
+          "成行",
+          "行业",
+          "业背",
+          "背景",
+          "景与",
+          "与问",
+          "问题",
+          "这是",
+          "是一",
+          "一个",
+          "个公"
+        ],
+        "chunk_section": "",
+        "completely_no_lexical_overlap": false,
+        "current_method_rank": null,
+        "current_runtime_filter_excluded": true,
+        "current_top20_missing": true,
+        "document_summary": "公开合成案例，用于说明服务系统集成与身份治理的实施条件。",
+        "document_title": "合成服务工单协同案例",
+        "dual_granularity_rank": null,
+        "enriched_method_rank": null,
+        "expected_chunk_id": null,
+        "expected_document_id": "KB-CASE-002",
+        "expected_item_id": "KB-CASE-002",
+        "expected_item_text_fields_summary": "## 合成行业背景与问题\n这是一个公开合成服务运营案例：企业的报修、派工和回访分散在多个系统中，导致客户身份重复、工单状态回写延迟和升级记录缺失。团队需要先打通身份与工单数据，再考虑更复杂的诊断与摘要能力。\n\n## 采用方案与限制\n案例中使用客户身份统一与数据集成方案和服务工单系统集成方案，前提是接口访问、字段映射和责",
+        "full_corpus_rank": null,
+        "lexical_matched_terms": [],
+        "prefilter_method_rank": null,
+        "query_tokens": [
+          "请找",
+          "找一",
+          "一个",
+          "个公",
+          "公开",
+          "开合",
+          "合成",
+          "成案",
+          "案例",
+          "能说",
+          "说明",
+          "明服",
+          "服务",
+          "务工",
+          "工单",
+          "单协",
+          "协同",
+          "同前",
+          "前为",
+          "为什",
+          "什么",
+          "么要",
+          "要先",
+          "先打",
+          "打通",
+          "通客",
+          "客户",
+          "户身",
+          "身份",
+          "份和",
+          "和工",
+          "工单",
+          "单数",
+          "数据"
+        ],
+        "root_cause": "hybrid_candidate_union_gap",
+        "runtime_ineligible_crowding_count": 0,
+        "source_case_id": "DEV-11",
+        "vector_similarity_clearly_low": false
+      }
+    ],
+    "lexical_v1": [
+      {
+        "because_chunk_context_insufficient": false,
+        "because_expected_sibling_chunk_substitution": true,
+        "because_parent_document_signal_missing": true,
+        "because_runtime_ineligible_candidates_occupy_pool": true,
+        "because_summary_not_indexed": true,
+        "because_title_not_indexed": false,
+        "case_id": "RET2-005",
+        "chunk_keyword_tokens": [
+          "依赖",
+          "赖稳",
+          "稳定",
+          "定文",
+          "文档",
+          "档版",
+          "版本",
+          "可点",
+          "点击",
+          "击引",
+          "引用",
+          "用标"
+        ],
+        "chunk_section": "依赖与验收",
+        "completely_no_lexical_overlap": false,
+        "current_method_rank": null,
+        "current_runtime_filter_excluded": true,
+        "current_top20_missing": true,
+        "document_summary": "说明引用可见与人工复核并存的能力边界。",
+        "document_title": "引用可审计回复能力合同",
+        "dual_granularity_rank": 6,
+        "enriched_method_rank": 6,
+        "expected_chunk_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+        "expected_document_id": "KB-CAP-001",
+        "expected_item_id": "KB-CAP-001#chunk-001-bcb4fc0bf316",
+        "expected_item_text_fields_summary": "依赖稳定文档版本、可点击引用标签和人工复核入口。验收方式不是看模型是否像人，而是检查回答是否包含可核对的出处、是否能追溯到当前知识版本，以及高风险回复是否仍需人工发送。",
+        "full_corpus_rank": null,
+        "lexical_matched_terms": [],
+        "prefilter_method_rank": null,
+        "query_tokens": [
+          "如果",
+          "果业",
+          "业务",
+          "务方",
+          "方希",
+          "希望",
+          "望系",
+          "系统",
+          "统直",
+          "直接",
+          "接给",
+          "给出",
+          "出最",
+          "最终",
+          "终法",
+          "法律",
+          "律判",
+          "判断",
+          "断并",
+          "并自",
+          "自动",
+          "动处",
+          "处理",
+          "理制",
+          "制度",
+          "度例",
+          "例外",
+          "这个",
+          "个公",
+          "公开",
+          "demo",
+          "范围",
+          "围内",
+          "内应",
+          "应该",
+          "该先",
+          "先看",
+          "看哪",
+          "哪些",
+          "些边",
+          "边界",
+          "界说",
+          "说明"
+        ],
+        "root_cause": "expected_sibling_chunk_substitution",
+        "runtime_ineligible_crowding_count": 3,
+        "source_case_id": "DEV-05",
+        "vector_similarity_clearly_low": false
+      },
+      {
+        "because_chunk_context_insufficient": false,
+        "because_expected_sibling_chunk_substitution": false,
+        "because_parent_document_signal_missing": true,
+        "because_runtime_ineligible_candidates_occupy_pool": false,
+        "because_summary_not_indexed": false,
+        "because_title_not_indexed": false,
+        "case_id": "RET2-010",
+        "chunk_keyword_tokens": [
+          "方案",
+          "案目",
+          "目标",
+          "该方",
+          "案用",
+          "用于",
+          "于在",
+          "在受",
+          "受控",
+          "控基",
+          "基础",
+          "础设"
+        ],
+        "chunk_section": "",
+        "completely_no_lexical_overlap": false,
+        "current_method_rank": null,
+        "current_runtime_filter_excluded": true,
+        "current_top20_missing": true,
+        "document_summary": "私有化部署与隔离运行的公开合成方案说明。",
+        "document_title": "私有化大模型部署方案说明",
+        "dual_granularity_rank": 2,
+        "enriched_method_rank": 5,
+        "expected_chunk_id": null,
+        "expected_document_id": "KB-SOL-006",
+        "expected_item_id": "KB-SOL-006",
+        "expected_item_text_fields_summary": "## 方案目标\n该方案用于在受控基础设施中部署大模型服务与相关安全组件，满足更严格的网络隔离、访问控制和日志管理要求。它适合对数据边界、审计留痕或内网可用性有明确约束的企业。\n\n## 前置条件与边界\n交付依赖算力规划、网络区划、运维值守、补丁更新机制和安全审批流程。若客户尚未确认部署责任、资源预算或合规要求，只把私有化",
+        "full_corpus_rank": null,
+        "lexical_matched_terms": [],
+        "prefilter_method_rank": null,
+        "query_tokens": [
+          "如果",
+          "果项",
+          "项目",
+          "目要",
+          "要在",
+          "在受",
+          "受控",
+          "控基",
+          "基础",
+          "础设",
+          "设施",
+          "施中",
+          "中运",
+          "运行",
+          "还要",
+          "要满",
+          "满足",
+          "足隔",
+          "隔离",
+          "日志",
+          "志和",
+          "和制",
+          "制度",
+          "度出",
+          "出处",
+          "处管",
+          "管理",
+          "应该",
+          "该优",
+          "优先",
+          "先查",
+          "查哪",
+          "哪些",
+          "些公",
+          "公开",
+          "demo",
+          "材料"
+        ],
+        "root_cause": "parent_document_signal_missing",
+        "runtime_ineligible_crowding_count": 0,
+        "source_case_id": "DEV-13",
+        "vector_similarity_clearly_low": false
+      },
+      {
+        "because_chunk_context_insufficient": false,
+        "because_expected_sibling_chunk_substitution": false,
+        "because_parent_document_signal_missing": false,
+        "because_runtime_ineligible_candidates_occupy_pool": false,
+        "because_summary_not_indexed": false,
+        "because_title_not_indexed": false,
+        "case_id": "RET2-015",
+        "chunk_keyword_tokens": [
+          "合成",
+          "成行",
+          "行业",
+          "业背",
+          "背景",
+          "景与",
+          "与问",
+          "问题",
+          "这是",
+          "是一",
+          "一个",
+          "个公"
+        ],
+        "chunk_section": "",
+        "completely_no_lexical_overlap": false,
+        "current_method_rank": null,
+        "current_runtime_filter_excluded": true,
+        "current_top20_missing": true,
+        "document_summary": "公开合成案例，用于说明商品知识治理与问答上线条件。",
+        "document_title": "合成零售商品知识治理案例",
+        "dual_granularity_rank": null,
+        "enriched_method_rank": null,
+        "expected_chunk_id": null,
+        "expected_document_id": "KB-CASE-001",
+        "expected_item_id": "KB-CASE-001",
+        "expected_item_text_fields_summary": "## 合成行业背景与问题\n这是一个公开合成零售案例：品牌方有多渠道商品资料、促销说明与客服FAQ，但内容版本不一致，导致导购问答和活动说明口径反复偏差。团队希望先统一知识治理，再决定哪些问答可以上线给坐席辅助。\n\n## 采用方案与限制\n案例中使用商品知识库RAG方案与客服辅助回复方案，并要求活动说明只能在可审计引用存在",
+        "full_corpus_rank": null,
+        "lexical_matched_terms": [],
+        "prefilter_method_rank": null,
+        "query_tokens": [
+          "请找",
+          "找一",
+          "一个",
+          "个公",
+          "公开",
+          "开合",
+          "合成",
+          "成案",
+          "案例",
+          "能说",
+          "说明",
+          "明商",
+          "商品",
+          "品资",
+          "资料",
+          "料治",
+          "治理",
+          "理后",
+          "后再",
+          "再做",
+          "做导",
+          "导购",
+          "购或",
+          "或客",
+          "客服",
+          "服问",
+          "问答",
+          "答的",
+          "的实",
+          "实施",
+          "施前",
+          "前提",
+          "提与",
+          "与限",
+          "限制"
+        ],
+        "root_cause": "unknown_candidate_generation_cause",
+        "runtime_ineligible_crowding_count": 0,
+        "source_case_id": "DEV-10",
+        "vector_similarity_clearly_low": false
+      },
+      {
+        "because_chunk_context_insufficient": false,
+        "because_expected_sibling_chunk_substitution": false,
+        "because_parent_document_signal_missing": false,
+        "because_runtime_ineligible_candidates_occupy_pool": false,
+        "because_summary_not_indexed": false,
+        "because_title_not_indexed": false,
+        "case_id": "RET2-016",
+        "chunk_keyword_tokens": [
+          "合成",
+          "成行",
+          "行业",
+          "业背",
+          "背景",
+          "景与",
+          "与问",
+          "问题",
+          "这是",
+          "是一",
+          "一个",
+          "个公"
+        ],
+        "chunk_section": "",
+        "completely_no_lexical_overlap": false,
+        "current_method_rank": null,
+        "current_runtime_filter_excluded": true,
+        "current_top20_missing": true,
+        "document_summary": "公开合成案例，用于说明服务系统集成与身份治理的实施条件。",
+        "document_title": "合成服务工单协同案例",
+        "dual_granularity_rank": null,
+        "enriched_method_rank": null,
+        "expected_chunk_id": null,
+        "expected_document_id": "KB-CASE-002",
+        "expected_item_id": "KB-CASE-002",
+        "expected_item_text_fields_summary": "## 合成行业背景与问题\n这是一个公开合成服务运营案例：企业的报修、派工和回访分散在多个系统中，导致客户身份重复、工单状态回写延迟和升级记录缺失。团队需要先打通身份与工单数据，再考虑更复杂的诊断与摘要能力。\n\n## 采用方案与限制\n案例中使用客户身份统一与数据集成方案和服务工单系统集成方案，前提是接口访问、字段映射和责",
+        "full_corpus_rank": null,
+        "lexical_matched_terms": [],
+        "prefilter_method_rank": null,
+        "query_tokens": [
+          "请找",
+          "找一",
+          "一个",
+          "个公",
+          "公开",
+          "开合",
+          "合成",
+          "成案",
+          "案例",
+          "能说",
+          "说明",
+          "明服",
+          "服务",
+          "务工",
+          "工单",
+          "单协",
+          "协同",
+          "同前",
+          "前为",
+          "为什",
+          "什么",
+          "么要",
+          "要先",
+          "先打",
+          "打通",
+          "通客",
+          "客户",
+          "户身",
+          "身份",
+          "份和",
+          "和工",
+          "工单",
+          "单数",
+          "数据"
+        ],
+        "root_cause": "unknown_candidate_generation_cause",
+        "runtime_ineligible_crowding_count": 0,
+        "source_case_id": "DEV-11",
+        "vector_similarity_clearly_low": false
+      }
+    ],
+    "vector_v1": [
+      {
+        "because_chunk_context_insufficient": false,
+        "because_expected_sibling_chunk_substitution": false,
+        "because_parent_document_signal_missing": false,
+        "because_runtime_ineligible_candidates_occupy_pool": false,
+        "because_summary_not_indexed": false,
+        "because_title_not_indexed": false,
+        "case_id": "RET2-015",
+        "chunk_keyword_tokens": [
+          "合成",
+          "成行",
+          "行业",
+          "业背",
+          "背景",
+          "景与",
+          "与问",
+          "问题",
+          "这是",
+          "是一",
+          "一个",
+          "个公"
+        ],
+        "chunk_section": "",
+        "completely_no_lexical_overlap": false,
+        "current_method_rank": null,
+        "current_runtime_filter_excluded": true,
+        "current_top20_missing": true,
+        "document_summary": "公开合成案例，用于说明商品知识治理与问答上线条件。",
+        "document_title": "合成零售商品知识治理案例",
+        "dual_granularity_rank": null,
+        "enriched_method_rank": null,
+        "expected_chunk_id": null,
+        "expected_document_id": "KB-CASE-001",
+        "expected_item_id": "KB-CASE-001",
+        "expected_item_text_fields_summary": "## 合成行业背景与问题\n这是一个公开合成零售案例：品牌方有多渠道商品资料、促销说明与客服FAQ，但内容版本不一致，导致导购问答和活动说明口径反复偏差。团队希望先统一知识治理，再决定哪些问答可以上线给坐席辅助。\n\n## 采用方案与限制\n案例中使用商品知识库RAG方案与客服辅助回复方案，并要求活动说明只能在可审计引用存在",
+        "full_corpus_rank": null,
+        "lexical_matched_terms": [],
+        "prefilter_method_rank": null,
+        "query_tokens": [
+          "请找",
+          "找一",
+          "一个",
+          "个公",
+          "公开",
+          "开合",
+          "合成",
+          "成案",
+          "案例",
+          "能说",
+          "说明",
+          "明商",
+          "商品",
+          "品资",
+          "资料",
+          "料治",
+          "治理",
+          "理后",
+          "后再",
+          "再做",
+          "做导",
+          "导购",
+          "购或",
+          "或客",
+          "客服",
+          "服问",
+          "问答",
+          "答的",
+          "的实",
+          "实施",
+          "施前",
+          "前提",
+          "提与",
+          "与限",
+          "限制"
+        ],
+        "root_cause": "vector_semantic_mismatch",
+        "runtime_ineligible_crowding_count": 0,
+        "source_case_id": "DEV-10",
+        "vector_similarity_clearly_low": true
+      },
+      {
+        "because_chunk_context_insufficient": false,
+        "because_expected_sibling_chunk_substitution": false,
+        "because_parent_document_signal_missing": false,
+        "because_runtime_ineligible_candidates_occupy_pool": false,
+        "because_summary_not_indexed": false,
+        "because_title_not_indexed": false,
+        "case_id": "RET2-016",
+        "chunk_keyword_tokens": [
+          "合成",
+          "成行",
+          "行业",
+          "业背",
+          "背景",
+          "景与",
+          "与问",
+          "问题",
+          "这是",
+          "是一",
+          "一个",
+          "个公"
+        ],
+        "chunk_section": "",
+        "completely_no_lexical_overlap": false,
+        "current_method_rank": null,
+        "current_runtime_filter_excluded": true,
+        "current_top20_missing": true,
+        "document_summary": "公开合成案例，用于说明服务系统集成与身份治理的实施条件。",
+        "document_title": "合成服务工单协同案例",
+        "dual_granularity_rank": null,
+        "enriched_method_rank": null,
+        "expected_chunk_id": null,
+        "expected_document_id": "KB-CASE-002",
+        "expected_item_id": "KB-CASE-002",
+        "expected_item_text_fields_summary": "## 合成行业背景与问题\n这是一个公开合成服务运营案例：企业的报修、派工和回访分散在多个系统中，导致客户身份重复、工单状态回写延迟和升级记录缺失。团队需要先打通身份与工单数据，再考虑更复杂的诊断与摘要能力。\n\n## 采用方案与限制\n案例中使用客户身份统一与数据集成方案和服务工单系统集成方案，前提是接口访问、字段映射和责",
+        "full_corpus_rank": null,
+        "lexical_matched_terms": [],
+        "prefilter_method_rank": null,
+        "query_tokens": [
+          "请找",
+          "找一",
+          "一个",
+          "个公",
+          "公开",
+          "开合",
+          "合成",
+          "成案",
+          "案例",
+          "能说",
+          "说明",
+          "明服",
+          "服务",
+          "务工",
+          "工单",
+          "单协",
+          "协同",
+          "同前",
+          "前为",
+          "为什",
+          "什么",
+          "么要",
+          "要先",
+          "先打",
+          "打通",
+          "通客",
+          "客户",
+          "户身",
+          "身份",
+          "份和",
+          "和工",
+          "工单",
+          "单数",
+          "数据"
+        ],
+        "root_cause": "vector_semantic_mismatch",
+        "runtime_ineligible_crowding_count": 0,
+        "source_case_id": "DEV-11",
+        "vector_similarity_clearly_low": true
+      }
+    ]
+  },
+  "variant_definitions": {
+    "G0": {
+      "summary": "Current candidate generation on chunk corpus with formal legacy runtime filters."
+    },
+    "G1": {
+      "summary": "Pre-retrieval runtime-safe corpus filter on full chunk corpus before scoring."
+    },
+    "G2": {
+      "summary": "Chunk representation enrichment with title, summary, section heading, and chunk content."
+    },
+    "G3": {
+      "summary": "Document-level retrieval with deterministic chunk expansion."
+    },
+    "G4": {
+      "summary": "Dual-granularity union of chunk-level and document-expanded candidates."
+    },
+    "G5": {
+      "summary": "Pre-retrieval runtime-safe corpus filter plus dual-granularity union."
+    },
+    "G6": {
+      "summary": "Pre-retrieval runtime-safe corpus filter plus enriched chunk representation and dual-granularity union."
+    }
+  }
+}

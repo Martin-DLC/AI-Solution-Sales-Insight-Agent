@@ -104,6 +104,15 @@ from evaluation.retrieval.counterfactuals_v2 import (
     render_counterfactual_markdown,
     write_counterfactual_outputs,
 )
+from evaluation.retrieval.candidate_generation_v2 import (
+    CANDIDATE_GENERATION_DOC_PATH,
+    CANDIDATE_GENERATION_OUTPUT_PATH,
+    build_candidate_generation_payload,
+    build_plan_payload as build_retrieval_v2_candidate_generation_plan_payload,
+    check_candidate_generation_outputs,
+    render_candidate_generation_markdown,
+    write_candidate_generation_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -182,11 +191,18 @@ __all__ = [
     "compute_formal_result_hashes",
     "COUNTERFACTUAL_DOC_PATH",
     "COUNTERFACTUAL_OUTPUT_PATH",
+    "CANDIDATE_GENERATION_DOC_PATH",
+    "CANDIDATE_GENERATION_OUTPUT_PATH",
     "render_diagnosis_markdown",
     "render_counterfactual_markdown",
+    "render_candidate_generation_markdown",
     "build_counterfactual_payload",
+    "build_candidate_generation_payload",
     "write_diagnosis_outputs",
     "write_counterfactual_outputs",
+    "write_candidate_generation_outputs",
     "validate_retrieval_evaluation_dataset",
     "validate_retrieval_case_feasibility_v2",
+    "build_retrieval_v2_candidate_generation_plan_payload",
+    "check_candidate_generation_outputs",
 ]
