@@ -1,0 +1,185 @@
+{
+  "benchmark_config_hash": "ca2aed9590fc0fef39cd3b478e50874933cc74d9e13921edb619de63e1f8afd8",
+  "benchmark_version": "retrieval_benchmark_v2",
+  "boundary_contract_version": "v2",
+  "comparison_limitations": [
+    "Selection is limited to the current 16 synthetic retrieval cases."
+  ],
+  "entries": [
+    {
+      "average_latency_ms": 0.0625,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET2-005",
+        "RET2-006",
+        "RET2-009"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "implementation_complexity": "moderate",
+      "mean_reciprocal_rank": 1.0,
+      "precision_at_3": 0.8958333333333334,
+      "precision_at_5": 0.771875,
+      "recall_at_1": 0.2552083333333333,
+      "recall_at_3": 0.6822916666666666,
+      "recall_at_5": 0.8854166666666666,
+      "retrieval_method": "lexical_v1",
+      "runtime_dependencies": [
+        "weighted_bm25"
+      ],
+      "solution_boundary_violation_rate": 0.1875
+    },
+    {
+      "average_latency_ms": 1048.1875,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET2-005",
+        "RET2-006",
+        "RET2-009"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "implementation_complexity": "moderate",
+      "mean_reciprocal_rank": 0.96875,
+      "precision_at_3": 0.9166666666666666,
+      "precision_at_5": 0.75,
+      "recall_at_1": 0.23958333333333334,
+      "recall_at_3": 0.6979166666666666,
+      "recall_at_5": 0.8697916666666666,
+      "retrieval_method": "vector_v1",
+      "runtime_dependencies": [
+        "sentence_transformers_local_snapshot"
+      ],
+      "solution_boundary_violation_rate": 0.1875
+    },
+    {
+      "average_latency_ms": 53.625,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET2-005",
+        "RET2-006"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "implementation_complexity": "moderate",
+      "mean_reciprocal_rank": 1.0,
+      "precision_at_3": 0.9375,
+      "precision_at_5": 0.7625,
+      "recall_at_1": 0.2552083333333333,
+      "recall_at_3": 0.7135416666666666,
+      "recall_at_5": 0.8854166666666666,
+      "retrieval_method": "hybrid_v1",
+      "runtime_dependencies": [
+        "weighted_bm25",
+        "sentence_transformers_local_snapshot"
+      ],
+      "solution_boundary_violation_rate": 0.125
+    }
+  ],
+  "failure_taxonomy_version": "v2_method_aware",
+  "method_config_hashes": {
+    "hybrid": "7c4ba5f2568becc44e8e040ee6aa3ed3a8a6050e3e18cae7beaf851b035dc2bb",
+    "lexical": "efda4f10066732fed8d516a1bffc878ca247a86eac77b694978c6d142d12bf73",
+    "vector": "e0572aa9bb2b99fd18c354cede23752904b4e2bc7d15052006f18d9003a14785"
+  },
+  "method_summaries": [
+    {
+      "average_latency_ms": 0.0625,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET2-005",
+        "RET2-006",
+        "RET2-009"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "implementation_complexity": "moderate",
+      "mean_reciprocal_rank": 1.0,
+      "precision_at_3": 0.8958333333333334,
+      "precision_at_5": 0.771875,
+      "recall_at_1": 0.2552083333333333,
+      "recall_at_3": 0.6822916666666666,
+      "recall_at_5": 0.8854166666666666,
+      "retrieval_method": "lexical_v1",
+      "runtime_dependencies": [
+        "weighted_bm25"
+      ],
+      "solution_boundary_violation_rate": 0.1875
+    },
+    {
+      "average_latency_ms": 1048.1875,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET2-005",
+        "RET2-006",
+        "RET2-009"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "implementation_complexity": "moderate",
+      "mean_reciprocal_rank": 0.96875,
+      "precision_at_3": 0.9166666666666666,
+      "precision_at_5": 0.75,
+      "recall_at_1": 0.23958333333333334,
+      "recall_at_3": 0.6979166666666666,
+      "recall_at_5": 0.8697916666666666,
+      "retrieval_method": "vector_v1",
+      "runtime_dependencies": [
+        "sentence_transformers_local_snapshot"
+      ],
+      "solution_boundary_violation_rate": 0.1875
+    },
+    {
+      "average_latency_ms": 53.625,
+      "case_count": 16,
+      "disqualification_reasons": [
+        "solution_boundary_violation"
+      ],
+      "eligible_for_rag": false,
+      "failed_case_ids": [
+        "RET2-005",
+        "RET2-006"
+      ],
+      "forbidden_hit_rate": 0.0,
+      "implementation_complexity": "moderate",
+      "mean_reciprocal_rank": 1.0,
+      "precision_at_3": 0.9375,
+      "precision_at_5": 0.7625,
+      "recall_at_1": 0.2552083333333333,
+      "recall_at_3": 0.7135416666666666,
+      "recall_at_5": 0.8854166666666666,
+      "retrieval_method": "hybrid_v1",
+      "runtime_dependencies": [
+        "weighted_bm25",
+        "sentence_transformers_local_snapshot"
+      ],
+      "solution_boundary_violation_rate": 0.125
+    }
+  ],
+  "rejected_methods": [
+    "lexical_v1",
+    "vector_v1",
+    "hybrid_v1"
+  ],
+  "retrieval_contract_version": "v2_method_aware",
+  "selected_method": null,
+  "selection_reasons": [
+    "No retrieval method passed the frozen blocking gate."
+  ],
+  "selection_status": "no_eligible_method"
+}

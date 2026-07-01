@@ -1,0 +1,38 @@
+{
+  "average_latency_ms": 1048.1875,
+  "benchmark_config_hash": "ca2aed9590fc0fef39cd3b478e50874933cc74d9e13921edb619de63e1f8afd8",
+  "benchmark_version": "retrieval_benchmark_v2",
+  "cache_hit_count": 40,
+  "cache_miss_count": 0,
+  "case_count": 16,
+  "chunk_count": 40,
+  "corpus_embedding_build_ms": 56,
+  "corpus_embedding_count": 40,
+  "disqualification_reasons": [
+    "solution_boundary_violation"
+  ],
+  "document_count": 20,
+  "eligible_for_rag": false,
+  "embedding_dimension": 384,
+  "failed_case_ids": [
+    "RET2-005",
+    "RET2-006",
+    "RET2-009"
+  ],
+  "failure_taxonomy": {
+    "solution_boundary_violation": 3
+  },
+  "forbidden_hit_rate": 0.0,
+  "mean_reciprocal_rank": 0.96875,
+  "method_config_hash": "e0572aa9bb2b99fd18c354cede23752904b4e2bc7d15052006f18d9003a14785",
+  "model_name": "intfloat/multilingual-e5-small",
+  "precision_at_3": 0.9166666666666666,
+  "precision_at_5": 0.75,
+  "recall_at_1": 0.23958333333333334,
+  "recall_at_3": 0.6979166666666666,
+  "recall_at_5": 0.8697916666666666,
+  "request_error_count": 0,
+  "resolved_model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "retrieval_method": "vector_v1",
+  "solution_boundary_violation_rate": 0.1875
+}

@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date
 
 from evaluation.retrieval.runner_v2 import (
+    aggregate_summary_metrics_v2,
     evaluate_retrieval_case_v2,
     make_runtime_input_v2,
     project_v2_chunks_to_legacy_runtime_inputs,
@@ -166,6 +167,94 @@ def test_chunk_scope_is_used_before_document_scope() -> None:
 
     assert score.solution_boundary_violation is False
     assert reasons == [[]]
+
+
+def test_single_candidate_matching_document_and_chunk_counts_as_one_relevant_item() -> None:
+    case = _case()
+    document = _document(
+        document_id="DOC-001",
+        applicable_solution_ids=["合规政策RAG检索助手"],
+        scope_type="solution_specific",
+    )
+    chunk = _chunk(
+        chunk_id="DOC-001#chunk-001",
+        document_id="DOC-001",
+        applicable_solution_ids=["合规政策RAG检索助手"],
+        scope_type="solution_specific",
+    )
+    result = RetrievalRunResult(
+        retrieval_case_id=case.retrieval_case_id,
+        retrieval_method=RetrievalMethod.lexical_v1,
+        retrieved_candidates=[
+            RetrievalCandidate(
+                rank=1,
+                document_id="DOC-001",
+                chunk_id="DOC-001#chunk-001",
+                score=1.0,
+                retrieval_method="lexical_v1",
+                matched_terms=["合规"],
+                metadata={},
+                citation_label="c1",
+                solution_ids=["合规政策RAG检索助手"],
+            )
+        ],
+        latency_ms=1,
+    )
+
+    score, _ = evaluate_retrieval_case_v2(
+        case=case,
+        result=result,
+        documents_by_id={"DOC-001": document},
+        chunks_by_id={"DOC-001#chunk-001": chunk},
+    )
+
+    assert score.recall_at_1 == 0.5
+    assert score.recall_at_5 == 0.5
+
+
+def test_summary_uses_macro_average_over_case_metrics() -> None:
+    left = RetrievalRunResult(
+        retrieval_case_id="RET2-A",
+        retrieval_method=RetrievalMethod.lexical_v1,
+        retrieved_candidates=[],
+        latency_ms=1,
+    )
+    right = RetrievalRunResult(
+        retrieval_case_id="RET2-B",
+        retrieval_method=RetrievalMethod.lexical_v1,
+        retrieved_candidates=[],
+        latency_ms=1,
+    )
+    case_a = _case().model_copy(
+        update={
+            "retrieval_case_id": "RET2-A",
+            "evaluation_gold": _case().evaluation_gold.model_copy(
+                update={
+                    "expected_relevant_document_ids": ["DOC-001"],
+                    "expected_relevant_chunk_ids": [],
+                }
+            ),
+        }
+    )
+    case_b = _case().model_copy(
+        update={
+            "retrieval_case_id": "RET2-B",
+            "evaluation_gold": _case().evaluation_gold.model_copy(
+                update={
+                    "expected_relevant_document_ids": ["DOC-001", "DOC-002"],
+                    "expected_relevant_chunk_ids": [],
+                }
+            ),
+        }
+    )
+    score_a, _ = evaluate_retrieval_case_v2(case=case_a, result=left, documents_by_id={}, chunks_by_id={})
+    score_b, _ = evaluate_retrieval_case_v2(case=case_b, result=right, documents_by_id={}, chunks_by_id={})
+
+    summary = aggregate_summary_metrics_v2([score_a, score_b])
+
+    assert score_a.recall_at_5 == 0.0
+    assert score_b.recall_at_5 == 0.0
+    assert summary.recall_at_5 == 0.0
 
 
 def test_global_policy_candidate_is_not_automatic_boundary_violation() -> None:
