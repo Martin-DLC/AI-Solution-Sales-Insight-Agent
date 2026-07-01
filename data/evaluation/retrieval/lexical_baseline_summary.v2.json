@@ -1,0 +1,38 @@
+{
+  "average_latency_ms": 0.0625,
+  "benchmark_config_hash": "ca2aed9590fc0fef39cd3b478e50874933cc74d9e13921edb619de63e1f8afd8",
+  "benchmark_version": "retrieval_benchmark_v2",
+  "cache_hit_count": null,
+  "cache_miss_count": null,
+  "case_count": 16,
+  "chunk_count": 40,
+  "corpus_embedding_build_ms": null,
+  "corpus_embedding_count": null,
+  "disqualification_reasons": [
+    "solution_boundary_violation"
+  ],
+  "document_count": 20,
+  "eligible_for_rag": false,
+  "embedding_dimension": null,
+  "failed_case_ids": [
+    "RET2-005",
+    "RET2-006",
+    "RET2-009"
+  ],
+  "failure_taxonomy": {
+    "solution_boundary_violation": 3
+  },
+  "forbidden_hit_rate": 0.0,
+  "mean_reciprocal_rank": 1.0,
+  "method_config_hash": "efda4f10066732fed8d516a1bffc878ca247a86eac77b694978c6d142d12bf73",
+  "model_name": null,
+  "precision_at_3": 0.8958333333333334,
+  "precision_at_5": 0.771875,
+  "recall_at_1": 0.2552083333333333,
+  "recall_at_3": 0.6822916666666666,
+  "recall_at_5": 0.8854166666666666,
+  "request_error_count": 0,
+  "resolved_model_revision": null,
+  "retrieval_method": "lexical_v1",
+  "solution_boundary_violation_rate": 0.1875
+}

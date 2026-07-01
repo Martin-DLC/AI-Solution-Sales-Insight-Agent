@@ -1,0 +1,37 @@
+{
+  "average_latency_ms": 53.625,
+  "benchmark_config_hash": "ca2aed9590fc0fef39cd3b478e50874933cc74d9e13921edb619de63e1f8afd8",
+  "benchmark_version": "retrieval_benchmark_v2",
+  "cache_hit_count": 40,
+  "cache_miss_count": 0,
+  "case_count": 16,
+  "chunk_count": 40,
+  "corpus_embedding_build_ms": 56,
+  "corpus_embedding_count": 40,
+  "disqualification_reasons": [
+    "solution_boundary_violation"
+  ],
+  "document_count": 20,
+  "eligible_for_rag": false,
+  "embedding_dimension": 384,
+  "failed_case_ids": [
+    "RET2-005",
+    "RET2-006"
+  ],
+  "failure_taxonomy": {
+    "solution_boundary_violation": 2
+  },
+  "forbidden_hit_rate": 0.0,
+  "mean_reciprocal_rank": 1.0,
+  "method_config_hash": "7c4ba5f2568becc44e8e040ee6aa3ed3a8a6050e3e18cae7beaf851b035dc2bb",
+  "model_name": "intfloat/multilingual-e5-small",
+  "precision_at_3": 0.9375,
+  "precision_at_5": 0.7625,
+  "recall_at_1": 0.2552083333333333,
+  "recall_at_3": 0.7135416666666666,
+  "recall_at_5": 0.8854166666666666,
+  "request_error_count": 0,
+  "resolved_model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "retrieval_method": "hybrid_v1",
+  "solution_boundary_violation_rate": 0.125
+}
