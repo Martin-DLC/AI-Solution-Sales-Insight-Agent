@@ -95,6 +95,15 @@ from evaluation.retrieval.diagnostics_v2 import (
     render_diagnosis_markdown,
     write_diagnosis_outputs,
 )
+from evaluation.retrieval.counterfactuals_v2 import (
+    COUNTERFACTUAL_DOC_PATH,
+    COUNTERFACTUAL_OUTPUT_PATH,
+    build_counterfactual_payload,
+    build_plan_payload as build_retrieval_v2_counterfactual_plan_payload,
+    check_counterfactual_outputs,
+    render_counterfactual_markdown,
+    write_counterfactual_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -167,10 +176,17 @@ __all__ = [
     "build_case_recall_feasibility",
     "build_diagnosis_payload",
     "build_retrieval_v2_failure_diagnosis_plan_payload",
+    "build_retrieval_v2_counterfactual_plan_payload",
     "check_diagnosis_outputs",
+    "check_counterfactual_outputs",
     "compute_formal_result_hashes",
+    "COUNTERFACTUAL_DOC_PATH",
+    "COUNTERFACTUAL_OUTPUT_PATH",
     "render_diagnosis_markdown",
+    "render_counterfactual_markdown",
+    "build_counterfactual_payload",
     "write_diagnosis_outputs",
+    "write_counterfactual_outputs",
     "validate_retrieval_evaluation_dataset",
     "validate_retrieval_case_feasibility_v2",
 ]
