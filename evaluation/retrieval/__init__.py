@@ -158,6 +158,15 @@ from evaluation.retrieval.metadata_blind_evaluation_v2 import (
     run_blind_metadata_evaluation,
     write_evaluation_outputs,
 )
+from evaluation.retrieval.metadata_blind_failure_analysis_v2 import (
+    TRACKED_FAILURE_ANALYSIS_DOC_PATH as RETRIEVAL_METADATA_BLIND_FAILURE_ANALYSIS_DOC_PATH,
+    TRACKED_FAILURE_ANALYSIS_JSON_PATH as RETRIEVAL_METADATA_BLIND_FAILURE_ANALYSIS_JSON_PATH,
+    build_plan_payload as build_retrieval_metadata_blind_failure_analysis_plan_payload,
+    check_failure_analysis_outputs as check_retrieval_metadata_blind_failure_analysis_outputs,
+    render_failure_analysis_markdown,
+    run_blind_failure_analysis,
+    write_failure_analysis_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -285,4 +294,11 @@ __all__ = [
     "run_blind_metadata_evaluation",
     "render_blind_evaluation_markdown",
     "write_evaluation_outputs",
+    "RETRIEVAL_METADATA_BLIND_FAILURE_ANALYSIS_DOC_PATH",
+    "RETRIEVAL_METADATA_BLIND_FAILURE_ANALYSIS_JSON_PATH",
+    "build_retrieval_metadata_blind_failure_analysis_plan_payload",
+    "check_retrieval_metadata_blind_failure_analysis_outputs",
+    "run_blind_failure_analysis",
+    "render_failure_analysis_markdown",
+    "write_failure_analysis_outputs",
 ]
