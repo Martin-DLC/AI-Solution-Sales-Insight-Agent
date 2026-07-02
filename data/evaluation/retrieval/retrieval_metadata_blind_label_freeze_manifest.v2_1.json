@@ -1,0 +1,48 @@
+{
+  "architecture_c_status": "blocked",
+  "authoring_report_sha256": "13fce4a4793b3854daeeba0f1d4786ffa72dbe64d9c6b7c6066b8333899ebbc3",
+  "blind_authoring_attempt_status": "completed",
+  "bundle_manifest_sha256": "7e1c5a20e0afa52ba19da9200b4590b39721e855eafc6689bcb3579a1116ec77",
+  "cases_or_gold_accessed": false,
+  "chunk_count": 40,
+  "chunk_override_count": 3,
+  "chunk_override_mode_counts": {
+    "full_applicable_scope": 0,
+    "global_reusable": 0,
+    "primary_in_scope": 3
+  },
+  "completed_labels_sha256": "58729c71ba03adce96f7e89170a9bc52bf637a028a7cfb33f1acd1b504327e92",
+  "document_count": 20,
+  "document_default_mode_counts": {
+    "full_applicable_scope": 8,
+    "global_reusable": 1,
+    "primary_in_scope": 11
+  },
+  "evaluation_performed": false,
+  "evaluation_status": "not_started",
+  "external_files_accessed": false,
+  "first_workspace_setup_failure": {
+    "before_packet_access": true,
+    "excluded_from_valid_attempt_count": true,
+    "labels_generated": false,
+    "occurred": true
+  },
+  "freeze_status": "frozen_before_evaluation",
+  "generated_at": "2026-06-29T00:00:00Z",
+  "guide_sha256": "738a2afc587090de35b302a5575f23f66ac66119bf1e812b02e53138eecf16e7",
+  "input_hashes_unchanged": true,
+  "labels_frozen_before_evaluation": true,
+  "labels_modified_after_authoring": false,
+  "manual_review_chunk_count": 0,
+  "manual_review_document_count": 0,
+  "metadata_v2_1_versioning_status": "blocked_pending_evaluation",
+  "network_accessed": false,
+  "p0_validation_status": "pending",
+  "packet_sha256": "314135ac2e1d73dc12980bc097fbbb1e58bf9117b044a47c5cbc19e44ac927a9",
+  "protocol_version": "retrieval_metadata_blind_authoring_v2_1",
+  "retriever_v2_status": "blocked",
+  "source_workspace_type": "external_isolated_directory",
+  "template_sha256": "acd9ed60e0f945071f859f6b0f6d8f28dedd3ce23e9f8b2abf45e22d9428d79f",
+  "valid_blind_authoring_attempt_number": 1,
+  "workspace_validation_passed": true
+}
