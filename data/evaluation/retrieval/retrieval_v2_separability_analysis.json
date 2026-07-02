@@ -1,0 +1,4766 @@
+{
+  "analysis_version": "retrieval_v2_runtime_separability_v1",
+  "architecture_c_status": "blocked",
+  "benchmark_case_upgrade_required": false,
+  "best_runtime_safe_strategy": {
+    "boundary_violation_rate": 0.3125,
+    "candidate_recall_at_10": 0.96875,
+    "candidate_recall_at_20": 0.96875,
+    "candidate_recall_at_5": 0.8854166666666667,
+    "field_variant_id": "F1",
+    "forbidden_hit_rate": 0.0,
+    "full_recall_case_count": 14,
+    "method_id": "vector_v1",
+    "query_variant_id": "Q0",
+    "rule_id": "R2",
+    "unresolved_case_ids": [
+      "RET2-015",
+      "RET2-016"
+    ]
+  },
+  "candidate_generation_analysis_hash": "8745da60d1ffb6ca25c4743c3ee99618815f71fc5fa3a38d6f8379dab5c8c5d0",
+  "combined_strategy_results": [
+    {
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.8697916666666667,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "lexical_v1",
+      "query_variant_id": "Q0",
+      "rule_id": "R2",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.8854166666666667,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "vector_v1",
+      "query_variant_id": "Q0",
+      "rule_id": "R2",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.8697916666666667,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "hybrid_v1",
+      "query_variant_id": "Q0",
+      "rule_id": "R2",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.734375,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "lexical_v1",
+      "query_variant_id": "Q0",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.75,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "vector_v1",
+      "query_variant_id": "Q0",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.734375,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "hybrid_v1",
+      "query_variant_id": "Q0",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.75,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "lexical_v1",
+      "query_variant_id": "Q1",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.703125,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "vector_v1",
+      "query_variant_id": "Q1",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.734375,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "hybrid_v1",
+      "query_variant_id": "Q1",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.765625,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "lexical_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.78125,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "vector_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.765625,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "hybrid_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.765625,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "lexical_v1",
+      "query_variant_id": "Q3",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.71875,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "vector_v1",
+      "query_variant_id": "Q3",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.75,
+      "field_variant_id": "F1",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "hybrid_v1",
+      "query_variant_id": "Q3",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.765625,
+      "field_variant_id": "F2",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "lexical_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.734375,
+      "field_variant_id": "F2",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "vector_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.78125,
+      "field_variant_id": "F2",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "hybrid_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.765625,
+      "field_variant_id": "F3",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "lexical_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.78125,
+      "field_variant_id": "F3",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "vector_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.78125,
+      "field_variant_id": "F3",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "hybrid_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.75,
+      "field_variant_id": "F4",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "lexical_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.75,
+      "field_variant_id": "F4",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "vector_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.765625,
+      "field_variant_id": "F4",
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "hybrid_v1",
+      "query_variant_id": "Q2_all",
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    }
+  ],
+  "deterministic_query_strategy_supported": false,
+  "diagnostic_only": true,
+  "embedding_change_supported": false,
+  "field_strategy_results": {
+    "F0": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.78125,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "hybrid_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.78125,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "F1": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.75,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "vector_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.734375,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.75,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.734375,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "F2": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.75,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "lexical_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.75,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.75,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.734375,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "F3": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.78125,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "lexical_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.78125,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.78125,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.78125,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "F4": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.765625,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "vector_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.75,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    }
+  },
+  "formal_result_hashes": {
+    "comparison": "92c405e623246dacc154d935f31069f4e31b96e55c8886eea9ec9d314aea618d",
+    "hybrid_results": "c5a3ace3ce08914fc7af7426e2c20143863d123b9e5ea3cfff314c0cd8dc5c46",
+    "hybrid_summary": "d9543f66c64ff065ba5be0e6cc80a1a97dcafc1caa3fcb4622b6704052679d74",
+    "lexical_results": "41bfa53dda9a65e78f82eeab064e0a9436b47bb423b3c52d995e3b661e552bad",
+    "lexical_summary": "c5a48e917a897bd3ab76b2f815fdc07796e69ff0c9117534e50d0b13058f67e0",
+    "vector_results": "9db04530b0240d00175dd5f386b7cc4cea030266ba90bb3180063a5c320244c4",
+    "vector_summary": "766801ae928598de3e9ed23097f497764eeeac84e09da56ad6ee60b61cc8d585"
+  },
+  "knowledge_metadata_upgrade_required": false,
+  "limitations": [
+    "This analysis is offline and deterministic only; it does not modify frozen v2 retriever configs or formal artifacts.",
+    "Gold is used only for evaluation and oracle diagnosis, never for candidate generation, filtering, query construction, or ranking in non-oracle variants.",
+    "Vector experiments reuse the frozen embedding model and strict offline snapshot loading.",
+    "The benchmark remains a synthetic 16-case / 40-chunk diagnostic environment and is not an Architecture C runtime recommendation."
+  ],
+  "llm_query_rewrite_supported": true,
+  "query_strategy_results": {
+    "Q0": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.78125,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "hybrid_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.78125,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "Q1": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.765625,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "vector_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.75,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "Q2_all": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.765625,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "lexical_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.75,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "Q2_document_types": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.765625,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "lexical_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.734375,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "Q2_scope": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.765625,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "lexical_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.734375,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.734375,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    },
+    "Q3": {
+      "best_method": {
+        "boundary_violation_rate": 0.25,
+        "candidate_recall_at_10": 0.8125,
+        "candidate_recall_at_20": 0.8125,
+        "candidate_recall_at_5": 0.78125,
+        "forbidden_hit_rate": 0.0,
+        "full_recall_case_count": 10,
+        "method_id": "hybrid_v1",
+        "unresolved_case_ids": [
+          "RET2-002",
+          "RET2-003",
+          "RET2-007",
+          "RET2-008",
+          "RET2-015",
+          "RET2-016"
+        ]
+      },
+      "methods": [
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.75,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "lexical_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.765625,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "vector_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        },
+        {
+          "boundary_violation_rate": 0.25,
+          "candidate_recall_at_10": 0.8125,
+          "candidate_recall_at_20": 0.8125,
+          "candidate_recall_at_5": 0.78125,
+          "forbidden_hit_rate": 0.0,
+          "full_recall_case_count": 10,
+          "method_id": "hybrid_v1",
+          "unresolved_case_ids": [
+            "RET2-002",
+            "RET2-003",
+            "RET2-007",
+            "RET2-008",
+            "RET2-015",
+            "RET2-016"
+          ]
+        }
+      ],
+      "ret2_rank_changes": {
+        "RET2-015": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        },
+        "RET2-016": {
+          "hybrid_v1": null,
+          "lexical_v1": null,
+          "vector_v1": null
+        }
+      }
+    }
+  },
+  "recommended_next_step": "upgrade_runtime_or_knowledge_metadata_contracts_before_retriever_v2",
+  "ret2_015_separability": {
+    "case_id": "RET2-015",
+    "classification": "unknown",
+    "expected_chunk_ids": [
+      "KB-CASE-001#chunk-000-d5868a3597d2",
+      "KB-CASE-001#chunk-001-77cb36877788"
+    ],
+    "expected_document_ids": [
+      "KB-CASE-001",
+      "KB-SOL-003"
+    ],
+    "expected_overlap_analysis": [
+      {
+        "expected_item_id": "KB-CASE-001",
+        "query_overlap_with_content": [
+          "一个",
+          "与限",
+          "个公",
+          "公开",
+          "合成",
+          "品资",
+          "商品",
+          "客服",
+          "导购",
+          "开合",
+          "案例",
+          "治理",
+          "说明",
+          "资料",
+          "问答",
+          "限制"
+        ],
+        "query_overlap_with_summary": [
+          "公开",
+          "合成",
+          "商品",
+          "开合",
+          "成案",
+          "明商",
+          "案例",
+          "治理",
+          "说明",
+          "问答"
+        ],
+        "query_overlap_with_title": [
+          "合成",
+          "商品",
+          "案例",
+          "治理"
+        ]
+      },
+      {
+        "expected_item_id": "KB-CASE-001#chunk-000-d5868a3597d2",
+        "query_overlap_with_content": [
+          "一个",
+          "个公",
+          "公开",
+          "合成",
+          "品资",
+          "商品",
+          "客服",
+          "导购",
+          "开合",
+          "案例",
+          "治理",
+          "说明",
+          "资料",
+          "问答"
+        ],
+        "query_overlap_with_summary": [
+          "公开",
+          "合成",
+          "商品",
+          "开合",
+          "成案",
+          "明商",
+          "案例",
+          "治理",
+          "说明",
+          "问答"
+        ],
+        "query_overlap_with_title": [
+          "合成",
+          "商品",
+          "案例",
+          "治理"
+        ]
+      },
+      {
+        "expected_item_id": "KB-CASE-001#chunk-001-77cb36877788",
+        "query_overlap_with_content": [
+          "商品",
+          "客服",
+          "案例",
+          "说明",
+          "资料"
+        ],
+        "query_overlap_with_summary": [
+          "公开",
+          "合成",
+          "商品",
+          "开合",
+          "成案",
+          "明商",
+          "案例",
+          "治理",
+          "说明",
+          "问答"
+        ],
+        "query_overlap_with_title": [
+          "合成",
+          "商品",
+          "案例",
+          "治理"
+        ]
+      },
+      {
+        "expected_item_id": "KB-SOL-003",
+        "query_overlap_with_content": [
+          "品资",
+          "商品",
+          "导购",
+          "治理",
+          "说明",
+          "资料",
+          "问答"
+        ],
+        "query_overlap_with_summary": [
+          "公开",
+          "合成",
+          "商品",
+          "开合",
+          "说明"
+        ],
+        "query_overlap_with_title": [
+          "商品",
+          "说明"
+        ]
+      }
+    ],
+    "expected_ranks_by_method": {
+      "hybrid_v1": {
+        "KB-CASE-001": null,
+        "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+        "KB-CASE-001#chunk-001-77cb36877788": 2,
+        "KB-SOL-003": 3
+      },
+      "lexical_v1": {
+        "KB-CASE-001": null,
+        "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+        "KB-CASE-001#chunk-001-77cb36877788": 2,
+        "KB-SOL-003": 3
+      },
+      "vector_v1": {
+        "KB-CASE-001": null,
+        "KB-CASE-001#chunk-000-d5868a3597d2": 1,
+        "KB-CASE-001#chunk-001-77cb36877788": 2,
+        "KB-SOL-003": 3
+      }
+    },
+    "query": "请找一个公开合成案例，能说明商品资料治理后再做导购或客服问答的实施前提与限制。",
+    "runtime_context": {
+      "allowed_document_types": [
+        "case_study",
+        "solution"
+      ],
+      "industries": [
+        "retail"
+      ],
+      "operational_solution_scope": [
+        "商品知识库RAG方案",
+        "客服辅助回复方案"
+      ],
+      "tags": []
+    },
+    "source_case_id": "DEV-10",
+    "top_non_gold_candidate_ids": {
+      "hybrid_v1": [
+        "KB-SOL-004#chunk-000-a8e1467e7923"
+      ],
+      "lexical_v1": [
+        "KB-SOL-004#chunk-000-a8e1467e7923"
+      ],
+      "vector_v1": [
+        "KB-SOL-004#chunk-001-d15a10f713d4"
+      ]
+    }
+  },
+  "ret2_016_separability": {
+    "case_id": "RET2-016",
+    "classification": "unknown",
+    "expected_chunk_ids": [
+      "KB-CASE-002#chunk-000-2c2107739c83",
+      "KB-CASE-002#chunk-001-036ea7b824d0"
+    ],
+    "expected_document_ids": [
+      "KB-CASE-002",
+      "KB-SOL-005"
+    ],
+    "expected_overlap_analysis": [
+      {
+        "expected_item_id": "KB-CASE-002",
+        "query_overlap_with_content": [
+          "一个",
+          "个公",
+          "先打",
+          "公开",
+          "务工",
+          "单数",
+          "合成",
+          "客户",
+          "工单",
+          "开合",
+          "户身",
+          "打通",
+          "数据",
+          "服务",
+          "案例",
+          "要先",
+          "说明",
+          "身份"
+        ],
+        "query_overlap_with_summary": [
+          "公开",
+          "合成",
+          "开合",
+          "成案",
+          "明服",
+          "服务",
+          "案例",
+          "说明",
+          "身份"
+        ],
+        "query_overlap_with_title": [
+          "务工",
+          "协同",
+          "单协",
+          "合成",
+          "工单",
+          "服务",
+          "案例"
+        ]
+      },
+      {
+        "expected_item_id": "KB-CASE-002#chunk-000-2c2107739c83",
+        "query_overlap_with_content": [
+          "一个",
+          "个公",
+          "先打",
+          "公开",
+          "单数",
+          "合成",
+          "客户",
+          "工单",
+          "开合",
+          "户身",
+          "打通",
+          "数据",
+          "服务",
+          "案例",
+          "要先",
+          "身份"
+        ],
+        "query_overlap_with_summary": [
+          "公开",
+          "合成",
+          "开合",
+          "成案",
+          "明服",
+          "服务",
+          "案例",
+          "说明",
+          "身份"
+        ],
+        "query_overlap_with_title": [
+          "务工",
+          "协同",
+          "单协",
+          "合成",
+          "工单",
+          "服务",
+          "案例"
+        ]
+      },
+      {
+        "expected_item_id": "KB-CASE-002#chunk-001-036ea7b824d0",
+        "query_overlap_with_content": [
+          "务工",
+          "客户",
+          "工单",
+          "户身",
+          "数据",
+          "服务",
+          "案例",
+          "说明",
+          "身份"
+        ],
+        "query_overlap_with_summary": [
+          "公开",
+          "合成",
+          "开合",
+          "成案",
+          "明服",
+          "服务",
+          "案例",
+          "说明",
+          "身份"
+        ],
+        "query_overlap_with_title": [
+          "务工",
+          "协同",
+          "单协",
+          "合成",
+          "工单",
+          "服务",
+          "案例"
+        ]
+      },
+      {
+        "expected_item_id": "KB-SOL-005",
+        "query_overlap_with_content": [
+          "协同",
+          "客户",
+          "工单",
+          "数据",
+          "服务"
+        ],
+        "query_overlap_with_summary": [
+          "公开",
+          "务工",
+          "合成",
+          "工单",
+          "开合",
+          "服务",
+          "说明"
+        ],
+        "query_overlap_with_title": [
+          "务工",
+          "工单",
+          "服务",
+          "说明"
+        ]
+      }
+    ],
+    "expected_ranks_by_method": {
+      "hybrid_v1": {
+        "KB-CASE-002": null,
+        "KB-CASE-002#chunk-000-2c2107739c83": 1,
+        "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+        "KB-SOL-005": 3
+      },
+      "lexical_v1": {
+        "KB-CASE-002": null,
+        "KB-CASE-002#chunk-000-2c2107739c83": 1,
+        "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+        "KB-SOL-005": 3
+      },
+      "vector_v1": {
+        "KB-CASE-002": null,
+        "KB-CASE-002#chunk-000-2c2107739c83": 1,
+        "KB-CASE-002#chunk-001-036ea7b824d0": 2,
+        "KB-SOL-005": 3
+      }
+    },
+    "query": "请找一个公开合成案例，能说明服务工单协同前为什么要先打通客户身份和工单数据。",
+    "runtime_context": {
+      "allowed_document_types": [
+        "case_study",
+        "solution"
+      ],
+      "industries": [
+        "field_services",
+        "property_services"
+      ],
+      "operational_solution_scope": [
+        "客户身份统一与数据集成方案",
+        "服务工单系统集成方案"
+      ],
+      "tags": []
+    },
+    "source_case_id": "DEV-11",
+    "top_non_gold_candidate_ids": {
+      "hybrid_v1": [
+        "KB-SOL-002#chunk-000-7c0d6600d6d0"
+      ],
+      "lexical_v1": [
+        "KB-SOL-002#chunk-000-7c0d6600d6d0"
+      ],
+      "vector_v1": [
+        "KB-SOL-002#chunk-000-7c0d6600d6d0"
+      ]
+    }
+  },
+  "retriever_v2_ready_for_implementation": false,
+  "runtime_contract_upgrade_required": true,
+  "runtime_filter_false_exclusion_analysis": {
+    "S1": {
+      "boundary_candidate_removal_rate": 1.0,
+      "correctly_filtered_boundary_candidates": 24,
+      "filter_precision": 0.5714285714285714,
+      "filtered_candidates": [
+        {
+          "allowed_document_types": [
+            "solution",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-001",
+          "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "enterprise_shared_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-001",
+          "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "enterprise_shared_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-READY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-READY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-001",
+          "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "enterprise_shared_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-001",
+          "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "enterprise_shared_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-READY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-READY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-001",
+          "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "enterprise_shared_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-001",
+          "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "enterprise_shared_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-READY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-UNS-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "readiness_requirement",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "合规政策RAG检索助手"
+          ],
+          "case_id": "RET2-006",
+          "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-READY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "商品知识库RAG方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-SEC-001#chunk-000-f8c40d662005",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-SEC-001#chunk-001-d88fdb994b4e",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-SEC-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "cross_cutting_requirement",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "strict_subset_mismatch"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        }
+      ],
+      "incorrectly_filtered_relevant_candidates": 18,
+      "relevant_candidate_retention_rate": 0.90625,
+      "runtime_identifiable_implies_separable": false,
+      "total_filtered_candidates": 42,
+      "zero_false_exclusion_separable": false
+    },
+    "S2": {
+      "boundary_candidate_removal_rate": 0.0,
+      "correctly_filtered_boundary_candidates": 0,
+      "filter_precision": 1.0,
+      "filtered_candidates": [],
+      "incorrectly_filtered_relevant_candidates": 0,
+      "relevant_candidate_retention_rate": 1.0,
+      "runtime_identifiable_implies_separable": true,
+      "total_filtered_candidates": 0,
+      "zero_false_exclusion_separable": true
+    },
+    "S3": {
+      "boundary_candidate_removal_rate": 0.25,
+      "correctly_filtered_boundary_candidates": 6,
+      "filter_precision": 0.16666666666666666,
+      "filtered_candidates": [
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-003",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-007",
+          "chunk_id": "KB-PLAY-002#chunk-000-b5afe84948ef",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-008",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-008",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-015",
+          "chunk_id": "KB-CASE-001#chunk-000-d5868a3597d2",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-015",
+          "chunk_id": "KB-CASE-001#chunk-001-77cb36877788",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-016",
+          "chunk_id": "KB-CASE-002#chunk-000-2c2107739c83",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services",
+            "property_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-016",
+          "chunk_id": "KB-CASE-002#chunk-001-036ea7b824d0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services",
+            "property_services"
+          ],
+          "method_id": "lexical_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-003",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-007",
+          "chunk_id": "KB-PLAY-002#chunk-000-b5afe84948ef",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-008",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-008",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-015",
+          "chunk_id": "KB-CASE-001#chunk-000-d5868a3597d2",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-015",
+          "chunk_id": "KB-CASE-001#chunk-001-77cb36877788",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-016",
+          "chunk_id": "KB-CASE-002#chunk-000-2c2107739c83",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services",
+            "property_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-016",
+          "chunk_id": "KB-CASE-002#chunk-001-036ea7b824d0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services",
+            "property_services"
+          ],
+          "method_id": "vector_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "solution",
+            "implementation_playbook"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-002",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail",
+            "field_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-003",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客服辅助回复方案",
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "unsupported_scenario",
+            "solution",
+            "capability"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-005",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "security_compliance"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "私有化大模型部署方案"
+          ],
+          "case_id": "RET2-007",
+          "chunk_id": "KB-PLAY-002#chunk-000-b5afe84948ef",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "私有化大模型部署方案",
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-008",
+          "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "implementation_playbook",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-008",
+          "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-PLAY-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "服务工单系统集成方案",
+            "客户身份统一与数据集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "security_compliance",
+            "capability",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "合规政策RAG检索助手",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-009",
+          "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+          "distinguishable_with_current_runtime_fields": true,
+          "document_id": "KB-CAP-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "boundary_violating_candidate",
+          "industries": [
+            "financial_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "合规政策RAG检索助手"
+          ],
+          "primary_solution_id": "合规政策RAG检索助手",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": null
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-015",
+          "chunk_id": "KB-CASE-001#chunk-000-d5868a3597d2",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "case_id": "RET2-015",
+          "chunk_id": "KB-CASE-001#chunk-001-77cb36877788",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-001",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "retail"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "商品知识库RAG方案",
+            "客服辅助回复方案"
+          ],
+          "primary_solution_id": "商品知识库RAG方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-016",
+          "chunk_id": "KB-CASE-002#chunk-000-2c2107739c83",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services",
+            "property_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        },
+        {
+          "allowed_document_types": [
+            "case_study",
+            "solution"
+          ],
+          "applicable_solution_ids": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "case_id": "RET2-016",
+          "chunk_id": "KB-CASE-002#chunk-001-036ea7b824d0",
+          "distinguishable_with_current_runtime_fields": false,
+          "document_id": "KB-CASE-002",
+          "effective_on": "2026-06-29",
+          "excluded_solution_ids": [],
+          "filtered_by_rule": [
+            "no_runtime_safe_channel"
+          ],
+          "filtered_category": "relevant_gold_candidate",
+          "industries": [
+            "field_services",
+            "property_services"
+          ],
+          "method_id": "hybrid_v1",
+          "operational_solution_scope": [
+            "客户身份统一与数据集成方案",
+            "服务工单系统集成方案"
+          ],
+          "primary_solution_id": "客户身份统一与数据集成方案",
+          "scope_type": "multi_solution",
+          "tags": [],
+          "why_evaluation_relevant_and_boundary_safe": "Expected gold item and evaluate_candidate_boundary_v2 returns candidate_allowed=true."
+        }
+      ],
+      "incorrectly_filtered_relevant_candidates": 30,
+      "relevant_candidate_retention_rate": 0.84375,
+      "runtime_identifiable_implies_separable": false,
+      "total_filtered_candidates": 36,
+      "zero_false_exclusion_separable": false
+    }
+  },
+  "runtime_rule_matrix": [
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.1875,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.9375,
+      "false_negative_count": 0,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "lexical_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R0",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.1875,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.953125,
+      "false_negative_count": 0,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "vector_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R0",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.1875,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.953125,
+      "false_negative_count": 0,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "hybrid_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R0",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.0,
+      "candidate_recall_at_10": 0.875,
+      "candidate_recall_at_20": 0.875,
+      "candidate_recall_at_5": 0.84375,
+      "false_negative_count": 0,
+      "false_positive_count": 6,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 11,
+      "method_id": "lexical_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 0.90625,
+      "rule_id": "R1",
+      "unresolved_case_ids": [
+        "RET2-001",
+        "RET2-002",
+        "RET2-009",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.0,
+      "candidate_recall_at_10": 0.875,
+      "candidate_recall_at_20": 0.875,
+      "candidate_recall_at_5": 0.859375,
+      "false_negative_count": 0,
+      "false_positive_count": 6,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 11,
+      "method_id": "vector_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 0.90625,
+      "rule_id": "R1",
+      "unresolved_case_ids": [
+        "RET2-001",
+        "RET2-002",
+        "RET2-009",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.0,
+      "candidate_recall_at_10": 0.875,
+      "candidate_recall_at_20": 0.875,
+      "candidate_recall_at_5": 0.859375,
+      "false_negative_count": 0,
+      "false_positive_count": 6,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 11,
+      "method_id": "hybrid_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 0.90625,
+      "rule_id": "R1",
+      "unresolved_case_ids": [
+        "RET2-001",
+        "RET2-002",
+        "RET2-009",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.0,
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.9010416666666667,
+      "false_negative_count": 8,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "lexical_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R2",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.0,
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.921875,
+      "false_negative_count": 8,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "vector_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R2",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.0,
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.9166666666666667,
+      "false_negative_count": 8,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "hybrid_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R2",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.25,
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.765625,
+      "false_negative_count": 6,
+      "false_positive_count": 10,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "lexical_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 0.84375,
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.25,
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.765625,
+      "false_negative_count": 6,
+      "false_positive_count": 10,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "vector_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 0.84375,
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.25,
+      "boundary_violation_rate": 0.25,
+      "candidate_recall_at_10": 0.8125,
+      "candidate_recall_at_20": 0.8125,
+      "candidate_recall_at_5": 0.78125,
+      "false_negative_count": 6,
+      "false_positive_count": 10,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 10,
+      "method_id": "hybrid_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 0.84375,
+      "rule_id": "R3",
+      "unresolved_case_ids": [
+        "RET2-002",
+        "RET2-003",
+        "RET2-007",
+        "RET2-008",
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.0,
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.8125,
+      "false_negative_count": 8,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "lexical_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R4",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.0,
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.8125,
+      "false_negative_count": 8,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "vector_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R4",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 0.0,
+      "boundary_violation_rate": 0.3125,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.8125,
+      "false_negative_count": 8,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "hybrid_v1",
+      "oracle_only": false,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R4",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.1875,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.9375,
+      "false_negative_count": 0,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "lexical_v1",
+      "oracle_only": true,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R5",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.1875,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.953125,
+      "false_negative_count": 0,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "vector_v1",
+      "oracle_only": true,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R5",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    },
+    {
+      "boundary_candidate_removal_rate": 1.0,
+      "boundary_violation_rate": 0.1875,
+      "candidate_recall_at_10": 0.96875,
+      "candidate_recall_at_20": 0.96875,
+      "candidate_recall_at_5": 0.953125,
+      "false_negative_count": 0,
+      "false_positive_count": 0,
+      "forbidden_hit_rate": 0.0,
+      "full_recall_case_count": 14,
+      "method_id": "hybrid_v1",
+      "oracle_only": true,
+      "relevant_candidate_retention_rate": 1.0,
+      "rule_id": "R5",
+      "unresolved_case_ids": [
+        "RET2-015",
+        "RET2-016"
+      ]
+    }
+  ],
+  "unresolved_cases": [
+    "RET2-002",
+    "RET2-003",
+    "RET2-007",
+    "RET2-008",
+    "RET2-015",
+    "RET2-016"
+  ]
+}
