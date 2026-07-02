@@ -149,6 +149,15 @@ from evaluation.retrieval.metadata_label_freeze_v2 import (
     validate_source_directory,
     write_frozen_outputs,
 )
+from evaluation.retrieval.metadata_blind_evaluation_v2 import (
+    TRACKED_EVALUATION_DOC_PATH as RETRIEVAL_METADATA_BLIND_EVALUATION_DOC_PATH,
+    TRACKED_EVALUATION_OUTPUT_PATH as RETRIEVAL_METADATA_BLIND_EVALUATION_OUTPUT_PATH,
+    build_plan_payload as build_retrieval_metadata_blind_evaluation_plan_payload,
+    check_evaluation_outputs as check_retrieval_metadata_blind_evaluation_outputs,
+    render_blind_evaluation_markdown,
+    run_blind_metadata_evaluation,
+    write_evaluation_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -269,4 +278,11 @@ __all__ = [
     "check_frozen_outputs",
     "render_freeze_markdown",
     "build_retrieval_metadata_label_freeze_plan_payload",
+    "RETRIEVAL_METADATA_BLIND_EVALUATION_DOC_PATH",
+    "RETRIEVAL_METADATA_BLIND_EVALUATION_OUTPUT_PATH",
+    "build_retrieval_metadata_blind_evaluation_plan_payload",
+    "check_retrieval_metadata_blind_evaluation_outputs",
+    "run_blind_metadata_evaluation",
+    "render_blind_evaluation_markdown",
+    "write_evaluation_outputs",
 ]
