@@ -176,6 +176,19 @@ from evaluation.retrieval.metadata_contract_v2_2_design import (
     render_metadata_contract_v2_2_markdown,
     write_metadata_contract_v2_2_outputs,
 )
+from evaluation.retrieval.metadata_authoring_v2_2 import (
+    TRACKED_DOC_PATH as RETRIEVAL_METADATA_BLIND_PROTOCOL_V2_2_DOC_PATH,
+    TRACKED_MANIFEST_PATH as RETRIEVAL_METADATA_AUTHORING_MANIFEST_V2_2_PATH,
+    TRACKED_MAPPING_PATH as RETRIEVAL_METADATA_AUTHORING_MAPPING_V2_2_PATH,
+    TRACKED_PACKET_PATH as RETRIEVAL_METADATA_AUTHORING_PACKET_V2_2_PATH,
+    build_authoring_packet as build_retrieval_metadata_blind_attempt_2_packet,
+    build_plan_payload as build_retrieval_metadata_blind_attempt_2_plan_payload,
+    check_authoring_outputs as check_retrieval_metadata_blind_attempt_2_outputs,
+    load_authoring_sources as load_retrieval_metadata_blind_attempt_2_sources,
+    render_blind_authoring_guide as render_retrieval_metadata_blind_attempt_2_guide,
+    render_protocol_markdown as render_retrieval_metadata_blind_protocol_v2_2_markdown,
+    write_authoring_outputs as write_retrieval_metadata_blind_attempt_2_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -317,4 +330,15 @@ __all__ = [
     "check_metadata_contract_v2_2_outputs",
     "render_metadata_contract_v2_2_markdown",
     "write_metadata_contract_v2_2_outputs",
+    "RETRIEVAL_METADATA_BLIND_PROTOCOL_V2_2_DOC_PATH",
+    "RETRIEVAL_METADATA_AUTHORING_PACKET_V2_2_PATH",
+    "RETRIEVAL_METADATA_AUTHORING_MAPPING_V2_2_PATH",
+    "RETRIEVAL_METADATA_AUTHORING_MANIFEST_V2_2_PATH",
+    "build_retrieval_metadata_blind_attempt_2_plan_payload",
+    "load_retrieval_metadata_blind_attempt_2_sources",
+    "build_retrieval_metadata_blind_attempt_2_packet",
+    "check_retrieval_metadata_blind_attempt_2_outputs",
+    "render_retrieval_metadata_blind_attempt_2_guide",
+    "render_retrieval_metadata_blind_protocol_v2_2_markdown",
+    "write_retrieval_metadata_blind_attempt_2_outputs",
 ]
