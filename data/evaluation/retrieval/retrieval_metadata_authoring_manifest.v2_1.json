@@ -1,0 +1,39 @@
+{
+  "architecture_c_status": "blocked",
+  "blind_authoring_only": true,
+  "chunk_count": 40,
+  "document_count": 20,
+  "forbidden_source_types": [
+    "case_inputs",
+    "query_inputs",
+    "gold_labels",
+    "formal_result_artifacts",
+    "formal_summary_artifacts",
+    "failure_diagnosis_artifacts",
+    "candidate_generation_diagnostics",
+    "separability_diagnostics",
+    "runtime_contract_conflict_analysis"
+  ],
+  "generated_at": "2026-06-29T00:00:00Z",
+  "guide_sha256": "738a2afc587090de35b302a5575f23f66ac66119bf1e812b02e53138eecf16e7",
+  "labels_prefilled": false,
+  "mapping_sha256": "f271a15bb6ccce131374a3b7ccfedb107abfa0e2afad6aa4a5a739dc3cfc8518",
+  "packet_contains_cases": false,
+  "packet_contains_failure_labels": false,
+  "packet_contains_gold": false,
+  "packet_contains_original_ids": false,
+  "packet_contains_queries": false,
+  "packet_contains_results": false,
+  "packet_sha256": "314135ac2e1d73dc12980bc097fbbb1e58bf9117b044a47c5cbc19e44ac927a9",
+  "packet_source_types": [
+    "knowledge_documents_v2",
+    "knowledge_chunks_v2",
+    "demo_solution_scope_v1",
+    "knowledge_document_chunk_schema"
+  ],
+  "protocol_version": "retrieval_metadata_blind_authoring_v2_1",
+  "selected_solution_count": 6,
+  "source_chunk_hash": "cab598740630873cb69c3b79020f64ae4cb34ced0fc42973884463bea2fea070",
+  "source_document_hash": "81b3cd9de38eb654600dcea68ca9bb98c53ce7340e56438a01ceb3f4be7203f3",
+  "template_sha256": "acd9ed60e0f945071f859f6b0f6d8f28dedd3ce23e9f8b2abf45e22d9428d79f"
+}
