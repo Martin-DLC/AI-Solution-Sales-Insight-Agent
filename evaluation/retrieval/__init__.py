@@ -113,6 +113,15 @@ from evaluation.retrieval.candidate_generation_v2 import (
     render_candidate_generation_markdown,
     write_candidate_generation_outputs,
 )
+from evaluation.retrieval.separability_v2 import (
+    SEPARABILITY_DOC_PATH,
+    SEPARABILITY_OUTPUT_PATH,
+    build_plan_payload as build_retrieval_v2_separability_plan_payload,
+    build_separability_payload,
+    check_separability_outputs,
+    render_separability_markdown,
+    write_separability_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -198,11 +207,18 @@ __all__ = [
     "render_candidate_generation_markdown",
     "build_counterfactual_payload",
     "build_candidate_generation_payload",
+    "build_separability_payload",
     "write_diagnosis_outputs",
     "write_counterfactual_outputs",
     "write_candidate_generation_outputs",
+    "write_separability_outputs",
     "validate_retrieval_evaluation_dataset",
     "validate_retrieval_case_feasibility_v2",
     "build_retrieval_v2_candidate_generation_plan_payload",
     "check_candidate_generation_outputs",
+    "SEPARABILITY_DOC_PATH",
+    "SEPARABILITY_OUTPUT_PATH",
+    "render_separability_markdown",
+    "check_separability_outputs",
+    "build_retrieval_v2_separability_plan_payload",
 ]
