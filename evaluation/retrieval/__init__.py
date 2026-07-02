@@ -131,6 +131,24 @@ from evaluation.retrieval.runtime_contract_design_v2 import (
     render_runtime_contract_markdown,
     write_runtime_contract_outputs,
 )
+from evaluation.retrieval.metadata_authoring_v2 import (
+    PROTOCOL_VERSION as RETRIEVAL_METADATA_AUTHORING_PROTOCOL_VERSION,
+    build_authoring_packet,
+    build_plan_payload as build_retrieval_metadata_authoring_plan_payload,
+    check_authoring_outputs,
+    load_authoring_sources,
+    render_blind_authoring_guide,
+    render_protocol_markdown,
+    write_authoring_outputs,
+)
+from evaluation.retrieval.metadata_label_freeze_v2 import (
+    build_plan_payload as build_retrieval_metadata_label_freeze_plan_payload,
+    check_frozen_outputs,
+    freeze_blind_labels,
+    render_freeze_markdown,
+    validate_source_directory,
+    write_frozen_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -237,4 +255,18 @@ __all__ = [
     "render_runtime_contract_markdown",
     "check_runtime_contract_outputs",
     "build_retrieval_v2_runtime_contract_plan_payload",
+    "RETRIEVAL_METADATA_AUTHORING_PROTOCOL_VERSION",
+    "load_authoring_sources",
+    "build_authoring_packet",
+    "write_authoring_outputs",
+    "check_authoring_outputs",
+    "render_blind_authoring_guide",
+    "render_protocol_markdown",
+    "build_retrieval_metadata_authoring_plan_payload",
+    "validate_source_directory",
+    "freeze_blind_labels",
+    "write_frozen_outputs",
+    "check_frozen_outputs",
+    "render_freeze_markdown",
+    "build_retrieval_metadata_label_freeze_plan_payload",
 ]

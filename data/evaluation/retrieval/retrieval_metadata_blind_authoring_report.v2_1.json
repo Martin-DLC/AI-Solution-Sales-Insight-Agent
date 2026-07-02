@@ -1,0 +1,72 @@
+{
+  "protocol_version": "retrieval_metadata_blind_authoring_v2_1",
+  "input_hashes_confirmed": {
+    "AUTHORING_GUIDE.md": true,
+    "authoring_packet.jsonl": true,
+    "label_template.jsonl": true,
+    "bundle_manifest.json": true
+  },
+  "document_count": 20,
+  "chunk_count": 40,
+  "completed_document_count": 20,
+  "chunk_override_count": 3,
+  "manual_review_document_count": 0,
+  "manual_review_chunk_count": 0,
+  "document_default_mode_counts": {
+    "primary_in_scope": 11,
+    "full_applicable_scope": 8,
+    "global_reusable": 1
+  },
+  "chunk_override_mode_counts": {
+    "primary_in_scope": 3,
+    "full_applicable_scope": 0,
+    "global_reusable": 0
+  },
+  "confidence_counts": {
+    "high": 17,
+    "medium": 6,
+    "low": 0
+  },
+  "ambiguous_items": [
+    {
+      "opaque_document_id": "DOC-AUTH-25b156524051e1f0",
+      "level": "document",
+      "reason": "文档同时涉及多个方案，默认mode依据文本是否要求组合成立进行保守判断。"
+    },
+    {
+      "opaque_document_id": "DOC-AUTH-581a2aa3138ae7c6",
+      "level": "document",
+      "reason": "文档同时涉及多个方案，默认mode依据文本是否要求组合成立进行保守判断。"
+    },
+    {
+      "opaque_document_id": "DOC-AUTH-0570e06bdbbfbe3b",
+      "level": "document",
+      "reason": "文档同时涉及多个方案，默认mode依据文本是否要求组合成立进行保守判断。"
+    },
+    {
+      "opaque_document_id": "DOC-AUTH-39794fcfc90dd42a",
+      "level": "document",
+      "reason": "文档同时涉及多个方案，默认mode依据文本是否要求组合成立进行保守判断。"
+    },
+    {
+      "opaque_document_id": "DOC-AUTH-5a512f478595e057",
+      "level": "document",
+      "reason": "文档同时涉及多个方案，默认mode依据文本是否要求组合成立进行保守判断。"
+    },
+    {
+      "opaque_document_id": "DOC-AUTH-a2a60a963e4712b2",
+      "level": "document",
+      "reason": "文档同时涉及多个方案，默认mode依据文本是否要求组合成立进行保守判断。"
+    }
+  ],
+  "external_files_accessed": false,
+  "network_accessed": false,
+  "cases_or_gold_accessed": false,
+  "evaluation_performed": false,
+  "input_files_modified": false,
+  "authoring_completed": true,
+  "limitations": [
+    "仅依据当前目录内指南、模板和知识内容语义进行盲标。",
+    "对同时覆盖多个方案但未明确要求组合成立的文档，默认mode采用保守语义判断。"
+  ]
+}
