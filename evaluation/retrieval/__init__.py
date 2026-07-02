@@ -122,6 +122,15 @@ from evaluation.retrieval.separability_v2 import (
     render_separability_markdown,
     write_separability_outputs,
 )
+from evaluation.retrieval.runtime_contract_design_v2 import (
+    RUNTIME_CONTRACT_PROPOSAL_DOC_PATH,
+    RUNTIME_CONTRACT_PROPOSAL_OUTPUT_PATH,
+    build_plan_payload as build_retrieval_v2_runtime_contract_plan_payload,
+    build_runtime_contract_design_payload,
+    check_runtime_contract_outputs,
+    render_runtime_contract_markdown,
+    write_runtime_contract_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -221,4 +230,11 @@ __all__ = [
     "render_separability_markdown",
     "check_separability_outputs",
     "build_retrieval_v2_separability_plan_payload",
+    "RUNTIME_CONTRACT_PROPOSAL_DOC_PATH",
+    "RUNTIME_CONTRACT_PROPOSAL_OUTPUT_PATH",
+    "build_runtime_contract_design_payload",
+    "write_runtime_contract_outputs",
+    "render_runtime_contract_markdown",
+    "check_runtime_contract_outputs",
+    "build_retrieval_v2_runtime_contract_plan_payload",
 ]
