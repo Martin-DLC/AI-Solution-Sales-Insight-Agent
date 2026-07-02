@@ -167,6 +167,15 @@ from evaluation.retrieval.metadata_blind_failure_analysis_v2 import (
     run_blind_failure_analysis,
     write_failure_analysis_outputs,
 )
+from evaluation.retrieval.metadata_contract_v2_2_design import (
+    TRACKED_PROPOSAL_DOC_PATH as RETRIEVAL_METADATA_CONTRACT_V2_2_DOC_PATH,
+    TRACKED_PROPOSAL_OUTPUT_PATH as RETRIEVAL_METADATA_CONTRACT_V2_2_OUTPUT_PATH,
+    build_metadata_contract_v2_2_payload,
+    build_plan_payload as build_retrieval_metadata_contract_v2_2_plan_payload,
+    check_metadata_contract_v2_2_outputs,
+    render_metadata_contract_v2_2_markdown,
+    write_metadata_contract_v2_2_outputs,
+)
 __all__ = [
     "RetrievalCandidate",
     "RetrievalCaseScore",
@@ -301,4 +310,11 @@ __all__ = [
     "run_blind_failure_analysis",
     "render_failure_analysis_markdown",
     "write_failure_analysis_outputs",
+    "RETRIEVAL_METADATA_CONTRACT_V2_2_DOC_PATH",
+    "RETRIEVAL_METADATA_CONTRACT_V2_2_OUTPUT_PATH",
+    "build_retrieval_metadata_contract_v2_2_plan_payload",
+    "build_metadata_contract_v2_2_payload",
+    "check_metadata_contract_v2_2_outputs",
+    "render_metadata_contract_v2_2_markdown",
+    "write_metadata_contract_v2_2_outputs",
 ]
