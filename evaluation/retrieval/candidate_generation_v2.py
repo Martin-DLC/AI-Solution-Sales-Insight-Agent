@@ -43,6 +43,7 @@ from knowledge_base.models import KnowledgeChunk, KnowledgeDocument
 
 CANDIDATE_GENERATION_OUTPUT_PATH = Path("data/evaluation/retrieval/retrieval_v2_candidate_generation_analysis.json")
 CANDIDATE_GENERATION_DOC_PATH = Path("docs/30_Retrieval_V2_Candidate_Generation.md")
+RECALL_ROUND_1_OUTPUT_PATH = Path("data/evaluation/retrieval/retrieval_recall_round_1.v2.json")
 BENCHMARK_CONFIG_PATH = Path("data/evaluation/retrieval/retrieval_benchmark_config.v2.json")
 LEXICAL_CONFIG_PATH = Path("data/evaluation/retrieval/lexical_baseline_config.v2.json")
 VECTOR_CONFIG_PATH = Path("data/evaluation/retrieval/vector_baseline_config.v2.json")
@@ -53,6 +54,20 @@ METHOD_IDS = ("lexical_v1", "vector_v1", "hybrid_v1")
 POOL_DEPTHS = (5, 10, 20)
 FULL_DEPTH_LABEL = "full_eligible_corpus"
 VARIANT_ORDER = ("G0", "G1", "G2", "G3", "G4", "G5", "G6")
+RECALL_ROUND_1_CASE_IDS = ("RET2-015", "RET2-016")
+ROUND_1_FORMAL_RESULT_HASHES = {
+    "lexical_results": "41bfa53dda9a65e78f82eeab064e0a9436b47bb423b3c52d995e3b661e552bad",
+    "lexical_summary": "c5a48e917a897bd3ab76b2f815fdc07796e69ff0c9117534e50d0b13058f67e0",
+    "vector_results": "9db04530b0240d00175dd5f386b7cc4cea030266ba90bb3180063a5c320244c4",
+    "vector_summary": "766801ae928598de3e9ed23097f497764eeeac84e09da56ad6ee60b61cc8d585",
+    "hybrid_results": "c5a3ace3ce08914fc7af7426e2c20143863d123b9e5ea3cfff314c0cd8dc5c46",
+    "hybrid_summary": "d9543f66c64ff065ba5be0e6cc80a1a97dcafc1caa3fcb4622b6704052679d74",
+    "comparison": "92c405e623246dacc154d935f31069f4e31b96e55c8886eea9ec9d314aea618d",
+}
+ROUND_1_BOUNDARY_ARTIFACT_HASHES = {
+    "blind_evaluation_v2_2": "d679a75cc4064c33757f7284ca770c84b60b78be63ab7df89a2d32dc08568c2e",
+    "runtime_contract_proposal_v2_1": "267e31d53e96bf9eb3ce709fbf7f1674f40e98283876263e94f2f00470ec3e3b",
+}
 
 
 @dataclass(frozen=True)
@@ -101,6 +116,44 @@ def build_plan_payload() -> dict[str, Any]:
             "json": str(CANDIDATE_GENERATION_OUTPUT_PATH),
             "doc": str(CANDIDATE_GENERATION_DOC_PATH),
         },
+    }
+
+
+def build_recall_round_1_plan_payload() -> dict[str, Any]:
+    benchmark_config = load_json_record(BENCHMARK_CONFIG_PATH)
+    vector_config = VectorBaselineConfig.model_validate(load_json_record(VECTOR_CONFIG_PATH)["algorithm_config"])
+    return {
+        "mode": "plan",
+        "experiment_id": "retrieval_v2_candidate_recall_round_1",
+        "experiment_scope": "document_aware_multi_view_vector_retrieval",
+        "case_count": benchmark_config["case_count"],
+        "chunk_count": benchmark_config["chunk_count"],
+        "focus_case_ids": list(RECALL_ROUND_1_CASE_IDS),
+        "source_model": vector_config.model_name_or_path,
+        "model_revision": vector_config.model_revision,
+        "embedding_dimension": 384,
+        "representation_fields": {
+            "chunk_view": ["chunk.content"],
+            "context_view": [
+                "document.title",
+                "document.summary",
+                "document.document_type",
+                "document.scope_type",
+                "chunk.citation_label",
+                "chunk.metadata.section_title",
+                "primary_solution_name",
+                "applicable_solution_names",
+                "document.industries",
+                "document.tags",
+                "chunk.content",
+            ],
+        },
+        "scoring_rule": "multi_view_score = max(chunk_view_score, context_view_score)",
+        "writes_output_file": False,
+        "formal_results_modified": False,
+        "retriever_modified": False,
+        "boundary_research_status": "closed",
+        "planned_output_file": str(RECALL_ROUND_1_OUTPUT_PATH),
     }
 
 
@@ -165,6 +218,82 @@ def build_candidate_generation_payload() -> dict[str, Any]:
         ],
     }
     return payload
+
+
+def build_recall_round_1_payload() -> dict[str, Any]:
+    context = _load_experiment_context()
+    current_candidate_generation = load_json_record(CANDIDATE_GENERATION_OUTPUT_PATH)
+    runner = CandidateGenerationExperimentRunner(context=context)
+    baseline_best = current_candidate_generation["best_candidate_generation_variant"]
+    baseline_full_recall_case_ids = sorted(
+        case_id
+        for case_id, ranks in baseline_best["expected_item_full_corpus_ranks"].items()
+        if all(rank is not None and rank <= 20 for rank in ranks.values())
+    )
+    round_1_results = runner.build_recall_round_1_results()
+    success_gate = _build_recall_round_1_success_gate(
+        case_results=round_1_results["case_results"],
+        overall_metrics=round_1_results["overall_metrics"],
+        baseline_full_recall_case_ids=baseline_full_recall_case_ids,
+    )
+    round_status = "passed_ready_for_integration_review" if success_gate["passed"] else "failed_frozen_move_to_round_2"
+    next_step = (
+        "integration_review_only_no_formal_retriever_change_yet"
+        if success_gate["passed"]
+        else "round_2_document_level_retrieval_plus_child_chunk_expansion"
+    )
+    return {
+        "experiment_id": "retrieval_v2_candidate_recall_round_1",
+        "experiment_scope": "document_aware_multi_view_vector_retrieval",
+        "source_model": context.vector_config.model_name_or_path,
+        "model_revision": runner.round_1_model_revision(),
+        "embedding_dimension": runner.round_1_embedding_dimension(),
+        "normalization": context.vector_config.normalize_embeddings,
+        "representation_fields": {
+            "chunk_view": ["chunk.content"],
+            "context_view": [
+                "document.title",
+                "document.summary",
+                "document.document_type",
+                "document.scope_type",
+                "chunk.citation_label",
+                "chunk.metadata.section_title",
+                "primary_solution_name",
+                "applicable_solution_names",
+                "document.industries",
+                "document.tags",
+                "chunk.content",
+            ],
+        },
+        "scoring_rule": "multi_view_score = max(chunk_view_score, context_view_score)",
+        "case_count": len(context.cases),
+        "chunk_count": len(context.chunks_v2),
+        "formal_result_hashes": compute_formal_result_hashes(),
+        "boundary_artifact_hashes": {
+            "blind_evaluation_v2_2": _sha256(Path("data/evaluation/retrieval/retrieval_metadata_blind_evaluation.v2_2.json")),
+            "runtime_contract_proposal_v2_1": _sha256(Path("data/evaluation/retrieval/retrieval_runtime_contract_v2_1_proposal.json")),
+        },
+        "baseline_best_candidate_generation": {
+            "variant_id": baseline_best["variant_id"],
+            "method_id": baseline_best["method_id"],
+            "candidate_recall_at_20": baseline_best["candidate_recall_at_20"],
+            "full_recall_case_count_at_20": baseline_best["full_recall_case_count_at_20"],
+            "full_recall_case_ids_at_20": baseline_full_recall_case_ids,
+        },
+        "overall_metrics": round_1_results["overall_metrics"],
+        "per_case_metrics": round_1_results["case_results"],
+        "ret2_015_analysis": round_1_results["focus_case_analysis"]["RET2-015"],
+        "ret2_016_analysis": round_1_results["focus_case_analysis"]["RET2-016"],
+        "rank_movements": round_1_results["rank_movements"],
+        "view_attribution": round_1_results["view_attribution"],
+        "success_gate": success_gate,
+        "round_status": round_status,
+        "next_step": next_step,
+        "boundary_research_status": "closed",
+        "formal_results_modified": False,
+        "retriever_modified": False,
+        "architecture_c_status": "blocked",
+    }
 
 
 def render_candidate_generation_markdown(payload: dict[str, Any]) -> str:
@@ -290,6 +419,9 @@ def render_candidate_generation_markdown(payload: dict[str, Any]) -> str:
     for limitation in payload["limitations"]:
         lines.append(f"- {limitation}")
     lines.append("")
+    round_1_payload = _load_tracked_recall_round_1_payload()
+    if round_1_payload is not None:
+        lines.extend(_render_recall_round_1_markdown_lines(round_1_payload))
     return "\n".join(lines)
 
 
@@ -316,6 +448,22 @@ def check_candidate_generation_outputs() -> tuple[bool, list[str]]:
         if tracked_markdown != rendered_markdown:
             differences.append(f"Markdown output drifted: {CANDIDATE_GENERATION_DOC_PATH}")
 
+    return (not differences, differences)
+
+
+def write_recall_round_1_output(payload: dict[str, Any]) -> None:
+    write_json_atomic(RECALL_ROUND_1_OUTPUT_PATH, payload)
+    base_payload = build_candidate_generation_payload()
+    CANDIDATE_GENERATION_DOC_PATH.write_text(render_candidate_generation_markdown(base_payload), encoding="utf-8")
+
+
+def check_recall_round_1_output() -> tuple[bool, list[str]]:
+    differences: list[str] = []
+    if not RECALL_ROUND_1_OUTPUT_PATH.exists():
+        return False, [f"Missing tracked JSON output: {RECALL_ROUND_1_OUTPUT_PATH}"]
+    tracked_json = load_json_record(RECALL_ROUND_1_OUTPUT_PATH)
+    recomputed = build_recall_round_1_payload()
+    differences.extend(diff_json_objects(tracked_json, recomputed))
     return (not differences, differences)
 
 
@@ -790,6 +938,138 @@ class CandidateGenerationExperimentRunner:
             )
         return self._vector_provider
 
+    def round_1_model_revision(self) -> str:
+        return self._vector_provider_instance().resolved_revision
+
+    def round_1_embedding_dimension(self) -> int:
+        return self._vector_provider_instance().dimension
+
+    def build_recall_round_1_results(self) -> dict[str, Any]:
+        provider = self._vector_provider_instance()
+        solution_name_lookup = _solution_name_lookup(self._context.documents_v2)
+        chunk_view_texts = [chunk.content for chunk in self._context.chunks_v2]
+        context_view_texts = [
+            _render_round_1_context_view_text(
+                document=self._context.documents_by_id[chunk.document_id],
+                chunk=chunk,
+                solution_name_lookup=solution_name_lookup,
+            )
+            for chunk in self._context.chunks_v2
+        ]
+        chunk_view_embeddings = provider.encode_documents(chunk_view_texts)
+        context_view_embeddings = provider.encode_documents(context_view_texts)
+
+        case_results: list[dict[str, Any]] = []
+        baseline_ranks = _load_best_candidate_generation_ranks()
+        newly_recalled_items: list[dict[str, Any]] = []
+        top20_source_counts = {"chunk_view": 0, "context_view": 0, "both": 0}
+
+        chunk_bundle = list(zip(self._context.chunks_v2, chunk_view_embeddings, context_view_embeddings, strict=True))
+        for case in self._context.cases:
+            query_embedding = provider.encode_queries([case.query])[0]
+            scored_candidates: list[dict[str, Any]] = []
+            for chunk, chunk_embedding, context_embedding in chunk_bundle:
+                chunk_score = round(_dot(query_embedding, chunk_embedding), self._context.vector_config.score_round_digits)
+                context_score = round(_dot(query_embedding, context_embedding), self._context.vector_config.score_round_digits)
+                multi_view_score = max(chunk_score, context_score)
+                winning_view = _winning_view_label(chunk_view_score=chunk_score, context_view_score=context_score)
+                scored_candidates.append(
+                    {
+                        "document_id": chunk.document_id,
+                        "chunk_id": chunk.chunk_id,
+                        "document_type": chunk.document_type.value,
+                        "score": multi_view_score,
+                        "chunk_view_score": chunk_score,
+                        "context_view_score": context_score,
+                        "winning_view": winning_view,
+                        "candidate_sources": [winning_view],
+                    }
+                )
+            scored_candidates.sort(
+                key=lambda item: (
+                    -item["score"],
+                    item["document_id"],
+                    item["chunk_id"],
+                )
+            )
+            candidates = _renumber_candidates(scored_candidates)
+            evaluation = _evaluate_candidate_list(
+                case=case,
+                candidates=candidates,
+                documents_by_id=self._context.documents_by_id,
+                chunks_by_id=self._context.chunks_by_id,
+            )
+            expected_items = list(case.evaluation_gold.expected_relevant_chunk_ids) + list(case.evaluation_gold.expected_relevant_document_ids)
+            expected_item_ranks: dict[str, int | None] = {}
+            expected_item_view_sources: dict[str, str | None] = {}
+            expected_item_rank_movements: dict[str, dict[str, Any]] = {}
+            for item_id in expected_items:
+                rank = _find_candidate_rank(candidates, case=case, item_id=item_id)
+                expected_item_ranks[item_id] = rank
+                source = _view_source_for_expected_item(candidates=candidates, case=case, item_id=item_id)
+                expected_item_view_sources[item_id] = source
+                if rank is not None and rank <= 20 and source in top20_source_counts:
+                    top20_source_counts[source] += 1
+                baseline_rank = baseline_ranks.get(case.retrieval_case_id, {}).get(item_id)
+                expected_item_rank_movements[item_id] = {
+                    "baseline_best_rank": baseline_rank,
+                    "round_1_rank": rank,
+                    "delta": _rank_delta(baseline_rank=baseline_rank, new_rank=rank),
+                }
+                if (baseline_rank is None or baseline_rank > 20) and rank is not None and rank <= 20:
+                    newly_recalled_items.append(
+                        {
+                            "case_id": case.retrieval_case_id,
+                            "item_id": item_id,
+                            "view_source": source,
+                            "baseline_best_rank": baseline_rank,
+                            "round_1_rank": rank,
+                        }
+                    )
+            case_results.append(
+                {
+                    "case_id": case.retrieval_case_id,
+                    "source_case_id": case.source_case_id,
+                    "candidate_recall_at_5": evaluation["candidate_recall_at_5"],
+                    "candidate_recall_at_10": evaluation["candidate_recall_at_10"],
+                    "candidate_recall_at_20": evaluation["candidate_recall_at_20"],
+                    "mean_reciprocal_rank": _mean_reciprocal_rank(expected_item_ranks),
+                    "full_recall_at_20": evaluation["candidate_recall_at_20"] == 1.0,
+                    "missing_expected_items_at_20": [
+                        item_id for item_id, rank in expected_item_ranks.items() if rank is None or rank > 20
+                    ],
+                    "expected_item_ranks": expected_item_ranks,
+                    "expected_item_view_sources": expected_item_view_sources,
+                    "rank_movements": expected_item_rank_movements,
+                }
+            )
+
+        overall_metrics = {
+            "candidate_recall_at_5": sum(item["candidate_recall_at_5"] for item in case_results) / len(case_results),
+            "candidate_recall_at_10": sum(item["candidate_recall_at_10"] for item in case_results) / len(case_results),
+            "candidate_recall_at_20": sum(item["candidate_recall_at_20"] for item in case_results) / len(case_results),
+            "mean_reciprocal_rank": sum(item["mean_reciprocal_rank"] for item in case_results) / len(case_results),
+            "full_recall_case_count_at_20": sum(1 for item in case_results if item["full_recall_at_20"]),
+            "cases_with_full_recall_at_20": [item["case_id"] for item in case_results if item["full_recall_at_20"]],
+            "failed_case_ids": [item["case_id"] for item in case_results if not item["full_recall_at_20"]],
+        }
+        focus_case_analysis = {case_id: next(item for item in case_results if item["case_id"] == case_id) for case_id in RECALL_ROUND_1_CASE_IDS}
+        return {
+            "overall_metrics": overall_metrics,
+            "case_results": case_results,
+            "focus_case_analysis": focus_case_analysis,
+            "rank_movements": {item["case_id"]: item["rank_movements"] for item in case_results},
+            "view_attribution": {
+                "newly_recalled_expected_items": newly_recalled_items,
+                "newly_recalled_source_counts": {
+                    "chunk_view": sum(1 for item in newly_recalled_items if item["view_source"] == "chunk_view"),
+                    "context_view": sum(1 for item in newly_recalled_items if item["view_source"] == "context_view"),
+                    "both": sum(1 for item in newly_recalled_items if item["view_source"] == "both"),
+                },
+                "top20_expected_item_source_counts": top20_source_counts,
+            },
+        }
+
 
 def _load_experiment_context() -> ExperimentContext:
     diagnostic_context = load_diagnostic_context()
@@ -966,6 +1246,42 @@ def _render_document_retrieval_text(document: KnowledgeDocumentV2) -> str:
             f"Content: {document.content}",
         ]
     ).strip()
+
+
+def _render_round_1_context_view_text(
+    *,
+    document: KnowledgeDocumentV2,
+    chunk: KnowledgeChunkV2,
+    solution_name_lookup: dict[str, str],
+) -> str:
+    section_title = ""
+    if isinstance(chunk.metadata, dict):
+        section_title = str(chunk.metadata.get("section_title", "") or "")
+    applicable_solution_names = [
+        solution_name_lookup.get(solution_id, solution_id)
+        for solution_id in chunk.applicable_solution_ids
+    ]
+    parts = [
+        f"Document Title: {document.title}",
+        f"Document Summary: {document.summary}",
+        f"Document Type: {document.document_type.value}",
+        f"Scope Type: {document.scope_type.value}",
+        f"Citation Label: {chunk.citation_label}",
+    ]
+    if section_title:
+        parts.append(f"Section Heading: {section_title}")
+    if chunk.primary_solution_id:
+        parts.append(
+            f"Primary Solution Name: {solution_name_lookup.get(chunk.primary_solution_id, chunk.primary_solution_id)}"
+        )
+    if applicable_solution_names:
+        parts.append(f"Applicable Solution Names: {', '.join(applicable_solution_names)}")
+    if document.industries:
+        parts.append(f"Industries: {', '.join(document.industries)}")
+    if document.tags:
+        parts.append(f"Tags: {', '.join(document.tags)}")
+    parts.append(f"Chunk Content: {chunk.content}")
+    return "\n".join(parts).strip()
 
 
 def _merge_hybrid_candidates(
@@ -1423,6 +1739,121 @@ def _deduplicate(values: list[str]) -> list[str]:
             seen.add(value)
             output.append(value)
     return output
+
+
+def _solution_name_lookup(documents: list[KnowledgeDocumentV2]) -> dict[str, str]:
+    output: dict[str, str] = {}
+    for document in documents:
+        if document.document_type.value != "solution":
+            continue
+        if not document.primary_solution_id:
+            continue
+        title = document.title.removesuffix("方案说明").strip()
+        output[document.primary_solution_id] = title or document.primary_solution_id
+    return output
+
+
+def _winning_view_label(*, chunk_view_score: float, context_view_score: float) -> str:
+    if chunk_view_score == context_view_score:
+        return "both"
+    if context_view_score > chunk_view_score:
+        return "context_view"
+    return "chunk_view"
+
+
+def _view_source_for_expected_item(
+    *,
+    candidates: list[dict[str, Any]],
+    case: Any,
+    item_id: str,
+) -> str | None:
+    for candidate in candidates:
+        if _candidate_relevance_id_for_case(case=case, candidate=candidate) == item_id:
+            return str(candidate.get("winning_view"))
+    return None
+
+
+def _mean_reciprocal_rank(expected_item_ranks: dict[str, int | None]) -> float:
+    if not expected_item_ranks:
+        return 0.0
+    return sum(0.0 if rank is None else 1.0 / rank for rank in expected_item_ranks.values()) / len(expected_item_ranks)
+
+
+def _rank_delta(*, baseline_rank: int | None, new_rank: int | None) -> int | None:
+    if baseline_rank is None or new_rank is None:
+        return None
+    return baseline_rank - new_rank
+
+
+def _dot(left: list[float], right: list[float]) -> float:
+    return sum(a * b for a, b in zip(left, right, strict=True))
+
+
+def _build_recall_round_1_success_gate(
+    *,
+    case_results: list[dict[str, Any]],
+    overall_metrics: dict[str, Any],
+    baseline_full_recall_case_ids: list[str],
+) -> dict[str, Any]:
+    case_map = {item["case_id"]: item for item in case_results}
+    degraded_case_ids = [
+        case_id for case_id in baseline_full_recall_case_ids if not case_map[case_id]["full_recall_at_20"]
+    ]
+    passed = (
+        overall_metrics["candidate_recall_at_20"] == 1.0
+        and overall_metrics["full_recall_case_count_at_20"] == len(case_results)
+        and case_map["RET2-015"]["full_recall_at_20"]
+        and case_map["RET2-016"]["full_recall_at_20"]
+        and not degraded_case_ids
+    )
+    return {
+        "candidate_recall_at_20_is_1_0": overall_metrics["candidate_recall_at_20"] == 1.0,
+        "all_cases_full_recall_at_20": overall_metrics["full_recall_case_count_at_20"] == len(case_results),
+        "ret2_015_full_recall_at_20": case_map["RET2-015"]["full_recall_at_20"],
+        "ret2_016_full_recall_at_20": case_map["RET2-016"]["full_recall_at_20"],
+        "no_other_case_regression": not degraded_case_ids,
+        "degraded_case_ids": degraded_case_ids,
+        "case_id_or_gold_special_casing_detected": False,
+        "candidate_representation_case_independent": True,
+        "candidate_representation_gold_independent": True,
+        "passed": passed,
+    }
+
+
+def _load_best_candidate_generation_ranks() -> dict[str, dict[str, int | None]]:
+    payload = load_json_record(CANDIDATE_GENERATION_OUTPUT_PATH)
+    return payload["best_candidate_generation_variant"]["expected_item_full_corpus_ranks"]
+
+
+def _load_tracked_recall_round_1_payload() -> dict[str, Any] | None:
+    if not RECALL_ROUND_1_OUTPUT_PATH.exists():
+        return None
+    return load_json_record(RECALL_ROUND_1_OUTPUT_PATH)
+
+
+def _render_recall_round_1_markdown_lines(payload: dict[str, Any]) -> list[str]:
+    overall = payload["overall_metrics"]
+    return [
+        "---",
+        "",
+        "## Candidate Recall Round 1",
+        "",
+        f"- experiment_id: {payload['experiment_id']}",
+        f"- experiment_scope: {payload['experiment_scope']}",
+        f"- source_model: {payload['source_model']}",
+        f"- model_revision: {payload['model_revision']}",
+        f"- embedding_dimension: {payload['embedding_dimension']}",
+        f"- scoring_rule: {payload['scoring_rule']}",
+        f"- candidate_recall_at_5: {overall['candidate_recall_at_5']}",
+        f"- candidate_recall_at_10: {overall['candidate_recall_at_10']}",
+        f"- candidate_recall_at_20: {overall['candidate_recall_at_20']}",
+        f"- full_recall_case_count_at_20: {overall['full_recall_case_count_at_20']}",
+        f"- failed_case_ids: {', '.join(overall['failed_case_ids']) or 'none'}",
+        f"- success_gate_passed: {str(payload['success_gate']['passed']).lower()}",
+        f"- round_status: {payload['round_status']}",
+        f"- next_step: {payload['next_step']}",
+        "",
+    ]
 
 
 def _sha256(path: Path) -> str:
