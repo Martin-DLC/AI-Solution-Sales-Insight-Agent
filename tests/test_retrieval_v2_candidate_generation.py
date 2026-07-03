@@ -3,13 +3,18 @@ from __future__ import annotations
 from datetime import date
 
 from evaluation.retrieval.candidate_generation_v2 import (
+    ROUND_1_FORMAL_RESULT_HASHES,
     _candidate_recall_at,
     _expand_document_candidates_to_chunks,
     _merge_hybrid_candidates,
     _render_document_retrieval_text,
     _render_enriched_chunk_text,
+    _render_recall_round_1_markdown_lines,
+    _render_round_1_context_view_text,
     _runtime_safe_chunk_eligible,
+    _winning_view_label,
     build_plan_payload,
+    build_recall_round_1_plan_payload,
 )
 from evaluation.retrieval.contracts_v2 import RetrievalEvaluationCaseV2, RetrievalEvaluationGoldV2, RetrievalRuntimeContextV2
 from knowledge_base.contracts_v2 import KnowledgeChunkV2, KnowledgeDocumentV2, load_demo_solution_ids_v2
@@ -314,3 +319,101 @@ def test_candidate_recall_does_not_exceed_one_when_document_and_chunk_both_match
     ]
 
     assert _candidate_recall_at(case=case, candidates=candidates, top_k=2) == 1.0
+
+
+def test_recall_round_1_plan_payload_is_scope_limited() -> None:
+    payload = build_recall_round_1_plan_payload()
+
+    assert payload["mode"] == "plan"
+    assert payload["experiment_id"] == "retrieval_v2_candidate_recall_round_1"
+    assert payload["experiment_scope"] == "document_aware_multi_view_vector_retrieval"
+    assert payload["focus_case_ids"] == ["RET2-015", "RET2-016"]
+    assert payload["representation_fields"]["chunk_view"] == ["chunk.content"]
+    assert "chunk.content" in payload["representation_fields"]["context_view"]
+    assert payload["formal_results_modified"] is False
+    assert payload["retriever_modified"] is False
+    assert payload["boundary_research_status"] == "closed"
+
+
+def test_round_1_context_view_is_deterministic_and_gold_independent() -> None:
+    ids = _solution_ids()
+    document = _make_document(
+        "DOC-ROUND1",
+        primary_solution_id=ids[0],
+        applicable_solution_ids=[ids[0], ids[1]],
+        scope_type="multi_solution",
+    ).model_copy(update={"industries": ["retail"], "tags": ["demo-tag"]})
+    chunk = _make_chunk(
+        "DOC-ROUND1#chunk-0",
+        "DOC-ROUND1",
+        primary_solution_id=ids[0],
+        applicable_solution_ids=[ids[0], ids[1]],
+        scope_type="multi_solution",
+    )
+    solution_name_lookup = {
+        ids[0]: "方案一",
+        ids[1]: "方案二",
+    }
+
+    text = _render_round_1_context_view_text(
+        document=document,
+        chunk=chunk,
+        solution_name_lookup=solution_name_lookup,
+    )
+
+    assert text == _render_round_1_context_view_text(
+        document=document,
+        chunk=chunk,
+        solution_name_lookup=solution_name_lookup,
+    )
+    assert "Document Title:" in text
+    assert "Document Summary:" in text
+    assert "Document Type:" in text
+    assert "Scope Type:" in text
+    assert "Citation Label:" in text
+    assert "Primary Solution Name:" in text
+    assert "Applicable Solution Names:" in text
+    assert "Industries:" in text
+    assert "Tags:" in text
+    assert "Chunk Content:" in text
+    assert "RET2-015" not in text
+    assert "expected_relevant" not in text
+    assert "forbidden_document_ids" not in text
+    assert "KB-CASE-001" not in text
+
+
+def test_round_1_winning_view_label_and_markdown_lines_are_stable() -> None:
+    assert _winning_view_label(chunk_view_score=0.8, context_view_score=0.8) == "both"
+    assert _winning_view_label(chunk_view_score=0.8, context_view_score=0.9) == "context_view"
+    assert _winning_view_label(chunk_view_score=0.9, context_view_score=0.8) == "chunk_view"
+
+    lines = _render_recall_round_1_markdown_lines(
+        {
+            "experiment_id": "retrieval_v2_candidate_recall_round_1",
+            "experiment_scope": "document_aware_multi_view_vector_retrieval",
+            "source_model": "intfloat/multilingual-e5-small",
+            "model_revision": "rev",
+            "embedding_dimension": 384,
+            "scoring_rule": "multi_view_score = max(chunk_view_score, context_view_score)",
+            "overall_metrics": {
+                "candidate_recall_at_5": 0.5,
+                "candidate_recall_at_10": 0.75,
+                "candidate_recall_at_20": 0.875,
+                "full_recall_case_count_at_20": 14,
+                "failed_case_ids": ["RET2-015", "RET2-016"],
+            },
+            "success_gate": {"passed": False},
+            "round_status": "failed_frozen_move_to_round_2",
+            "next_step": "round_2_document_level_retrieval_plus_child_chunk_expansion",
+        }
+    )
+
+    rendered = "\n".join(lines)
+    assert "Candidate Recall Round 1" in rendered
+    assert "RET2-015, RET2-016" in rendered
+    assert "failed_frozen_move_to_round_2" in rendered
+
+
+def test_round_1_formal_hash_constants_match_frozen_values() -> None:
+    assert ROUND_1_FORMAL_RESULT_HASHES["lexical_results"] == "41bfa53dda9a65e78f82eeab064e0a9436b47bb423b3c52d995e3b661e552bad"
+    assert ROUND_1_FORMAL_RESULT_HASHES["comparison"] == "92c405e623246dacc154d935f31069f4e31b96e55c8886eea9ec9d314aea618d"

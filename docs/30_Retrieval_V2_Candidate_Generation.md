@@ -185,3 +185,22 @@
 - All experiments reuse the frozen v2 dataset and frozen model configuration in strict offline mode.
 - Gold is used only for evaluation; candidate generation and ranking variants do not consume gold IDs.
 - Document-level retrieval and dual-granularity union are non-formal experiments for candidate-pool diagnosis only.
+
+---
+
+## Candidate Recall Round 1
+
+- experiment_id: retrieval_v2_candidate_recall_round_1
+- experiment_scope: document_aware_multi_view_vector_retrieval
+- source_model: intfloat/multilingual-e5-small
+- model_revision: 614241f622f53c4eeff9890bdc4f31cfecc418b3
+- embedding_dimension: 384
+- scoring_rule: multi_view_score = max(chunk_view_score, context_view_score)
+- candidate_recall_at_5: 0.5989583333333334
+- candidate_recall_at_10: 0.7760416666666666
+- candidate_recall_at_20: 0.8385416666666666
+- full_recall_case_count_at_20: 7
+- failed_case_ids: RET2-001, RET2-002, RET2-004, RET2-005, RET2-006, RET2-009, RET2-014, RET2-015, RET2-016
+- success_gate_passed: false
+- round_status: failed_frozen_move_to_round_2
+- next_step: round_2_document_level_retrieval_plus_child_chunk_expansion
