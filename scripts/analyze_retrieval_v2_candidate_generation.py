@@ -13,14 +13,19 @@ from evaluation.retrieval.candidate_generation_v2 import (  # noqa: E402
     CANDIDATE_GENERATION_DOC_PATH,
     CANDIDATE_GENERATION_OUTPUT_PATH,
     RECALL_ROUND_1_OUTPUT_PATH,
+    RECALL_ROUND_2_OUTPUT_PATH,
     build_candidate_generation_payload,
     build_plan_payload,
     build_recall_round_1_payload,
     build_recall_round_1_plan_payload,
+    build_recall_round_2_payload,
+    build_recall_round_2_plan_payload,
     check_candidate_generation_outputs,
     check_recall_round_1_output,
+    check_recall_round_2_output,
     write_candidate_generation_outputs,
     write_recall_round_1_output,
+    write_recall_round_2_output,
 )
 
 
@@ -33,6 +38,11 @@ def main() -> int:
         action="store_true",
         help="Run the Round 1 document-aware multi-view vector candidate-recall experiment.",
     )
+    parser.add_argument(
+        "--recall-round-2",
+        action="store_true",
+        help="Run the Round 2 hierarchical parent-first child-expansion candidate-recall experiment.",
+    )
     parser.add_argument("--write", action="store_true", help="Run offline candidate-generation analysis and write tracked outputs.")
     parser.add_argument("--check", action="store_true", help="Recompute offline candidate-generation analysis and compare against tracked outputs.")
     args = parser.parse_args()
@@ -40,6 +50,54 @@ def main() -> int:
     if args.write and args.check:
         print("Choose either --write or --check, not both.", file=sys.stderr)
         return 2
+
+    if args.recall_round_1 and args.recall_round_2:
+        print("Choose only one recall round flag.", file=sys.stderr)
+        return 2
+
+    if args.recall_round_2:
+        if args.check:
+            ok, differences = check_recall_round_2_output()
+            print(
+                json.dumps(
+                    {
+                        "mode": "check",
+                        "experiment": "recall_round_2",
+                        "status": "recall_round_2_output_match" if ok else "recall_round_2_output_drifted",
+                        "differences": differences,
+                        "output_file": str(RECALL_ROUND_2_OUTPUT_PATH),
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                    sort_keys=True,
+                )
+            )
+            return 0 if ok else 1
+
+        if args.write:
+            payload = build_recall_round_2_payload()
+            write_recall_round_2_output(payload)
+            print(
+                json.dumps(
+                    {
+                        "mode": "write",
+                        "experiment": "recall_round_2",
+                        "output_file": str(RECALL_ROUND_2_OUTPUT_PATH),
+                        "round_status": payload["round_status"],
+                        "candidate_recall_at_20": payload["round_2_metrics"]["candidate_recall_at_20"],
+                        "full_recall_case_count_at_20": payload["round_2_metrics"]["full_recall_case_count_at_20"],
+                        "success_gate_passed": payload["success_gate"]["passed"],
+                        "retriever_v2_status": payload["retriever_v2_status"],
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                    sort_keys=True,
+                )
+            )
+            return 0
+
+        print(json.dumps(build_recall_round_2_plan_payload(), ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
 
     if args.recall_round_1:
         if args.check:

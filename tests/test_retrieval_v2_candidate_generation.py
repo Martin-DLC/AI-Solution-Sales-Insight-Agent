@@ -4,17 +4,24 @@ from datetime import date
 
 from evaluation.retrieval.candidate_generation_v2 import (
     ROUND_1_FORMAL_RESULT_HASHES,
+    ROUND_2_RRF_K,
     _candidate_recall_at,
+    _build_candidate_representability_audit,
+    _candidate_type_for_expected_item,
     _expand_document_candidates_to_chunks,
     _merge_hybrid_candidates,
     _render_document_retrieval_text,
     _render_enriched_chunk_text,
     _render_recall_round_1_markdown_lines,
+    _render_recall_round_2_markdown_lines,
     _render_round_1_context_view_text,
+    _render_round_2_document_text,
+    _rrf_score,
     _runtime_safe_chunk_eligible,
     _winning_view_label,
     build_plan_payload,
     build_recall_round_1_plan_payload,
+    build_recall_round_2_plan_payload,
 )
 from evaluation.retrieval.contracts_v2 import RetrievalEvaluationCaseV2, RetrievalEvaluationGoldV2, RetrievalRuntimeContextV2
 from knowledge_base.contracts_v2 import KnowledgeChunkV2, KnowledgeDocumentV2, load_demo_solution_ids_v2
@@ -417,3 +424,157 @@ def test_round_1_winning_view_label_and_markdown_lines_are_stable() -> None:
 def test_round_1_formal_hash_constants_match_frozen_values() -> None:
     assert ROUND_1_FORMAL_RESULT_HASHES["lexical_results"] == "41bfa53dda9a65e78f82eeab064e0a9436b47bb423b3c52d995e3b661e552bad"
     assert ROUND_1_FORMAL_RESULT_HASHES["comparison"] == "92c405e623246dacc154d935f31069f4e31b96e55c8886eea9ec9d314aea618d"
+
+
+def test_recall_round_2_plan_payload_is_scope_limited() -> None:
+    payload = build_recall_round_2_plan_payload()
+
+    assert payload["mode"] == "plan"
+    assert payload["experiment_id"] == "retrieval_v2_candidate_recall_round_2"
+    assert payload["experiment_type"] == "hierarchical_parent_first_child_expansion"
+    assert payload["focus_case_ids"] == ["RET2-015", "RET2-016"]
+    assert payload["document_ranking_rule"].endswith("k=60")
+    assert payload["formal_results_modified"] is False
+    assert payload["retriever_modified"] is False
+
+
+def test_round_2_document_text_is_deterministic_and_gold_independent() -> None:
+    ids = _solution_ids()
+    document = _make_document(
+        "DOC-ROUND2",
+        primary_solution_id=ids[0],
+        applicable_solution_ids=[ids[0], ids[1]],
+        scope_type="multi_solution",
+    ).model_copy(update={"industries": ["retail"], "tags": ["demo-tag"]})
+    chunk_a = _make_chunk(
+        "DOC-ROUND2#chunk-0",
+        "DOC-ROUND2",
+        primary_solution_id=ids[0],
+        applicable_solution_ids=[ids[0], ids[1]],
+        scope_type="multi_solution",
+    )
+    chunk_b = _make_chunk(
+        "DOC-ROUND2#chunk-1",
+        "DOC-ROUND2",
+        primary_solution_id=ids[0],
+        applicable_solution_ids=[ids[0], ids[1]],
+        scope_type="multi_solution",
+    )
+    solution_name_lookup = {ids[0]: "方案一", ids[1]: "方案二"}
+
+    text = _render_round_2_document_text(
+        document=document,
+        child_chunks=[chunk_a, chunk_b],
+        solution_name_lookup=solution_name_lookup,
+    )
+
+    assert text == _render_round_2_document_text(
+        document=document,
+        child_chunks=[chunk_a, chunk_b],
+        solution_name_lookup=solution_name_lookup,
+    )
+    assert "Document Title:" in text
+    assert "Document Summary:" in text
+    assert "Document Type:" in text
+    assert "Scope Type:" in text
+    assert "Primary Solution Name:" in text
+    assert "Applicable Solution Names:" in text
+    assert "Child Citation Labels:" in text
+    assert "Child Chunk Contents:" in text
+    assert "RET2-015" not in text
+    assert "expected_relevant" not in text
+    assert "forbidden_document_ids" not in text
+    assert "KB-CASE-001" not in text
+
+
+def test_round_2_rrf_and_candidate_identity_helpers_are_stable() -> None:
+    assert ROUND_2_RRF_K == 60
+    assert _rrf_score(1, 5, k=ROUND_2_RRF_K) > _rrf_score(2, 6, k=ROUND_2_RRF_K)
+    assert _rrf_score(1, None, k=ROUND_2_RRF_K) > 0.0
+
+    case = RetrievalEvaluationCaseV2(
+        retrieval_case_id="RET2-PARENT-CHILD",
+        source_case_id="DEV-TEST",
+        query_type="solution_boundary",
+        query="parent child identity",
+        runtime_context=RetrievalRuntimeContextV2(
+            operational_solution_scope=[_solution_ids()[0]],
+            allowed_document_types=["solution"],
+        ),
+        evaluation_gold=RetrievalEvaluationGoldV2(
+            expected_relevant_document_ids=["DOC-300"],
+            expected_relevant_chunk_ids=["DOC-300#chunk-0"],
+            forbidden_document_ids=[],
+            forbidden_solution_ids=[],
+            minimum_relevant_hits=1,
+        ),
+    )
+    candidates = [
+        {"rank": 1, "document_id": "DOC-300", "chunk_id": None, "candidate_type": "document"},
+        {"rank": 2, "document_id": "DOC-300", "chunk_id": "DOC-300#chunk-0", "candidate_type": "chunk"},
+    ]
+    assert _candidate_type_for_expected_item(candidates, case=case, item_id="DOC-300") == "document"
+    assert _candidate_type_for_expected_item(candidates, case=case, item_id="DOC-300#chunk-0") == "chunk"
+
+
+def test_round_2_representability_audit_detects_chunk_only_limit() -> None:
+    ids = _solution_ids()
+    case = RetrievalEvaluationCaseV2(
+        retrieval_case_id="RET2-015",
+        source_case_id="DEV-10",
+        query_type="solution_boundary",
+        query="representability",
+        runtime_context=RetrievalRuntimeContextV2(
+            operational_solution_scope=[ids[0]],
+            allowed_document_types=["solution"],
+        ),
+        evaluation_gold=RetrievalEvaluationGoldV2(
+            expected_relevant_document_ids=["DOC-400", "DOC-401"],
+            expected_relevant_chunk_ids=["DOC-400#chunk-0", "DOC-400#chunk-1"],
+            forbidden_document_ids=[],
+            forbidden_solution_ids=[],
+            minimum_relevant_hits=1,
+        ),
+    )
+    audit = _build_candidate_representability_audit(
+        cases=[case],
+        document_children={
+            "DOC-400": ["DOC-400#chunk-0", "DOC-400#chunk-1"],
+            "DOC-401": ["DOC-401#chunk-0"],
+        },
+    )
+
+    focus = audit["focus_case_audit"]["RET2-015"]
+    assert audit["current_candidate_types"] == ["chunk"]
+    assert audit["document_candidates_supported"] is False
+    assert focus["child_chunk_count_by_expected_document"]["DOC-400"] == 2
+    assert focus["chunk_only_theoretical_max_relevant_hit_count"] == 3
+    assert focus["chunk_only_theoretical_max_recall"] == 0.75
+    assert focus["missing_parent_document_due_to_candidate_model"] is True
+    assert focus["benchmark_representable_with_current_candidate_model"] is False
+
+
+def test_round_2_markdown_lines_are_stable() -> None:
+    lines = _render_recall_round_2_markdown_lines(
+        {
+            "experiment_id": "retrieval_v2_candidate_recall_round_2",
+            "experiment_type": "hierarchical_parent_first_child_expansion",
+            "embedding_model": "intfloat/multilingual-e5-small",
+            "model_revision": "rev",
+            "document_candidate_count": 20,
+            "chunk_candidate_count": 40,
+            "baseline_metrics": {"candidate_recall_at_20": 0.96875, "full_recall_case_count_at_20": 14},
+            "round_2_metrics": {"candidate_recall_at_20": 1.0, "full_recall_case_count_at_20": 16},
+            "parent_document_recall_analysis": {"newly_recalled_parent_document_count": 2},
+            "success_gate": {"passed": True},
+            "round_status": "passed_pending_integration_review",
+            "retriever_v2_status": "pending_hierarchical_integration_review",
+            "architecture_c_status": "blocked_pending_formal_retrieval_validation",
+        }
+    )
+
+    rendered = "\n".join(lines)
+    assert "Candidate Recall Round 2" in rendered
+    assert "hierarchical_parent_first_child_expansion" in rendered
+    assert "baseline_recall_at_20: 0.96875" in rendered
+    assert "round_2_full_recall_case_count_at_20: 16" in rendered
