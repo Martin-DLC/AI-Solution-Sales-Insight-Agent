@@ -1,0 +1,464 @@
+{
+  "architecture_c_status": "blocked",
+  "attempt_1_vs_attempt_2": {
+    "attempt_1_document_default_mode_counts": {
+      "full_applicable_scope": 8,
+      "global_reusable": 1,
+      "primary_in_scope": 11
+    },
+    "attempt_1_full_runtime_removal": 0.984,
+    "attempt_1_full_runtime_retention": 0.96875,
+    "attempt_2_document_default_mode_counts": {
+      "full_applicable_scope": 8,
+      "global_reusable": 6,
+      "primary_in_scope": 6
+    },
+    "attempt_2_full_runtime_removal": 0.9786666666666667,
+    "attempt_2_full_runtime_retention": 0.96875,
+    "attempt_2_outperformed_attempt_1": false,
+    "blind_performance_improved": false,
+    "false_exclusion_delta": 0,
+    "false_inclusion_delta": 2,
+    "guide_changed_assignment_distribution": true,
+    "guide_clarified_scope_runtime_responsibility": true,
+    "independent_reproducibility_improvement": "not_demonstrated"
+  },
+  "benchmark_contract_conflicts": [],
+  "blind_attempt_number": 2,
+  "boundary_contract_validation_status": "failed",
+  "boundary_research_closed": true,
+  "boundary_research_status": "closed_after_attempt_2_failed",
+  "evaluation_does_not_modify_labels": true,
+  "evaluation_scope": {
+    "case_count": 16,
+    "chunk_count": 40,
+    "pair_count": 640
+  },
+  "evaluation_type": "post_freeze_independent_blind_label_evaluation",
+  "evaluation_version": "v2_2",
+  "evidence_classification": "P1_blind_attempt_2_failed",
+  "false_exclusions": [
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-002",
+      "chunk_id": "KB-PLAY-001#chunk-000-0015819a0dd7",
+      "document_id": "KB-PLAY-001",
+      "effective_mode": "full_applicable_scope",
+      "scope_type": "multi_solution"
+    },
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-002",
+      "chunk_id": "KB-PLAY-001#chunk-001-e90933b01fb0",
+      "document_id": "KB-PLAY-001",
+      "effective_mode": "full_applicable_scope",
+      "scope_type": "multi_solution"
+    }
+  ],
+  "false_inclusions": [
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-005",
+      "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+      "document_id": "KB-CAP-001",
+      "effective_mode": "global_reusable",
+      "scope_type": "multi_solution"
+    },
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-005",
+      "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+      "document_id": "KB-UNS-001",
+      "effective_mode": "global_reusable",
+      "scope_type": "cross_cutting_requirement"
+    },
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-005",
+      "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+      "document_id": "KB-UNS-001",
+      "effective_mode": "global_reusable",
+      "scope_type": "cross_cutting_requirement"
+    },
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-006",
+      "chunk_id": "KB-UNS-001#chunk-000-29c7c8c2317d",
+      "document_id": "KB-UNS-001",
+      "effective_mode": "global_reusable",
+      "scope_type": "cross_cutting_requirement"
+    },
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-006",
+      "chunk_id": "KB-UNS-001#chunk-001-6221cccec3f8",
+      "document_id": "KB-UNS-001",
+      "effective_mode": "global_reusable",
+      "scope_type": "cross_cutting_requirement"
+    },
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-006",
+      "chunk_id": "KB-READY-001#chunk-000-c25bf83f023f",
+      "document_id": "KB-READY-001",
+      "effective_mode": "global_reusable",
+      "scope_type": "cross_cutting_requirement"
+    },
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-006",
+      "chunk_id": "KB-READY-001#chunk-001-3b055dc87afd",
+      "document_id": "KB-READY-001",
+      "effective_mode": "global_reusable",
+      "scope_type": "cross_cutting_requirement"
+    },
+    {
+      "assignment_source": "document_default",
+      "case_id": "RET2-009",
+      "chunk_id": "KB-CAP-001#chunk-000-4a0d2db10fea",
+      "document_id": "KB-CAP-001",
+      "effective_mode": "global_reusable",
+      "scope_type": "multi_solution"
+    }
+  ],
+  "full_runtime_metrics": {
+    "benchmark_contract_conflict_count": 0,
+    "boundary_allowed_count": 8,
+    "boundary_candidate_removal_rate": 0.9786666666666667,
+    "boundary_denied_count": 367,
+    "boundary_violating_pair_count": 375,
+    "false_exclusion_count": 2,
+    "false_inclusion_count": 8,
+    "pair_count": 640,
+    "relevant_allowed_count": 62,
+    "relevant_candidate_retention_rate": 0.96875,
+    "relevant_denied_count": 2,
+    "relevant_pair_count": 64
+  },
+  "further_blind_attempts_allowed": false,
+  "generated_at": "2026-07-03T13:09:06.947467+00:00",
+  "input_hashes": {
+    "authoring_manifest_sha256": "e8eee96bbe163e8b6f11328243b1d0aa86f55ad276adad67c161dc71443fb9e7",
+    "authoring_report_sha256": "af56e2cddfdb026d81654cd7b55f0988ec46d3bd8be3ec2a3901c90398a7500c",
+    "freeze_manifest_sha256": "88f94f8cd32b14384dac933e0f39e63495abf5d1534ad39c1d8c6e939adeb9e3",
+    "guide_sha256": "94f36c4dec139e10afeb08e7fac9905a138a9927e2ea74bf489953b2a0397986",
+    "labels_sha256": "748797a5772e4389c89a1fd013f114d1097b1be862f5dc386b2d69b8ed69f839",
+    "mapping_sha256": "7810c3992a405755fd9f50377131778296c5855c5f5b230671f4199d779e24cc",
+    "packet_sha256": "d67abcf03ea4be2eb1c992efca133eea9cf2af0acacebe2401b2eaea05124364",
+    "template_sha256": "d66dcdcc5c39d81f2efe0c7597ea46fd1bc77f5bc1d4e1b1b51907696f84b8d0"
+  },
+  "labels_remain_immutable": true,
+  "limitations": [
+    "Scope-only metrics isolate Solution Scope Dependency, while full-runtime metrics include document_type, industries, tags, effective_on, and excluded_solution filters.",
+    "This evaluation covers 16 cases x 40 chunks and does not run any retriever, scorer, or ranking stage.",
+    "RET2-015 and RET2-016 candidate recall limitations remain unresolved and independent from the boundary contract conclusion."
+  ],
+  "mapping_integrity": {
+    "chunk_order_matches_template": true,
+    "expected_chunk_count": 40,
+    "expected_document_count": 20,
+    "issues": [],
+    "label_order_matches_template": true,
+    "opaque_chunk_ids_mapped": 40,
+    "opaque_document_ids_mapped": 20,
+    "passed": true
+  },
+  "metadata_versioning_status": "blocked_with_known_limitations",
+  "p0_validation_status": "failed",
+  "per_mode_metrics": {
+    "full_applicable_scope": {
+      "full_runtime_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 0,
+        "boundary_candidate_removal_rate": 1.0,
+        "boundary_denied_count": 102,
+        "boundary_violating_pair_count": 102,
+        "false_exclusion_count": 2,
+        "false_inclusion_count": 0,
+        "pair_count": 192,
+        "relevant_allowed_count": 10,
+        "relevant_candidate_retention_rate": 0.8333333333333334,
+        "relevant_denied_count": 2,
+        "relevant_pair_count": 12
+      },
+      "scope_only_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 0,
+        "boundary_candidate_removal_rate": 1.0,
+        "boundary_denied_count": 102,
+        "boundary_violating_pair_count": 102,
+        "false_exclusion_count": 2,
+        "false_inclusion_count": 0,
+        "pair_count": 192,
+        "relevant_allowed_count": 10,
+        "relevant_candidate_retention_rate": 0.8333333333333334,
+        "relevant_denied_count": 2,
+        "relevant_pair_count": 12
+      }
+    },
+    "global_reusable": {
+      "full_runtime_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 8,
+        "boundary_candidate_removal_rate": 0.9230769230769231,
+        "boundary_denied_count": 96,
+        "boundary_violating_pair_count": 104,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 8,
+        "pair_count": 208,
+        "relevant_allowed_count": 16,
+        "relevant_candidate_retention_rate": 1.0,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 16
+      },
+      "scope_only_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 104,
+        "boundary_candidate_removal_rate": 0.0,
+        "boundary_denied_count": 0,
+        "boundary_violating_pair_count": 104,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 104,
+        "pair_count": 208,
+        "relevant_allowed_count": 16,
+        "relevant_candidate_retention_rate": 1.0,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 16
+      }
+    },
+    "primary_in_scope": {
+      "full_runtime_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 0,
+        "boundary_candidate_removal_rate": 1.0,
+        "boundary_denied_count": 169,
+        "boundary_violating_pair_count": 169,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 0,
+        "pair_count": 240,
+        "relevant_allowed_count": 36,
+        "relevant_candidate_retention_rate": 1.0,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 36
+      },
+      "scope_only_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 0,
+        "boundary_candidate_removal_rate": 1.0,
+        "boundary_denied_count": 169,
+        "boundary_violating_pair_count": 169,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 0,
+        "pair_count": 240,
+        "relevant_allowed_count": 36,
+        "relevant_candidate_retention_rate": 1.0,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 36
+      }
+    }
+  },
+  "per_scope_type_metrics": {
+    "cross_cutting_requirement": {
+      "full_runtime_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 6,
+        "boundary_candidate_removal_rate": 0.9459459459459459,
+        "boundary_denied_count": 105,
+        "boundary_violating_pair_count": 111,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 6,
+        "pair_count": 192,
+        "relevant_allowed_count": 15,
+        "relevant_candidate_retention_rate": 1.0,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 15
+      },
+      "scope_only_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 85,
+        "boundary_candidate_removal_rate": 0.23423423423423423,
+        "boundary_denied_count": 26,
+        "boundary_violating_pair_count": 111,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 85,
+        "pair_count": 192,
+        "relevant_allowed_count": 15,
+        "relevant_candidate_retention_rate": 1.0,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 15
+      }
+    },
+    "global_policy": {
+      "full_runtime_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 0,
+        "boundary_candidate_removal_rate": null,
+        "boundary_denied_count": 0,
+        "boundary_violating_pair_count": 0,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 0,
+        "pair_count": 32,
+        "relevant_allowed_count": 0,
+        "relevant_candidate_retention_rate": null,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 0
+      },
+      "scope_only_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 0,
+        "boundary_candidate_removal_rate": null,
+        "boundary_denied_count": 0,
+        "boundary_violating_pair_count": 0,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 0,
+        "pair_count": 32,
+        "relevant_allowed_count": 0,
+        "relevant_candidate_retention_rate": null,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 0
+      }
+    },
+    "multi_solution": {
+      "full_runtime_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 2,
+        "boundary_candidate_removal_rate": 0.9767441860465116,
+        "boundary_denied_count": 84,
+        "boundary_violating_pair_count": 86,
+        "false_exclusion_count": 2,
+        "false_inclusion_count": 2,
+        "pair_count": 160,
+        "relevant_allowed_count": 8,
+        "relevant_candidate_retention_rate": 0.8,
+        "relevant_denied_count": 2,
+        "relevant_pair_count": 10
+      },
+      "scope_only_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 10,
+        "boundary_candidate_removal_rate": 0.8837209302325582,
+        "boundary_denied_count": 76,
+        "boundary_violating_pair_count": 86,
+        "false_exclusion_count": 2,
+        "false_inclusion_count": 10,
+        "pair_count": 160,
+        "relevant_allowed_count": 8,
+        "relevant_candidate_retention_rate": 0.8,
+        "relevant_denied_count": 2,
+        "relevant_pair_count": 10
+      }
+    },
+    "solution_specific": {
+      "full_runtime_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 0,
+        "boundary_candidate_removal_rate": 1.0,
+        "boundary_denied_count": 178,
+        "boundary_violating_pair_count": 178,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 0,
+        "pair_count": 256,
+        "relevant_allowed_count": 39,
+        "relevant_candidate_retention_rate": 1.0,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 39
+      },
+      "scope_only_metrics": {
+        "benchmark_contract_conflict_count": 0,
+        "boundary_allowed_count": 9,
+        "boundary_candidate_removal_rate": 0.949438202247191,
+        "boundary_denied_count": 169,
+        "boundary_violating_pair_count": 178,
+        "false_exclusion_count": 0,
+        "false_inclusion_count": 9,
+        "pair_count": 256,
+        "relevant_allowed_count": 39,
+        "relevant_candidate_retention_rate": 1.0,
+        "relevant_denied_count": 0,
+        "relevant_pair_count": 39
+      }
+    }
+  },
+  "protocol_version": "2.2",
+  "provenance_gate": {
+    "authoring_process_was_blind_to_cases_and_gold": true,
+    "blind_attempt_number": 2,
+    "checks": {
+      "authoring_report_hash_matches": true,
+      "blind_attempt_number_matches": true,
+      "chunk_order_matches_template": true,
+      "evaluation_status_before_run_matches": true,
+      "freeze_manifest_hash_matches": true,
+      "freeze_status_matches": true,
+      "guide_hash_matches": true,
+      "label_order_matches_template": true,
+      "labels_frozen_before_evaluation": true,
+      "labels_hash_matches": true,
+      "labels_modified_after_authoring": true,
+      "manual_review_chunk_count_zero": true,
+      "manual_review_document_count_zero": true,
+      "mapping_complete_size": true,
+      "mapping_hash_matches": true,
+      "opaque_chunk_ids_unique": true,
+      "opaque_document_ids_unique": true,
+      "packet_hash_matches": true,
+      "protocol_version_matches": true,
+      "template_hash_matches": true
+    },
+    "evaluation_status_before_run": "not_started",
+    "freeze_status": "frozen_before_evaluation",
+    "labels_frozen_before_evaluation": true,
+    "labels_modified_after_authoring": false,
+    "passed": true,
+    "protocol_version": "2.2",
+    "reasons": []
+  },
+  "ret2_015_016_status": "candidate_recall_unresolved",
+  "retriever_v2_status": "blocked",
+  "runtime_filter_attribution": {
+    "document_type": {
+      "boundary_pair_count": 213,
+      "pair_count": 392,
+      "relevant_pair_count": 0
+    },
+    "effective_on": {
+      "boundary_pair_count": 30,
+      "pair_count": 64,
+      "relevant_pair_count": 0
+    },
+    "excluded_solution": {
+      "boundary_pair_count": 0,
+      "pair_count": 0,
+      "relevant_pair_count": 0
+    },
+    "industry": {
+      "boundary_pair_count": 269,
+      "pair_count": 320,
+      "relevant_pair_count": 0
+    },
+    "solution_scope": {
+      "boundary_pair_count": 271,
+      "pair_count": 339,
+      "relevant_pair_count": 2
+    },
+    "tags": {
+      "boundary_pair_count": 0,
+      "pair_count": 0,
+      "relevant_pair_count": 0
+    }
+  },
+  "scope_only_metrics": {
+    "benchmark_contract_conflict_count": 0,
+    "boundary_allowed_count": 104,
+    "boundary_candidate_removal_rate": 0.7226666666666667,
+    "boundary_denied_count": 271,
+    "boundary_violating_pair_count": 375,
+    "false_exclusion_count": 2,
+    "false_inclusion_count": 104,
+    "pair_count": 640,
+    "relevant_allowed_count": 62,
+    "relevant_candidate_retention_rate": 0.96875,
+    "relevant_denied_count": 2,
+    "relevant_pair_count": 64
+  }
+}
