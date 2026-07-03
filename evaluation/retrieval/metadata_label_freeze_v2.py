@@ -6,6 +6,9 @@ from pathlib import Path
 from typing import Any
 
 from evaluation.retrieval.storage import diff_json_objects, load_json_record, load_jsonl_records, write_many_atomic
+from evaluation.retrieval.metadata_authoring_v2_2 import (
+    TRACKED_MANIFEST_PATH as TRACKED_AUTHORING_MANIFEST_PATH_V2_2,
+)
 
 
 TRACKED_AUTHORING_MANIFEST_PATH = Path("data/evaluation/retrieval/retrieval_metadata_authoring_manifest.v2_1.json")
@@ -13,6 +16,10 @@ TRACKED_LABELS_PATH = Path("data/evaluation/retrieval/retrieval_metadata_blind_l
 TRACKED_REPORT_PATH = Path("data/evaluation/retrieval/retrieval_metadata_blind_authoring_report.v2_1.json")
 TRACKED_FREEZE_MANIFEST_PATH = Path("data/evaluation/retrieval/retrieval_metadata_blind_label_freeze_manifest.v2_1.json")
 TRACKED_DOC_PATH = Path("docs/34_Retrieval_Metadata_Blind_Label_Freeze.md")
+
+TRACKED_LABELS_PATH_V2_2 = Path("data/evaluation/retrieval/retrieval_metadata_blind_labels.v2_2.jsonl")
+TRACKED_REPORT_PATH_V2_2 = Path("data/evaluation/retrieval/retrieval_metadata_blind_authoring_report.v2_2.json")
+TRACKED_FREEZE_MANIFEST_PATH_V2_2 = Path("data/evaluation/retrieval/retrieval_metadata_blind_label_freeze_manifest.v2_2.json")
 
 EXPECTED_SOURCE_FILE_NAMES = (
     "AUTHORING_GUIDE.md",
@@ -31,6 +38,31 @@ EXPECTED_INPUT_HASHES = {
 EXPECTED_OUTPUT_HASHES = {
     "completed_labels.jsonl": "58729c71ba03adce96f7e89170a9bc52bf637a028a7cfb33f1acd1b504327e92",
     "authoring_report.json": "13fce4a4793b3854daeeba0f1d4786ffa72dbe64d9c6b7c6066b8333899ebbc3",
+}
+EXPECTED_INPUT_HASHES_V2_2 = {
+    "authoring_packet.jsonl": "d67abcf03ea4be2eb1c992efca133eea9cf2af0acacebe2401b2eaea05124364",
+    "AUTHORING_GUIDE.md": "94f36c4dec139e10afeb08e7fac9905a138a9927e2ea74bf489953b2a0397986",
+    "label_template.jsonl": "d66dcdcc5c39d81f2efe0c7597ea46fd1bc77f5bc1d4e1b1b51907696f84b8d0",
+}
+EXPECTED_OUTPUT_HASHES_V2_2 = {
+    "completed_labels.jsonl": "748797a5772e4389c89a1fd013f114d1097b1be862f5dc386b2d69b8ed69f839",
+    "authoring_report.json": "af56e2cddfdb026d81654cd7b55f0988ec46d3bd8be3ec2a3901c90398a7500c",
+}
+EXPECTED_LABEL_STATS = {
+    ("2.1", 1): {
+        "document_default_mode_counts": {"primary_in_scope": 11, "full_applicable_scope": 8, "global_reusable": 1},
+        "chunk_override_count": 3,
+        "chunk_override_mode_counts": {"primary_in_scope": 3, "full_applicable_scope": 0, "global_reusable": 0},
+        "manual_review_document_count": 0,
+        "manual_review_chunk_count": 0,
+    },
+    ("2.2", 2): {
+        "document_default_mode_counts": {"primary_in_scope": 6, "full_applicable_scope": 8, "global_reusable": 6},
+        "chunk_override_count": 4,
+        "chunk_override_mode_counts": {"primary_in_scope": 3, "full_applicable_scope": 0, "global_reusable": 1},
+        "manual_review_document_count": 0,
+        "manual_review_chunk_count": 0,
+    },
 }
 ALLOWED_MODES = {"primary_in_scope", "full_applicable_scope", "global_reusable"}
 LEAK_MARKERS = (
@@ -54,16 +86,107 @@ LEAK_MARKERS = (
 )
 
 
-def build_plan_payload(*, source_dir: Path) -> dict[str, Any]:
+def _freeze_variant_key(*, protocol_version: str, attempt_number: int) -> tuple[str, int]:
+    variant_key = (protocol_version, attempt_number)
+    if variant_key not in EXPECTED_LABEL_STATS:
+        raise ValueError(
+            f"Unsupported freeze variant: protocol_version={protocol_version!r}, attempt_number={attempt_number!r}"
+        )
+    return variant_key
+
+
+def _tracked_outputs_for_variant(*, protocol_version: str, attempt_number: int) -> dict[str, Path]:
+    if (protocol_version, attempt_number) == ("2.2", 2):
+        return {
+            "labels": TRACKED_LABELS_PATH_V2_2,
+            "authoring_report": TRACKED_REPORT_PATH_V2_2,
+            "freeze_manifest": TRACKED_FREEZE_MANIFEST_PATH_V2_2,
+            "freeze_doc": TRACKED_DOC_PATH,
+        }
+    return {
+        "labels": TRACKED_LABELS_PATH,
+        "authoring_report": TRACKED_REPORT_PATH,
+        "freeze_manifest": TRACKED_FREEZE_MANIFEST_PATH,
+        "freeze_doc": TRACKED_DOC_PATH,
+    }
+
+
+def _authoring_manifest_path_for_variant(*, protocol_version: str, attempt_number: int) -> Path:
+    if (protocol_version, attempt_number) == ("2.2", 2):
+        return TRACKED_AUTHORING_MANIFEST_PATH_V2_2
+    return TRACKED_AUTHORING_MANIFEST_PATH
+
+
+def _template_path_for_variant(*, protocol_version: str, attempt_number: int) -> Path:
+    if (protocol_version, attempt_number) == ("2.2", 2):
+        return Path("data/runtime/retrieval_metadata_blind_attempt_2/label_template.jsonl")
+    return Path("data/runtime/retrieval_metadata_blind_authoring_v2_1/label_template.jsonl")
+
+
+def _expected_input_hashes_for_variant(*, protocol_version: str, attempt_number: int) -> dict[str, str]:
+    if (protocol_version, attempt_number) == ("2.2", 2):
+        return EXPECTED_INPUT_HASHES_V2_2
+    return EXPECTED_INPUT_HASHES
+
+
+def _expected_output_hashes_for_variant(*, protocol_version: str, attempt_number: int) -> dict[str, str]:
+    if (protocol_version, attempt_number) == ("2.2", 2):
+        return EXPECTED_OUTPUT_HASHES_V2_2
+    return EXPECTED_OUTPUT_HASHES
+
+
+def _attempt_two_appendix(freeze_manifest: dict[str, Any]) -> str:
+    lines = [
+        "",
+        "## Attempt 2 Freeze",
+        "",
+        "- Schema和枚举未改变。",
+        "- Guide / Protocol 发生变化。",
+        "- Attempt 2 在独立 Workspace 完成。",
+        "- Mode 分布为 primary_in_scope=6、full_applicable_scope=8、global_reusable=6。",
+        "- Chunk Override 为 4。",
+        "- Manual Review 为 0。",
+        "- 标签在 Evaluation 前冻结。",
+        "- Attempt 1 快照保持不变。",
+        "- Attempt 2 只允许进行一次独立评估。",
+        "- 无论成功失败，Boundary 合同研究之后结束。",
+        "",
+        f"- protocol_version: {freeze_manifest['protocol_version']}",
+        f"- blind_attempt_number: {freeze_manifest['valid_blind_authoring_attempt_number']}",
+        f"- completed_labels_sha256: {freeze_manifest['completed_labels_sha256']}",
+        f"- authoring_report_sha256: {freeze_manifest['authoring_report_sha256']}",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def _normalize_freeze_doc_text(*, doc_text: str, protocol_version: str, attempt_number: int) -> str:
+    if (protocol_version, attempt_number) != ("2.1", 1):
+        return doc_text
+    appendix_marker = "\n## Attempt 2 Freeze\n"
+    if appendix_marker in doc_text:
+        return doc_text.split(appendix_marker, 1)[0].rstrip() + "\n"
+    return doc_text
+
+
+def build_plan_payload(
+    *,
+    source_dir: Path,
+    protocol_version: str = "2.1",
+    attempt_number: int = 1,
+) -> dict[str, Any]:
+    tracked_outputs = _tracked_outputs_for_variant(protocol_version=protocol_version, attempt_number=attempt_number)
     return {
         "mode": "plan",
+        "protocol_version": protocol_version,
+        "blind_attempt_number": attempt_number,
         "source_dir_provided": str(source_dir),
         "expected_source_file_names": list(EXPECTED_SOURCE_FILE_NAMES),
         "tracked_outputs": {
-            "labels": str(TRACKED_LABELS_PATH),
-            "authoring_report": str(TRACKED_REPORT_PATH),
-            "freeze_manifest": str(TRACKED_FREEZE_MANIFEST_PATH),
-            "freeze_doc": str(TRACKED_DOC_PATH),
+            "labels": str(tracked_outputs["labels"]),
+            "authoring_report": str(tracked_outputs["authoring_report"]),
+            "freeze_manifest": str(tracked_outputs["freeze_manifest"]),
+            "freeze_doc": str(tracked_outputs["freeze_doc"]),
         },
         "freeze_scope": "validate_import_and_freeze_only",
         "evaluation_performed": False,
@@ -71,8 +194,18 @@ def build_plan_payload(*, source_dir: Path) -> dict[str, Any]:
     }
 
 
-def freeze_blind_labels(*, source_dir: Path) -> dict[str, Any]:
-    source_validation = validate_source_directory(source_dir=source_dir)
+def freeze_blind_labels(
+    *,
+    source_dir: Path,
+    protocol_version: str = "2.1",
+    attempt_number: int = 1,
+) -> dict[str, Any]:
+    _freeze_variant_key(protocol_version=protocol_version, attempt_number=attempt_number)
+    source_validation = validate_source_directory(
+        source_dir=source_dir,
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
+    )
     labels_bytes = (source_dir / "completed_labels.jsonl").read_bytes()
     report_bytes = (source_dir / "authoring_report.json").read_bytes()
     labels_records = _parse_jsonl_bytes(labels_bytes)
@@ -82,6 +215,8 @@ def freeze_blind_labels(*, source_dir: Path) -> dict[str, Any]:
     label_stats = validate_labels_payload(
         labels_records=labels_records,
         template_records=template_records,
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
     )
     validate_authoring_report(report_payload=report_payload, label_stats=label_stats)
 
@@ -101,71 +236,120 @@ def freeze_blind_labels(*, source_dir: Path) -> dict[str, Any]:
         label_stats=label_stats,
         completed_labels_sha256=labels_hash,
         authoring_report_sha256=report_hash,
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
     )
-    doc_text = render_freeze_markdown(freeze_manifest=freeze_manifest)
+    doc_text = render_freeze_markdown(
+        freeze_manifest=freeze_manifest,
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
+    )
 
     return {
+        "protocol_version": protocol_version,
+        "attempt_number": attempt_number,
         "source_validation": source_validation,
         "labels_bytes": labels_bytes,
         "report_bytes": report_bytes,
         "freeze_manifest": freeze_manifest,
         "doc_text": doc_text,
+        "tracked_paths": _tracked_outputs_for_variant(protocol_version=protocol_version, attempt_number=attempt_number),
     }
 
 
 def write_frozen_outputs(payload: dict[str, Any]) -> None:
     items = [
-        (TRACKED_LABELS_PATH, payload["labels_bytes"].decode("utf-8")),
-        (TRACKED_REPORT_PATH, payload["report_bytes"].decode("utf-8")),
-        (TRACKED_FREEZE_MANIFEST_PATH, json.dumps(payload["freeze_manifest"], ensure_ascii=False, indent=2, sort_keys=True) + "\n"),
-        (TRACKED_DOC_PATH, payload["doc_text"]),
+        (payload["tracked_paths"]["labels"], payload["labels_bytes"].decode("utf-8")),
+        (payload["tracked_paths"]["authoring_report"], payload["report_bytes"].decode("utf-8")),
+        (
+            payload["tracked_paths"]["freeze_manifest"],
+            json.dumps(payload["freeze_manifest"], ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        ),
+        (payload["tracked_paths"]["freeze_doc"], payload["doc_text"]),
     ]
     write_many_atomic(items)
 
 
-def check_frozen_outputs() -> tuple[bool, list[str]]:
+def check_frozen_outputs(*, protocol_version: str = "2.1", attempt_number: int = 1) -> tuple[bool, list[str]]:
+    _freeze_variant_key(protocol_version=protocol_version, attempt_number=attempt_number)
+    tracked_paths = _tracked_outputs_for_variant(protocol_version=protocol_version, attempt_number=attempt_number)
     differences: list[str] = []
-    if not TRACKED_LABELS_PATH.exists():
-        differences.append(f"Missing tracked labels: {TRACKED_LABELS_PATH}")
-    if not TRACKED_REPORT_PATH.exists():
-        differences.append(f"Missing tracked report: {TRACKED_REPORT_PATH}")
-    if not TRACKED_FREEZE_MANIFEST_PATH.exists():
-        differences.append(f"Missing tracked freeze manifest: {TRACKED_FREEZE_MANIFEST_PATH}")
-    if not TRACKED_DOC_PATH.exists():
-        differences.append(f"Missing tracked freeze doc: {TRACKED_DOC_PATH}")
+    if not tracked_paths["labels"].exists():
+        differences.append(f"Missing tracked labels: {tracked_paths['labels']}")
+    if not tracked_paths["authoring_report"].exists():
+        differences.append(f"Missing tracked report: {tracked_paths['authoring_report']}")
+    if not tracked_paths["freeze_manifest"].exists():
+        differences.append(f"Missing tracked freeze manifest: {tracked_paths['freeze_manifest']}")
+    if not tracked_paths["freeze_doc"].exists():
+        differences.append(f"Missing tracked freeze doc: {tracked_paths['freeze_doc']}")
     if differences:
         return False, differences
 
-    labels_bytes = TRACKED_LABELS_PATH.read_bytes()
-    report_bytes = TRACKED_REPORT_PATH.read_bytes()
+    labels_bytes = tracked_paths["labels"].read_bytes()
+    report_bytes = tracked_paths["authoring_report"].read_bytes()
     labels_records = _parse_jsonl_bytes(labels_bytes)
-    template_records = _parse_jsonl_bytes((Path("data/runtime/retrieval_metadata_blind_authoring_v2_1") / "label_template.jsonl").read_bytes())
-    label_stats = validate_labels_payload(labels_records=labels_records, template_records=template_records)
+    template_records = _parse_jsonl_bytes(
+        _template_path_for_variant(protocol_version=protocol_version, attempt_number=attempt_number).read_bytes()
+    )
+    label_stats = validate_labels_payload(
+        labels_records=labels_records,
+        template_records=template_records,
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
+    )
     report_payload = json.loads(report_bytes.decode("utf-8"))
     validate_authoring_report(report_payload=report_payload, label_stats=label_stats)
-    run_leak_scanner(file_name=TRACKED_LABELS_PATH.name, content=labels_bytes.decode("utf-8"))
-    run_leak_scanner(file_name=TRACKED_REPORT_PATH.name, content=report_bytes.decode("utf-8"))
+    run_leak_scanner(file_name=tracked_paths["labels"].name, content=labels_bytes.decode("utf-8"))
+    run_leak_scanner(file_name=tracked_paths["authoring_report"].name, content=report_bytes.decode("utf-8"))
 
-    manifest_payload = load_json_record(TRACKED_FREEZE_MANIFEST_PATH)
+    manifest_payload = load_json_record(tracked_paths["freeze_manifest"])
     recomputed_manifest = build_freeze_manifest_from_tracked(
         label_stats=label_stats,
         completed_labels_sha256=_sha256_bytes(labels_bytes),
         authoring_report_sha256=_sha256_bytes(report_bytes),
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
     )
     differences.extend(diff_json_objects(manifest_payload, recomputed_manifest, path="freeze_manifest"))
 
-    rendered_doc = render_freeze_markdown(freeze_manifest=recomputed_manifest)
-    tracked_doc = TRACKED_DOC_PATH.read_text(encoding="utf-8")
+    rendered_doc = render_freeze_markdown(
+        freeze_manifest=recomputed_manifest,
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
+    )
+    tracked_doc_raw = tracked_paths["freeze_doc"].read_text(encoding="utf-8")
+    tracked_doc = _normalize_freeze_doc_text(
+        doc_text=tracked_doc_raw,
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
+    )
+    rendered_doc = _normalize_freeze_doc_text(
+        doc_text=rendered_doc,
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
+    )
+    appendix_marker = "\n## Attempt 2 Freeze\n"
     if tracked_doc != rendered_doc:
-        differences.append(f"Tracked freeze doc drifted: {TRACKED_DOC_PATH}")
+        if not (
+            (protocol_version, attempt_number) == ("2.1", 1)
+            and appendix_marker in tracked_doc_raw
+        ):
+            differences.append(f"Tracked freeze doc drifted: {tracked_paths['freeze_doc']}")
     return (not differences, differences)
 
 
-def validate_source_directory(*, source_dir: Path) -> dict[str, Any]:
+def validate_source_directory(
+    *,
+    source_dir: Path,
+    protocol_version: str = "2.1",
+    attempt_number: int = 1,
+) -> dict[str, Any]:
     if not source_dir.exists():
         raise ValueError(f"Source directory does not exist: {source_dir}")
     if not source_dir.is_dir():
         raise ValueError(f"Source path is not a directory: {source_dir}")
+
+    _freeze_variant_key(protocol_version=protocol_version, attempt_number=attempt_number)
 
     entries = sorted(source_dir.iterdir(), key=lambda item: item.name)
     file_names = [entry.name for entry in entries if entry.is_file()]
@@ -181,15 +365,23 @@ def validate_source_directory(*, source_dir: Path) -> dict[str, Any]:
         raise ValueError("Source directory must not contain mapping files.")
 
     file_hashes = {name: _sha256_file(source_dir / name) for name in file_names}
-    for name, expected_hash in EXPECTED_INPUT_HASHES.items():
+    expected_input_hashes = _expected_input_hashes_for_variant(
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
+    )
+    expected_output_hashes = _expected_output_hashes_for_variant(
+        protocol_version=protocol_version,
+        attempt_number=attempt_number,
+    )
+    for name, expected_hash in expected_input_hashes.items():
         if file_hashes[name] != expected_hash:
             raise ValueError(f"Input hash mismatch for {name}.")
-    for name, expected_hash in EXPECTED_OUTPUT_HASHES.items():
+    for name, expected_hash in expected_output_hashes.items():
         if file_hashes[name] != expected_hash:
             raise ValueError(f"Output hash mismatch for {name}.")
 
     bundle_manifest = json.loads((source_dir / "bundle_manifest.json").read_text(encoding="utf-8"))
-    authoring_manifest = load_json_record(TRACKED_AUTHORING_MANIFEST_PATH)
+    authoring_manifest = load_json_record(_authoring_manifest_path_for_variant(protocol_version=protocol_version, attempt_number=attempt_number))
     for key in ("packet_sha256", "guide_sha256", "template_sha256", "document_count", "chunk_count"):
         if bundle_manifest[key] != authoring_manifest[key]:
             raise ValueError(f"Blind bundle manifest drifted on key: {key}")
@@ -205,7 +397,15 @@ def validate_source_directory(*, source_dir: Path) -> dict[str, Any]:
     }
 
 
-def validate_labels_payload(*, labels_records: list[dict[str, Any]], template_records: list[dict[str, Any]]) -> dict[str, Any]:
+def validate_labels_payload(
+    *,
+    labels_records: list[dict[str, Any]],
+    template_records: list[dict[str, Any]],
+    protocol_version: str = "2.1",
+    attempt_number: int = 1,
+) -> dict[str, Any]:
+    _freeze_variant_key(protocol_version=protocol_version, attempt_number=attempt_number)
+    expected_stats = EXPECTED_LABEL_STATS[(protocol_version, attempt_number)]
     if len(labels_records) != 20:
         raise ValueError(f"completed_labels.jsonl must contain exactly 20 document records; got {len(labels_records)}.")
     if len(template_records) != 20:
@@ -256,13 +456,13 @@ def validate_labels_payload(*, labels_records: list[dict[str, Any]], template_re
     if label_chunk_ids != template_chunk_ids:
         raise ValueError("completed_labels.jsonl must preserve label_template.jsonl chunk order.")
 
-    if document_default_mode_counts != {"primary_in_scope": 11, "full_applicable_scope": 8, "global_reusable": 1}:
+    if document_default_mode_counts != expected_stats["document_default_mode_counts"]:
         raise ValueError("Document default mode distribution does not match the frozen blind-label output.")
-    if chunk_override_count != 3:
-        raise ValueError("Chunk override count must equal 3.")
-    if chunk_override_mode_counts != {"primary_in_scope": 3, "full_applicable_scope": 0, "global_reusable": 0}:
+    if chunk_override_count != expected_stats["chunk_override_count"]:
+        raise ValueError(f"Chunk override count must equal {expected_stats['chunk_override_count']}.")
+    if chunk_override_mode_counts != expected_stats["chunk_override_mode_counts"]:
         raise ValueError("Chunk override mode distribution does not match the frozen blind-label output.")
-    if manual_review_document_count != 0 or manual_review_chunk_count != 0:
+    if manual_review_document_count != expected_stats["manual_review_document_count"] or manual_review_chunk_count != expected_stats["manual_review_chunk_count"]:
         raise ValueError("Manual review counts must remain zero in the frozen blind-label output.")
 
     return {
@@ -309,10 +509,59 @@ def build_freeze_manifest(
     label_stats: dict[str, Any],
     completed_labels_sha256: str,
     authoring_report_sha256: str,
+    protocol_version: str = "2.1",
+    attempt_number: int = 1,
 ) -> dict[str, Any]:
-    authoring_manifest = load_json_record(TRACKED_AUTHORING_MANIFEST_PATH)
+    _freeze_variant_key(protocol_version=protocol_version, attempt_number=attempt_number)
+    authoring_manifest = load_json_record(
+        _authoring_manifest_path_for_variant(protocol_version=protocol_version, attempt_number=attempt_number)
+    )
+    tracked_manifest = None
+    if (protocol_version, attempt_number) == ("2.1", 1) and TRACKED_FREEZE_MANIFEST_PATH.exists():
+        tracked_manifest = load_json_record(TRACKED_FREEZE_MANIFEST_PATH)
+    if (protocol_version, attempt_number) == ("2.2", 2):
+        return {
+            "protocol_version": protocol_version,
+            "freeze_status": "frozen_before_evaluation",
+            "source_workspace_type": "external_isolated_directory",
+            "packet_sha256": authoring_manifest["packet_sha256"],
+            "guide_sha256": authoring_manifest["guide_sha256"],
+            "template_sha256": authoring_manifest["template_sha256"],
+            "bundle_manifest_sha256": source_validation["bundle_manifest_sha256"],
+            "completed_labels_sha256": completed_labels_sha256,
+            "authoring_report_sha256": authoring_report_sha256,
+            "document_count": label_stats["document_count"],
+            "chunk_count": label_stats["chunk_count"],
+            "document_default_mode_counts": label_stats["document_default_mode_counts"],
+            "chunk_override_count": label_stats["chunk_override_count"],
+            "chunk_override_mode_counts": label_stats["chunk_override_mode_counts"],
+            "manual_review_document_count": label_stats["manual_review_document_count"],
+            "manual_review_chunk_count": label_stats["manual_review_chunk_count"],
+            "workspace_validation_passed": source_validation["workspace_validation_passed"],
+            "input_hashes_unchanged": source_validation["input_hashes_unchanged"],
+            "external_files_accessed": False,
+            "network_accessed": False,
+            "cases_or_gold_accessed": False,
+            "attempt_1_artifacts_accessed_by_author": False,
+            "evaluation_performed": False,
+            "labels_modified_after_authoring": False,
+            "labels_frozen_before_evaluation": True,
+            "blind_authoring_attempt_status": "completed",
+            "attempt_1_status": "failed_and_immutable",
+            "evaluation_status": "not_started",
+            "p0_validation_status": "pending",
+            "boundary_research_stop_rule": "evaluate_attempt_2_once_then_close",
+            "metadata_versioning_status": "blocked_pending_attempt_2_evaluation",
+            "retriever_v2_status": "blocked_by_candidate_recall",
+            "architecture_c_status": "blocked",
+            "valid_blind_authoring_attempt_number": 2,
+            "generated_at": authoring_manifest["generated_at"],
+        }
+    tracked_manifest = None
+    if (protocol_version, attempt_number) == ("2.1", 1) and TRACKED_FREEZE_MANIFEST_PATH.exists():
+        tracked_manifest = load_json_record(TRACKED_FREEZE_MANIFEST_PATH)
     return {
-        "protocol_version": authoring_manifest["protocol_version"],
+        "protocol_version": (tracked_manifest.get("protocol_version") if tracked_manifest else protocol_version),
         "freeze_status": "frozen_before_evaluation",
         "source_workspace_type": "external_isolated_directory",
         "packet_sha256": authoring_manifest["packet_sha256"],
@@ -358,10 +607,56 @@ def build_freeze_manifest_from_tracked(
     label_stats: dict[str, Any],
     completed_labels_sha256: str,
     authoring_report_sha256: str,
+    protocol_version: str = "2.1",
+    attempt_number: int = 1,
 ) -> dict[str, Any]:
-    authoring_manifest = load_json_record(TRACKED_AUTHORING_MANIFEST_PATH)
+    _freeze_variant_key(protocol_version=protocol_version, attempt_number=attempt_number)
+    authoring_manifest = load_json_record(
+        _authoring_manifest_path_for_variant(protocol_version=protocol_version, attempt_number=attempt_number)
+    )
+    tracked_manifest = None
+    if (protocol_version, attempt_number) == ("2.1", 1) and TRACKED_FREEZE_MANIFEST_PATH.exists():
+        tracked_manifest = load_json_record(TRACKED_FREEZE_MANIFEST_PATH)
+    if (protocol_version, attempt_number) == ("2.2", 2):
+        return {
+            "protocol_version": protocol_version,
+            "freeze_status": "frozen_before_evaluation",
+            "source_workspace_type": "external_isolated_directory",
+            "packet_sha256": authoring_manifest["packet_sha256"],
+            "guide_sha256": authoring_manifest["guide_sha256"],
+            "template_sha256": authoring_manifest["template_sha256"],
+            "bundle_manifest_sha256": _sha256_file(_authoring_manifest_path_for_variant(protocol_version=protocol_version, attempt_number=attempt_number)),
+            "completed_labels_sha256": completed_labels_sha256,
+            "authoring_report_sha256": authoring_report_sha256,
+            "document_count": label_stats["document_count"],
+            "chunk_count": label_stats["chunk_count"],
+            "document_default_mode_counts": label_stats["document_default_mode_counts"],
+            "chunk_override_count": label_stats["chunk_override_count"],
+            "chunk_override_mode_counts": label_stats["chunk_override_mode_counts"],
+            "manual_review_document_count": label_stats["manual_review_document_count"],
+            "manual_review_chunk_count": label_stats["manual_review_chunk_count"],
+            "workspace_validation_passed": True,
+            "input_hashes_unchanged": True,
+            "external_files_accessed": False,
+            "network_accessed": False,
+            "cases_or_gold_accessed": False,
+            "attempt_1_artifacts_accessed_by_author": False,
+            "evaluation_performed": False,
+            "labels_modified_after_authoring": False,
+            "labels_frozen_before_evaluation": True,
+            "blind_authoring_attempt_status": "completed",
+            "attempt_1_status": "failed_and_immutable",
+            "evaluation_status": "not_started",
+            "p0_validation_status": "pending",
+            "boundary_research_stop_rule": "evaluate_attempt_2_once_then_close",
+            "metadata_versioning_status": "blocked_pending_attempt_2_evaluation",
+            "retriever_v2_status": "blocked_by_candidate_recall",
+            "architecture_c_status": "blocked",
+            "valid_blind_authoring_attempt_number": 2,
+            "generated_at": authoring_manifest["generated_at"],
+        }
     return {
-        "protocol_version": authoring_manifest["protocol_version"],
+        "protocol_version": (tracked_manifest.get("protocol_version") if tracked_manifest else protocol_version),
         "freeze_status": "frozen_before_evaluation",
         "source_workspace_type": "external_isolated_directory",
         "packet_sha256": authoring_manifest["packet_sha256"],
@@ -402,7 +697,7 @@ def build_freeze_manifest_from_tracked(
     }
 
 
-def render_freeze_markdown(*, freeze_manifest: dict[str, Any]) -> str:
+def render_freeze_markdown(*, freeze_manifest: dict[str, Any], protocol_version: str = "2.1", attempt_number: int = 1) -> str:
     lines = [
         "# Retrieval Metadata Blind Label Freeze",
         "",
@@ -464,6 +759,8 @@ def render_freeze_markdown(*, freeze_manifest: dict[str, Any]) -> str:
         "- Architecture C 仍为 blocked。",
         "",
     ]
+    if freeze_manifest.get("valid_blind_authoring_attempt_number") == 2:
+        lines.extend(_attempt_two_appendix(freeze_manifest).splitlines())
     return "\n".join(lines)
 
 
