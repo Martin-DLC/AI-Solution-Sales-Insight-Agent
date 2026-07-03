@@ -143,3 +143,74 @@ def test_recall_round_1_check_mode_reports_drift_status(monkeypatch, capsys) -> 
     assert exit_code == 1
     assert payload["status"] == "recall_round_1_output_drifted"
     assert payload["differences"] == ["recall_round_1.output.overall_metrics.candidate_recall_at_20"]
+
+
+def test_recall_round_2_plan_mode_does_not_build_main_analysis(monkeypatch, capsys) -> None:
+    module = _load_cli_module()
+
+    def fail_build() -> None:
+        raise AssertionError("round 2 plan mode should not build the full candidate generation payload")
+
+    monkeypatch.setattr(module, "build_candidate_generation_payload", fail_build)
+    monkeypatch.setattr(module, "sys", module.sys)
+    monkeypatch.setattr(module.sys, "argv", ["analyze_retrieval_v2_candidate_generation.py", "--recall-round-2"])
+
+    exit_code = module.main()
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert payload["experiment_id"] == "retrieval_v2_candidate_recall_round_2"
+
+
+def test_recall_round_2_write_mode_reports_round_status(monkeypatch, capsys) -> None:
+    module = _load_cli_module()
+    fake_payload = {
+        "round_2_metrics": {
+            "candidate_recall_at_20": 1.0,
+            "full_recall_case_count_at_20": 16,
+        },
+        "round_status": "passed_pending_integration_review",
+        "success_gate": {"passed": True},
+        "retriever_v2_status": "pending_hierarchical_integration_review",
+    }
+    calls: list[dict[str, object]] = []
+
+    monkeypatch.setattr(module, "build_recall_round_2_payload", lambda: fake_payload)
+    monkeypatch.setattr(module, "write_recall_round_2_output", lambda payload: calls.append(payload))
+    monkeypatch.setattr(module, "sys", module.sys)
+    monkeypatch.setattr(
+        module.sys,
+        "argv",
+        ["analyze_retrieval_v2_candidate_generation.py", "--recall-round-2", "--write"],
+    )
+
+    exit_code = module.main()
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert calls == [fake_payload]
+    assert payload["experiment"] == "recall_round_2"
+    assert payload["round_status"] == "passed_pending_integration_review"
+    assert payload["success_gate_passed"] is True
+
+
+def test_recall_round_2_check_mode_reports_drift_status(monkeypatch, capsys) -> None:
+    module = _load_cli_module()
+    monkeypatch.setattr(
+        module,
+        "check_recall_round_2_output",
+        lambda: (False, ["recall_round_2.output.round_2_metrics.candidate_recall_at_20"]),
+    )
+    monkeypatch.setattr(module, "sys", module.sys)
+    monkeypatch.setattr(
+        module.sys,
+        "argv",
+        ["analyze_retrieval_v2_candidate_generation.py", "--recall-round-2", "--check"],
+    )
+
+    exit_code = module.main()
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 1
+    assert payload["status"] == "recall_round_2_output_drifted"
+    assert payload["differences"] == ["recall_round_2.output.round_2_metrics.candidate_recall_at_20"]

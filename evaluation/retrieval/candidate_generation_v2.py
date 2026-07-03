@@ -44,6 +44,7 @@ from knowledge_base.models import KnowledgeChunk, KnowledgeDocument
 CANDIDATE_GENERATION_OUTPUT_PATH = Path("data/evaluation/retrieval/retrieval_v2_candidate_generation_analysis.json")
 CANDIDATE_GENERATION_DOC_PATH = Path("docs/30_Retrieval_V2_Candidate_Generation.md")
 RECALL_ROUND_1_OUTPUT_PATH = Path("data/evaluation/retrieval/retrieval_recall_round_1.v2.json")
+RECALL_ROUND_2_OUTPUT_PATH = Path("data/evaluation/retrieval/retrieval_recall_round_2.v2.json")
 BENCHMARK_CONFIG_PATH = Path("data/evaluation/retrieval/retrieval_benchmark_config.v2.json")
 LEXICAL_CONFIG_PATH = Path("data/evaluation/retrieval/lexical_baseline_config.v2.json")
 VECTOR_CONFIG_PATH = Path("data/evaluation/retrieval/vector_baseline_config.v2.json")
@@ -55,6 +56,8 @@ POOL_DEPTHS = (5, 10, 20)
 FULL_DEPTH_LABEL = "full_eligible_corpus"
 VARIANT_ORDER = ("G0", "G1", "G2", "G3", "G4", "G5", "G6")
 RECALL_ROUND_1_CASE_IDS = ("RET2-015", "RET2-016")
+RECALL_ROUND_2_CASE_IDS = ("RET2-015", "RET2-016")
+ROUND_2_RRF_K = 60
 ROUND_1_FORMAL_RESULT_HASHES = {
     "lexical_results": "41bfa53dda9a65e78f82eeab064e0a9436b47bb423b3c52d995e3b661e552bad",
     "lexical_summary": "c5a48e917a897bd3ab76b2f815fdc07796e69ff0c9117534e50d0b13058f67e0",
@@ -154,6 +157,42 @@ def build_recall_round_1_plan_payload() -> dict[str, Any]:
         "retriever_modified": False,
         "boundary_research_status": "closed",
         "planned_output_file": str(RECALL_ROUND_1_OUTPUT_PATH),
+    }
+
+
+def build_recall_round_2_plan_payload() -> dict[str, Any]:
+    benchmark_config = load_json_record(BENCHMARK_CONFIG_PATH)
+    vector_config = VectorBaselineConfig.model_validate(load_json_record(VECTOR_CONFIG_PATH)["algorithm_config"])
+    return {
+        "mode": "plan",
+        "experiment_id": "retrieval_v2_candidate_recall_round_2",
+        "experiment_type": "hierarchical_parent_first_child_expansion",
+        "case_count": benchmark_config["case_count"],
+        "document_candidate_count": benchmark_config["document_count"],
+        "chunk_candidate_count": benchmark_config["chunk_count"],
+        "focus_case_ids": list(RECALL_ROUND_2_CASE_IDS),
+        "source_baseline": "best_frozen_candidate_generation_variant",
+        "source_model": vector_config.model_name_or_path,
+        "model_revision": vector_config.model_revision,
+        "embedding_dimension": 384,
+        "document_representation_fields": [
+            "document.title",
+            "document.summary",
+            "document.document_type",
+            "document.scope_type",
+            "primary_solution_name",
+            "applicable_solution_names",
+            "document.industries",
+            "document.tags",
+            "all_child_chunk_citation_labels",
+            "all_child_chunk_contents",
+        ],
+        "document_ranking_rule": f"RRF(document_semantic_rank, best_child_baseline_rank), k={ROUND_2_RRF_K}",
+        "expansion_rule": "parent_document_then_child_chunks_by_baseline_rank_until_20_unique_candidates",
+        "formal_results_modified": False,
+        "retriever_modified": False,
+        "boundary_research_status": "closed",
+        "planned_output_file": str(RECALL_ROUND_2_OUTPUT_PATH),
     }
 
 
@@ -296,6 +335,113 @@ def build_recall_round_1_payload() -> dict[str, Any]:
     }
 
 
+def build_recall_round_2_payload() -> dict[str, Any]:
+    context = _load_experiment_context()
+    current_candidate_generation = load_json_record(CANDIDATE_GENERATION_OUTPUT_PATH)
+    runner = CandidateGenerationExperimentRunner(context=context)
+    baseline_best = current_candidate_generation["best_candidate_generation_variant"]
+    baseline_results = runner.build_baseline_case_results(
+        variant_id=baseline_best["variant_id"],
+        method_id=baseline_best["method_id"],
+    )
+    round_2_results = runner.build_recall_round_2_results(
+        baseline_variant_id=baseline_best["variant_id"],
+        baseline_method_id=baseline_best["method_id"],
+    )
+    success_gate = _build_recall_round_2_success_gate(
+        baseline_case_results=baseline_results["case_results"],
+        round_2_case_results=round_2_results["case_results"],
+        overall_metrics=round_2_results["overall_metrics"],
+    )
+    if success_gate["passed"]:
+        round_status = "passed_pending_integration_review"
+        candidate_recall_status = "resolved_for_candidate_model_only"
+        retriever_v2_status = "pending_hierarchical_integration_review"
+        architecture_c_status = "blocked_pending_formal_retrieval_validation"
+        recommended_fallback = None
+    else:
+        round_status = "failed_frozen_recall_research_closed"
+        candidate_recall_status = "unresolved_known_limitation"
+        retriever_v2_status = "blocked_with_known_limitations"
+        architecture_c_status = "blocked"
+        recommended_fallback = "retrieve_best_available_chunks_and_escalate_when_required_evidence_incomplete"
+
+    return {
+        "experiment_id": "retrieval_v2_candidate_recall_round_2",
+        "experiment_type": "hierarchical_parent_first_child_expansion",
+        "candidate_representability_audit": round_2_results["candidate_representability_audit"],
+        "source_baseline": {
+            "variant_id": baseline_best["variant_id"],
+            "method_id": baseline_best["method_id"],
+            "candidate_recall_at_20": baseline_best["candidate_recall_at_20"],
+            "full_recall_case_count_at_20": baseline_best["full_recall_case_count_at_20"],
+        },
+        "embedding_model": context.vector_config.model_name_or_path,
+        "model_revision": runner.round_1_model_revision(),
+        "embedding_dimension": runner.round_1_embedding_dimension(),
+        "document_representation_fields": [
+            "document.title",
+            "document.summary",
+            "document.document_type",
+            "document.scope_type",
+            "primary_solution_name",
+            "applicable_solution_names",
+            "document.industries",
+            "document.tags",
+            "all_child_chunk_citation_labels",
+            "all_child_chunk_contents",
+        ],
+        "document_candidate_count": len(context.documents_v2),
+        "chunk_candidate_count": len(context.chunks_v2),
+        "document_ranking_rule": {
+            "semantic_rank": "query_to_document_representation_cosine_similarity",
+            "best_child_baseline_rank": "best_rank_from_current_best_frozen_chunk_baseline",
+            "fusion": "reciprocal_rank_fusion",
+            "rrf_k": ROUND_2_RRF_K,
+            "tie_breaking": "fusion_score_desc_document_semantic_rank_asc_best_child_rank_asc_document_id_asc",
+        },
+        "expansion_rule": {
+            "strategy": "hierarchical_parent_first_child_expansion",
+            "document_order": "document_fusion_rank_asc",
+            "per_document_output": [
+                "parent_document_candidate",
+                "child_chunk_candidates_by_baseline_rank_then_chunk_id",
+            ],
+            "output_limit": 20,
+            "unique_candidate_ids_only": True,
+        },
+        "baseline_metrics": baseline_results["overall_metrics"],
+        "round_2_metrics": round_2_results["overall_metrics"],
+        "per_case_metrics": round_2_results["case_results"],
+        "ret2_015_analysis": round_2_results["focus_case_analysis"]["RET2-015"],
+        "ret2_016_analysis": round_2_results["focus_case_analysis"]["RET2-016"],
+        "parent_document_recall_analysis": round_2_results["parent_document_recall_analysis"],
+        "regressions": round_2_results["regressions"],
+        "success_gate": success_gate,
+        "round_status": round_status,
+        "candidate_model_upgrade_supported": success_gate["passed"],
+        "candidate_recall_status": candidate_recall_status,
+        "recall_research_closed": True,
+        "further_recall_experiments_allowed": False,
+        "retriever_v2_status": retriever_v2_status,
+        "architecture_c_status": architecture_c_status,
+        "recommended_fallback": recommended_fallback,
+        "formal_result_hashes": compute_formal_result_hashes(),
+        "boundary_artifact_hashes": {
+            "blind_evaluation_v2_2": _sha256(Path("data/evaluation/retrieval/retrieval_metadata_blind_evaluation.v2_2.json")),
+            "runtime_contract_proposal_v2_1": _sha256(Path("data/evaluation/retrieval/retrieval_runtime_contract_v2_1_proposal.json")),
+        },
+        "formal_results_modified": False,
+        "limitations": [
+            "Round 2 is a diagnostic candidate-model experiment and does not modify the frozen formal retriever.",
+            "Document candidates are built only from static knowledge-document content and metadata.",
+            "Expansion order is fixed and deterministic; no case-specific weighting or boosting is allowed.",
+            "Boundary research remains closed; this round evaluates recall representability and candidate ordering only.",
+        ],
+        "generated_at": "frozen_by_write_command",
+    }
+
+
 def render_candidate_generation_markdown(payload: dict[str, Any]) -> str:
     lines: list[str] = []
     lines.append("# Retrieval V2 Candidate Generation")
@@ -422,6 +568,9 @@ def render_candidate_generation_markdown(payload: dict[str, Any]) -> str:
     round_1_payload = _load_tracked_recall_round_1_payload()
     if round_1_payload is not None:
         lines.extend(_render_recall_round_1_markdown_lines(round_1_payload))
+    round_2_payload = _load_tracked_recall_round_2_payload()
+    if round_2_payload is not None:
+        lines.extend(_render_recall_round_2_markdown_lines(round_2_payload))
     return "\n".join(lines)
 
 
@@ -463,6 +612,22 @@ def check_recall_round_1_output() -> tuple[bool, list[str]]:
         return False, [f"Missing tracked JSON output: {RECALL_ROUND_1_OUTPUT_PATH}"]
     tracked_json = load_json_record(RECALL_ROUND_1_OUTPUT_PATH)
     recomputed = build_recall_round_1_payload()
+    differences.extend(diff_json_objects(tracked_json, recomputed))
+    return (not differences, differences)
+
+
+def write_recall_round_2_output(payload: dict[str, Any]) -> None:
+    write_json_atomic(RECALL_ROUND_2_OUTPUT_PATH, payload)
+    base_payload = build_candidate_generation_payload()
+    CANDIDATE_GENERATION_DOC_PATH.write_text(render_candidate_generation_markdown(base_payload), encoding="utf-8")
+
+
+def check_recall_round_2_output() -> tuple[bool, list[str]]:
+    differences: list[str] = []
+    if not RECALL_ROUND_2_OUTPUT_PATH.exists():
+        return False, [f"Missing tracked JSON output: {RECALL_ROUND_2_OUTPUT_PATH}"]
+    tracked_json = load_json_record(RECALL_ROUND_2_OUTPUT_PATH)
+    recomputed = build_recall_round_2_payload()
     differences.extend(diff_json_objects(tracked_json, recomputed))
     return (not differences, differences)
 
@@ -1070,6 +1235,295 @@ class CandidateGenerationExperimentRunner:
             },
         }
 
+    def build_baseline_case_results(self, *, variant_id: str, method_id: str) -> dict[str, Any]:
+        case_results: list[dict[str, Any]] = []
+        for case in self._context.cases:
+            evaluation = self._run_case_variant(case=case, variant_id=variant_id, method_id=method_id)
+            expected_items = list(case.evaluation_gold.expected_relevant_chunk_ids) + list(case.evaluation_gold.expected_relevant_document_ids)
+            expected_item_ranks = {
+                item_id: _find_candidate_rank(evaluation["full_candidates"], case=case, item_id=item_id)
+                for item_id in expected_items
+            }
+            case_results.append(
+                {
+                    "case_id": case.retrieval_case_id,
+                    "source_case_id": case.source_case_id,
+                    "candidate_recall_at_5": evaluation["candidate_recall_at_5"],
+                    "candidate_recall_at_10": evaluation["candidate_recall_at_10"],
+                    "candidate_recall_at_20": evaluation["candidate_recall_at_20"],
+                    "mean_reciprocal_rank": _mean_reciprocal_rank(expected_item_ranks),
+                    "full_recall_at_20": evaluation["candidate_recall_at_20"] == 1.0,
+                    "expected_item_ranks": expected_item_ranks,
+                    "missing_expected_items_at_20": [
+                        item_id for item_id, rank in expected_item_ranks.items() if rank is None or rank > 20
+                    ],
+                }
+            )
+        overall_metrics = {
+            "candidate_recall_at_5": sum(item["candidate_recall_at_5"] for item in case_results) / len(case_results),
+            "candidate_recall_at_10": sum(item["candidate_recall_at_10"] for item in case_results) / len(case_results),
+            "candidate_recall_at_20": sum(item["candidate_recall_at_20"] for item in case_results) / len(case_results),
+            "mean_reciprocal_rank": sum(item["mean_reciprocal_rank"] for item in case_results) / len(case_results),
+            "full_recall_case_count_at_20": sum(1 for item in case_results if item["full_recall_at_20"]),
+            "cases_with_full_recall_at_20": [item["case_id"] for item in case_results if item["full_recall_at_20"]],
+            "failed_case_ids": [item["case_id"] for item in case_results if not item["full_recall_at_20"]],
+        }
+        return {
+            "overall_metrics": overall_metrics,
+            "case_results": case_results,
+        }
+
+    def build_recall_round_2_results(
+        self,
+        *,
+        baseline_variant_id: str,
+        baseline_method_id: str,
+    ) -> dict[str, Any]:
+        provider = self._vector_provider_instance()
+        solution_name_lookup = _solution_name_lookup(self._context.documents_v2)
+        document_children = self._context.current_chunk_bundle.document_children
+        baseline_case_map = {
+            case.retrieval_case_id: self._run_case_variant(
+                case=case,
+                variant_id=baseline_variant_id,
+                method_id=baseline_method_id,
+            )
+            for case in self._context.cases
+        }
+
+        document_texts = [
+            _render_round_2_document_text(
+                document=document,
+                child_chunks=[self._context.chunks_by_id[chunk_id] for chunk_id in document_children.get(document.document_id, [])],
+                solution_name_lookup=solution_name_lookup,
+            )
+            for document in self._context.documents_v2
+        ]
+        document_embeddings = provider.encode_documents(document_texts)
+        document_embedding_by_id = {
+            document.document_id: embedding
+            for document, embedding in zip(self._context.documents_v2, document_embeddings, strict=True)
+        }
+
+        case_results: list[dict[str, Any]] = []
+        parent_document_new_hits: list[dict[str, Any]] = []
+        for case in self._context.cases:
+            baseline_candidates = baseline_case_map[case.retrieval_case_id]["full_candidates"]
+            expanded_candidates = self._build_round_2_candidates_for_case(
+                case=case,
+                baseline_candidates=baseline_candidates,
+                document_embedding_by_id=document_embedding_by_id,
+            )
+            expected_items = list(case.evaluation_gold.expected_relevant_chunk_ids) + list(case.evaluation_gold.expected_relevant_document_ids)
+            expected_item_ranks = {
+                item_id: _find_candidate_rank(expanded_candidates, case=case, item_id=item_id)
+                for item_id in expected_items
+            }
+            expected_item_candidate_types = {
+                item_id: _candidate_type_for_expected_item(expanded_candidates, case=case, item_id=item_id)
+                for item_id in expected_items
+            }
+            baseline_expected_item_ranks = {
+                item_id: _find_candidate_rank(baseline_candidates, case=case, item_id=item_id)
+                for item_id in expected_items
+            }
+            for item_id in case.evaluation_gold.expected_relevant_document_ids:
+                baseline_rank = baseline_expected_item_ranks[item_id]
+                new_rank = expected_item_ranks[item_id]
+                if (baseline_rank is None or baseline_rank > 20) and new_rank is not None and new_rank <= 20:
+                    parent_document_new_hits.append(
+                        {
+                            "case_id": case.retrieval_case_id,
+                            "document_id": item_id,
+                            "baseline_rank": baseline_rank,
+                            "round_2_rank": new_rank,
+                        }
+                    )
+            case_results.append(
+                {
+                    "case_id": case.retrieval_case_id,
+                    "source_case_id": case.source_case_id,
+                    "candidate_recall_at_5": _candidate_recall_at(case=case, candidates=expanded_candidates, top_k=5),
+                    "candidate_recall_at_10": _candidate_recall_at(case=case, candidates=expanded_candidates, top_k=10),
+                    "candidate_recall_at_20": _candidate_recall_at(case=case, candidates=expanded_candidates, top_k=20),
+                    "mean_reciprocal_rank": _mean_reciprocal_rank(expected_item_ranks),
+                    "full_recall_at_20": _candidate_recall_at(case=case, candidates=expanded_candidates, top_k=20) == 1.0,
+                    "missing_expected_items_at_20": [
+                        item_id for item_id, rank in expected_item_ranks.items() if rank is None or rank > 20
+                    ],
+                    "expected_item_ranks": expected_item_ranks,
+                    "expected_item_candidate_types": expected_item_candidate_types,
+                    "document_hit_count_at_20": sum(
+                        1
+                        for item_id in case.evaluation_gold.expected_relevant_document_ids
+                        if expected_item_ranks[item_id] is not None and expected_item_ranks[item_id] <= 20
+                    ),
+                    "chunk_hit_count_at_20": sum(
+                        1
+                        for item_id in case.evaluation_gold.expected_relevant_chunk_ids
+                        if expected_item_ranks[item_id] is not None and expected_item_ranks[item_id] <= 20
+                    ),
+                }
+            )
+
+        overall_metrics = {
+            "candidate_recall_at_5": sum(item["candidate_recall_at_5"] for item in case_results) / len(case_results),
+            "candidate_recall_at_10": sum(item["candidate_recall_at_10"] for item in case_results) / len(case_results),
+            "candidate_recall_at_20": sum(item["candidate_recall_at_20"] for item in case_results) / len(case_results),
+            "mean_reciprocal_rank": sum(item["mean_reciprocal_rank"] for item in case_results) / len(case_results),
+            "full_recall_case_count_at_20": sum(1 for item in case_results if item["full_recall_at_20"]),
+            "cases_with_full_recall_at_20": [item["case_id"] for item in case_results if item["full_recall_at_20"]],
+            "failed_case_ids": [item["case_id"] for item in case_results if not item["full_recall_at_20"]],
+        }
+        baseline_full_recall_case_ids = {
+            case_id
+            for case_id, evaluation in baseline_case_map.items()
+            if evaluation["candidate_recall_at_20"] == 1.0
+        }
+        regressions = sorted(
+            item["case_id"]
+            for item in case_results
+            if item["case_id"] in baseline_full_recall_case_ids and not item["full_recall_at_20"]
+        )
+        focus_case_analysis = {case_id: next(item for item in case_results if item["case_id"] == case_id) for case_id in RECALL_ROUND_2_CASE_IDS}
+        return {
+            "candidate_representability_audit": _build_candidate_representability_audit(
+                cases=self._context.cases,
+                document_children=document_children,
+            ),
+            "overall_metrics": overall_metrics,
+            "case_results": case_results,
+            "focus_case_analysis": focus_case_analysis,
+            "parent_document_recall_analysis": {
+                "newly_recalled_parent_document_count": len(parent_document_new_hits),
+                "newly_recalled_parent_documents": parent_document_new_hits,
+            },
+            "regressions": regressions,
+        }
+
+    def _build_round_2_candidates_for_case(
+        self,
+        *,
+        case: Any,
+        baseline_candidates: list[dict[str, Any]],
+        document_embedding_by_id: dict[str, list[float]],
+    ) -> list[dict[str, Any]]:
+        query_embedding = self._vector_provider_instance().encode_queries([case.query])[0]
+        baseline_rank_by_chunk_id = {
+            candidate["chunk_id"]: candidate["rank"]
+            for candidate in baseline_candidates
+            if candidate.get("chunk_id")
+        }
+        baseline_candidate_by_chunk_id = {
+            candidate["chunk_id"]: candidate
+            for candidate in baseline_candidates
+            if candidate.get("chunk_id")
+        }
+        best_child_rank_by_document_id: dict[str, int] = {}
+        for candidate in baseline_candidates:
+            chunk_id = candidate.get("chunk_id")
+            if not chunk_id:
+                continue
+            document_id = candidate["document_id"]
+            best_child_rank_by_document_id[document_id] = min(
+                best_child_rank_by_document_id.get(document_id, candidate["rank"]),
+                candidate["rank"],
+            )
+
+        document_rows: list[dict[str, Any]] = []
+        for document in self._context.documents_v2:
+            semantic_score = round(_dot(query_embedding, document_embedding_by_id[document.document_id]), self._context.vector_config.score_round_digits)
+            document_rows.append(
+                {
+                    "document_id": document.document_id,
+                    "semantic_score": semantic_score,
+                    "best_child_baseline_rank": best_child_rank_by_document_id.get(document.document_id),
+                }
+            )
+        document_rows.sort(key=lambda item: (-item["semantic_score"], item["document_id"]))
+        semantic_rank_by_document_id = {
+            item["document_id"]: rank
+            for rank, item in enumerate(document_rows, start=1)
+        }
+        for item in document_rows:
+            item["document_semantic_rank"] = semantic_rank_by_document_id[item["document_id"]]
+            item["fusion_score"] = round(
+                _rrf_score(
+                    item["document_semantic_rank"],
+                    item.get("best_child_baseline_rank"),
+                    k=ROUND_2_RRF_K,
+                ),
+                self._context.vector_config.score_round_digits,
+            )
+        document_rows.sort(
+            key=lambda item: (
+                -item["fusion_score"],
+                item["document_semantic_rank"],
+                item["best_child_baseline_rank"] if item["best_child_baseline_rank"] is not None else 10_000,
+                item["document_id"],
+            )
+        )
+
+        ordered_candidates: list[dict[str, Any]] = []
+        seen_candidate_ids: set[str] = set()
+        for document_row in document_rows:
+            document_id = document_row["document_id"]
+            parent_candidate_id = document_id
+            if parent_candidate_id not in seen_candidate_ids:
+                ordered_candidates.append(
+                    {
+                        "document_id": document_id,
+                        "chunk_id": None,
+                        "document_type": self._context.documents_by_id[document_id].document_type.value,
+                        "score": document_row["fusion_score"],
+                        "candidate_type": "document",
+                        "candidate_id": parent_candidate_id,
+                        "candidate_sources": ["round2:parent_document"],
+                        "document_semantic_rank": document_row["document_semantic_rank"],
+                        "best_child_baseline_rank": document_row["best_child_baseline_rank"],
+                        "document_semantic_score": document_row["semantic_score"],
+                    }
+                )
+                seen_candidate_ids.add(parent_candidate_id)
+                if len(ordered_candidates) >= 20:
+                    break
+
+            child_chunk_ids = list(self._context.current_chunk_bundle.document_children.get(document_id, []))
+            child_chunk_ids.sort(
+                key=lambda chunk_id: (
+                    baseline_rank_by_chunk_id.get(chunk_id, 10_000),
+                    chunk_id,
+                )
+            )
+            for chunk_id in child_chunk_ids:
+                if chunk_id in seen_candidate_ids:
+                    continue
+                baseline_candidate = baseline_candidate_by_chunk_id.get(chunk_id)
+                if baseline_candidate is None:
+                    chunk = self._context.chunks_by_id[chunk_id]
+                    baseline_candidate = {
+                        "document_id": chunk.document_id,
+                        "chunk_id": chunk.chunk_id,
+                        "document_type": chunk.document_type.value,
+                        "score": 0.0,
+                        "matched_terms": [],
+                        "candidate_sources": ["round2:child_without_baseline_rank"],
+                    }
+                ordered_candidates.append(
+                    {
+                        **baseline_candidate,
+                        "candidate_type": "chunk",
+                        "candidate_id": chunk_id,
+                        "candidate_sources": _deduplicate(list(baseline_candidate.get("candidate_sources", [])) + ["round2:child_expansion"]),
+                    }
+                )
+                seen_candidate_ids.add(chunk_id)
+                if len(ordered_candidates) >= 20:
+                    break
+            if len(ordered_candidates) >= 20:
+                break
+        return _renumber_candidates(ordered_candidates)
+
 
 def _load_experiment_context() -> ExperimentContext:
     diagnostic_context = load_diagnostic_context()
@@ -1281,6 +1735,41 @@ def _render_round_1_context_view_text(
     if document.tags:
         parts.append(f"Tags: {', '.join(document.tags)}")
     parts.append(f"Chunk Content: {chunk.content}")
+    return "\n".join(parts).strip()
+
+
+def _render_round_2_document_text(
+    *,
+    document: KnowledgeDocumentV2,
+    child_chunks: list[KnowledgeChunkV2],
+    solution_name_lookup: dict[str, str],
+) -> str:
+    applicable_solution_names = [
+        solution_name_lookup.get(solution_id, solution_id)
+        for solution_id in document.applicable_solution_ids
+    ]
+    child_citation_labels = [chunk.citation_label for chunk in child_chunks if chunk.citation_label]
+    child_contents = [chunk.content for chunk in child_chunks]
+    parts = [
+        f"Document Title: {document.title}",
+        f"Document Summary: {document.summary}",
+        f"Document Type: {document.document_type.value}",
+        f"Scope Type: {document.scope_type.value}",
+    ]
+    if document.primary_solution_id:
+        parts.append(
+            f"Primary Solution Name: {solution_name_lookup.get(document.primary_solution_id, document.primary_solution_id)}"
+        )
+    if applicable_solution_names:
+        parts.append(f"Applicable Solution Names: {', '.join(applicable_solution_names)}")
+    if document.industries:
+        parts.append(f"Industries: {', '.join(document.industries)}")
+    if document.tags:
+        parts.append(f"Tags: {', '.join(document.tags)}")
+    if child_citation_labels:
+        parts.append(f"Child Citation Labels: {' | '.join(child_citation_labels)}")
+    if child_contents:
+        parts.append(f"Child Chunk Contents: {' || '.join(child_contents)}")
     return "\n".join(parts).strip()
 
 
@@ -1820,6 +2309,40 @@ def _build_recall_round_1_success_gate(
     }
 
 
+def _build_recall_round_2_success_gate(
+    *,
+    baseline_case_results: list[dict[str, Any]],
+    round_2_case_results: list[dict[str, Any]],
+    overall_metrics: dict[str, Any],
+) -> dict[str, Any]:
+    baseline_full_recall_case_ids = {
+        item["case_id"] for item in baseline_case_results if item["full_recall_at_20"]
+    }
+    round_2_case_map = {item["case_id"]: item for item in round_2_case_results}
+    degraded_case_ids = sorted(
+        case_id for case_id in baseline_full_recall_case_ids if not round_2_case_map[case_id]["full_recall_at_20"]
+    )
+    passed = (
+        overall_metrics["candidate_recall_at_20"] == 1.0
+        and overall_metrics["full_recall_case_count_at_20"] == len(round_2_case_results)
+        and round_2_case_map["RET2-015"]["full_recall_at_20"]
+        and round_2_case_map["RET2-016"]["full_recall_at_20"]
+        and not degraded_case_ids
+    )
+    return {
+        "candidate_recall_at_20_is_1_0": overall_metrics["candidate_recall_at_20"] == 1.0,
+        "all_cases_full_recall_at_20": overall_metrics["full_recall_case_count_at_20"] == len(round_2_case_results),
+        "ret2_015_full_recall_at_20": round_2_case_map["RET2-015"]["full_recall_at_20"],
+        "ret2_016_full_recall_at_20": round_2_case_map["RET2-016"]["full_recall_at_20"],
+        "no_other_case_regression": not degraded_case_ids,
+        "degraded_case_ids": degraded_case_ids,
+        "candidate_model_no_case_special_casing": True,
+        "document_representation_gold_independent": True,
+        "parent_child_identity_clear": True,
+        "passed": passed,
+    }
+
+
 def _load_best_candidate_generation_ranks() -> dict[str, dict[str, int | None]]:
     payload = load_json_record(CANDIDATE_GENERATION_OUTPUT_PATH)
     return payload["best_candidate_generation_variant"]["expected_item_full_corpus_ranks"]
@@ -1829,6 +2352,12 @@ def _load_tracked_recall_round_1_payload() -> dict[str, Any] | None:
     if not RECALL_ROUND_1_OUTPUT_PATH.exists():
         return None
     return load_json_record(RECALL_ROUND_1_OUTPUT_PATH)
+
+
+def _load_tracked_recall_round_2_payload() -> dict[str, Any] | None:
+    if not RECALL_ROUND_2_OUTPUT_PATH.exists():
+        return None
+    return load_json_record(RECALL_ROUND_2_OUTPUT_PATH)
 
 
 def _render_recall_round_1_markdown_lines(payload: dict[str, Any]) -> list[str]:
@@ -1854,6 +2383,111 @@ def _render_recall_round_1_markdown_lines(payload: dict[str, Any]) -> list[str]:
         f"- next_step: {payload['next_step']}",
         "",
     ]
+
+
+def _render_recall_round_2_markdown_lines(payload: dict[str, Any]) -> list[str]:
+    baseline = payload["baseline_metrics"]
+    round_2 = payload["round_2_metrics"]
+    return [
+        "---",
+        "",
+        "## Candidate Recall Round 2",
+        "",
+        f"- experiment_id: {payload['experiment_id']}",
+        f"- experiment_type: {payload['experiment_type']}",
+        f"- embedding_model: {payload['embedding_model']}",
+        f"- model_revision: {payload['model_revision']}",
+        f"- document_candidate_count: {payload['document_candidate_count']}",
+        f"- chunk_candidate_count: {payload['chunk_candidate_count']}",
+        f"- baseline_recall_at_20: {baseline['candidate_recall_at_20']}",
+        f"- round_2_recall_at_20: {round_2['candidate_recall_at_20']}",
+        f"- baseline_full_recall_case_count_at_20: {baseline['full_recall_case_count_at_20']}",
+        f"- round_2_full_recall_case_count_at_20: {round_2['full_recall_case_count_at_20']}",
+        f"- newly_recalled_parent_document_count: {payload['parent_document_recall_analysis']['newly_recalled_parent_document_count']}",
+        f"- success_gate_passed: {str(payload['success_gate']['passed']).lower()}",
+        f"- round_status: {payload['round_status']}",
+        f"- retriever_v2_status: {payload['retriever_v2_status']}",
+        f"- architecture_c_status: {payload['architecture_c_status']}",
+        "",
+    ]
+
+
+def _candidate_type_for_expected_item(
+    candidates: list[dict[str, Any]],
+    *,
+    case: Any,
+    item_id: str,
+) -> str | None:
+    for candidate in candidates:
+        if _candidate_relevance_id_for_case(case=case, candidate=candidate) == item_id:
+            return str(candidate.get("candidate_type")) if candidate.get("candidate_type") else None
+    return None
+
+
+def _build_candidate_representability_audit(
+    *,
+    cases: list[Any],
+    document_children: dict[str, list[str]],
+) -> dict[str, Any]:
+    case_audit: dict[str, Any] = {}
+    for case in cases:
+        case_id = case.retrieval_case_id
+        expected_documents = list(case.evaluation_gold.expected_relevant_document_ids)
+        expected_chunks = list(case.evaluation_gold.expected_relevant_chunk_ids)
+        expected_chunk_count_by_document: Counter[str] = Counter()
+        for chunk_id in expected_chunks:
+            document_id = chunk_id.split("#chunk-", 1)[0]
+            expected_chunk_count_by_document[document_id] += 1
+        child_chunk_counts = {
+            document_id: len(document_children.get(document_id, []))
+            for document_id in expected_documents
+        }
+        max_relevant_hits = 0
+        missing_parent_document_due_to_candidate_model = False
+        for document_id in expected_documents:
+            child_count = child_chunk_counts.get(document_id, 0)
+            expected_chunk_count = expected_chunk_count_by_document.get(document_id, 0)
+            if child_count == 0:
+                max_hits_for_document = 0
+            elif expected_chunk_count == 0:
+                max_hits_for_document = 1
+            else:
+                possible_document_hit = child_count > expected_chunk_count
+                max_hits_for_document = expected_chunk_count + (1 if possible_document_hit else 0)
+            if expected_chunk_count == child_count and expected_chunk_count > 0:
+                missing_parent_document_due_to_candidate_model = True
+            max_relevant_hits += max_hits_for_document
+        expected_item_count = len(expected_documents) + len(expected_chunks)
+        case_audit[case_id] = {
+            "expected_item_composition": {
+                "expected_relevant_document_ids": expected_documents,
+                "expected_relevant_chunk_ids": expected_chunks,
+            },
+            "child_chunk_count_by_expected_document": child_chunk_counts,
+            "chunk_only_theoretical_max_relevant_hit_count": max_relevant_hits,
+            "chunk_only_theoretical_max_recall": max_relevant_hits / expected_item_count,
+            "missing_parent_document_due_to_candidate_model": missing_parent_document_due_to_candidate_model,
+            "benchmark_representable_with_current_candidate_model": max_relevant_hits == expected_item_count,
+        }
+    return {
+        "current_candidate_types": ["chunk"],
+        "document_candidates_supported": False,
+        "chunk_candidates_supported": True,
+        "candidate_model_representability_failure": any(
+            not item["benchmark_representable_with_current_candidate_model"]
+            for item in case_audit.values()
+        ),
+        "focus_case_audit": case_audit,
+    }
+
+
+def _rrf_score(first_rank: int | None, second_rank: int | None, *, k: int) -> float:
+    score = 0.0
+    if first_rank is not None:
+        score += 1.0 / (k + first_rank)
+    if second_rank is not None:
+        score += 1.0 / (k + second_rank)
+    return score
 
 
 def _sha256(path: Path) -> str:

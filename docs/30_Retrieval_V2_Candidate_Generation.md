@@ -204,3 +204,23 @@
 - success_gate_passed: false
 - round_status: failed_frozen_move_to_round_2
 - next_step: round_2_document_level_retrieval_plus_child_chunk_expansion
+
+---
+
+## Candidate Recall Round 2
+
+- experiment_id: retrieval_v2_candidate_recall_round_2
+- experiment_type: hierarchical_parent_first_child_expansion
+- embedding_model: intfloat/multilingual-e5-small
+- model_revision: 614241f622f53c4eeff9890bdc4f31cfecc418b3
+- document_candidate_count: 20
+- chunk_candidate_count: 40
+- baseline_recall_at_20: 0.96875
+- round_2_recall_at_20: 1.0
+- baseline_full_recall_case_count_at_20: 14
+- round_2_full_recall_case_count_at_20: 16
+- newly_recalled_parent_document_count: 2
+- success_gate_passed: true
+- round_status: passed_pending_integration_review
+- retriever_v2_status: pending_hierarchical_integration_review
+- architecture_c_status: blocked_pending_formal_retrieval_validation
