@@ -18,15 +18,15 @@
 
 ## 输入Hash
 
-- packet_sha256: 314135ac2e1d73dc12980bc097fbbb1e58bf9117b044a47c5cbc19e44ac927a9
-- guide_sha256: 738a2afc587090de35b302a5575f23f66ac66119bf1e812b02e53138eecf16e7
-- template_sha256: acd9ed60e0f945071f859f6b0f6d8f28dedd3ce23e9f8b2abf45e22d9428d79f
-- bundle_manifest_sha256: 7e1c5a20e0afa52ba19da9200b4590b39721e855eafc6689bcb3579a1116ec77
+- packet_sha256: d67abcf03ea4be2eb1c992efca133eea9cf2af0acacebe2401b2eaea05124364
+- guide_sha256: 94f36c4dec139e10afeb08e7fac9905a138a9927e2ea74bf489953b2a0397986
+- template_sha256: d66dcdcc5c39d81f2efe0c7597ea46fd1bc77f5bc1d4e1b1b51907696f84b8d0
+- bundle_manifest_sha256: e8eee96bbe163e8b6f11328243b1d0aa86f55ad276adad67c161dc71443fb9e7
 
 ## 输出Hash
 
-- completed_labels_sha256: 58729c71ba03adce96f7e89170a9bc52bf637a028a7cfb33f1acd1b504327e92
-- authoring_report_sha256: 13fce4a4793b3854daeeba0f1d4786ffa72dbe64d9c6b7c6066b8333899ebbc3
+- completed_labels_sha256: 748797a5772e4389c89a1fd013f114d1097b1be862f5dc386b2d69b8ed69f839
+- authoring_report_sha256: af56e2cddfdb026d81654cd7b55f0988ec46d3bd8be3ec2a3901c90398a7500c
 
 ## 覆盖范围
 
@@ -35,9 +35,9 @@
 
 ## Mode分布
 
-- document_default_mode_counts: {"full_applicable_scope": 8, "global_reusable": 1, "primary_in_scope": 11}
-- chunk_override_count: 3
-- chunk_override_mode_counts: {"full_applicable_scope": 0, "global_reusable": 0, "primary_in_scope": 3}
+- document_default_mode_counts: {"full_applicable_scope": 8, "global_reusable": 6, "primary_in_scope": 6}
+- chunk_override_count: 4
+- chunk_override_mode_counts: {"full_applicable_scope": 0, "global_reusable": 1, "primary_in_scope": 3}
 
 ## Manual Review
 
@@ -56,3 +56,22 @@
 - 下一阶段是独立 Evaluation，而不是当前 freeze 阶段继续判断效果。
 - RET2-015 / RET2-016 仍是独立 Recall 问题。
 - Architecture C 仍为 blocked。
+
+
+## Attempt 2 Freeze
+
+- Schema和枚举未改变。
+- Guide / Protocol 发生变化。
+- Attempt 2 在独立 Workspace 完成。
+- Mode 分布为 primary_in_scope=6、full_applicable_scope=8、global_reusable=6。
+- Chunk Override 为 4。
+- Manual Review 为 0。
+- 标签在 Evaluation 前冻结。
+- Attempt 1 快照保持不变。
+- Attempt 2 只允许进行一次独立评估。
+- 无论成功失败，Boundary 合同研究之后结束。
+
+- protocol_version: 2.2
+- blind_attempt_number: 2
+- completed_labels_sha256: 748797a5772e4389c89a1fd013f114d1097b1be862f5dc386b2d69b8ed69f839
+- authoring_report_sha256: af56e2cddfdb026d81654cd7b55f0988ec46d3bd8be3ec2a3901c90398a7500c
