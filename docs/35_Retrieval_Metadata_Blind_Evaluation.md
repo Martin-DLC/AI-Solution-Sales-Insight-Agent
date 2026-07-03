@@ -156,3 +156,70 @@
 - RET2-015 and RET2-016 candidate recall limitations remain unresolved in this phase.
 - full_runtime_eligible is reported separately so non-scope filters are not miscounted as scope-contract gains.
 - If P0 fails, the current frozen blind label snapshot must remain immutable; any correction requires a new protocol version or new blind authoring attempt.
+
+---
+
+# Retrieval Metadata Blind Evaluation v2.2
+
+## Attempt 2 Protocol Changes
+
+- Attempt 2 keeps the same schema and mode enum, but changes the guide and protocol to isolate Solution Scope Dependency from other runtime filters.
+- runtime_scope_match_mode now expresses only solution-scope dependency, while document_type, industries, tags, effective_on, and excluded_solution remain runtime filter responsibilities.
+- Boundary research ends after this evaluation regardless of pass or fail, and Attempt 3 is not allowed.
+
+## Freeze and Provenance
+
+- protocol_version: `2.2`
+- blind_attempt_number: `2`
+- provenance_gate_passed: `True`
+- labels_frozen_before_evaluation: `True`
+- labels_modified_after_authoring: `False`
+- authoring_process_was_blind_to_cases_and_gold: `True`
+
+## Scope-only Metrics
+
+- relevant_retention: `0.96875`
+- boundary_removal: `0.7226666666666667`
+- false_exclusion_count: `2`
+- false_inclusion_count: `104`
+
+## Full-runtime Metrics
+
+- relevant_retention: `0.96875`
+- boundary_removal: `0.9786666666666667`
+- false_exclusion_count: `2`
+- false_inclusion_count: `8`
+- benchmark_contract_conflict_count: `0`
+
+## Attempt 1 Comparison
+
+- attempt_1_full_runtime_retention: `0.96875`
+- attempt_2_full_runtime_retention: `0.96875`
+- attempt_1_full_runtime_removal: `0.984`
+- attempt_2_full_runtime_removal: `0.9786666666666667`
+- guide_clarified_scope_runtime_responsibility: `True`
+- guide_changed_assignment_distribution: `True`
+- blind_performance_improved: `False`
+- attempt_2_outperformed_attempt_1: `False`
+- independent_reproducibility_improvement: `not_demonstrated`
+
+The Attempt 2 guide is clearer about separating `runtime_scope_match_mode` from the other runtime filters, but the measured full-runtime metrics do not improve. Clearer process semantics do not imply better retrieval effectiveness, and independent reproducibility improvement is not demonstrated.
+
+## P0 Conclusion
+
+- p0_validation_status: `failed`
+- evidence_classification: `P1_blind_attempt_2_failed`
+- boundary_contract_validation_status: `failed`
+
+## Boundary Research Final Status
+
+- boundary_research_status: `closed_after_attempt_2_failed`
+- further_blind_attempts_allowed: `False`
+- labels_remain_immutable: `True`
+
+## Retriever and Architecture C Status
+
+- metadata_versioning_status: `blocked_with_known_limitations`
+- retriever_v2_status: `blocked`
+- ret2_015_016_status: `candidate_recall_unresolved`
+- architecture_c_status: `blocked`

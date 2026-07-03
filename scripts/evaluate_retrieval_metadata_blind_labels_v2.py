@@ -10,8 +10,6 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from evaluation.retrieval.metadata_blind_evaluation_v2 import (  # noqa: E402
-    TRACKED_EVALUATION_DOC_PATH,
-    TRACKED_EVALUATION_OUTPUT_PATH,
     build_plan_payload,
     check_evaluation_outputs,
     run_blind_metadata_evaluation,
@@ -23,6 +21,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Evaluate frozen blind retrieval metadata labels without running any retriever."
     )
+    parser.add_argument("--protocol-version", default="2.1", help="Blind metadata evaluation protocol version.")
+    parser.add_argument("--attempt-number", type=int, default=1, help="Blind authoring attempt number.")
     parser.add_argument("--write", action="store_true", help="Run the independent post-freeze evaluation and write tracked outputs.")
     parser.add_argument("--check", action="store_true", help="Recompute and compare tracked blind evaluation outputs.")
     args = parser.parse_args()
@@ -32,17 +32,18 @@ def main() -> int:
         return 2
 
     if args.check:
-        ok, differences = check_evaluation_outputs()
+        ok, differences = check_evaluation_outputs(
+            protocol_version=args.protocol_version,
+            attempt_number=args.attempt_number,
+        )
         print(
             json.dumps(
                 {
                     "mode": "check",
+                    "protocol_version": args.protocol_version,
+                    "blind_attempt_number": args.attempt_number,
                     "status": "blind_label_evaluation_outputs_match" if ok else "blind_label_evaluation_outputs_drifted",
                     "differences": differences,
-                    "tracked_outputs": {
-                        "json": str(TRACKED_EVALUATION_OUTPUT_PATH),
-                        "doc": str(TRACKED_EVALUATION_DOC_PATH),
-                    },
                 },
                 ensure_ascii=False,
                 indent=2,
@@ -52,18 +53,30 @@ def main() -> int:
         return 0 if ok else 1
 
     if args.write:
-        payload = run_blind_metadata_evaluation()
+        payload = run_blind_metadata_evaluation(
+            protocol_version=args.protocol_version,
+            attempt_number=args.attempt_number,
+        )
         write_evaluation_outputs(payload)
         print(
             json.dumps(
                 {
                     "mode": "write",
+                    "protocol_version": payload.get("protocol_version", args.protocol_version),
+                    "blind_attempt_number": payload.get("blind_attempt_number", args.attempt_number),
                     "provenance_gate_passed": payload["provenance_gate"]["passed"],
-                    "pair_count": payload["pairwise_evaluation_scope"]["pair_count"],
-                    "relevant_candidate_retention_rate": payload["overall_metrics"].get("relevant_candidate_retention_rate"),
-                    "boundary_candidate_removal_rate": payload["overall_metrics"].get("boundary_candidate_removal_rate"),
+                    "pair_count": payload.get("evaluation_scope", payload.get("pairwise_evaluation_scope", {})).get("pair_count"),
+                    "relevant_candidate_retention_rate": (
+                        payload.get("full_runtime_metrics", payload.get("overall_metrics", {})).get("relevant_candidate_retention_rate")
+                    ),
+                    "boundary_candidate_removal_rate": (
+                        payload.get("full_runtime_metrics", payload.get("overall_metrics", {})).get("boundary_candidate_removal_rate")
+                    ),
                     "p0_validation_status": payload["p0_validation_status"],
-                    "metadata_v2_1_versioning_status": payload["metadata_v2_1_versioning_status"],
+                    "metadata_versioning_status": payload.get(
+                        "metadata_versioning_status",
+                        payload.get("metadata_v2_1_versioning_status"),
+                    ),
                     "retriever_v2_status": payload["retriever_v2_status"],
                     "architecture_c_status": payload["architecture_c_status"],
                 },
@@ -74,7 +87,17 @@ def main() -> int:
         )
         return 0
 
-    print(json.dumps(build_plan_payload(), ensure_ascii=False, indent=2, sort_keys=True))
+    print(
+        json.dumps(
+            build_plan_payload(
+                protocol_version=args.protocol_version,
+                attempt_number=args.attempt_number,
+            ),
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+    )
     return 0
 
 
