@@ -177,6 +177,24 @@ python scripts/run_workflow_c.py --case DEV-01 --live
 
 详细步骤见 [Demo 与复现指南](docs/10_Demo_and_Reproduction_Guide_V1.md)。
 
+### 最小端到端 Service CLI
+
+当前仓库已提供一个最小可运行的作品集级 CLI Service：
+
+```bash
+./.venv/bin/python run.py solution-insight \
+  --query "一家中型 SaaS 公司想提升销售线索转化和客户成功效率" \
+  --industry "SaaS" \
+  --shadow
+```
+
+说明：
+
+- 正式证据仍来自当前 formal lexical retriever
+- `--shadow` 只输出层级候选 debug，不影响正式 evidence
+- 默认可在无 API Key 情况下运行 deterministic mode
+- 当前由于 Retrieval v2 仍未通过正式 Blocking Gate，输出默认保留人工确认建议
+
 ## 仓库结构
 
 ```text
