@@ -195,6 +195,54 @@ python scripts/run_workflow_c.py --case DEV-01 --live
 - 默认可在无 API Key 情况下运行 deterministic mode
 - 当前由于 Retrieval v2 仍未通过正式 Blocking Gate，输出默认保留人工确认建议
 
+### 最小 FastAPI 服务
+
+本仓库也提供一个最小 HTTP 包装层，默认同样可以在无 API Key 情况下运行：
+
+```bash
+./.venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+健康检查：
+
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+方案洞察请求：
+
+```bash
+curl -X POST http://127.0.0.1:8000/solution-insight \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "user_query": "一家中型 SaaS 公司想提升销售线索转化和客户成功效率",
+    "industry": "SaaS",
+    "company_size": "中型",
+    "current_systems": ["CRM", "客服系统"],
+    "target_goal": "提升转化和客户成功效率",
+    "constraints": ["不改变现有CRM主流程"],
+    "enable_shadow_retrieval": true,
+    "llm_mode": "deterministic"
+  }'
+```
+
+返回字段包括：
+
+- 需求摘要
+- 业务痛点
+- AI 机会点
+- 推荐方案方向
+- 证据列表
+- 证据完整性状态
+- fallback / 人工确认建议
+- 可选 shadow retrieval debug
+
+当前限制：
+
+- Boundary validation 仍是 blocked_with_known_limitations
+- Hierarchical retrieval 只作为 shadow
+- deterministic mode 是默认模式
+
 ## 仓库结构
 
 ```text

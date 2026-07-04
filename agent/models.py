@@ -15,6 +15,7 @@ class SolutionInsightRequest(StrictBaseModel):
     target_goal: str | None = None
     constraints: list[str] = Field(default_factory=list)
     enable_shadow_retrieval: bool = False
+    llm_mode: str = "deterministic"
 
     @field_validator("current_systems", "constraints")
     @classmethod
@@ -29,6 +30,14 @@ class SolutionInsightRequest(StrictBaseModel):
                 seen.add(normalized)
                 result.append(normalized)
         return result
+
+    @field_validator("llm_mode")
+    @classmethod
+    def llm_mode_must_be_valid(cls, value: str) -> str:
+        normalized = value.strip().casefold()
+        if normalized not in {"deterministic", "auto"}:
+            raise ValueError("llm_mode must be deterministic or auto.")
+        return normalized
 
 
 class SolutionInsightEvidenceItem(StrictBaseModel):

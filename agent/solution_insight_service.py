@@ -118,6 +118,12 @@ class SolutionInsightService:
 
     def generate_insight(self, request: SolutionInsightRequest) -> SolutionInsightResponse:
         request_id = f"insight-{secrets.token_hex(6)}"
+        effective_llm_mode = request.llm_mode if request.llm_mode != "deterministic" else self._llm_mode
+        if effective_llm_mode in {"auto", "llm"} and self._llm_client is None:
+            try:
+                self._llm_client = create_llm_client()
+            except (LLMConfigurationError, Exception):
+                effective_llm_mode = "deterministic"
         runtime_context = self._build_runtime_context(request)
         query = self._build_query(request)
         filters = self._build_filters(runtime_context)
@@ -164,6 +170,7 @@ class SolutionInsightService:
             evidence_items=evidence_items,
             formal_evidence_payload=formal_evidence_payload,
             fallback_recommended=fallback_recommended,
+            llm_mode=effective_llm_mode,
         )
 
         retrieval_debug = SolutionInsightRetrievalDebug(
@@ -206,7 +213,7 @@ class SolutionInsightService:
             "fallback_reasons": list(fallback_reasons),
             "shadow_mode": "shadow" if shadow_result is not None else "off",
             "shadow_error": shadow_result.shadow_error if shadow_result is not None else None,
-            "llm_mode": self._llm_mode,
+            "llm_mode": effective_llm_mode,
         }
 
         return SolutionInsightResponse(
@@ -220,7 +227,7 @@ class SolutionInsightService:
             fallback_recommended=fallback_recommended,
             fallback_reasons=fallback_reasons,
             human_confirmation_required=fallback_recommended,
-            llm_mode=self._llm_mode,
+            llm_mode=effective_llm_mode,
             retrieval_debug=retrieval_debug,
             shadow_retrieval_debug=shadow_debug,
             response_note=note,
@@ -339,8 +346,9 @@ class SolutionInsightService:
         evidence_items: list[SolutionInsightEvidenceItem],
         formal_evidence_payload: list[dict[str, Any]],
         fallback_recommended: bool,
+        llm_mode: str,
     ) -> dict[str, Any]:
-        if self._llm_client is not None and self._llm_mode == "llm":
+        if self._llm_client is not None and llm_mode in {"auto", "llm"}:
             try:
                 messages = build_solution_insight_messages(
                     request=request,
