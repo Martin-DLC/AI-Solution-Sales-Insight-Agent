@@ -46,6 +46,12 @@ class HierarchicalShadowConfig:
     def from_env(cls) -> "HierarchicalShadowConfig":
         return cls(mode=resolve_hierarchical_mode(os.getenv("HIERARCHICAL_RETRIEVAL_MODE")))
 
+    def __post_init__(self) -> None:
+        normalized = self.mode
+        if isinstance(normalized, str):
+            normalized = resolve_hierarchical_mode(normalized)
+        object.__setattr__(self, "mode", normalized)
+
 
 class ShadowHierarchicalRetrievalService:
     def __init__(
@@ -82,7 +88,7 @@ class ShadowHierarchicalRetrievalService:
             filters=filters,
             top_k=self._config.formal_top_k,
         )
-        if self._config.mode is not HierarchicalRetrievalMode.shadow:
+        if self._config.mode != HierarchicalRetrievalMode.shadow:
             self.last_shadow_result = None
             return formal_result
 
