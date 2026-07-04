@@ -40,6 +40,7 @@ def main(argv: list[str] | None = None) -> int:
         target_goal=args.target_goal,
         constraints=list(args.constraints),
         enable_shadow_retrieval=args.shadow,
+        llm_mode=args.llm_mode,
     )
     service = SolutionInsightService.from_defaults(
         enable_shadow_retrieval=args.shadow,
