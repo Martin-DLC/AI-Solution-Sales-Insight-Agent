@@ -1,0 +1,97 @@
+{
+  "companies": [
+    {
+      "company_id": "demo_saas_001",
+      "company_profile": {
+        "industry": "SaaS",
+        "company_size": "中型",
+        "current_systems": ["CRM", "客服系统", "产品知识库"],
+        "business_stage": "growth"
+      },
+      "crm_context": {
+        "lead_volume": 4200,
+        "conversion_rate": 0.14,
+        "sales_cycle_days": 37,
+        "main_sales_bottlenecks": ["线索评分不稳定", "销售跟进响应不一致"]
+      },
+      "ticket_context": {
+        "monthly_ticket_volume": 8600,
+        "top_issue_categories": ["产品配置", "计费咨询", "集成问题"],
+        "avg_response_time_hours": 7.5,
+        "escalation_rate": 0.11
+      },
+      "bi_context": {
+        "key_metrics": ["MQL转SQL率", "客户成功续约率", "首响时长"],
+        "efficiency_baseline": ["销售线索转化偏低", "支持响应波动大"],
+        "measurable_goals": ["提升线索转化率", "缩短客服首响时间"]
+      },
+      "knowledge_context": {
+        "existing_docs": ["销售FAQ", "客服SOP", "集成接入文档"],
+        "coverage_gaps": ["客户成功话术沉淀不足", "跨系统案例引用不足"],
+        "data_readiness_level": "medium"
+      }
+    },
+    {
+      "company_id": "demo_ecommerce_001",
+      "company_profile": {
+        "industry": "Ecommerce",
+        "company_size": "大型",
+        "current_systems": ["CRM", "工单系统", "商品知识库", "BI报表"],
+        "business_stage": "scale"
+      },
+      "crm_context": {
+        "lead_volume": 12000,
+        "conversion_rate": 0.09,
+        "sales_cycle_days": 18,
+        "main_sales_bottlenecks": ["多渠道线索口径不一致", "活动线索筛选效率低"]
+      },
+      "ticket_context": {
+        "monthly_ticket_volume": 24000,
+        "top_issue_categories": ["订单咨询", "退换货", "商品信息不一致"],
+        "avg_response_time_hours": 4.2,
+        "escalation_rate": 0.08
+      },
+      "bi_context": {
+        "key_metrics": ["活动线索转化率", "客服效率", "商品问答解决率"],
+        "efficiency_baseline": ["活动线索处理靠人工", "商品知识引用不统一"],
+        "measurable_goals": ["提升活动线索转化", "降低重复问答占比"]
+      },
+      "knowledge_context": {
+        "existing_docs": ["商品FAQ", "活动说明", "客服工单模板"],
+        "coverage_gaps": ["跨品类知识复用弱", "运营策略说明碎片化"],
+        "data_readiness_level": "high"
+      }
+    },
+    {
+      "company_id": "demo_manufacturing_001",
+      "company_profile": {
+        "industry": "Manufacturing",
+        "company_size": "大型",
+        "current_systems": ["售后工单系统", "内部知识库", "ERP"],
+        "business_stage": "modernization"
+      },
+      "crm_context": {
+        "lead_volume": 700,
+        "conversion_rate": 0.21,
+        "sales_cycle_days": 92,
+        "main_sales_bottlenecks": ["解决方案沟通周期长", "售前资料分散"]
+      },
+      "ticket_context": {
+        "monthly_ticket_volume": 5100,
+        "top_issue_categories": ["设备故障", "现场服务", "备件咨询"],
+        "avg_response_time_hours": 15.0,
+        "escalation_rate": 0.18
+      },
+      "bi_context": {
+        "key_metrics": ["售后工单结案时长", "首次修复率", "工程师知识命中率"],
+        "efficiency_baseline": ["售后知识不完整", "工程师经验依赖高"],
+        "measurable_goals": ["缩短故障定位时间", "提升知识命中率"]
+      },
+      "knowledge_context": {
+        "existing_docs": ["设备维护手册", "常见故障处理文档"],
+        "coverage_gaps": ["案例化排障经验缺失", "现场服务流程记录不完整"],
+        "data_readiness_level": "low"
+      }
+    }
+  ]
+}

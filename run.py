@@ -17,6 +17,7 @@ def main(argv: list[str] | None = None) -> int:
 
     insight = subparsers.add_parser("solution-insight", help="Generate a structured solution insight response.")
     insight.add_argument("--query", required=True)
+    insight.add_argument("--company-id")
     insight.add_argument("--industry")
     insight.add_argument("--company-size")
     insight.add_argument("--current-system", action="append", dest="current_systems", default=[])
@@ -34,6 +35,7 @@ def main(argv: list[str] | None = None) -> int:
 
     request = SolutionInsightRequest(
         user_query=args.query,
+        company_id=args.company_id,
         industry=args.industry,
         company_size=args.company_size,
         current_systems=list(args.current_systems),

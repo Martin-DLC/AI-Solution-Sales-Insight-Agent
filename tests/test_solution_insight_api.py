@@ -59,6 +59,7 @@ def test_solution_insight_endpoint_returns_structured_result_without_key() -> No
     assert isinstance(data["ai_opportunity_points"], list)
     assert isinstance(data["evidence_items"], list)
     assert data["shadow_retrieval_debug"] is None
+    assert data["enterprise_context"] is None
     assert data["human_confirmation_required"] is True
     assert _hash_files() == before_hashes
 
@@ -87,3 +88,21 @@ def test_shadow_retrieval_debug_is_optional_and_shown_when_enabled() -> None:
     assert data["shadow_retrieval_debug"] is not None
     assert data["shadow_retrieval_debug"]["hierarchical_mode"] == "shadow"
     assert data["shadow_retrieval_debug"]["candidate_count"] >= 0
+
+
+def test_solution_insight_endpoint_accepts_company_id() -> None:
+    client = TestClient(app)
+    payload = {
+        "user_query": "一家中型 SaaS 公司想提升销售线索转化和客户成功效率",
+        "industry": "SaaS",
+        "company_id": "demo_saas_001",
+        "enable_shadow_retrieval": False,
+        "llm_mode": "deterministic",
+    }
+
+    response = client.post("/solution-insight", json=payload)
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["enterprise_context"] is not None
+    assert data["enterprise_context"]["context_source"] == "mcp_mock"

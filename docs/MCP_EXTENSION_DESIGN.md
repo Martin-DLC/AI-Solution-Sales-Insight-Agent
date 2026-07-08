@@ -132,3 +132,97 @@ flowchart LR
 3. 最后才接入真实企业 MCP 系统
 
 这样做更符合一个作品集项目从“可信原型”走向“企业集成”的自然路径。
+
+## Current MCP-style Mock implementation
+
+当前项目已经增加一个本地的 MCP-style Mock Context Layer，但它不是：
+
+- 真实 MCP SDK
+- 真实网络调用
+- 真实企业系统接入
+
+它只是一个完全本地、可测试、可替换的 Mock 层，用来模拟未来 MCP Client 会给 Agent 带来的企业上下文能力。
+
+当前 mock 了四类企业系统：
+
+- CRM Context Mock
+- Ticket Context Mock
+- BI / Analytics Context Mock
+- Knowledge Asset Context Mock
+
+## EnterpriseContextSkill
+
+当前通过 Skills Registry 接入了新的 `EnterpriseContextSkill`。
+
+它的职责是：
+
+- 根据 `company_id` 读取本地 mock 企业上下文
+- 输出 `enterprise_context`
+- 将执行状态写入 `skill_trace`
+- 失败或缺失时不影响正式主流程
+
+当前 skill 编排顺序已经更新为：
+
+1. `RequirementUnderstandingSkill`
+2. `EnterpriseContextSkill`
+3. `FormalRetrievalSkill`
+4. `ShadowRetrievalSkill`
+5. `FallbackAssessmentSkill`
+6. `SolutionGenerationSkill`
+
+## Mock data contract
+
+当前 fixture 至少包含三家模拟企业：
+
+- `demo_saas_001`
+- `demo_ecommerce_001`
+- `demo_manufacturing_001`
+
+每家公司包含：
+
+- `company_profile`
+- `crm_context`
+- `ticket_context`
+- `bi_context`
+- `knowledge_context`
+
+并带有：
+
+- `context_source = "mcp_mock"`
+- `mock_data = true`
+
+## Why start with Mock first
+
+先做 Mock 的原因很明确：
+
+- 可以在不引入外部依赖的前提下验证 Agent 接口边界
+- 可以让 `EnterpriseContextSkill` 和未来真实 MCP Client 的替换点先稳定下来
+- 可以验证 skill trace、fallback 和上下文注入逻辑
+- 不会污染 formal retriever 和正式 benchmark 结果
+
+## Current runtime behavior
+
+当前运行时策略很克制：
+
+- 没有 `company_id` 时，`EnterpriseContextSkill` 会 `skipped`
+- `company_id` 不存在时，不会让主流程失败
+- enterprise context 当前只进入 response/context 和 trace
+- 不会进入 formal evidence
+- 不强制进入 solution generation
+
+这样做的目标是先把“上下文接入口”接好，而不是立刻放大生成行为的波动。
+
+## Future path to real MCP
+
+未来如果接入真实 MCP Server，更自然的替换方式是：
+
+- 保留 `EnterpriseContextSkill`
+- 把当前 `EnterpriseContextMockClient` 替换为真实 MCP Client adapter
+- 保持 `enterprise_context` 输出合同不变
+
+这样可以最大限度复用：
+
+- Skills Registry
+- fallback 逻辑
+- service API
+- 测试结构

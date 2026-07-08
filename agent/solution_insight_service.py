@@ -7,13 +7,26 @@ from pathlib import Path
 from typing import Any
 
 from agent.models import (
+    SolutionInsightEnterpriseContext,
     SolutionInsightEvidenceItem,
     SolutionInsightRequest,
     SolutionInsightResponse,
     SolutionInsightRetrievalDebug,
+    SolutionInsightSkillTrace,
     SolutionInsightShadowDebug,
 )
+from agent.mcp_mock import EnterpriseContextMockClient
 from agent.prompts.solution_insight_prompt import build_solution_insight_messages
+from agent.skills import (
+    EnterpriseContextSkill,
+    FallbackAssessmentSkill,
+    FormalRetrievalSkill,
+    RequirementUnderstandingSkill,
+    ShadowRetrievalSkill,
+    SkillInput,
+    SkillRegistry,
+    SolutionGenerationSkill,
+)
 from dataio.jsonl_loader import load_jsonl_models
 from evaluation.retrieval.contracts_v2 import RetrievalRuntimeContextV2
 from evaluation.retrieval.runner_v2 import (
@@ -61,6 +74,8 @@ class SolutionInsightService:
         self._shadow_service = shadow_service
         self._llm_client = llm_client
         self._llm_mode = llm_mode
+        self._enterprise_context_client = EnterpriseContextMockClient()
+        self._skills = self._build_skill_registry()
 
     @classmethod
     def from_defaults(
@@ -124,80 +139,36 @@ class SolutionInsightService:
                 self._llm_client = create_llm_client()
             except (LLMConfigurationError, Exception):
                 effective_llm_mode = "deterministic"
-        runtime_context = self._build_runtime_context(request)
-        query = self._build_query(request)
-        filters = self._build_filters(runtime_context)
-        query_hash = build_query_hash(query)
-
-        retrieval_error: str | None = None
-        formal_candidates: list[Any] = []
-        shadow_result = None
-
-        try:
-            if self._should_run_shadow(request):
-                if self._shadow_service is None:
-                    self._shadow_service = ShadowHierarchicalRetrievalService(
-                        formal_retriever=self._formal_retriever,
-                        shadow_chunk_ranker=self._formal_retriever,
-                        embedding_provider=FakeEmbeddingProvider(dimension=384, provider_id="shadow_fake_embedding_v1"),
-                        documents=self._documents,
-                        chunks=self._chunks,
-                        config=HierarchicalShadowConfig(mode=HierarchicalRetrievalMode.shadow),
-                    )
-                formal_candidates = self._shadow_service.retrieve(
-                    query=query,
-                    filters=filters,
-                    runtime_context=runtime_context,
-                    request_id=request_id,
-                )
-                shadow_result = self._shadow_service.last_shadow_result
-            else:
-                formal_candidates = self._formal_retriever.retrieve(query=query, filters=filters, top_k=5)
-        except Exception as exc:
-            retrieval_error = f"{exc.__class__.__name__}: {exc}"
-
-        evidence_items = self._build_evidence_items(formal_candidates)
-        fallback_reasons = self._assess_fallback(
-            evidence_items=evidence_items,
-            retrieval_error=retrieval_error,
-            shadow_result=shadow_result,
-        )
-        fallback_recommended = bool(fallback_reasons)
-        formal_evidence_payload = [item.model_dump(mode="json") for item in evidence_items]
-
-        generation = self._generate_content(
-            request=request,
-            evidence_items=evidence_items,
-            formal_evidence_payload=formal_evidence_payload,
-            fallback_recommended=fallback_recommended,
-            llm_mode=effective_llm_mode,
+        previous_outputs, skill_outputs, skill_trace = self._skills.execute_sequence(
+            [
+                "requirement_understanding",
+                "enterprise_context",
+                "formal_retrieval",
+                "shadow_retrieval",
+                "fallback_assessment",
+                "solution_generation",
+            ],
+            SkillInput(
+                request_id=request_id,
+                user_query=request.user_query,
+                context={
+                    "request": request,
+                    "effective_llm_mode": effective_llm_mode,
+                },
+            ),
         )
 
-        retrieval_debug = SolutionInsightRetrievalDebug(
-            retrieval_method="lexical_v2_formal",
-            formal_candidate_count=len(formal_candidates),
-            evidence_count=len(evidence_items),
-            top_k=5,
-            query_hash=query_hash,
-            blocked_retrieval_status=self._comparison_payload.get("selection_status", "unknown"),
-            selected_method=self._comparison_payload.get("selected_method"),
-            selection_status=self._comparison_payload.get("selection_status"),
-        )
-        shadow_debug = None
-        if shadow_result is not None:
-            shadow_debug = SolutionInsightShadowDebug(
-                hierarchical_mode=shadow_result.hierarchical_mode.value,
-                candidate_count=shadow_result.candidate_count,
-                document_candidate_count=shadow_result.document_candidate_count,
-                chunk_candidate_count=shadow_result.chunk_candidate_count,
-                runtime_eligible_count=shadow_result.runtime_eligible_count,
-                runtime_rejected_count=shadow_result.runtime_rejected_count,
-                rejection_reason_counts=shadow_result.rejection_reason_counts,
-                evidence_complete=shadow_result.evidence_complete,
-                fallback_recommended=shadow_result.fallback_recommended,
-                fallback_reasons=shadow_result.fallback_reasons,
-                shadow_error=shadow_result.shadow_error,
-            )
+        formal_output = previous_outputs["formal_retrieval"]
+        fallback_output = previous_outputs["fallback_assessment"]
+        generation = previous_outputs["solution_generation"]
+        enterprise_context_output = previous_outputs["enterprise_context"]
+        evidence_items = formal_output["evidence_items"]
+        retrieval_debug = formal_output["retrieval_debug"]
+        shadow_debug = previous_outputs["shadow_retrieval"].get("shadow_retrieval_debug")
+        fallback_recommended = bool(fallback_output["fallback_recommended"])
+        fallback_reasons = list(fallback_output["fallback_reasons"])
+        query_hash = formal_output["query_hash"]
+        enterprise_context_payload = enterprise_context_output.get("enterprise_context")
 
         note = (
             "当前证据不足，需要人工确认或补充资料"
@@ -207,13 +178,16 @@ class SolutionInsightService:
         log_record = {
             "request_id": request_id,
             "query_hash": query_hash,
-            "formal_candidate_count": len(formal_candidates),
+            "formal_candidate_count": len(formal_output["formal_candidates"]),
             "evidence_count": len(evidence_items),
             "fallback_recommended": fallback_recommended,
             "fallback_reasons": list(fallback_reasons),
-            "shadow_mode": "shadow" if shadow_result is not None else "off",
-            "shadow_error": shadow_result.shadow_error if shadow_result is not None else None,
+            "shadow_mode": "shadow" if shadow_debug is not None else "off",
+            "shadow_error": shadow_debug.shadow_error if shadow_debug is not None else None,
             "llm_mode": effective_llm_mode,
+            "skill_count": skill_trace.skill_count,
+            "failed_skill_count": skill_trace.failed_skill_count,
+            "enterprise_context_present": enterprise_context_payload is not None,
         }
 
         return SolutionInsightResponse(
@@ -223,16 +197,32 @@ class SolutionInsightService:
             ai_opportunity_points=generation["ai_opportunity_points"],
             proposed_solution=generation["proposed_solution"],
             evidence_items=evidence_items,
-            evidence_completeness="insufficient" if fallback_recommended else "sufficient_for_human_review",
+            evidence_completeness=fallback_output["evidence_completeness"],
             fallback_recommended=fallback_recommended,
             fallback_reasons=fallback_reasons,
-            human_confirmation_required=fallback_recommended,
+            human_confirmation_required=fallback_output["human_confirmation_required"],
             llm_mode=effective_llm_mode,
             retrieval_debug=retrieval_debug,
             shadow_retrieval_debug=shadow_debug,
+            enterprise_context=(
+                SolutionInsightEnterpriseContext.model_validate(enterprise_context_payload)
+                if enterprise_context_payload is not None
+                else None
+            ),
+            skill_trace=skill_trace,
             response_note=note,
             log_record=log_record,
         )
+
+    def _build_skill_registry(self) -> SkillRegistry:
+        registry = SkillRegistry()
+        registry.register(RequirementUnderstandingSkill(service=self))
+        registry.register(EnterpriseContextSkill(service=self))
+        registry.register(FormalRetrievalSkill(service=self))
+        registry.register(ShadowRetrievalSkill(service=self))
+        registry.register(FallbackAssessmentSkill(service=self))
+        registry.register(SolutionGenerationSkill(service=self))
+        return registry
 
     def _build_runtime_context(self, request: SolutionInsightRequest) -> RetrievalRuntimeContextV2:
         allowed_document_types = [
@@ -290,6 +280,19 @@ class SolutionInsightService:
             self._shadow_service is not None and self._shadow_service.mode == HierarchicalRetrievalMode.shadow
         )
 
+    def _create_default_shadow_service(self) -> ShadowHierarchicalRetrievalService:
+        return ShadowHierarchicalRetrievalService(
+            formal_retriever=self._formal_retriever,
+            shadow_chunk_ranker=self._formal_retriever,
+            embedding_provider=FakeEmbeddingProvider(dimension=384, provider_id="shadow_fake_embedding_v1"),
+            documents=self._documents,
+            chunks=self._chunks,
+            config=HierarchicalShadowConfig(mode=HierarchicalRetrievalMode.shadow),
+        )
+
+    def _build_query_hash(self, query: str) -> str:
+        return build_query_hash(query)
+
     def _build_evidence_items(self, candidates: list[Any]) -> list[SolutionInsightEvidenceItem]:
         items: list[SolutionInsightEvidenceItem] = []
         for candidate in candidates:
@@ -310,12 +313,47 @@ class SolutionInsightService:
             )
         return items
 
+    def _build_retrieval_debug(
+        self,
+        *,
+        formal_candidates: list[Any],
+        evidence_items: list[SolutionInsightEvidenceItem],
+        query_hash: str,
+    ) -> SolutionInsightRetrievalDebug:
+        return SolutionInsightRetrievalDebug(
+            retrieval_method="lexical_v2_formal",
+            formal_candidate_count=len(formal_candidates),
+            evidence_count=len(evidence_items),
+            top_k=5,
+            query_hash=query_hash,
+            blocked_retrieval_status=self._comparison_payload.get("selection_status", "unknown"),
+            selected_method=self._comparison_payload.get("selected_method"),
+            selection_status=self._comparison_payload.get("selection_status"),
+        )
+
+    def _build_shadow_debug(self, shadow_result: Any) -> SolutionInsightShadowDebug:
+        return SolutionInsightShadowDebug(
+            hierarchical_mode=shadow_result.hierarchical_mode.value,
+            candidate_count=shadow_result.candidate_count,
+            document_candidate_count=shadow_result.document_candidate_count,
+            chunk_candidate_count=shadow_result.chunk_candidate_count,
+            runtime_eligible_count=shadow_result.runtime_eligible_count,
+            runtime_rejected_count=shadow_result.runtime_rejected_count,
+            rejection_reason_counts=shadow_result.rejection_reason_counts,
+            evidence_complete=shadow_result.evidence_complete,
+            fallback_recommended=shadow_result.fallback_recommended,
+            fallback_reasons=shadow_result.fallback_reasons,
+            shadow_error=shadow_result.shadow_error,
+        )
+
     def _assess_fallback(
         self,
         *,
         evidence_items: list[SolutionInsightEvidenceItem],
         retrieval_error: str | None,
         shadow_result: Any | None,
+        company_id: str | None = None,
+        enterprise_context: dict[str, Any] | None = None,
     ) -> list[str]:
         reasons: list[str] = []
         if retrieval_error is not None:
@@ -337,6 +375,16 @@ class SolutionInsightService:
                 reasons.append("shadow_detected_parent_child_gap")
             if shadow_result.shadow_error:
                 reasons.append("shadow_pipeline_error")
+        if company_id and enterprise_context is None:
+            reasons.append("enterprise_context_missing")
+        if company_id and enterprise_context is not None:
+            readiness = (
+                enterprise_context.get("knowledge_context", {}).get("data_readiness_level", "")
+                if isinstance(enterprise_context, dict)
+                else ""
+            )
+            if str(readiness).strip().casefold() == "low":
+                reasons.append("enterprise_context_data_readiness_low")
         return _deduplicate(reasons)
 
     def _generate_content(
