@@ -179,6 +179,33 @@ FastAPI 提供两个路由：
 - fallback / 人工确认建议
 - 可选 shadow retrieval debug
 
+## 8.1 Observability Demo
+
+项目现在还提供一个只读的本地观测视图，用来把一次请求的：
+
+- formal retrieval path
+- shadow retrieval path
+- skill trace
+- enterprise context provider trace
+- fallback assessment
+
+整合成统一 snapshot 和 Markdown report。
+
+运行方式：
+
+```bash
+python scripts/run_solution_insight_observability_demo.py
+python scripts/run_solution_insight_observability_demo.py --write
+python scripts/run_solution_insight_observability_demo.py --check
+```
+
+写入后会生成：
+
+- `data/observability/latest_solution_insight_snapshot.json`
+- `data/observability/latest_solution_insight_report.md`
+
+这不是生产监控系统，而是一个 portfolio-grade debug report，适合 demo、录屏和本地排障。
+
 ## 9. Retrieval & Evaluation
 
 项目已经完成：

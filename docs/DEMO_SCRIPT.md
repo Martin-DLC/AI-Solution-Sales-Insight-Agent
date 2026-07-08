@@ -62,6 +62,26 @@ curl -X POST http://localhost:8000/solution-insight \
 - 它用于观察 hierarchical candidate pool 的覆盖和边界表现
 - 它不会污染正式 evidence，也不会改写正式输出
 
+## 4.1 如何展示 observability report
+
+可以在 CLI 演示后接着跑：
+
+```bash
+python scripts/run_solution_insight_observability_demo.py --write
+```
+
+然后打开：
+
+- `data/observability/latest_solution_insight_snapshot.json`
+- `data/observability/latest_solution_insight_report.md`
+
+讲解重点：
+
+1. formal path 和 shadow path 被并排展示
+2. provider trace 能看出 CRM / Ticket / BI / Knowledge 是否成功
+3. fallback reasons 被单独拉出来，方便解释为什么需要人工确认
+4. report 明确写出 shadow does not affect formal answer
+
 ## 5. 如何解释 fallback_recommended=true
 
 可以这样说：
@@ -92,4 +112,3 @@ curl -X POST http://localhost:8000/solution-insight \
 5. Service：CLI 和 FastAPI 都复用了同一个 service
 6. 稳定性：deterministic mode 让 demo 在无 key 情况下可重复
 7. 结论：项目不是“已经全面上线”，而是“具备可信的工程原型和清晰的演示路径”
-
