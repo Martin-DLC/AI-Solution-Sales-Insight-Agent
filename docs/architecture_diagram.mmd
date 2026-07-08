@@ -1,0 +1,53 @@
+flowchart LR
+    subgraph INPUT["Entry Layer"]
+        U["User Input"]
+        C["CLI (`run.py solution-insight`)"]
+        A["FastAPI (`app.main`)"]
+    end
+
+    subgraph FORMAL["Formal Delivery Path"]
+        S["Solution Insight Service"]
+        R["Formal Retriever"]
+        E["Evidence Items"]
+        F["Fallback Assessor"]
+        G["Deterministic / Optional LLM Generator"]
+        O["Structured Output"]
+    end
+
+    subgraph SHADOW["Shadow Diagnostic Path"]
+        H["Shadow Hierarchical Retrieval"]
+        M["Mixed Document / Chunk Candidate Pool"]
+        RE["Runtime Eligibility"]
+        CP["Context Preview"]
+        CIT["Citation Preview"]
+        SD["Shadow Debug"]
+    end
+
+    subgraph GUARDRails["Safety Notes"]
+        N1["Shadow does not change formal evidence"]
+        N2["Shadow does not change formal prompt"]
+        N3["Formal Results remain frozen"]
+        N4["Fallback guards evidence gaps and boundary risk"]
+    end
+
+    U --> C
+    U --> A
+    C --> S
+    A --> S
+    S --> R
+    R --> E
+    E --> F
+    F --> G
+    G --> O
+
+    S -.-> H
+    H -.-> M
+    M -.-> RE
+    RE -.-> CP
+    CP -.-> CIT
+    CIT -.-> SD
+
+    SD -.-> N1
+    SD -.-> N2
+    S -.-> N3
+    F -.-> N4

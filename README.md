@@ -70,7 +70,7 @@ flowchart LR
 - shadow 只进入 debug，不影响正式回答
 - fallback 用于保护边界风险和证据不足场景
 
-更多架构细节见 [Architecture Overview](docs/ARCHITECTURE_OVERVIEW.md)。
+更多架构细节见 [Architecture Overview](docs/ARCHITECTURE_OVERVIEW.md)，可维护的 Mermaid 图源见 [architecture_diagram.mmd](docs/architecture_diagram.mmd)。
 
 ## 5. Quick Start
 

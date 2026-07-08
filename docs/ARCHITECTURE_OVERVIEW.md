@@ -7,6 +7,8 @@
 1. 正式主链路：输入 -> 检索 -> 证据 -> fallback -> 结构化输出
 2. Shadow 旁路：输入 -> hierarchical retrieval debug -> 仅供诊断
 
+可维护的 Mermaid 图源文件见 [architecture_diagram.mmd](architecture_diagram.mmd)。
+
 ## Main Flow
 
 ```mermaid
@@ -59,4 +61,3 @@ fallback 不是“失败就硬继续”，而是：
 - FastAPI 可以给出最小 HTTP 入口
 - formal benchmark 结果仍然冻结可追溯
 - shadow 让我们可以展示技术深度，但不会污染正式结论
-
