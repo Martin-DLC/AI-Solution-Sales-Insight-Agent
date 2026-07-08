@@ -87,6 +87,7 @@ pip install -r requirements.txt
 ```bash
 python -m pytest -q
 python scripts/run_retrieval_benchmark_v2.py --check
+python scripts/run_solution_insight_llm_eval.py --check
 ```
 
 ### 5.3 CLI 示例

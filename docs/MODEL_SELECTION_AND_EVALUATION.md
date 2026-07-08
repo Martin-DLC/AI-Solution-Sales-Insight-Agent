@@ -132,3 +132,54 @@ optional LLM mode 的定位不是“默认生产方案”，而是：
 - 在进入生产前，必须补充多模型横评、人工评分和线上验证
 
 所以这个项目的价值不在于“已经找到最强模型”，而在于已经把模型选择问题放进了一个可评估、可替换、可审计的工程框架里。
+
+## LLM Evaluation Harness v0.2
+
+当前仓库已经补充一个离线可运行的 LLM Evaluation Harness v0.2，用于评估 Solution Insight Agent 的输出质量。
+
+当前 baseline：
+
+- provider: `deterministic`
+- model_mode: `deterministic`
+- 运行方式：本地离线
+- 不访问外部模型 API
+
+当前评分维度：
+
+- schema_validity
+- section_completeness
+- evidence_grounding
+- hallucination_risk
+- fallback_alignment
+- chinese_business_clarity
+- overall_score
+
+未来 provider 预留为：
+
+- deterministic
+- deepseek
+- qwen
+- glm
+- doubao
+- openai
+- claude
+
+未来运行方式示例：
+
+```bash
+python scripts/run_solution_insight_llm_eval.py --provider deepseek --write
+```
+
+但当前必须明确：
+
+- 非 deterministic provider 暂未启用
+- 没有 API key 时不运行
+- CI 和测试只跑 deterministic
+- 不伪造任何真实模型结果
+
+当前限制：
+
+- 规则化评分不能替代人工评审
+- 尚未完成多模型横评
+- 尚未建立人工评分集
+- 尚未进行线上 A/B
