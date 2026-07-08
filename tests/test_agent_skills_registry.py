@@ -74,3 +74,18 @@ def test_skill_exception_becomes_failed_output() -> None:
     assert outputs[0].error_summary == "RuntimeError: boom"
     assert previous_outputs["failing"] == {}
     assert trace.failed_skill_count == 1
+
+
+def test_execute_sequence_preserves_declared_order() -> None:
+    registry = SkillRegistry()
+    registry.register(EchoSkill())
+    registry.register(FailingSkill())
+    registry.register(AppendSkill())
+
+    _, outputs, trace = registry.execute_sequence(
+        ["echo", "failing", "append"],
+        SkillInput(request_id="req-3", user_query="hello"),
+    )
+
+    assert [item.skill_name for item in outputs] == ["echo", "failing", "append"]
+    assert trace.executed_skills == ["echo", "failing", "append"]

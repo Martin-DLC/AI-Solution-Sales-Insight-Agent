@@ -37,6 +37,25 @@
 - `query`
 - `runtime_context`
 
+### EnterpriseContextSkill
+
+职责：
+
+- 根据 `company_id` 读取本地 MCP-style mock enterprise context
+- 在不访问网络的前提下补充 CRM / Ticket / BI / Knowledge 上下文
+- 将结果以可选 `enterprise_context` 输出给 service
+
+当前输出：
+
+- `enterprise_context`
+
+运行规则：
+
+- 无 `company_id` 时 `status=skipped`
+- `company_id` 不存在时 `status=skipped`
+- 不影响正式 evidence
+- 不强制影响正式生成
+
 ### FormalRetrievalSkill
 
 职责：
@@ -124,10 +143,11 @@
 当前 `SolutionInsightService.generate_insight()` 已经通过以下顺序编排：
 
 1. `requirement_understanding`
-2. `formal_retrieval`
-3. `shadow_retrieval`
-4. `fallback_assessment`
-5. `solution_generation`
+2. `enterprise_context`
+3. `formal_retrieval`
+4. `shadow_retrieval`
+5. `fallback_assessment`
+6. `solution_generation`
 
 最后再由 service 统一 assemble 成原有 `SolutionInsightResponse`。
 
@@ -154,6 +174,8 @@
 - traceback
 - benchmark gold
 - case id
+
+如果提供了 `company_id`，响应里还会额外包含可选 `enterprise_context`，用于展示和调试未来 MCP 风格上下文能力。
 
 ## Why there is no complex Skill Registry yet
 
@@ -184,7 +206,7 @@
 - 不是完整 Tool Marketplace
 - 没有权限系统
 - 没有持久化 Skill Memory
-- 还没有接 MCP Mock
+- 当前只有 MCP-style Mock，还不是真实 MCP SDK
 
 ## Conclusion
 

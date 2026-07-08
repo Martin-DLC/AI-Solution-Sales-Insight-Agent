@@ -16,6 +16,7 @@
 - Final Validation 与 Human Review
 - Solution Insight Agent Service
 - Skills Registry v0.2
+- MCP-style Mock Context
 - CLI 与最小 FastAPI 包装层
 - deterministic demo mode
 - shadow retrieval debug mode
@@ -42,10 +43,11 @@
 5. Feature Flag Shadow Retrieval
 6. Solution Insight Agent Service
 7. Skills Registry v0.2 + skill trace
-8. CLI + FastAPI wrapper
-9. deterministic mode
-10. fallback / human confirmation
-11. 结构化日志与可审计留痕
+8. MCP-style Mock Context
+9. CLI + FastAPI wrapper
+10. deterministic mode
+11. fallback / human confirmation
+12. 结构化日志与可审计留痕
 
 ## 4. Architecture
 
@@ -99,6 +101,7 @@ python scripts/run_solution_insight_llm_eval.py --comparison-check
 ```bash
 python run.py solution-insight \
   --query "一家中型 SaaS 公司想提升销售线索转化和客户成功效率" \
+  --company-id demo_saas_001 \
   --industry "SaaS" \
   --shadow \
   --llm-mode deterministic
@@ -123,6 +126,7 @@ curl -X POST http://localhost:8000/solution-insight \
   -H "Content-Type: application/json" \
   -d '{
     "user_query": "一家中型 SaaS 公司想提升销售线索转化和客户成功效率",
+    "company_id": "demo_saas_001",
     "industry": "SaaS",
     "company_size": "中型",
     "current_systems": ["CRM", "客服系统"],
@@ -243,6 +247,7 @@ Shadow retrieval 已通过 feature flag 接入：
 当前 service 内部已经抽象出一组轻量 Skills：
 
 - RequirementUnderstandingSkill
+- EnterpriseContextSkill
 - FormalRetrievalSkill
 - ShadowRetrievalSkill
 - FallbackAssessmentSkill
@@ -255,6 +260,23 @@ Shadow retrieval 已通过 feature flag 接入：
 - 增加 `skill_trace` 便于调试和演示
 
 这个 registry 不引入第三方 Agent 框架，也不会改变当前 CLI / FastAPI 的外部行为。
+
+## 11.2 MCP-style Mock Context
+
+当前项目已经补上一个本地 MCP-style Mock Context Layer，用于模拟未来企业上下文接入，但它仍然是：
+
+- 本地 fixture
+- 无网络
+- 无真实 MCP SDK
+- 无真实 CRM / Ticket / BI 后台
+
+当前支持通过 `company_id` 读取 demo 企业上下文，例如：
+
+- `demo_saas_001`
+- `demo_ecommerce_001`
+- `demo_manufacturing_001`
+
+这部分上下文当前只进入可选 `enterprise_context` 和 `skill_trace`，不替代正式 evidence，也不强行改变正式 solution generation。
 
 ## 12. Project Status
 

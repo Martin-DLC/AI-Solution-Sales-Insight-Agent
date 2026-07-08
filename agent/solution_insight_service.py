@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from agent.models import (
+    SolutionInsightEnterpriseContext,
     SolutionInsightEvidenceItem,
     SolutionInsightRequest,
     SolutionInsightResponse,
@@ -14,8 +15,10 @@ from agent.models import (
     SolutionInsightSkillTrace,
     SolutionInsightShadowDebug,
 )
+from agent.mcp_mock import EnterpriseContextMockClient
 from agent.prompts.solution_insight_prompt import build_solution_insight_messages
 from agent.skills import (
+    EnterpriseContextSkill,
     FallbackAssessmentSkill,
     FormalRetrievalSkill,
     RequirementUnderstandingSkill,
@@ -71,6 +74,7 @@ class SolutionInsightService:
         self._shadow_service = shadow_service
         self._llm_client = llm_client
         self._llm_mode = llm_mode
+        self._enterprise_context_client = EnterpriseContextMockClient()
         self._skills = self._build_skill_registry()
 
     @classmethod
@@ -138,6 +142,7 @@ class SolutionInsightService:
         previous_outputs, skill_outputs, skill_trace = self._skills.execute_sequence(
             [
                 "requirement_understanding",
+                "enterprise_context",
                 "formal_retrieval",
                 "shadow_retrieval",
                 "fallback_assessment",
@@ -156,12 +161,14 @@ class SolutionInsightService:
         formal_output = previous_outputs["formal_retrieval"]
         fallback_output = previous_outputs["fallback_assessment"]
         generation = previous_outputs["solution_generation"]
+        enterprise_context_output = previous_outputs["enterprise_context"]
         evidence_items = formal_output["evidence_items"]
         retrieval_debug = formal_output["retrieval_debug"]
         shadow_debug = previous_outputs["shadow_retrieval"].get("shadow_retrieval_debug")
         fallback_recommended = bool(fallback_output["fallback_recommended"])
         fallback_reasons = list(fallback_output["fallback_reasons"])
         query_hash = formal_output["query_hash"]
+        enterprise_context_payload = enterprise_context_output.get("enterprise_context")
 
         note = (
             "当前证据不足，需要人工确认或补充资料"
@@ -180,6 +187,7 @@ class SolutionInsightService:
             "llm_mode": effective_llm_mode,
             "skill_count": skill_trace.skill_count,
             "failed_skill_count": skill_trace.failed_skill_count,
+            "enterprise_context_present": enterprise_context_payload is not None,
         }
 
         return SolutionInsightResponse(
@@ -196,6 +204,11 @@ class SolutionInsightService:
             llm_mode=effective_llm_mode,
             retrieval_debug=retrieval_debug,
             shadow_retrieval_debug=shadow_debug,
+            enterprise_context=(
+                SolutionInsightEnterpriseContext.model_validate(enterprise_context_payload)
+                if enterprise_context_payload is not None
+                else None
+            ),
             skill_trace=skill_trace,
             response_note=note,
             log_record=log_record,
@@ -204,6 +217,7 @@ class SolutionInsightService:
     def _build_skill_registry(self) -> SkillRegistry:
         registry = SkillRegistry()
         registry.register(RequirementUnderstandingSkill(service=self))
+        registry.register(EnterpriseContextSkill(service=self))
         registry.register(FormalRetrievalSkill(service=self))
         registry.register(ShadowRetrievalSkill(service=self))
         registry.register(FallbackAssessmentSkill(service=self))
@@ -338,6 +352,8 @@ class SolutionInsightService:
         evidence_items: list[SolutionInsightEvidenceItem],
         retrieval_error: str | None,
         shadow_result: Any | None,
+        company_id: str | None = None,
+        enterprise_context: dict[str, Any] | None = None,
     ) -> list[str]:
         reasons: list[str] = []
         if retrieval_error is not None:
@@ -359,6 +375,16 @@ class SolutionInsightService:
                 reasons.append("shadow_detected_parent_child_gap")
             if shadow_result.shadow_error:
                 reasons.append("shadow_pipeline_error")
+        if company_id and enterprise_context is None:
+            reasons.append("enterprise_context_missing")
+        if company_id and enterprise_context is not None:
+            readiness = (
+                enterprise_context.get("knowledge_context", {}).get("data_readiness_level", "")
+                if isinstance(enterprise_context, dict)
+                else ""
+            )
+            if str(readiness).strip().casefold() == "low":
+                reasons.append("enterprise_context_data_readiness_low")
         return _deduplicate(reasons)
 
     def _generate_content(

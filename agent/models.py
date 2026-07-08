@@ -9,6 +9,7 @@ from schemas.common_models import StrictBaseModel
 
 class SolutionInsightRequest(StrictBaseModel):
     user_query: str
+    company_id: str | None = None
     industry: str | None = None
     company_size: str | None = None
     current_systems: list[str] = Field(default_factory=list)
@@ -94,6 +95,16 @@ class SolutionInsightSkillTrace(StrictBaseModel):
     warnings: list[str] = Field(default_factory=list)
 
 
+class SolutionInsightEnterpriseContext(StrictBaseModel):
+    company_profile: dict[str, Any]
+    crm_context: dict[str, Any]
+    ticket_context: dict[str, Any]
+    bi_context: dict[str, Any]
+    knowledge_context: dict[str, Any]
+    context_source: str
+    mock_data: bool = True
+
+
 class SolutionInsightResponse(StrictBaseModel):
     request_id: str
     requirement_summary: str
@@ -108,6 +119,7 @@ class SolutionInsightResponse(StrictBaseModel):
     llm_mode: str
     retrieval_debug: SolutionInsightRetrievalDebug
     shadow_retrieval_debug: SolutionInsightShadowDebug | None = None
+    enterprise_context: SolutionInsightEnterpriseContext | None = None
     skill_trace: SolutionInsightSkillTrace | None = None
     response_note: str
     log_record: dict[str, Any] = Field(default_factory=dict)

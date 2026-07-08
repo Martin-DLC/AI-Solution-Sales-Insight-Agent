@@ -13,6 +13,8 @@ class FallbackAssessmentSkill(BaseSkill):
 
     def run(self, skill_input: SkillInput) -> tuple[str, dict[str, Any], list[str]]:
         formal_output = skill_input.previous_outputs["formal_retrieval"]
+        enterprise_context_output = skill_input.previous_outputs["enterprise_context"]
+        request = skill_input.context["request"]
         evidence_items = formal_output["evidence_items"]
         retrieval_error = formal_output.get("retrieval_error")
         shadow_result = formal_output.get("shadow_result")
@@ -21,6 +23,8 @@ class FallbackAssessmentSkill(BaseSkill):
             evidence_items=evidence_items,
             retrieval_error=retrieval_error,
             shadow_result=shadow_result,
+            company_id=request.company_id,
+            enterprise_context=enterprise_context_output.get("enterprise_context"),
         )
         fallback_recommended = bool(fallback_reasons)
         output = {
