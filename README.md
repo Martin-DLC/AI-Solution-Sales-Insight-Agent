@@ -88,6 +88,7 @@ pip install -r requirements.txt
 python -m pytest -q
 python scripts/run_retrieval_benchmark_v2.py --check
 python scripts/run_solution_insight_llm_eval.py --check
+python scripts/run_solution_insight_llm_eval.py --comparison-check
 ```
 
 ### 5.3 CLI 示例
@@ -191,6 +192,21 @@ FastAPI 提供两个路由：
 - [Retrieval Benchmark V2 Results](docs/27_Retrieval_Benchmark_V2_Results.md)
 - [Retrieval Benchmark V2 Experiment Plan](docs/26_Retrieval_Benchmark_V2_Experiment_Plan.md)
 - [Retrieval Benchmark V2 Failure Diagnosis](docs/28_Retrieval_V2_Failure_Diagnosis.md)
+
+LLM 输出评测当前分为两层：
+
+- deterministic baseline：冻结的 CI 合同
+- provider comparison：可选真实模型横评，不覆盖 baseline
+
+示例：
+
+```bash
+python scripts/run_solution_insight_llm_eval.py --providers deterministic,deepseek,qwen,glm
+python scripts/run_solution_insight_llm_eval.py --providers deterministic,deepseek,qwen,glm --comparison-write
+python scripts/run_solution_insight_llm_eval.py --comparison-check
+```
+
+更多说明见 [Model Selection and Evaluation](docs/MODEL_SELECTION_AND_EVALUATION.md) 和 [LLM Model Comparison Report](docs/LLM_MODEL_COMPARISON_REPORT.md)。
 
 ## 10. Shadow Hierarchical Retrieval
 

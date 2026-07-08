@@ -1,0 +1,984 @@
+{
+  "aggregate_scores_by_provider": {
+    "deterministic": {
+      "chinese_business_clarity": 10.0,
+      "evidence_grounding": 20.0,
+      "fallback_alignment": 15.0,
+      "hallucination_risk": 20.0,
+      "overall_score": 100.0,
+      "schema_validity": 20.0,
+      "section_completeness": 15.0
+    }
+  },
+  "best_provider_by_dimension": {
+    "chinese_business_clarity": "deterministic",
+    "evidence_grounding": "deterministic",
+    "fallback_alignment": "deterministic",
+    "hallucination_risk": "deterministic",
+    "overall_score": "deterministic",
+    "schema_validity": "deterministic",
+    "section_completeness": "deterministic"
+  },
+  "case_errors_by_provider": {
+    "deterministic": []
+  },
+  "comparison_version": "solution_insight_llm_model_comparison_v1",
+  "cost_estimate_optional": {
+    "deterministic": {
+      "completion_tokens_total": 0,
+      "estimated_cost": null,
+      "prompt_tokens_total": 0,
+      "total_tokens_total": 0
+    }
+  },
+  "evaluation_case_count": 12,
+  "fallback_mismatch_cases_by_provider": {
+    "deterministic": []
+  },
+  "generated_at": "2026-07-08T07:32:53.126360+00:00",
+  "hallucination_risk_cases_by_provider": {
+    "deterministic": []
+  },
+  "latency_summary": {
+    "deterministic": {
+      "average_latency_ms": 0.0,
+      "max_latency_ms": 0,
+      "measured_case_count": 12,
+      "min_latency_ms": 0,
+      "total_latency_ms": 0
+    }
+  },
+  "limitations": [
+    "Deterministic baseline remains the only frozen CI contract.",
+    "Comparison artifact is parse-checked only and is not byte-for-byte reproducible.",
+    "Scores are rule-based and do not replace human review.",
+    "Current formal retriever remains blocked by the frozen Retrieval Benchmark v2 gate.",
+    "no_external_provider_results"
+  ],
+  "per_case_scores_by_provider": {
+    "deterministic": [
+      {
+        "case_id": "SI-EVAL-001",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "围绕销售场景做线索优先级判断和话术辅助。",
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "客服辅助回复方案说明",
+            "服务工单系统集成方案说明",
+            "客户身份统一与数据集成方案说明",
+            "合成服务工单协同案例",
+            "公开Demo商业规则与承诺边界"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "销售线索识别与转化效率不稳定。",
+            "客户支持与客户成功团队需要更快拿到可引用的信息。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：客服辅助回复方案说明; 服务工单系统集成方案说明; 客户身份统一与数据集成方案说明。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "一家中型 SaaS 公司想提升销售线索转化和客户成功效率。 目标是 提升线索转化和客户成功效率。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 3 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-002",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "构建带证据引用的企业知识检索助手。",
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "客服辅助回复方案说明",
+            "引用可审计回复能力合同",
+            "客服辅助回复方案说明",
+            "客户身份统一与数据集成方案说明",
+            "合成零售商品知识治理案例"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "客户支持与客户成功团队需要更快拿到可引用的信息。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：客服辅助回复方案说明; 引用可审计回复能力合同。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "一家电商公司希望提升客服响应效率，并减少重复问答。 目标是 提升客服效率。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 3 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-003",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "构建带证据引用的企业知识检索助手。",
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "私有化大模型部署方案说明",
+            "身份、集成与部署准备度要求",
+            "身份、集成与部署准备度要求",
+            "合规检索与私有化部署实施Playbook",
+            "合规检索与私有化部署实施Playbook"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "当前需求描述尚需进一步澄清业务流程、数据准备度和上线约束。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：私有化大模型部署方案说明; 身份、集成与部署准备度要求。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "一家制造企业想建设售后知识库，帮助一线工程师快速找到故障处理信息。 目标是 提升售后知识检索效率。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 3 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-004",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "围绕销售场景做线索优先级判断和话术辅助。",
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "客服辅助回复方案说明",
+            "合成服务工单协同案例",
+            "客户身份统一与数据集成方案说明",
+            "合成服务工单协同案例",
+            "身份、集成与部署准备度要求"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "销售线索识别与转化效率不稳定。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：客服辅助回复方案说明; 合成服务工单协同案例; 客户身份统一与数据集成方案说明。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "一家教育机构想提升招生转化，减少顾问在重复咨询上的时间。 目标是 提升招生转化。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 4 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-005",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "合成零售商品知识治理案例",
+            "客服辅助回复方案说明",
+            "客户身份统一与数据集成方案说明",
+            "商品知识库RAG方案说明",
+            "合成零售商品知识治理案例"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "当前需求描述尚需进一步澄清业务流程、数据准备度和上线约束。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：合成零售商品知识治理案例; 客服辅助回复方案说明; 客户身份统一与数据集成方案说明。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "一家连锁零售企业希望提升门店运营提效，并减少商品知识口径不一致问题。 目标是 提升门店运营效率。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 4 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-006",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "客服辅助回复方案说明",
+            "合规政策RAG检索助手方案说明",
+            "受控知识检索安全与合规要求",
+            "引用可审计回复能力合同",
+            "公开Demo商业规则与承诺边界"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "客户支持与客户成功团队需要更快拿到可引用的信息。",
+            "高风险场景下需要更严格的证据引用和人工确认。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：客服辅助回复方案说明; 合规政策RAG检索助手方案说明; 受控知识检索安全与合规要求。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "一家金融服务机构想提升客户咨询自动化，但要求强合规和人工复核。 目标是 提升咨询效率。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 3 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-007",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "客服辅助回复方案说明",
+            "服务工单系统集成方案说明",
+            "合成服务工单协同案例",
+            "公开Demo商业规则与承诺边界",
+            "合成服务工单协同案例"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "客户支持与客户成功团队需要更快拿到可引用的信息。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：客服辅助回复方案说明; 服务工单系统集成方案说明; 合成服务工单协同案例。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "一家医疗服务机构希望用 AI 提升患者咨询分流效率。 目标是 提升咨询分流效率。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 4 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-008",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "服务工单系统集成方案说明",
+            "客户身份统一与数据集成方案说明",
+            "身份与工单集成实施Playbook",
+            "客户身份统一与数据集成方案说明",
+            "合成服务工单协同案例"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "当前需求描述尚需进一步澄清业务流程、数据准备度和上线约束。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：服务工单系统集成方案说明; 客户身份统一与数据集成方案说明; 身份与工单集成实施Playbook。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "客户只说想做 AI，但没有提供现有流程、系统和数据情况。 目标是 评估 AI 方向。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 4 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-009",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "公开Demo商业规则与承诺边界",
+            "公开Demo商业规则与承诺边界",
+            "不支持场景与推荐边界说明",
+            "合规政策RAG检索助手方案说明",
+            "身份、集成与部署准备度要求"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "当前需求描述尚需进一步澄清业务流程、数据准备度和上线约束。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：公开Demo商业规则与承诺边界; 不支持场景与推荐边界说明。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "客户要求你直接承诺 6 个月内 ROI 提升 40%，并给出确定回报。 目标是 承诺 ROI。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 3 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-010",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "身份、集成与部署准备度要求",
+            "身份、集成与部署准备度要求",
+            "服务工单系统集成方案说明",
+            "合成服务工单协同案例",
+            "公开Demo商业规则与承诺边界"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "客户支持与客户成功团队需要更快拿到可引用的信息。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：身份、集成与部署准备度要求; 服务工单系统集成方案说明。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "客户已有 CRM 和工单系统，希望获得系统集成与客服效率改进建议。 目标是 系统集成与客服提效。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 3 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-011",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "构建带证据引用的企业知识检索助手。",
+            "围绕销售场景做线索优先级判断和话术辅助。",
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "客服辅助回复方案说明",
+            "客户身份统一与数据集成方案说明",
+            "私有化大模型部署方案说明",
+            "服务工单系统集成方案说明",
+            "商品知识库RAG方案说明"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "销售线索识别与转化效率不稳定。",
+            "客户支持与客户成功团队需要更快拿到可引用的信息。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：客服辅助回复方案说明; 客户身份统一与数据集成方案说明; 私有化大模型部署方案说明。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "客户说想做更智能的销售支持，但业务目标、优先部门和时间要求都不清楚。 目标是 提升销售支持。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 3 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      },
+      {
+        "case_id": "SI-EVAL-012",
+        "fallback_alignment_ok": true,
+        "hallucination_risk_detected": false,
+        "model_mode": "deterministic",
+        "provider": "local_template",
+        "response_snapshot": {
+          "ai_opportunity_points": [
+            "优先从已检索到的 5 条正式证据里收敛可落地方向。"
+          ],
+          "evidence_completeness": "insufficient",
+          "evidence_count": 5,
+          "evidence_titles": [
+            "客服辅助回复方案说明",
+            "客服辅助回复方案说明",
+            "引用可审计回复能力合同",
+            "不支持场景与推荐边界说明",
+            "商品知识库RAG方案说明"
+          ],
+          "fallback_reasons": [
+            "boundary_status_blocked_or_unknown",
+            "shadow_detected_parent_child_gap"
+          ],
+          "fallback_recommended": true,
+          "formal_candidate_count": 5,
+          "human_confirmation_required": true,
+          "pain_points": [
+            "客户支持与客户成功团队需要更快拿到可引用的信息。"
+          ],
+          "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：客服辅助回复方案说明; 引用可审计回复能力合同。先做人工确认后的小范围试点，再决定是否扩展。",
+          "requirement_summary": "客户希望用 AI 全面替代人工客服，且不保留人工审核。 目标是 全面替代人工客服。",
+          "shadow_debug_present": true
+        },
+        "schema_is_valid": true,
+        "score_reasons": {
+          "chinese_business_clarity": [
+            "Response includes Chinese business phrasing.",
+            "Pain points and AI opportunity points are both present.",
+            "Proposed solution length is concise and readable.",
+            "Response avoids excessive generic buzzwords."
+          ],
+          "evidence_grounding": [
+            "Proposed solution references 3 formal evidence title(s).",
+            "Formal evidence count matches retrieval_debug.evidence_count.",
+            "Shadow debug exists but is not referenced in the formal solution text."
+          ],
+          "fallback_alignment": [
+            "Fallback recommendation matches expected behavior.",
+            "Human confirmation is correctly required.",
+            "Fallback reasons are present."
+          ],
+          "hallucination_risk": [
+            "No forbidden claims or deterministic hallucination patterns detected."
+          ],
+          "schema_validity": [
+            "All required response fields are present and valid."
+          ],
+          "section_completeness": [
+            "All required sections are non-empty."
+          ]
+        },
+        "scores": {
+          "chinese_business_clarity": 10,
+          "evidence_grounding": 20,
+          "fallback_alignment": 15,
+          "hallucination_risk": 20,
+          "overall_score": 100,
+          "schema_validity": 20,
+          "section_completeness": 15
+        }
+      }
+    ]
+  },
+  "provider_statuses": {
+    "deepseek": {
+      "cases_attempted": 0,
+      "cases_scored": 0,
+      "error_message": null,
+      "error_type": null,
+      "model_name": "deepseek-chat",
+      "provider_name": "deepseek",
+      "provider_status": "skipped_missing_api_key",
+      "reason": "Environment variable DEEPSEEK_API_KEY is not configured."
+    },
+    "deterministic": {
+      "cases_attempted": 12,
+      "cases_scored": 12,
+      "error_message": null,
+      "error_type": null,
+      "model_name": "local_template",
+      "provider_name": "deterministic",
+      "provider_status": "completed",
+      "reason": "Local deterministic baseline completed successfully."
+    },
+    "glm": {
+      "cases_attempted": 0,
+      "cases_scored": 0,
+      "error_message": null,
+      "error_type": null,
+      "model_name": "glm-4.5-air",
+      "provider_name": "glm",
+      "provider_status": "skipped_missing_api_key",
+      "reason": "Environment variable GLM_API_KEY is not configured."
+    },
+    "qwen": {
+      "cases_attempted": 0,
+      "cases_scored": 0,
+      "error_message": null,
+      "error_type": null,
+      "model_name": "qwen-plus",
+      "provider_name": "qwen",
+      "provider_status": "skipped_missing_api_key",
+      "reason": "Environment variable QWEN_API_KEY is not configured."
+    }
+  },
+  "providers_requested": [
+    "deterministic",
+    "deepseek",
+    "qwen",
+    "glm"
+  ],
+  "providers_run": [
+    "deterministic"
+  ],
+  "providers_skipped": [
+    "deepseek",
+    "qwen",
+    "glm"
+  ],
+  "recommended_provider_for_demo": "deterministic",
+  "recommended_provider_for_production_poc": null,
+  "schema_invalid_cases_by_provider": {
+    "deterministic": []
+  }
+}

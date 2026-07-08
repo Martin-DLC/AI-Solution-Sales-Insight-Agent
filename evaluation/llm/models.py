@@ -123,3 +123,81 @@ class SolutionInsightEvalPlan(StrictBaseModel):
     output_path: str
     note: str
 
+
+COMPARISON_PROVIDER_STATUSES = (
+    "available",
+    "completed",
+    "completed_with_case_errors",
+    "skipped_missing_api_key",
+    "failed",
+)
+
+
+class SolutionInsightComparisonProviderStatus(StrictBaseModel):
+    provider_name: str
+    model_name: str | None = None
+    provider_status: Literal[
+        "available",
+        "completed",
+        "completed_with_case_errors",
+        "skipped_missing_api_key",
+        "failed",
+    ]
+    reason: str | None = None
+    error_type: str | None = None
+    error_message: str | None = None
+    cases_attempted: int = 0
+    cases_scored: int = 0
+
+
+class SolutionInsightComparisonCaseError(StrictBaseModel):
+    case_id: str
+    error_type: str
+    error_message: str
+
+
+class SolutionInsightComparisonLatencySummary(StrictBaseModel):
+    average_latency_ms: float | None = None
+    max_latency_ms: int | None = None
+    min_latency_ms: int | None = None
+    total_latency_ms: int = 0
+    measured_case_count: int = 0
+
+
+class SolutionInsightComparisonCostSummary(StrictBaseModel):
+    prompt_tokens_total: int = 0
+    completion_tokens_total: int = 0
+    total_tokens_total: int = 0
+    estimated_cost: float | None = None
+
+
+class SolutionInsightModelComparisonPlan(StrictBaseModel):
+    mode: Literal["provider_plan"]
+    comparison_version: str
+    evaluation_case_count: int
+    providers_requested: list[str]
+    provider_statuses: dict[str, SolutionInsightComparisonProviderStatus]
+    comparison_output_path: str
+    note: str
+
+
+class SolutionInsightModelComparisonReport(StrictBaseModel):
+    comparison_version: str
+    evaluation_case_count: int
+    providers_requested: list[str]
+    providers_run: list[str] = Field(default_factory=list)
+    providers_skipped: list[str] = Field(default_factory=list)
+    provider_statuses: dict[str, SolutionInsightComparisonProviderStatus] = Field(default_factory=dict)
+    aggregate_scores_by_provider: dict[str, SolutionInsightEvalAggregateScores | None] = Field(default_factory=dict)
+    per_case_scores_by_provider: dict[str, list[SolutionInsightEvalCaseResult]] = Field(default_factory=dict)
+    latency_summary: dict[str, SolutionInsightComparisonLatencySummary] = Field(default_factory=dict)
+    cost_estimate_optional: dict[str, SolutionInsightComparisonCostSummary] = Field(default_factory=dict)
+    hallucination_risk_cases_by_provider: dict[str, list[str]] = Field(default_factory=dict)
+    fallback_mismatch_cases_by_provider: dict[str, list[str]] = Field(default_factory=dict)
+    schema_invalid_cases_by_provider: dict[str, list[str]] = Field(default_factory=dict)
+    case_errors_by_provider: dict[str, list[SolutionInsightComparisonCaseError]] = Field(default_factory=dict)
+    best_provider_by_dimension: dict[str, str | None] = Field(default_factory=dict)
+    recommended_provider_for_demo: str | None = None
+    recommended_provider_for_production_poc: str | None = None
+    limitations: list[str] = Field(default_factory=list)
+    generated_at: str

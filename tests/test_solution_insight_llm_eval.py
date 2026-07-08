@@ -12,7 +12,15 @@ from agent.models import (
     SolutionInsightRetrievalDebug,
     SolutionInsightShadowDebug,
 )
-from evaluation.llm import check_baseline, load_eval_cases, run_evaluation, write_baseline
+from evaluation.llm import (
+    check_baseline,
+    check_provider_comparison,
+    load_eval_cases,
+    run_evaluation,
+    run_provider_comparison,
+    write_baseline,
+    write_provider_comparison,
+)
 from evaluation.llm.evaluator import evaluate_solution_insight_response
 from evaluation.llm.models import SolutionInsightEvalCase
 from scripts.run_solution_insight_llm_eval import main
@@ -26,6 +34,27 @@ class FakeService:
     def generate_insight(self, request: SolutionInsightRequest) -> SolutionInsightResponse:
         self.requests.append(request)
         return self._response
+
+
+class FakeLiveResponse:
+    def __init__(self, *, parsed_json: dict[str, object], latency_ms: int = 123) -> None:
+        self.parsed_json = parsed_json
+        self.latency_ms = latency_ms
+        self.usage = type(
+            "Usage",
+            (),
+            {"model_dump": lambda self, mode="json": {"prompt_tokens": 11, "completion_tokens": 7, "total_tokens": 18}},
+        )()
+
+
+class FakeLiveClient:
+    def __init__(self, *, parsed_json: dict[str, object]) -> None:
+        self.parsed_json = parsed_json
+        self.calls = 0
+
+    def complete_json(self, messages):  # noqa: ANN001
+        self.calls += 1
+        return FakeLiveResponse(parsed_json=self.parsed_json)
 
 
 def _build_case(**overrides: object) -> SolutionInsightEvalCase:
@@ -224,3 +253,111 @@ def test_script_write_and_check_flow(tmp_path: Path, monkeypatch: pytest.MonkeyP
     assert main(["--write"]) == 0
     assert main(["--check"]) == 0
 
+
+def test_provider_plan_with_missing_api_keys_reports_skipped(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+    monkeypatch.delenv("QWEN_API_KEY", raising=False)
+    monkeypatch.delenv("GLM_API_KEY", raising=False)
+
+    assert main(["--providers", "deterministic,deepseek,qwen,glm"]) == 0
+    payload = json.loads(capsys.readouterr().out)
+
+    assert payload["mode"] == "provider_plan"
+    assert payload["provider_statuses"]["deepseek"]["provider_status"] == "skipped_missing_api_key"
+    assert payload["provider_statuses"]["qwen"]["provider_status"] == "skipped_missing_api_key"
+    assert payload["provider_statuses"]["glm"]["provider_status"] == "skipped_missing_api_key"
+
+
+def test_provider_comparison_write_does_not_overwrite_deterministic_baseline(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    dataset_path = tmp_path / "cases.jsonl"
+    baseline_path = tmp_path / "baseline.json"
+    comparison_path = tmp_path / "comparison.json"
+    dataset_path.write_text(
+        json.dumps(_build_case().model_dump(mode="json"), ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    fake_service = FakeService(response=_build_response())
+    monkeypatch.setattr("evaluation.llm.runner.DATASET_PATH", dataset_path)
+    monkeypatch.setattr("evaluation.llm.runner.BASELINE_OUTPUT_PATH", baseline_path)
+    monkeypatch.setattr("evaluation.llm.runner.COMPARISON_OUTPUT_PATH", comparison_path)
+    monkeypatch.setattr("evaluation.llm.runner.build_service_for_provider", lambda provider: fake_service)
+    monkeypatch.setattr("evaluation.llm.runner.SolutionInsightService.from_defaults", lambda **kwargs: fake_service)
+    monkeypatch.setattr(
+        "evaluation.llm.runner.create_provider_client",
+        lambda provider_name: FakeLiveClient(
+            parsed_json={
+                "requirement_summary": "真实模型摘要",
+                "pain_points": ["销售线索识别与转化效率不稳定。"],
+                "ai_opportunity_points": ["围绕销售场景做线索优先级判断和话术辅助。"],
+                "proposed_solution": "建议优先围绕这些已命中的知识主题做方案收敛：Formal Doc。",
+                "response_note": "证据不足时仍需人工复核。",
+            }
+        ),
+    )
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+
+    write_baseline(dataset_path=dataset_path, output_path=baseline_path)
+    frozen_before = baseline_path.read_text(encoding="utf-8")
+    write_provider_comparison(
+        providers=["deterministic", "deepseek"],
+        dataset_path=dataset_path,
+        output_path=comparison_path,
+    )
+
+    assert baseline_path.read_text(encoding="utf-8") == frozen_before
+    assert comparison_path.exists()
+
+
+def test_comparison_check_parses_schema_without_api_key(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    dataset_path = tmp_path / "cases.jsonl"
+    comparison_path = tmp_path / "comparison.json"
+    dataset_path.write_text(
+        json.dumps(_build_case().model_dump(mode="json"), ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    fake_service = FakeService(response=_build_response())
+    monkeypatch.setattr("evaluation.llm.runner.DATASET_PATH", dataset_path)
+    monkeypatch.setattr("evaluation.llm.runner.COMPARISON_OUTPUT_PATH", comparison_path)
+    monkeypatch.setattr("evaluation.llm.runner.SolutionInsightService.from_defaults", lambda **kwargs: fake_service)
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+    monkeypatch.delenv("QWEN_API_KEY", raising=False)
+    monkeypatch.delenv("GLM_API_KEY", raising=False)
+
+    report = write_provider_comparison(
+        providers=["deterministic", "deepseek", "qwen", "glm"],
+        dataset_path=dataset_path,
+        output_path=comparison_path,
+    )
+    matches, details = check_provider_comparison(output_path=comparison_path)
+
+    assert report.providers_skipped == ["deepseek", "qwen", "glm"]
+    assert matches is True
+    assert details["reason"] == "comparison_outputs_parseable"
+
+
+def test_provider_failure_does_not_break_deterministic_results(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    dataset_path = tmp_path / "cases.jsonl"
+    dataset_path.write_text(
+        json.dumps(_build_case().model_dump(mode="json"), ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    fake_service = FakeService(response=_build_response())
+    monkeypatch.setattr("evaluation.llm.runner.SolutionInsightService.from_defaults", lambda **kwargs: fake_service)
+    monkeypatch.setattr("evaluation.llm.runner.build_service_for_provider", lambda provider: fake_service)
+    monkeypatch.setattr("evaluation.llm.runner.create_provider_client", lambda provider_name: (_ for _ in ()).throw(RuntimeError("boom")))
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-key")
+
+    report = run_provider_comparison(providers=["deterministic", "deepseek"], dataset_path=dataset_path)
+
+    assert report.provider_statuses["deterministic"].provider_status == "completed"
+    assert report.provider_statuses["deepseek"].provider_status == "failed"
+    assert report.aggregate_scores_by_provider["deterministic"] is not None

@@ -164,16 +164,20 @@ optional LLM mode 的定位不是“默认生产方案”，而是：
 - openai
 - claude
 
-未来运行方式示例：
+当前 provider comparison CLI：
 
 ```bash
-python scripts/run_solution_insight_llm_eval.py --provider deepseek --write
+python scripts/run_solution_insight_llm_eval.py --providers deterministic,deepseek,qwen,glm
+python scripts/run_solution_insight_llm_eval.py --providers deterministic,deepseek,qwen,glm --comparison-write
+python scripts/run_solution_insight_llm_eval.py --comparison-check
 ```
 
 但当前必须明确：
 
-- 非 deterministic provider 暂未启用
-- 没有 API key 时不运行
+- `--check` 和 baseline artifact 仍然只验证 deterministic contract
+- comparison artifact 与 deterministic baseline 分离
+- 没有 API key 时 provider 会被安全标记为 `skipped_missing_api_key`
+- provider 调用失败不会伪造结果，只会写安全错误摘要
 - CI 和测试只跑 deterministic
 - 不伪造任何真实模型结果
 
@@ -183,3 +187,5 @@ python scripts/run_solution_insight_llm_eval.py --provider deepseek --write
 - 尚未完成多模型横评
 - 尚未建立人工评分集
 - 尚未进行线上 A/B
+
+对比报告见 [LLM Model Comparison Report](LLM_MODEL_COMPARISON_REPORT.md)。
