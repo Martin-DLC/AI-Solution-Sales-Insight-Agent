@@ -307,6 +307,8 @@ Shadow retrieval 已通过 feature flag 接入：
 3. 更完整的人工审批流
 4. 进一步的企业集成
 
+和同类开源项目的结构化对标见 [GitHub Agent Project Benchmark](docs/GITHUB_AGENT_PROJECT_BENCHMARK.md)。
+
 ## 15. Interview Highlights
 
 最适合面试时强调的点：
