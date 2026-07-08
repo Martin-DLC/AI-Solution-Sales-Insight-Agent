@@ -121,6 +121,41 @@ optional LLM mode 的定位不是“默认生产方案”，而是：
 - 人工评分集
 - 线上 A/B
 
+## Human Evaluation Layer
+
+当前仓库已经补充 Human Evaluation Layer，用于在自动规则评测之上，准备真正的人类评审流程。
+
+当前包含：
+
+- Human Evaluation Rubric
+- Review Packet
+- Annotation Template
+- Human Score Aggregation
+- Human Evaluation Summary
+
+需要明确区分：
+
+- 自动规则评测：
+  - 用于稳定 baseline
+  - 用于 CI / regression contract
+  - 擅长发现结构化输出、fallback、hallucination 的硬错误
+- 人工评测：
+  - 用于判断业务表达质量
+  - 用于判断证据是否“说得合理”
+  - 用于判断建议是否适合售前 / 产品团队真实使用
+
+当前状态：
+
+- `human_review_status = not_started`
+- packet 和 annotation template 已就绪
+- 尚未收集真实人工评分
+
+后续邀请评审者时，建议至少覆盖：
+
+- 售前 / 解决方案顾问
+- 产品经理
+- 中文业务写作能力较强的 reviewer
+
 也就是说，这个项目现在已经非常适合展示“工程设计、可追溯性和边界意识”，但还不适合宣称“最佳模型已经选定”。
 
 ## Practical conclusion

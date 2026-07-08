@@ -243,6 +243,33 @@ python scripts/run_solution_insight_llm_eval.py --comparison-check
 
 更多说明见 [Model Selection and Evaluation](docs/MODEL_SELECTION_AND_EVALUATION.md) 和 [LLM Model Comparison Report](docs/LLM_MODEL_COMPARISON_REPORT.md)。
 
+### Human Evaluation Layer
+
+除了自动规则评测，项目现在还提供一套 Human Evaluation Layer，用于准备真实人工评审：
+
+- [Human Evaluation Guide](docs/HUMAN_EVALUATION_GUIDE.md)
+- `data/evaluation/human/solution_insight_human_eval_packet.v1.jsonl`
+- `data/evaluation/human/solution_insight_human_eval_annotation_template.v1.jsonl`
+- `data/evaluation/human/solution_insight_human_eval_summary.v1.json`
+
+生成与检查：
+
+```bash
+python scripts/build_solution_insight_human_eval_packet.py
+python scripts/build_solution_insight_human_eval_packet.py --write
+python scripts/build_solution_insight_human_eval_packet.py --check
+
+python scripts/summarize_solution_insight_human_eval.py
+python scripts/summarize_solution_insight_human_eval.py --write
+python scripts/summarize_solution_insight_human_eval.py --check
+```
+
+当前状态必须明确：
+
+- 已准备 review packet 和空白 annotation template
+- 当前 `human_review_status = not_started`
+- 没有伪造任何人工评分
+
 ## 10. Shadow Hierarchical Retrieval
 
 Shadow retrieval 已通过 feature flag 接入：
