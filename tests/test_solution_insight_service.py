@@ -282,6 +282,10 @@ def test_company_context_is_exposed_when_company_id_is_present() -> None:
 
     assert response.enterprise_context is not None
     assert response.enterprise_context.context_source == "mcp_mock"
+    assert response.enterprise_context.provider_success_count == 4
+    assert response.enterprise_context.provider_failed_count == 0
+    assert response.enterprise_context.provider_skipped_count == 0
+    assert len(response.enterprise_context.provider_results) == 4
     assert response.skill_trace is not None
     assert "enterprise_context" in response.skill_trace.executed_skills
 

@@ -106,3 +106,5 @@ def test_solution_insight_endpoint_accepts_company_id() -> None:
     data = response.json()
     assert data["enterprise_context"] is not None
     assert data["enterprise_context"]["context_source"] == "mcp_mock"
+    assert data["enterprise_context"]["provider_success_count"] == 4
+    assert len(data["enterprise_context"]["provider_results"]) == 4

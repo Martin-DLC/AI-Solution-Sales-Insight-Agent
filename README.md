@@ -17,6 +17,7 @@
 - Solution Insight Agent Service
 - Skills Registry v0.2
 - MCP-style Mock Context
+- Context Provider Interface v0.3
 - CLI 与最小 FastAPI 包装层
 - deterministic demo mode
 - shadow retrieval debug mode
@@ -287,6 +288,7 @@ Shadow retrieval 已通过 feature flag 接入：
 - formal retrieval benchmark 冻结
 - shadow retrieval debug
 - service 级 fallback
+- v0.3 Context Provider Interface
 
 ## 13. Limitations
 
