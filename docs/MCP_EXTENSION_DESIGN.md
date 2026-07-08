@@ -150,6 +150,86 @@ flowchart LR
 - BI / Analytics Context Mock
 - Knowledge Asset Context Mock
 
+## Context Provider Interface v0.3
+
+当前 v0.3 已经把企业上下文进一步拆成一个轻量、可插拔的 Context Provider 架构。
+
+当前包含：
+
+- `ContextProvider` 基础接口
+- `ContextProviderRegistry`
+- `CRMContextProvider`
+- `TicketContextProvider`
+- `BIContextProvider`
+- `KnowledgeContextProvider`
+
+当前运行关系变成：
+
+`EnterpriseContextSkill -> ContextProviderRegistry -> local mock providers`
+
+这意味着当前项目实现的是：
+
+- MCP-style Context Provider Interface
+- 本地 mock provider
+- 面向未来真实 MCP Client 的替换边界
+
+当前没有实现的是：
+
+- 真实 MCP SDK
+- 真实外部系统调用
+- OAuth / RBAC / 权限治理
+- 生产级 connector 生命周期管理
+
+## Provider responsibilities
+
+四类 provider 的职责分别是：
+
+- `CRMContextProvider`
+  - `lead_volume`
+  - `conversion_rate`
+  - `sales_cycle_days`
+  - `main_sales_bottlenecks`
+- `TicketContextProvider`
+  - `monthly_ticket_volume`
+  - `top_issue_categories`
+  - `avg_response_time_hours`
+  - `escalation_rate`
+- `BIContextProvider`
+  - `key_metrics`
+  - `efficiency_baseline`
+  - `measurable_goals`
+- `KnowledgeContextProvider`
+  - `existing_docs`
+  - `coverage_gaps`
+  - `data_readiness_level`
+
+所有 provider 当前都：
+
+- 只读取本地 fixture
+- `mock_data = true`
+- `context_source = "mcp_mock"`
+- 不访问网络
+- 不输出 traceback
+
+## Replacement path to real MCP
+
+未来接入真实 MCP 时，更自然的替换路径是：
+
+1. 保留 `EnterpriseContextSkill`
+2. 保留 `ContextProviderRegistry`
+3. 将本地 mock provider 替换为真实 MCP-backed provider
+4. 尽量保持 `enterprise_context` 输出合同稳定
+
+这样可以把当前已经跑通的：
+
+- service API
+- CLI
+- fallback 逻辑
+- provider trace
+- 测试结构
+
+继续复用下去，而不是重新发明一条接入链路。
+
 ## EnterpriseContextSkill
 
 当前通过 Skills Registry 接入了新的 `EnterpriseContextSkill`。

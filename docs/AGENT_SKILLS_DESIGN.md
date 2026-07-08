@@ -41,7 +41,7 @@
 
 职责：
 
-- 根据 `company_id` 读取本地 MCP-style mock enterprise context
+- 通过 `ContextProviderRegistry` 调用本地 Context Providers
 - 在不访问网络的前提下补充 CRM / Ticket / BI / Knowledge 上下文
 - 将结果以可选 `enterprise_context` 输出给 service
 
@@ -49,10 +49,19 @@
 
 - `enterprise_context`
 
+当前依赖：
+
+- `ContextProviderRegistry`
+- `CRMContextProvider`
+- `TicketContextProvider`
+- `BIContextProvider`
+- `KnowledgeContextProvider`
+
 运行规则：
 
 - 无 `company_id` 时 `status=skipped`
 - `company_id` 不存在时 `status=skipped`
+- 单个 provider 失败时允许 partial context 返回
 - 不影响正式 evidence
 - 不强制影响正式生成
 
@@ -177,6 +186,14 @@
 
 如果提供了 `company_id`，响应里还会额外包含可选 `enterprise_context`，用于展示和调试未来 MCP 风格上下文能力。
 
+enterprise context 内部现在也包含轻量 provider trace，例如：
+
+- `provider_results`
+- `provider_success_count`
+- `provider_failed_count`
+- `provider_skipped_count`
+- `provider_warnings`
+
 ## Why there is no complex Skill Registry yet
 
 当前没有引入复杂第三方 Agent / Skill 框架，原因很现实：
@@ -198,6 +215,19 @@
 - retry policy
 - graceful degradation
 - failure routing
+
+## Skill vs Provider boundary
+
+当前边界已经比较清楚：
+
+- `Skill`
+  - 负责 Agent 编排
+  - 决定何时调用企业上下文能力
+  - 汇总 provider 结果进入 service 响应
+- `Provider`
+  - 负责从某一类企业系统获取结构化上下文
+  - 处理自身的 skipped / failed / warning
+  - 不参与正式 retrieval 和生成决策
 
 ## Current limitations
 

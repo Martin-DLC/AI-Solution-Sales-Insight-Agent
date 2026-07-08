@@ -15,6 +15,13 @@ from agent.models import (
     SolutionInsightSkillTrace,
     SolutionInsightShadowDebug,
 )
+from agent.context_providers import (
+    BIContextProvider,
+    CRMContextProvider,
+    ContextProviderRegistry,
+    KnowledgeContextProvider,
+    TicketContextProvider,
+)
 from agent.mcp_mock import EnterpriseContextMockClient
 from agent.prompts.solution_insight_prompt import build_solution_insight_messages
 from agent.skills import (
@@ -75,6 +82,7 @@ class SolutionInsightService:
         self._llm_client = llm_client
         self._llm_mode = llm_mode
         self._enterprise_context_client = EnterpriseContextMockClient()
+        self._context_provider_registry = self._build_context_provider_registry()
         self._skills = self._build_skill_registry()
 
     @classmethod
@@ -222,6 +230,14 @@ class SolutionInsightService:
         registry.register(ShadowRetrievalSkill(service=self))
         registry.register(FallbackAssessmentSkill(service=self))
         registry.register(SolutionGenerationSkill(service=self))
+        return registry
+
+    def _build_context_provider_registry(self) -> ContextProviderRegistry:
+        registry = ContextProviderRegistry()
+        registry.register(CRMContextProvider(client=self._enterprise_context_client))
+        registry.register(TicketContextProvider(client=self._enterprise_context_client))
+        registry.register(BIContextProvider(client=self._enterprise_context_client))
+        registry.register(KnowledgeContextProvider(client=self._enterprise_context_client))
         return registry
 
     def _build_runtime_context(self, request: SolutionInsightRequest) -> RetrievalRuntimeContextV2:

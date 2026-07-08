@@ -103,6 +103,11 @@ class SolutionInsightEnterpriseContext(StrictBaseModel):
     knowledge_context: dict[str, Any]
     context_source: str
     mock_data: bool = True
+    provider_results: list[dict[str, Any]] = Field(default_factory=list)
+    provider_success_count: int = 0
+    provider_failed_count: int = 0
+    provider_skipped_count: int = 0
+    provider_warnings: list[str] = Field(default_factory=list)
 
 
 class SolutionInsightResponse(StrictBaseModel):

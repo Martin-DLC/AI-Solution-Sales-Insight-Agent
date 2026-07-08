@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+from agent.context_providers import (
+    BIContextProvider,
+    CRMContextProvider,
+    ContextProviderRegistry,
+    KnowledgeContextProvider,
+    TicketContextProvider,
+)
 from agent.mcp_mock import EnterpriseContextMockClient
 from agent.skills.enterprise_context import EnterpriseContextSkill
 from agent.skills.base import SkillInput
@@ -8,6 +15,11 @@ from agent.skills.base import SkillInput
 class StubService:
     def __init__(self) -> None:
         self._enterprise_context_client = EnterpriseContextMockClient()
+        self._context_provider_registry = ContextProviderRegistry()
+        self._context_provider_registry.register(CRMContextProvider(client=self._enterprise_context_client))
+        self._context_provider_registry.register(TicketContextProvider(client=self._enterprise_context_client))
+        self._context_provider_registry.register(BIContextProvider(client=self._enterprise_context_client))
+        self._context_provider_registry.register(KnowledgeContextProvider(client=self._enterprise_context_client))
 
 
 class RequestStub:
@@ -66,6 +78,9 @@ def test_enterprise_context_skill_returns_success_for_known_company() -> None:
     assert result.status == "success"
     assert result.output["enterprise_context"]["context_source"] == "mcp_mock"
     assert result.output["enterprise_context"]["mock_data"] is True
+    assert result.output["enterprise_context"]["provider_success_count"] == 4
+    assert result.output["enterprise_context"]["provider_failed_count"] == 0
+    assert result.output["enterprise_context"]["provider_skipped_count"] == 0
 
 
 def test_enterprise_context_skill_skips_unknown_company() -> None:
