@@ -15,6 +15,7 @@
 - 纯代码 Deal Score
 - Final Validation 与 Human Review
 - Solution Insight Agent Service
+- Skills Registry v0.2
 - CLI 与最小 FastAPI 包装层
 - deterministic demo mode
 - shadow retrieval debug mode
@@ -40,10 +41,11 @@
 4. Candidate Recall Round 2
 5. Feature Flag Shadow Retrieval
 6. Solution Insight Agent Service
-7. CLI + FastAPI wrapper
-8. deterministic mode
-9. fallback / human confirmation
-10. 结构化日志与可审计留痕
+7. Skills Registry v0.2 + skill trace
+8. CLI + FastAPI wrapper
+9. deterministic mode
+10. fallback / human confirmation
+11. 结构化日志与可审计留痕
 
 ## 4. Architecture
 
@@ -69,6 +71,7 @@ flowchart LR
 - 正式 evidence 只来自 formal retriever
 - shadow 只进入 debug，不影响正式回答
 - fallback 用于保护边界风险和证据不足场景
+- service 内部已通过轻量 skills 编排 Requirement / Retrieval / Fallback / Generation
 
 更多架构细节见 [Architecture Overview](docs/ARCHITECTURE_OVERVIEW.md)，可维护的 Mermaid 图源见 [architecture_diagram.mmd](docs/architecture_diagram.mmd)。
 
@@ -234,6 +237,24 @@ Shadow retrieval 已通过 feature flag 接入：
 - fallback_recommended
 - human_confirmation_required
 - response_note
+
+## 11.1 Skills Registry v0.2
+
+当前 service 内部已经抽象出一组轻量 Skills：
+
+- RequirementUnderstandingSkill
+- FormalRetrievalSkill
+- ShadowRetrievalSkill
+- FallbackAssessmentSkill
+- SolutionGenerationSkill
+
+它们由项目内的轻量 Skills Registry 编排，主要作用是：
+
+- 让服务职责边界更清晰
+- 为后续 MCP / tool 扩展预留接口
+- 增加 `skill_trace` 便于调试和演示
+
+这个 registry 不引入第三方 Agent 框架，也不会改变当前 CLI / FastAPI 的外部行为。
 
 ## 12. Project Status
 

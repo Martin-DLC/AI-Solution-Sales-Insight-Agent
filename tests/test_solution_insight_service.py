@@ -147,6 +147,14 @@ def test_service_runs_without_llm_api_key() -> None:
     assert response.requirement_summary
     assert response.human_confirmation_required is True
     assert "boundary_status_blocked_or_unknown" in response.fallback_reasons
+    assert response.skill_trace is not None
+    assert response.skill_trace.executed_skills == [
+        "requirement_understanding",
+        "formal_retrieval",
+        "shadow_retrieval",
+        "fallback_assessment",
+        "solution_generation",
+    ]
 
 
 def test_no_evidence_triggers_fallback() -> None:
@@ -230,3 +238,24 @@ def test_shadow_off_does_not_run_shadow_pipeline() -> None:
     response = service.generate_insight(SolutionInsightRequest(user_query="想做内部知识问答"))
 
     assert response.shadow_retrieval_debug is None
+    assert response.skill_trace is not None
+    assert response.skill_trace.skill_count == 5
+
+
+def test_shadow_failure_does_not_break_formal_output() -> None:
+    solution_a, _solution_b = _solution_ids()
+    service = _service(
+        formal_candidates=[_candidate("DOC-001", "DOC-001#chunk-1", 0.8, 1, solution_a)],
+        shadow_candidates=[_candidate("DOC-002", "DOC-002#chunk-1", 0.7, 1, solution_a)],
+        formal_fail=True,
+    )
+
+    response = service.generate_insight(
+        SolutionInsightRequest(user_query="想做带证据引用的内部知识检索", enable_shadow_retrieval=True)
+    )
+
+    assert response.shadow_retrieval_debug is None
+    assert response.fallback_recommended is True
+    assert "retrieval_error" in response.fallback_reasons
+    assert response.skill_trace is not None
+    assert response.skill_trace.failed_skill_count >= 1

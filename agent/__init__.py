@@ -5,6 +5,8 @@ from agent.models import (
     SolutionInsightRequest,
     SolutionInsightResponse,
     SolutionInsightRetrievalDebug,
+    SolutionInsightSkillOutput,
+    SolutionInsightSkillTrace,
     SolutionInsightShadowDebug,
 )
 from agent.solution_insight_service import SolutionInsightService
@@ -14,6 +16,8 @@ __all__ = [
     "SolutionInsightRequest",
     "SolutionInsightResponse",
     "SolutionInsightRetrievalDebug",
+    "SolutionInsightSkillOutput",
+    "SolutionInsightSkillTrace",
     "SolutionInsightShadowDebug",
     "SolutionInsightService",
 ]

@@ -2,7 +2,7 @@
 
 ## Overview
 
-当前项目没有实现一个复杂的 Skill Registry，但服务层边界已经足够清晰，完全可以把现有能力抽象成一组可组合的 Agent Skills。
+当前项目已经实现一个轻量的 Skills Registry，用来在不引入第三方 Agent 框架的前提下，把 Solution Insight Service 的核心能力组织成项目内 Skills。
 
 这对求职展示很有帮助，因为它说明：
 
@@ -10,9 +10,9 @@
 - 每一段能力都具备明确输入输出边界
 - 未来可以自然扩展为更正式的技能编排层
 
-## Current skill mapping
+## Current implementation
 
-### Requirement Understanding Skill
+### RequirementUnderstandingSkill
 
 职责：
 
@@ -20,12 +20,24 @@
 - 整理行业、规模、目标和约束
 - 生成统一的查询上下文
 
-当前落点：
+当前输入：
 
-- `SolutionInsightRequest`
-- `SolutionInsightService` 中的 query / runtime context 构造
+- `user_query`
+- `industry`
+- `company_size`
+- `target_goal`
+- `constraints`
 
-### Formal Retrieval Skill
+当前输出：
+
+- `requirement_summary`
+- `normalized_industry`
+- `detected_goals`
+- `detected_constraints`
+- `query`
+- `runtime_context`
+
+### FormalRetrievalSkill
 
 职责：
 
@@ -33,12 +45,14 @@
 - 获取正式 evidence 候选
 - 保持 formal retrieval 行为冻结
 
-当前落点：
+当前输出：
 
-- `SolutionInsightService`
-- formal lexical retriever
+- `formal_candidates`
+- `evidence_items`
+- `retrieval_debug`
+- `retrieval_error`
 
-### Shadow Retrieval Skill
+### ShadowRetrievalSkill
 
 职责：
 
@@ -46,25 +60,18 @@
 - 观察 document / chunk candidate pool
 - 只产出 debug，不进入正式答案
 
-当前落点：
+当前输出：
 
-- `ShadowHierarchicalRetrievalService`
-- `HIERARCHICAL_RETRIEVAL_MODE=off|shadow`
+- `shadow_retrieval_debug`
+- `shadow_result`
 
-### Runtime Eligibility Skill
+说明：
 
-职责：
+- disabled 时 `status=skipped`
+- failed 时 `status=failed`
+- 不影响正式 evidence
 
-- 对候选进行运行时资格判断
-- 区分 formal path 和 shadow path 中的可用候选
-- 保护 solution boundary 和上下文约束
-
-当前落点：
-
-- runtime eligibility filtering
-- shadow debug 中的候选状态分析
-
-### Fallback Assessment Skill
+### FallbackAssessmentSkill
 
 职责：
 
@@ -72,13 +79,14 @@
 - 识别 retrieval error、boundary risk 和 evidence gap
 - 决定是否需要 human confirmation
 
-当前落点：
+当前输出：
 
 - `fallback_recommended`
 - `fallback_reasons`
 - `human_confirmation_required`
+- `evidence_completeness`
 
-### Solution Insight Generation Skill
+### SolutionGenerationSkill
 
 职责：
 
@@ -86,38 +94,81 @@
 - 支持 deterministic mode
 - 预留 optional LLM mode
 
-当前落点：
+当前输出：
 
-- `SolutionInsightService`
-- deterministic generator
-- optional LLM wrapper integration
+- `requirement_summary`
+- `pain_points`
+- `ai_opportunity_points`
+- `proposed_solution`
+- `response_note`
 
-### Citation / Evidence Packaging Skill
+## Skill Registry behavior
 
-职责：
+当前 registry 支持：
 
-- 组织 evidence items
-- 输出 citation label、excerpt 和 evidence completeness
-- 保证结构化响应对用户可读
+- `register(skill)`
+- `get(name)`
+- `list_skills()`
+- `execute(name, input)`
+- `execute_sequence(skill_names, input)`
 
-当前落点：
+设计特点：
 
-- evidence item assembly
-- API / CLI structured response
+- skill name 唯一
+- 重复注册直接报错
+- 单个 skill 异常会被转成 failed `SkillOutput`
+- 主 service 不会因为单个 skill 抛异常而直接炸掉
+
+## Service orchestration
+
+当前 `SolutionInsightService.generate_insight()` 已经通过以下顺序编排：
+
+1. `requirement_understanding`
+2. `formal_retrieval`
+3. `shadow_retrieval`
+4. `fallback_assessment`
+5. `solution_generation`
+
+最后再由 service 统一 assemble 成原有 `SolutionInsightResponse`。
+
+这保证了：
+
+- CLI / FastAPI 外部输入不变
+- 正式输出结构基本不变
+- formal retriever 不变
+- shadow 仍只进入 debug
+
+## Skill Trace
+
+当前响应里新增了可选 `skill_trace`，包含：
+
+- `executed_skills`
+- `skill_count`
+- `failed_skill_count`
+- `total_elapsed_ms`
+- `warnings`
+
+不会包含：
+
+- API key
+- traceback
+- benchmark gold
+- case id
 
 ## Why there is no complex Skill Registry yet
 
-当前没有引入复杂 Skill Registry，原因很现实：
+当前没有引入复杂第三方 Agent / Skill 框架，原因很现实：
 
-- 当前重点是先把 retrieval、fallback 和 structured output 的闭环跑通
-- 当前没有大量异构工具调用要统一编排
-- 引入 registry 会增加抽象层，但不会明显提升 demo 价值
+- 当前重点是保持项目可解释、可测试、可演示
+- 当前没有大量异构工具调用需要重型编排
+- LangChain / CrewAI / AutoGen 会增加依赖和心智负担
+- 轻量 registry 已经足够为后续 MCP 扩展留出清晰边界
 
 换句话说，现在的设计是“先把 skill boundary 做清楚，再决定要不要上 registry”。
 
-## Future Skill Registry direction
+## MCP preparation direction
 
-如果后续要扩展成更完整的 agent platform，可以增加一个 Skill Registry 来统一管理：
+如果后续接入 MCP Mock 或真实企业系统，当前 registry 已经可以自然扩展去承接：
 
 - tool invocation
 - permission boundary
@@ -126,16 +177,15 @@
 - graceful degradation
 - failure routing
 
-那时当前这些 skills 就可以自然映射为：
+## Current limitations
 
-- retrieval skill
-- validation skill
-- generation skill
-- escalation skill
-- packaging skill
+当前 Skills Registry 仍然是 v0.2 级别：
+
+- 不是完整 Tool Marketplace
+- 没有权限系统
+- 没有持久化 Skill Memory
+- 还没有接 MCP Mock
 
 ## Conclusion
 
-当前项目虽然没有显式 Skill Registry，但已经具备了 skill-oriented design 的骨架。
-
-这意味着它不是“一个会说话的 demo”，而是一个已经能拆解为多段职责、并适合未来继续产品化的 Agent service。
+现在这个项目已经不是“只有 service 没有 skills 边界”的状态了。它有了一个轻量、可测试、可追踪的 Skills 编排层，同时保持了现有正式输出和评测合同不变。
