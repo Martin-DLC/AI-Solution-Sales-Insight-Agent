@@ -20,6 +20,7 @@ flowchart LR
     D --> E[Fallback Assessor]
     E --> F[Deterministic / LLM Generator]
     F --> G[Structured Output]
+    G --> M[Observation Snapshot / Report]
 ```
 
 ## Shadow Flow
@@ -61,3 +62,4 @@ fallback 不是“失败就硬继续”，而是：
 - FastAPI 可以给出最小 HTTP 入口
 - formal benchmark 结果仍然冻结可追溯
 - shadow 让我们可以展示技术深度，但不会污染正式结论
+- Observability Snapshot 位于正式输出之后，不影响主链路，只负责可展示、可排障的只读观测
