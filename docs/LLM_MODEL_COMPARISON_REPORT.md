@@ -120,3 +120,17 @@ comparison artifact 写入：
 
 - demo 默认使用 deterministic mode
 - 真正的 provider 选择要等后续真实对比结果补齐后再下结论
+
+## Human Evaluation Status
+
+需要特别说明：
+
+- 当前 provider comparison 仍然是规则化初筛
+- 它不能替代真实人工评审
+- 当前 Human Evaluation Layer 已经准备好 packet、annotation template 和 summary 流程
+- 但当前 `human_review_status = not_started`
+
+这意味着：
+
+- provider comparison 可以帮助我们缩小候选范围
+- 但生产前仍需要人工评分集来判断中文业务表达、产品落地感和风险措辞是否真正合适

@@ -1,0 +1,17 @@
+{
+  "aggregate_scores": null,
+  "annotation_case_count": 12,
+  "completed_review_count": 0,
+  "evaluation_version": "solution_insight_human_eval_v1",
+  "human_review_status": "not_started",
+  "limitations": [
+    "no_human_scores_collected_yet",
+    "annotation_template_ready",
+    "future_reviews_required"
+  ],
+  "pass_rate": null,
+  "review_packet_case_count": 12,
+  "strengths_summary": [],
+  "suggested_improvements_summary": [],
+  "weaknesses_summary": []
+}
