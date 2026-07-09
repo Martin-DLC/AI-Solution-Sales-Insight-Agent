@@ -53,6 +53,35 @@ curl -X POST http://localhost:8000/solution-insight \
   }'
 ```
 
+## 3.1 Web Demo 演示步骤
+
+启动：
+
+```bash
+uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+打开：
+
+```text
+http://127.0.0.1:8000/demo
+```
+
+建议讲解顺序：
+
+1. 先展示左侧输入表单
+2. 点击 `Load SaaS Example`
+3. 点击 `Run Agent`
+4. 依次讲 Requirement Summary、Evidence、Fallback、Enterprise Context、Skill Trace
+5. 最后点开 Shadow Debug 和 Raw JSON
+6. 强调 demo 页面只是 `/solution-insight` 的展示层
+
+## 3.2 推荐录屏顺序
+
+1. 先展示 `/demo`
+2. 再展示 observability report
+3. 再讲 evaluation 与 limitations
+
 ## 4. 如何解释 shadow retrieval
 
 可以这样说：

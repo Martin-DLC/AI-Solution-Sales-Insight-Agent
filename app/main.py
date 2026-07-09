@@ -1,16 +1,22 @@
 from __future__ import annotations
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.staticfiles import StaticFiles
 
 from agent import SolutionInsightRequest, SolutionInsightResponse, SolutionInsightService
+from app.demo import router as demo_router
 
 
 APP_NAME = "solution-insight-agent"
+STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 app = FastAPI(title="AI Solution Sales Insight Agent", version="1.0.0")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+app.include_router(demo_router)
 
 
 @lru_cache(maxsize=1)
