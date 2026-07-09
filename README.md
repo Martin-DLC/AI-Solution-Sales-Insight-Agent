@@ -391,15 +391,3 @@ Shadow retrieval 已通过 feature flag 接入：
 4. 进一步的企业集成
 
 和同类开源项目的结构化对标见 [GitHub Agent Project Benchmark](docs/GITHUB_AGENT_PROJECT_BENCHMARK.md)。
-
-## 15. Interview Highlights
-
-最适合面试时强调的点：
-
-- Formal benchmark 不是为了刷分，而是为了把边界讲清楚
-- boundary blind validation 失败反而提升了工程可信度
-- shadow retrieval 采用 feature flag 隔离，避免污染正式结果
-- deterministic mode 让 demo 在无 API key 情况下仍可复现
-- Service 层把 retrieval、fallback、LLM 和 debug 合并成一个清晰的产品接口
-
-更多讲稿见 [Interview Talk Track](docs/INTERVIEW_TALK_TRACK.md) 和 [Demo Script](docs/DEMO_SCRIPT.md)。
