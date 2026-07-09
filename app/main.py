@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 
 from agent import SolutionInsightRequest, SolutionInsightResponse, SolutionInsightService
 from app.demo import router as demo_router
+from app.human_eval import router as human_eval_router
 
 
 APP_NAME = "solution-insight-agent"
@@ -17,6 +18,7 @@ STATIC_DIR = Path(__file__).resolve().parent / "static"
 app = FastAPI(title="AI Solution Sales Insight Agent", version="1.0.0")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 app.include_router(demo_router)
+app.include_router(human_eval_router)
 
 
 @lru_cache(maxsize=1)

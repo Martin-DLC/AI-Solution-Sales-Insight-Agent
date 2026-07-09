@@ -14,10 +14,15 @@ from evaluation.human.packet_builder import ANNOTATION_TEMPLATE_PATH, EVALUATION
 
 SUMMARY_PATH = Path("data/evaluation/human/solution_insight_human_eval_summary.v1.json")
 
-
-def build_summary() -> SolutionInsightHumanEvalSummary:
-    packet_count = _count_jsonl_rows(PACKET_PATH)
-    annotations = load_jsonl_models(ANNOTATION_TEMPLATE_PATH, SolutionInsightHumanAnnotation)
+def build_summary(
+    *,
+    annotations_path: Path | None = None,
+    packet_path: Path | None = None,
+) -> SolutionInsightHumanEvalSummary:
+    resolved_annotations_path = annotations_path or ANNOTATION_TEMPLATE_PATH
+    resolved_packet_path = packet_path or PACKET_PATH
+    packet_count = _count_jsonl_rows(resolved_packet_path)
+    annotations = load_jsonl_models(resolved_annotations_path, SolutionInsightHumanAnnotation)
     completed = [item for item in annotations if item.reviewer_id is not None]
 
     if not completed:
@@ -62,21 +67,33 @@ def build_summary() -> SolutionInsightHumanEvalSummary:
     )
 
 
-def write_summary() -> SolutionInsightHumanEvalSummary:
-    summary = build_summary()
-    SUMMARY_PATH.parent.mkdir(parents=True, exist_ok=True)
-    SUMMARY_PATH.write_text(
+def write_summary(
+    *,
+    annotations_path: Path | None = None,
+    output_path: Path | None = None,
+    packet_path: Path | None = None,
+) -> SolutionInsightHumanEvalSummary:
+    resolved_output_path = output_path or SUMMARY_PATH
+    summary = build_summary(annotations_path=annotations_path, packet_path=packet_path)
+    resolved_output_path.parent.mkdir(parents=True, exist_ok=True)
+    resolved_output_path.write_text(
         json.dumps(summary.model_dump(mode="json"), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     return summary
 
 
-def check_summary() -> tuple[bool, dict[str, object]]:
-    if not SUMMARY_PATH.exists():
+def check_summary(
+    *,
+    annotations_path: Path | None = None,
+    summary_path: Path | None = None,
+    packet_path: Path | None = None,
+) -> tuple[bool, dict[str, object]]:
+    resolved_summary_path = summary_path or SUMMARY_PATH
+    if not resolved_summary_path.exists():
         return False, {"reason": "missing_summary"}
-    expected = build_summary().model_dump(mode="json")
-    actual = json.loads(SUMMARY_PATH.read_text(encoding="utf-8"))
+    expected = build_summary(annotations_path=annotations_path, packet_path=packet_path).model_dump(mode="json")
+    actual = json.loads(resolved_summary_path.read_text(encoding="utf-8"))
     if actual != expected:
         return False, {"reason": "summary_mismatch"}
     return True, {"reason": "summary_matches"}
