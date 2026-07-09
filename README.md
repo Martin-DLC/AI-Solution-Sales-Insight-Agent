@@ -1,86 +1,94 @@
 # AI Solution Sales Insight Agent
 
-面向 AI 解决方案 / 售前 / 咨询场景的业务需求分析 Agent，用于从客户需求中生成结构化 AI 方案洞察，并通过 RAG 检索证据和 fallback 机制控制风险。
+AI Solution Sales Insight Agent is a local-first AI Agent prototype for analyzing business requirements, retrieving solution evidence, generating AI opportunity insights, and supporting human evaluation workflows.
 
-这个仓库展示的是一个可审计、可解释、可演示的 portfolio-grade prototype，而不是一个已经完全生产化的系统。
+It combines deterministic demo mode, formal retrieval, enterprise context providers, shadow retrieval diagnostics, observability reports, and human review tools into a lightweight FastAPI-based MVP.
 
 ## 1. Project Overview
 
-这个项目把销售分析从“一次性生成一整份大报告”改造成“可验证、可定位、可审计的节点式 Workflow”。
+这个项目把 AI 解决方案分析拆成一条更可审计的工程链路：输入业务场景，检索正式证据，生成结构化洞察，在证据不足或边界不清时主动触发 fallback 和人工确认。
 
-当前已经具备：
+仓库当前提供的是一个可运行、可验证、可演示的 local-first MVP，而不是完整生产 SaaS。
 
-- Architecture C 的分节点 workflow
-- Formal Retrieval Benchmark v2
-- 纯代码 Deal Score
-- Final Validation 与 Human Review
-- Solution Insight Agent Service
-- Skills Registry v0.2
-- MCP-style Mock Context
-- Context Provider Interface v0.3
-- CLI 与最小 FastAPI 包装层
-- deterministic demo mode
-- shadow retrieval debug mode
+## 2. What It Does
 
-## 2. What Problem It Solves
+项目聚焦于 AI 解决方案 / 售前 / 咨询类场景中最常见的几个问题：
 
-企业售前和 AI 咨询场景里，最常见的问题不是“没输出”，而是“输出看起来对，但无法证明对”。
+- 业务需求、事实、假设和建议混在一起
+- 推荐方案缺少清晰证据来源
+- 检索结果可能越过方案边界
+- 模型在证据不足时仍然容易“补全”事实
+- 很难把失败和不确定性明确暴露给人工复核
 
-这个项目主要解决：
+对应地，当前系统会输出：
 
-- 客户需求、痛点和事实混在一起
-- 销售把积极联系人误判成决策人
-- 方案推荐超出候选边界
-- Deal Score 不可解释
-- 整份报告只能最后才发现错误
-- 很难给出可追踪、可复核、可回放的证据链
+- requirement summary
+- pain points
+- AI opportunity points
+- proposed solution direction
+- evidence items
+- evidence completeness status
+- fallback recommendation
+- human confirmation hint
+- optional shadow retrieval diagnostics
 
-## 3. Key Features
+## 3. Demo Preview
 
-1. Formal Retrieval Benchmark v2
-2. RAG / Retriever / Runtime Filter
-3. Boundary Blind Validation
-4. Candidate Recall Round 2
-5. Feature Flag Shadow Retrieval
-6. Solution Insight Agent Service
-7. Skills Registry v0.2 + skill trace
-8. MCP-style Mock Context
-9. CLI + FastAPI wrapper
-10. deterministic mode
-11. fallback / human confirmation
-12. 结构化日志与可审计留痕
+当前仓库已经具备三个本地入口：
 
-## 4. Architecture
+- CLI：`python run.py solution-insight ...`
+- FastAPI：`POST /solution-insight`
+- Web Demo：`GET /demo`
+
+如果还没有补充截图资源，可以先按照 [Screenshot and Demo Guide](docs/SCREENSHOT_AND_DEMO_GUIDE.md) 生成：
+
+- `docs/assets/web-demo-home.png`
+- `docs/assets/web-demo-result.png`
+- `docs/assets/human-review-case.png`
+
+## 4. Core Capabilities
+
+1. Solution Insight Agent Service
+2. Formal Retrieval Benchmark v2
+3. Shadow Hierarchical Retrieval Debug
+4. Deterministic Demo Mode
+5. Fallback / Human Confirmation
+6. Skills Registry
+7. Context Provider Interface
+8. MCP-style Enterprise Context Mock
+9. Observability Snapshot and Report
+10. Human Review UI
+11. LLM Evaluation Harness
+
+## 5. Architecture
 
 ```mermaid
 flowchart LR
-    U[User Input] --> I[FastAPI / CLI]
-    I --> S[Solution Insight Service]
-    S --> R[Formal Retriever]
-    R --> E[Evidence Items]
-    E --> F[Fallback Assessor]
-    F --> G[Deterministic / LLM Generator]
-    G --> O[Structured Output]
+    U["User Input"] --> E["Entry Layer (CLI / FastAPI / Web Demo)"]
+    E --> S["Solution Insight Service"]
+    S --> R["Formal Retriever"]
+    R --> V["Evidence Items"]
+    V --> F["Fallback Assessor"]
+    F --> G["Deterministic / Optional LLM Generator"]
+    G --> O["Structured Output"]
 
-    S -.-> H[Shadow Hierarchical Retrieval]
-    H -.-> P[Runtime Eligibility]
-    H -.-> C[Context Preview]
-    H -.-> V[Citation Preview]
-    H -.-> D[Shadow Debug]
+    S -.-> H["Shadow Hierarchical Retrieval"]
+    H -.-> C["Runtime Eligibility / Context Preview / Citation Preview"]
+    C -.-> D["Shadow Debug"]
 ```
 
-正式路径和 shadow 路径是隔离的：
+关键约束：
 
 - 正式 evidence 只来自 formal retriever
-- shadow 只进入 debug，不影响正式回答
-- fallback 用于保护边界风险和证据不足场景
-- service 内部已通过轻量 skills 编排 Requirement / Retrieval / Fallback / Generation
+- shadow retrieval 只进入 debug，不影响正式回答
+- fallback 用于控制证据不足和边界风险
+- service 层把 retrieval、fallback、generation 和 debug 统一成一个清晰接口
 
-更多架构细节见 [Architecture Overview](docs/ARCHITECTURE_OVERVIEW.md)，可维护的 Mermaid 图源见 [architecture_diagram.mmd](docs/architecture_diagram.mmd)。
+详细说明见 [Architecture Overview](docs/ARCHITECTURE_OVERVIEW.md)，Mermaid 图源见 [architecture_diagram.mmd](docs/architecture_diagram.mmd)。
 
-## 5. Quick Start
+## 6. Quick Start
 
-### 5.1 安装
+### 6.1 安装
 
 ```bash
 python -m venv .venv
@@ -88,19 +96,17 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 5.2 运行测试
+### 6.2 运行测试
 
 ```bash
-python -m pytest -q
-python scripts/run_retrieval_benchmark_v2.py --check
-python scripts/run_solution_insight_llm_eval.py --check
-python scripts/run_solution_insight_llm_eval.py --comparison-check
+./.venv/bin/python -m pytest -q
+./.venv/bin/python scripts/run_retrieval_benchmark_v2.py --check
 ```
 
-### 5.3 CLI 示例
+### 6.3 CLI Usage
 
 ```bash
-python run.py solution-insight \
+./.venv/bin/python run.py solution-insight \
   --query "一家中型 SaaS 公司想提升销售线索转化和客户成功效率" \
   --company-id demo_saas_001 \
   --industry "SaaS" \
@@ -108,15 +114,15 @@ python run.py solution-insight \
   --llm-mode deterministic
 ```
 
-### 5.4 FastAPI 启动
+### 6.4 FastAPI 启动
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-### 5.5 Web Demo
+## 7. Web Demo
 
-浏览器访问：
+启动服务后访问：
 
 ```text
 http://127.0.0.1:8000/demo
@@ -135,85 +141,60 @@ http://127.0.0.1:8000/
 - Shadow retrieval does not affect the formal answer
 - Fallback protects evidence and boundary risks
 
-### 5.6 Health Check
+Web Demo 是一个轻量展示层：
 
-```bash
-curl http://localhost:8000/health
+- 左侧输入业务场景和企业上下文参数
+- 右侧展示结构化结果、证据、fallback、context、skill trace 和 shadow debug
+- 页面通过 `fetch` 调用现有 `/solution-insight` API，不改变后端契约
+
+## 8. Human Review UI
+
+仓库还提供一个轻量人工复核界面：
+
+```text
+http://127.0.0.1:8000/human-eval
 ```
 
-### 5.7 POST 示例
+当前 Human Review UI 用于：
 
-```bash
-curl -X POST http://localhost:8000/solution-insight \
-  -H "Content-Type: application/json" \
-  -d '{
-    "user_query": "一家中型 SaaS 公司想提升销售线索转化和客户成功效率",
-    "company_id": "demo_saas_001",
-    "industry": "SaaS",
-    "company_size": "中型",
-    "current_systems": ["CRM", "客服系统"],
-    "target_goal": "提升转化和客户成功效率",
-    "constraints": ["不改变现有CRM主流程"],
-    "enable_shadow_retrieval": true,
-    "llm_mode": "deterministic"
-  }'
-```
+- 浏览待评审 case
+- 查看结构化输出
+- 提交人工结论
+- 汇总 review 进度
 
-## 6. CLI Usage
+相关说明见 [Human Evaluation Guide](docs/HUMAN_EVALUATION_GUIDE.md)。
 
-CLI 会输出结构化 JSON，适合本地 demo、调试和面试展示。
+## 9. Evaluation
 
-```bash
-python run.py solution-insight --help
-```
+当前评测链路主要包括：
 
-常用参数：
+- Formal Retrieval Benchmark v2
+- Retrieval failure diagnosis
+- Boundary blind validation
+- Candidate recall experiments
+- Solution Insight LLM evaluation harness
+- Human evaluation packet and summary
 
-- `--query`
-- `--industry`
-- `--company-size`
-- `--current-system`
-- `--target-goal`
-- `--constraint`
-- `--shadow`
-- `--llm-mode deterministic|auto`
+需要明确的是：
 
-## 7. FastAPI Usage
+- 当前 formal retriever 尚未通过最终 blocking gate
+- formal retrieval benchmark 指标不是 agent 端到端准确率
+- deterministic mode 用于保证本地 demo 可复现，不代表真实 LLM 最终质量
 
-FastAPI 现在提供一个轻量 portfolio web demo 展示层，以及正式 API：
+关键结果与说明见：
 
-- `GET /`
-- `GET /demo`
-- `GET /health`
-- `POST /solution-insight`
+- [Retrieval Benchmark V2 Results](docs/27_Retrieval_Benchmark_V2_Results.md)
+- [LLM Model Comparison Report](docs/LLM_MODEL_COMPARISON_REPORT.md)
+- [V0.3 Release Notes](docs/V0_3_RELEASE_NOTES.md)
 
-其中：
+## 10. Observability
 
-- `/demo` 是浏览器交互式展示页
-- `/solution-insight` 仍然是正式结构化输出接口
-- demo 页面只是 fetch 包装层，不修改 API contract
-
-## 8. Example Output
-
-输出包含：
-
-- 需求摘要
-- 业务痛点
-- AI 机会点
-- 推荐方案方向
-- 检索到的证据
-- 证据完整性状态
-- fallback / 人工确认建议
-- 可选 shadow retrieval debug
-
-## 8.1 Observability Demo
-
-项目现在还提供一个只读的本地观测视图，用来把一次请求的：
+项目提供一个本地只读 observability demo，用于把一次请求中的：
 
 - formal retrieval path
 - shadow retrieval path
+- enterprise context trace
 - skill trace
-- enterprise context provider trace
 - fallback assessment
 
 整合成统一 snapshot 和 Markdown report。
@@ -221,173 +202,41 @@ FastAPI 现在提供一个轻量 portfolio web demo 展示层，以及正式 API
 运行方式：
 
 ```bash
-python scripts/run_solution_insight_observability_demo.py
-python scripts/run_solution_insight_observability_demo.py --write
-python scripts/run_solution_insight_observability_demo.py --check
+./.venv/bin/python scripts/run_solution_insight_observability_demo.py
+./.venv/bin/python scripts/run_solution_insight_observability_demo.py --write
+./.venv/bin/python scripts/run_solution_insight_observability_demo.py --check
 ```
 
-写入后会生成：
+输出示例：
 
 - `data/observability/latest_solution_insight_snapshot.json`
 - `data/observability/latest_solution_insight_report.md`
 
-这不是生产监控系统，而是一个 portfolio-grade debug report，适合 demo、录屏和本地排障。
+这是一套本地工程观测工具，不是生产监控系统。
 
-## 9. Retrieval & Evaluation
+## 11. Limitations
 
-项目已经完成：
+当前项目的已知限制包括：
 
-- Retrieval v2 benchmark
-- formal retrieval results 冻结
-- candidate generation 与 recall round 2
-- boundary blind validation
-- retrieval v2 的结果冻结与分析
+- formal retriever 还没有通过最终 blocking gate
+- boundary blind validation 结果仍为 blocked_with_known_limitations
+- hierarchical retrieval 目前只在 shadow/debug 中运行
+- deterministic mode 适合演示和测试，不等于生产生成质量
+- 当前没有复杂前端、鉴权、多租户或生产级部署方案
 
-需要强调的是：
+## 12. Roadmap
 
-- 当前 formal retriever 尚未通过最终 blocking gate
-- formal retrieval benchmark 的指标不是 agent 端到端准确率
-- 当前结果只覆盖 6 个 Demo Solutions、20 份合成文档、40 个 Chunks 和 16 条 Cases
+下一阶段如果继续推进，优先级通常会放在：
 
-相关结果和结论见：
+1. 更稳定的 Web Demo 与可视化观测
+2. 更完整的人工复核闭环
+3. 更清晰的部署与运行手册
+4. 更严格的 LLM 输出评测和人工评分
+5. 更真实的企业系统上下文接入
 
-- [Retrieval Benchmark V2 Results](docs/27_Retrieval_Benchmark_V2_Results.md)
-- [Retrieval Benchmark V2 Experiment Plan](docs/26_Retrieval_Benchmark_V2_Experiment_Plan.md)
-- [Retrieval Benchmark V2 Failure Diagnosis](docs/28_Retrieval_V2_Failure_Diagnosis.md)
+补充文档：
 
-LLM 输出评测当前分为两层：
-
-- deterministic baseline：冻结的 CI 合同
-- provider comparison：可选真实模型横评，不覆盖 baseline
-
-示例：
-
-```bash
-python scripts/run_solution_insight_llm_eval.py --providers deterministic,deepseek,qwen,glm
-python scripts/run_solution_insight_llm_eval.py --providers deterministic,deepseek,qwen,glm --comparison-write
-python scripts/run_solution_insight_llm_eval.py --comparison-check
-```
-
-更多说明见 [Model Selection and Evaluation](docs/MODEL_SELECTION_AND_EVALUATION.md) 和 [LLM Model Comparison Report](docs/LLM_MODEL_COMPARISON_REPORT.md)。
-
-### Human Evaluation Layer
-
-除了自动规则评测，项目现在还提供一套 Human Evaluation Layer，用于准备真实人工评审：
-
-- [Human Evaluation Guide](docs/HUMAN_EVALUATION_GUIDE.md)
-- `data/evaluation/human/solution_insight_human_eval_packet.v1.jsonl`
-- `data/evaluation/human/solution_insight_human_eval_annotation_template.v1.jsonl`
-- `data/evaluation/human/solution_insight_human_eval_summary.v1.json`
-
-生成与检查：
-
-```bash
-python scripts/build_solution_insight_human_eval_packet.py
-python scripts/build_solution_insight_human_eval_packet.py --write
-python scripts/build_solution_insight_human_eval_packet.py --check
-
-python scripts/summarize_solution_insight_human_eval.py
-python scripts/summarize_solution_insight_human_eval.py --write
-python scripts/summarize_solution_insight_human_eval.py --check
-```
-
-当前状态必须明确：
-
-- 已准备 review packet 和空白 annotation template
-- 当前 `human_review_status = not_started`
-- 没有伪造任何人工评分
-
-## 10. Shadow Hierarchical Retrieval
-
-Shadow retrieval 已通过 feature flag 接入：
-
-- `HIERARCHICAL_RETRIEVAL_MODE=off`
-- `HIERARCHICAL_RETRIEVAL_MODE=shadow`
-
-默认行为不会改变正式结果；shadow 只进入 debug。
-
-## 11. Fallback / Safety Design
-
-服务在以下场景会建议人工确认：
-
-- 没有足够正式证据
-- 证据全部被过滤
-- 证据数量低于最低要求
-- boundary 状态被阻塞或未知
-- shadow 发现 parent-child gap
-- retrieval error
-- LLM error
-
-输出会明确保留：
-
-- fallback_recommended
-- human_confirmation_required
-- response_note
-
-## 11.1 Skills Registry v0.2
-
-当前 service 内部已经抽象出一组轻量 Skills：
-
-- RequirementUnderstandingSkill
-- EnterpriseContextSkill
-- FormalRetrievalSkill
-- ShadowRetrievalSkill
-- FallbackAssessmentSkill
-- SolutionGenerationSkill
-
-它们由项目内的轻量 Skills Registry 编排，主要作用是：
-
-- 让服务职责边界更清晰
-- 为后续 MCP / tool 扩展预留接口
-- 增加 `skill_trace` 便于调试和演示
-
-这个 registry 不引入第三方 Agent 框架，也不会改变当前 CLI / FastAPI 的外部行为。
-
-## 11.2 MCP-style Mock Context
-
-当前项目已经补上一个本地 MCP-style Mock Context Layer，用于模拟未来企业上下文接入，但它仍然是：
-
-- 本地 fixture
-- 无网络
-- 无真实 MCP SDK
-- 无真实 CRM / Ticket / BI 后台
-
-当前支持通过 `company_id` 读取 demo 企业上下文，例如：
-
-- `demo_saas_001`
-- `demo_ecommerce_001`
-- `demo_manufacturing_001`
-
-这部分上下文当前只进入可选 `enterprise_context` 和 `skill_trace`，不替代正式 evidence，也不强行改变正式 solution generation。
-
-## 12. Project Status
-
-当前项目已经完成：
-
-- deterministic demo CLI
-- FastAPI wrapper
-- formal retrieval benchmark 冻结
-- shadow retrieval debug
-- service 级 fallback
-- v0.3 Context Provider Interface
-
-## 13. Limitations
-
-这不是生产系统，当前限制包括：
-
-- Boundary validation 仍然是 blocked_with_known_limitations
-- hierarchical retrieval 目前只作为 shadow candidate pool
-- deterministic mode 是可复现 demo，不代表真实 LLM 最终质量
-- 当前没有复杂前端
-- 当前不是生产部署完成态
-
-## 14. Roadmap
-
-下一阶段如果继续推进，优先顺序通常会是：
-
-1. 更完善的产品化展示
-2. 更清晰的部署与监控
-3. 更完整的人工审批流
-4. 进一步的企业集成
-
-和同类开源项目的结构化对标见 [GitHub Agent Project Benchmark](docs/GITHUB_AGENT_PROJECT_BENCHMARK.md)。
+- [Project Walkthrough](docs/PROJECT_WALKTHROUGH.md)
+- [Demo Script](docs/DEMO_SCRIPT.md)
+- [Deployment Guide](docs/DEPLOYMENT.md)
+- [GitHub Agent Project Benchmark](docs/GITHUB_AGENT_PROJECT_BENCHMARK.md)
