@@ -6,6 +6,7 @@
 
 1. 正式主链路：输入 -> 检索 -> 证据 -> fallback -> 结构化输出
 2. Shadow 旁路：输入 -> hierarchical retrieval debug -> 仅供诊断
+3. Web Demo 展示层：输入表单 -> `/solution-insight` -> 结果卡片，不改变 service / retrieval / evaluation 主链路
 
 可维护的 Mermaid 图源文件见 [architecture_diagram.mmd](architecture_diagram.mmd)。
 
@@ -13,7 +14,7 @@
 
 ```mermaid
 flowchart LR
-    U[User Input] --> A[FastAPI / CLI]
+    U[User Input] --> A[FastAPI / CLI / Web Demo]
     A --> B[Solution Insight Service]
     B --> C[Formal Retriever]
     C --> D[Evidence Items]
@@ -60,6 +61,7 @@ fallback 不是“失败就硬继续”，而是：
 
 - CLI 可以快速演示
 - FastAPI 可以给出最小 HTTP 入口
+- Web Demo 让面试或录屏时更容易展示结构化结果，不影响后端契约
 - formal benchmark 结果仍然冻结可追溯
 - shadow 让我们可以展示技术深度，但不会污染正式结论
 - Observability Snapshot 位于正式输出之后，不影响主链路，只负责可展示、可排障的只读观测

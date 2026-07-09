@@ -114,13 +114,34 @@ python run.py solution-insight \
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-### 5.5 Health Check
+### 5.5 Web Demo
+
+浏览器访问：
+
+```text
+http://127.0.0.1:8000/demo
+```
+
+Landing page：
+
+```text
+http://127.0.0.1:8000/
+```
+
+说明：
+
+- Portfolio-grade AI Agent prototype
+- Deterministic mode by default
+- Shadow retrieval does not affect the formal answer
+- Fallback protects evidence and boundary risks
+
+### 5.6 Health Check
 
 ```bash
 curl http://localhost:8000/health
 ```
 
-### 5.6 POST 示例
+### 5.7 POST 示例
 
 ```bash
 curl -X POST http://localhost:8000/solution-insight \
@@ -159,12 +180,18 @@ python run.py solution-insight --help
 
 ## 7. FastAPI Usage
 
-FastAPI 提供两个路由：
+FastAPI 现在提供一个轻量 portfolio web demo 展示层，以及正式 API：
 
+- `GET /`
+- `GET /demo`
 - `GET /health`
 - `POST /solution-insight`
 
-响应直接复用 `agent.solution_insight_service` 的结构化输出。
+其中：
+
+- `/demo` 是浏览器交互式展示页
+- `/solution-insight` 仍然是正式结构化输出接口
+- demo 页面只是 fetch 包装层，不修改 API contract
 
 ## 8. Example Output
 
