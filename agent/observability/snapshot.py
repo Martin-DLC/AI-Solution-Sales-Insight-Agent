@@ -8,6 +8,7 @@ from agent.observability.models import (
     ObservationFormalPath,
     ObservationGovernance,
     ObservationInputSummary,
+    ObservationMetrics,
     ObservationOutputSummary,
     ObservationProviders,
     ObservationSafetyNotes,
@@ -24,6 +25,7 @@ def build_observation_snapshot(response: SolutionInsightResponse) -> Observation
     skill_trace = response.skill_trace
     warnings = [] if skill_trace is None else list(skill_trace.warnings)
     provider_results = [] if enterprise_context is None else list(enterprise_context.provider_results)
+    run_metrics = dict(response.run_metrics)
 
     return ObservationSnapshot(
         request_id=response.request_id,
@@ -103,6 +105,20 @@ def build_observation_snapshot(response: SolutionInsightResponse) -> Observation
                 False if response.governance_trace is None else response.governance_trace.human_review_required
             ),
             fallback_triggered=False if response.governance_trace is None else response.governance_trace.fallback_triggered,
+        ),
+        metrics=ObservationMetrics(
+            model_call_count=int(run_metrics.get("model_call_count") or 0),
+            input_tokens=int(run_metrics.get("input_tokens") or 0),
+            output_tokens=int(run_metrics.get("output_tokens") or 0),
+            estimated_model_cost=run_metrics.get("estimated_model_cost"),
+            tool_call_count=int(run_metrics.get("tool_call_count") or 0),
+            permission_check_count=int(run_metrics.get("permission_check_count") or 0),
+            permission_denied_count=int(run_metrics.get("permission_denied_count") or 0),
+            approval_request_count=int(run_metrics.get("approval_request_count") or 0),
+            fallback_count=int(run_metrics.get("fallback_count") or 0),
+            human_review_count=int(run_metrics.get("human_review_count") or 0),
+            total_latency_ms=int(run_metrics.get("total_latency_ms") or 0),
+            cost_is_estimated=bool(run_metrics.get("cost_is_estimated", True)),
         ),
     )
 

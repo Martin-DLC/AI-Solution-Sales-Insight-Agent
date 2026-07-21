@@ -81,6 +81,21 @@ class ObservationGovernance(StrictBaseModel):
     fallback_triggered: bool = False
 
 
+class ObservationMetrics(StrictBaseModel):
+    model_call_count: int = 0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    estimated_model_cost: object | None = None
+    tool_call_count: int = 0
+    permission_check_count: int = 0
+    permission_denied_count: int = 0
+    approval_request_count: int = 0
+    fallback_count: int = 0
+    human_review_count: int = 0
+    total_latency_ms: int = 0
+    cost_is_estimated: bool = True
+
+
 class ObservationSnapshot(StrictBaseModel):
     request_id: str
     generated_at: str
@@ -93,6 +108,7 @@ class ObservationSnapshot(StrictBaseModel):
     output_summary: ObservationOutputSummary
     safety_notes: ObservationSafetyNotes
     governance: ObservationGovernance = Field(default_factory=ObservationGovernance)
+    metrics: ObservationMetrics = Field(default_factory=ObservationMetrics)
 
 
 ObservationMode = Literal["deterministic", "llm", "auto"]

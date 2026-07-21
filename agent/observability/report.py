@@ -12,6 +12,7 @@ def render_observation_report(snapshot: ObservationSnapshot) -> str:
     output = snapshot.output_summary
     safety = snapshot.safety_notes
     governance = snapshot.governance
+    metrics = snapshot.metrics
 
     lines = [
         "# Solution Insight Observability Report",
@@ -85,5 +86,19 @@ def render_observation_report(snapshot: ObservationSnapshot) -> str:
         f"- stop_reason: `{governance.stop_reason}`",
         f"- human_review_required: `{governance.human_review_required}`",
         f"- fallback_triggered: `{governance.fallback_triggered}`",
+        "",
+        "## Runtime Metrics",
+        f"- model_call_count: {metrics.model_call_count}",
+        f"- input_tokens: {metrics.input_tokens}",
+        f"- output_tokens: {metrics.output_tokens}",
+        f"- estimated_model_cost: `{metrics.estimated_model_cost}`",
+        f"- tool_call_count: {metrics.tool_call_count}",
+        f"- permission_check_count: {metrics.permission_check_count}",
+        f"- permission_denied_count: {metrics.permission_denied_count}",
+        f"- approval_request_count: {metrics.approval_request_count}",
+        f"- fallback_count: {metrics.fallback_count}",
+        f"- human_review_count: {metrics.human_review_count}",
+        f"- total_latency_ms: {metrics.total_latency_ms}",
+        f"- cost_is_estimated: `{metrics.cost_is_estimated}`",
     ]
     return "\n".join(lines) + "\n"

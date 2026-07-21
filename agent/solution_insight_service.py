@@ -234,7 +234,26 @@ class SolutionInsightService:
         runtime_trace = recorder.runtime_trace()
         governance_trace = runtime_trace.summary
         trajectory_summary = governance_trace.model_dump(mode="json")
+        output_text = " ".join(
+            [
+                str(generation["requirement_summary"]),
+                " ".join(generation["pain_points"]),
+                " ".join(generation["ai_opportunity_points"]),
+                str(generation["proposed_solution"]),
+            ]
+        )
+        from agent.observability.metrics import build_run_metrics_from_events
+
+        run_metrics = build_run_metrics_from_events(
+            runtime_trace.events,
+            final_status=governance_trace.final_runtime_status,
+            provider_name=effective_llm_mode,
+            input_text=request.user_query,
+            output_text=output_text,
+        )
+        run_metrics_payload = run_metrics.model_dump(mode="json")
         log_record["governance"] = trajectory_summary
+        log_record["run_metrics"] = run_metrics_payload
 
         return SolutionInsightResponse(
             request_id=request_id,
@@ -259,6 +278,7 @@ class SolutionInsightService:
             runtime_trace=runtime_trace,
             governance_trace=governance_trace,
             trajectory_summary=trajectory_summary,
+            run_metrics=run_metrics_payload,
             response_note=note,
             log_record=log_record,
         )

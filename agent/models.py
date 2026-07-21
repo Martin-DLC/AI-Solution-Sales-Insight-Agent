@@ -130,5 +130,6 @@ class SolutionInsightResponse(StrictBaseModel):
     runtime_trace: RuntimeTrace | None = None
     governance_trace: GovernanceTraceSummary | None = None
     trajectory_summary: dict[str, Any] = Field(default_factory=dict)
+    run_metrics: dict[str, Any] = Field(default_factory=dict)
     response_note: str
     log_record: dict[str, Any] = Field(default_factory=dict)

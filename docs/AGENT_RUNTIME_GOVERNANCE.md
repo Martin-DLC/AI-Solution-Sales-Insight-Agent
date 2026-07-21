@@ -133,3 +133,15 @@ Batch 2 adds a local-first tool permission and approval foundation:
 - Permission and approval actions can emit trajectory events such as `permission_checked`, `permission_denied`, `approval_requested`, `approval_approved`, `approval_rejected`, and `approval_expired`.
 
 This is still not production RBAC, real IAM, or a real approval service. The normal `SolutionInsightService` path only records read-only permission checks for mock tools and does not execute high-risk operations.
+
+## 11. Batch 3 Observability and Cost Foundation
+
+Batch 3 adds local-first metrics and estimated cost reporting:
+
+- `RunMetrics` summarizes runtime status, model calls, tool calls, permission checks, approval requests, fallback, human review, execution steps, latency, and estimated cost.
+- Model cost policy lives in `config/model_costs.yaml`.
+- `CostTracker` uses stable heuristic token estimates when real provider usage is unavailable.
+- `scripts/generate_run_summary_report.py` can print, write, or check the fixed local demo run summary.
+- `reports/latest_run_summary.json` and `reports/latest_cost_summary.md` are local reporting artifacts.
+
+All costs are marked estimated. Deterministic mode does not represent real model billing, and these reports are not production billing reports or production monitoring outputs.

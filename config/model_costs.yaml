@@ -1,0 +1,36 @@
+models:
+  - provider_name: deterministic
+    model_name: local_template
+    input_cost_per_1k_tokens: 0
+    output_cost_per_1k_tokens: 0
+    currency: CNY
+    pricing_type: estimated
+    notes: Local deterministic template mode; no real model billing.
+  - provider_name: deepseek
+    model_name: configured_by_runtime
+    input_cost_per_1k_tokens: 0
+    output_cost_per_1k_tokens: 0
+    currency: CNY
+    pricing_type: real_config_required
+    notes: Placeholder entry; use provider docs or billing export before production claims.
+  - provider_name: qwen
+    model_name: configured_by_runtime
+    input_cost_per_1k_tokens: 0
+    output_cost_per_1k_tokens: 0
+    currency: CNY
+    pricing_type: real_config_required
+    notes: Placeholder entry; use provider docs or billing export before production claims.
+  - provider_name: glm
+    model_name: configured_by_runtime
+    input_cost_per_1k_tokens: 0
+    output_cost_per_1k_tokens: 0
+    currency: CNY
+    pricing_type: real_config_required
+    notes: Placeholder entry; use provider docs or billing export before production claims.
+  - provider_name: mock
+    model_name: mock_provider
+    input_cost_per_1k_tokens: 0
+    output_cost_per_1k_tokens: 0
+    currency: CNY
+    pricing_type: placeholder
+    notes: Mock provider cost for tests and demos only.
