@@ -6,6 +6,7 @@ from agent.models import SolutionInsightResponse
 from agent.observability.models import (
     ObservationFallback,
     ObservationFormalPath,
+    ObservationGovernance,
     ObservationInputSummary,
     ObservationOutputSummary,
     ObservationProviders,
@@ -88,6 +89,20 @@ def build_observation_snapshot(response: SolutionInsightResponse) -> Observation
             boundary_status=retrieval_debug.blocked_retrieval_status,
             shadow_does_not_affect_formal_answer=True,
             deterministic_or_llm_mode=response.llm_mode,
+        ),
+        governance=ObservationGovernance(
+            run_id=None if response.governance_trace is None else response.governance_trace.run_id,
+            trace_id=None if response.governance_trace is None else response.governance_trace.trace_id,
+            event_count=0 if response.governance_trace is None else response.governance_trace.event_count,
+            final_runtime_status=(
+                None if response.governance_trace is None else response.governance_trace.final_runtime_status
+            ),
+            stopped_by_policy=False if response.governance_trace is None else response.governance_trace.stopped_by_policy,
+            stop_reason=None if response.governance_trace is None else response.governance_trace.stop_reason,
+            human_review_required=(
+                False if response.governance_trace is None else response.governance_trace.human_review_required
+            ),
+            fallback_triggered=False if response.governance_trace is None else response.governance_trace.fallback_triggered,
         ),
     )
 

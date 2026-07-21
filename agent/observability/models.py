@@ -70,6 +70,17 @@ class ObservationSafetyNotes(StrictBaseModel):
     deterministic_or_llm_mode: str
 
 
+class ObservationGovernance(StrictBaseModel):
+    run_id: str | None = None
+    trace_id: str | None = None
+    event_count: int = 0
+    final_runtime_status: str | None = None
+    stopped_by_policy: bool = False
+    stop_reason: str | None = None
+    human_review_required: bool = False
+    fallback_triggered: bool = False
+
+
 class ObservationSnapshot(StrictBaseModel):
     request_id: str
     generated_at: str
@@ -81,6 +92,7 @@ class ObservationSnapshot(StrictBaseModel):
     fallback: ObservationFallback
     output_summary: ObservationOutputSummary
     safety_notes: ObservationSafetyNotes
+    governance: ObservationGovernance = Field(default_factory=ObservationGovernance)
 
 
 ObservationMode = Literal["deterministic", "llm", "auto"]

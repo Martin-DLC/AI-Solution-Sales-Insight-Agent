@@ -11,6 +11,7 @@ def render_observation_report(snapshot: ObservationSnapshot) -> str:
     fallback = snapshot.fallback
     output = snapshot.output_summary
     safety = snapshot.safety_notes
+    governance = snapshot.governance
 
     lines = [
         "# Solution Insight Observability Report",
@@ -74,5 +75,15 @@ def render_observation_report(snapshot: ObservationSnapshot) -> str:
         f"- deterministic_or_llm_mode: `{safety.deterministic_or_llm_mode}`",
         "- fallback exists because the formal gate or boundary status may still be blocked.",
         "- provider data is mock data when `mock_data=true`.",
+        "",
+        "## Runtime Governance",
+        f"- run_id: `{governance.run_id}`",
+        f"- trace_id: `{governance.trace_id}`",
+        f"- event_count: {governance.event_count}",
+        f"- final_runtime_status: `{governance.final_runtime_status}`",
+        f"- stopped_by_policy: `{governance.stopped_by_policy}`",
+        f"- stop_reason: `{governance.stop_reason}`",
+        f"- human_review_required: `{governance.human_review_required}`",
+        f"- fallback_triggered: `{governance.fallback_triggered}`",
     ]
     return "\n".join(lines) + "\n"

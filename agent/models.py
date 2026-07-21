@@ -4,6 +4,7 @@ from typing import Any, Literal
 
 from pydantic import Field, field_validator
 
+from agent.governance.models import GovernanceTraceSummary, RuntimeTrace
 from schemas.common_models import StrictBaseModel
 
 
@@ -126,5 +127,8 @@ class SolutionInsightResponse(StrictBaseModel):
     shadow_retrieval_debug: SolutionInsightShadowDebug | None = None
     enterprise_context: SolutionInsightEnterpriseContext | None = None
     skill_trace: SolutionInsightSkillTrace | None = None
+    runtime_trace: RuntimeTrace | None = None
+    governance_trace: GovernanceTraceSummary | None = None
+    trajectory_summary: dict[str, Any] = Field(default_factory=dict)
     response_note: str
     log_record: dict[str, Any] = Field(default_factory=dict)

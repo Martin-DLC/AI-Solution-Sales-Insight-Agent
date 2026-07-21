@@ -6,6 +6,8 @@ import secrets
 from pathlib import Path
 from typing import Any
 
+from agent.governance import TrajectoryRecorder
+from agent.governance.models import RuntimeEventStatus, RuntimeRiskLevel, TrajectoryEventType, summarize_value
 from agent.models import (
     SolutionInsightEnterpriseContext,
     SolutionInsightEvidenceItem,
@@ -141,6 +143,18 @@ class SolutionInsightService:
 
     def generate_insight(self, request: SolutionInsightRequest) -> SolutionInsightResponse:
         request_id = f"insight-{secrets.token_hex(6)}"
+        recorder = TrajectoryRecorder()
+        recorder.start_run(
+            task_id=request_id,
+            input_summary=summarize_value(
+                {
+                    "query_length": len(request.user_query),
+                    "company_id_present": request.company_id is not None,
+                    "shadow_requested": request.enable_shadow_retrieval,
+                    "llm_mode": request.llm_mode,
+                }
+            ),
+        )
         effective_llm_mode = request.llm_mode if request.llm_mode != "deterministic" else self._llm_mode
         if effective_llm_mode in {"auto", "llm"} and self._llm_client is None:
             try:
@@ -162,6 +176,7 @@ class SolutionInsightService:
                 context={
                     "request": request,
                     "effective_llm_mode": effective_llm_mode,
+                    "governance_recorder": recorder,
                 },
             ),
         )
@@ -177,6 +192,16 @@ class SolutionInsightService:
         fallback_reasons = list(fallback_output["fallback_reasons"])
         query_hash = formal_output["query_hash"]
         enterprise_context_payload = enterprise_context_output.get("enterprise_context")
+        self._record_governance_domain_events(
+            recorder=recorder,
+            formal_output=formal_output,
+            shadow_debug=shadow_debug,
+            enterprise_context_payload=enterprise_context_payload,
+            fallback_recommended=fallback_recommended,
+            fallback_reasons=fallback_reasons,
+            human_confirmation_required=bool(fallback_output["human_confirmation_required"]),
+            generation=generation,
+        )
 
         note = (
             "当前证据不足，需要人工确认或补充资料"
@@ -197,6 +222,19 @@ class SolutionInsightService:
             "failed_skill_count": skill_trace.failed_skill_count,
             "enterprise_context_present": enterprise_context_payload is not None,
         }
+        recorder.complete_run(
+            output_summary=summarize_value(
+                {
+                    "evidence_count": len(evidence_items),
+                    "fallback_recommended": fallback_recommended,
+                    "human_confirmation_required": fallback_output["human_confirmation_required"],
+                }
+            )
+        )
+        runtime_trace = recorder.runtime_trace()
+        governance_trace = runtime_trace.summary
+        trajectory_summary = governance_trace.model_dump(mode="json")
+        log_record["governance"] = trajectory_summary
 
         return SolutionInsightResponse(
             request_id=request_id,
@@ -218,8 +256,91 @@ class SolutionInsightService:
                 else None
             ),
             skill_trace=skill_trace,
+            runtime_trace=runtime_trace,
+            governance_trace=governance_trace,
+            trajectory_summary=trajectory_summary,
             response_note=note,
             log_record=log_record,
+        )
+
+    def _record_governance_domain_events(
+        self,
+        *,
+        recorder: TrajectoryRecorder,
+        formal_output: dict[str, Any],
+        shadow_debug: SolutionInsightShadowDebug | None,
+        enterprise_context_payload: dict[str, Any] | None,
+        fallback_recommended: bool,
+        fallback_reasons: list[str],
+        human_confirmation_required: bool,
+        generation: dict[str, Any],
+    ) -> None:
+        recorder.record_event(
+            event_type=TrajectoryEventType.provider_context_completed,
+            tool_name="enterprise_context_providers",
+            output_summary=summarize_value(
+                {
+                    "enterprise_context_present": enterprise_context_payload is not None,
+                    "provider_success_count": (
+                        0
+                        if enterprise_context_payload is None
+                        else enterprise_context_payload.get("provider_success_count", 0)
+                    ),
+                }
+            ),
+            status=RuntimeEventStatus.success,
+            risk_level=RuntimeRiskLevel.low,
+        )
+        recorder.record_event(
+            event_type=TrajectoryEventType.retrieval_completed,
+            node_name="formal_retrieval",
+            tool_name="formal_retrieval",
+            output_summary=summarize_value(
+                {
+                    "formal_candidate_count": len(formal_output.get("formal_candidates", [])),
+                    "evidence_count": len(formal_output.get("evidence_items", [])),
+                    "retrieval_error_present": formal_output.get("retrieval_error") is not None,
+                }
+            ),
+            status=RuntimeEventStatus.failed
+            if formal_output.get("retrieval_error") is not None
+            else RuntimeEventStatus.success,
+            error_type="retrieval_error" if formal_output.get("retrieval_error") is not None else None,
+            risk_level=RuntimeRiskLevel.low,
+        )
+        recorder.record_event(
+            event_type=TrajectoryEventType.shadow_retrieval_completed,
+            node_name="shadow_retrieval",
+            tool_name="shadow_retrieval",
+            output_summary=summarize_value(
+                {
+                    "shadow_enabled": shadow_debug is not None,
+                    "candidate_count": 0 if shadow_debug is None else shadow_debug.candidate_count,
+                    "shadow_error_present": False if shadow_debug is None else shadow_debug.shadow_error is not None,
+                }
+            ),
+            status=RuntimeEventStatus.skipped if shadow_debug is None else RuntimeEventStatus.success,
+            risk_level=RuntimeRiskLevel.low,
+        )
+        recorder.record_fallback_event(
+            fallback_triggered=fallback_recommended,
+            fallback_reasons=fallback_reasons,
+        )
+        if human_confirmation_required:
+            recorder.record_human_review_event(reasons=fallback_reasons or ["human_confirmation_required"])
+        recorder.record_event(
+            event_type=TrajectoryEventType.generation_completed,
+            node_name="solution_generation",
+            tool_name="solution_generation",
+            output_summary=summarize_value(
+                {
+                    "requirement_summary_present": bool(generation.get("requirement_summary")),
+                    "pain_point_count": len(generation.get("pain_points", [])),
+                    "opportunity_count": len(generation.get("ai_opportunity_points", [])),
+                }
+            ),
+            status=RuntimeEventStatus.success,
+            risk_level=RuntimeRiskLevel.low,
         )
 
     def _build_skill_registry(self) -> SkillRegistry:
