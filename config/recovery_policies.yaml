@@ -1,0 +1,11 @@
+max_retry_count: 2
+retryable_error_types:
+  - model_timeout
+  - model_unavailable
+  - tool_timeout
+non_retryable_error_types:
+  - permission_denied
+  - retrieval_boundary_failed
+  - evaluation_gate_failed
+backoff_strategy: none
+fallback_after_retries: true

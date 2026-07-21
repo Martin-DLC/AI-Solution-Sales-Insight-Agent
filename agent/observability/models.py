@@ -105,6 +105,19 @@ class ObservationTrajectoryEvaluation(StrictBaseModel):
     review_queue_status: str | None = None
 
 
+class ObservationRecovery(StrictBaseModel):
+    decision: str | None = None
+    error_type: str | None = None
+    fallback_type: str | None = None
+    retry_recommended: bool = False
+    stop_recommended: bool = False
+    human_review_required: bool = False
+    safe_to_continue: bool = False
+    primary_provider: str | None = None
+    fallback_provider: str | None = None
+    model_fallback_configured: bool = False
+
+
 class ObservationSnapshot(StrictBaseModel):
     request_id: str
     generated_at: str
@@ -119,6 +132,7 @@ class ObservationSnapshot(StrictBaseModel):
     governance: ObservationGovernance = Field(default_factory=ObservationGovernance)
     metrics: ObservationMetrics = Field(default_factory=ObservationMetrics)
     trajectory_evaluation: ObservationTrajectoryEvaluation = Field(default_factory=ObservationTrajectoryEvaluation)
+    recovery: ObservationRecovery = Field(default_factory=ObservationRecovery)
 
 
 ObservationMode = Literal["deterministic", "llm", "auto"]

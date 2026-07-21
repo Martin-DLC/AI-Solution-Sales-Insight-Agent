@@ -36,6 +36,12 @@ class TrajectoryEventType(str, Enum):
     approval_approved = "approval_approved"
     approval_rejected = "approval_rejected"
     approval_expired = "approval_expired"
+    recovery_decision_made = "recovery_decision_made"
+    retry_recommended = "retry_recommended"
+    fallback_selected = "fallback_selected"
+    compensation_planned = "compensation_planned"
+    model_provider_selected = "model_provider_selected"
+    model_fallback_selected = "model_fallback_selected"
 
 
 class RuntimeRiskLevel(str, Enum):

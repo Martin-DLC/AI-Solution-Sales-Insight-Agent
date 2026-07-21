@@ -1,0 +1,25 @@
+providers:
+  - provider_name: deterministic
+    provider_type: mock
+    model_name: local_template
+    primary: true
+    fallback_for: none
+    notes: Existing deterministic demo mode; no network.
+  - provider_name: mock_primary
+    provider_type: mock
+    model_name: mock-primary-v1
+    primary: true
+    fallback_for: deterministic
+    notes: Local mock provider for tests.
+  - provider_name: mock_fallback
+    provider_type: mock
+    model_name: mock-fallback-v1
+    primary: false
+    fallback_for: mock_primary
+    notes: Local mock fallback provider for tests.
+  - provider_name: deepseek
+    provider_type: placeholder
+    model_name: configured_by_runtime
+    primary: false
+    fallback_for: none
+    notes: Placeholder only; this batch does not call external DeepSeek APIs.

@@ -14,6 +14,7 @@ def render_observation_report(snapshot: ObservationSnapshot) -> str:
     governance = snapshot.governance
     metrics = snapshot.metrics
     trajectory_evaluation = snapshot.trajectory_evaluation
+    recovery = snapshot.recovery
 
     lines = [
         "# Solution Insight Observability Report",
@@ -109,5 +110,17 @@ def render_observation_report(snapshot: ObservationSnapshot) -> str:
         f"- human_review_reasons: {', '.join(trajectory_evaluation.human_review_reasons) if trajectory_evaluation.human_review_reasons else '(none)'}",
         f"- failed_rules: {', '.join(trajectory_evaluation.failed_rules) if trajectory_evaluation.failed_rules else '(none)'}",
         f"- review_queue_status: `{trajectory_evaluation.review_queue_status}`",
+        "",
+        "## Recovery and Model Provider",
+        f"- decision: `{recovery.decision}`",
+        f"- error_type: `{recovery.error_type}`",
+        f"- fallback_type: `{recovery.fallback_type}`",
+        f"- retry_recommended: `{recovery.retry_recommended}`",
+        f"- stop_recommended: `{recovery.stop_recommended}`",
+        f"- human_review_required: `{recovery.human_review_required}`",
+        f"- safe_to_continue: `{recovery.safe_to_continue}`",
+        f"- primary_provider: `{recovery.primary_provider}`",
+        f"- fallback_provider: `{recovery.fallback_provider}`",
+        f"- model_fallback_configured: `{recovery.model_fallback_configured}`",
     ]
     return "\n".join(lines) + "\n"

@@ -134,5 +134,7 @@ class SolutionInsightResponse(StrictBaseModel):
     trajectory_evaluation: dict[str, Any] = Field(default_factory=dict)
     evaluation_gate_summary: dict[str, Any] = Field(default_factory=dict)
     review_queue_item: dict[str, Any] | None = None
+    recovery_summary: dict[str, Any] = Field(default_factory=dict)
+    model_provider_summary: dict[str, Any] = Field(default_factory=dict)
     response_note: str
     log_record: dict[str, Any] = Field(default_factory=dict)

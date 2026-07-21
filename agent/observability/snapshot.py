@@ -11,6 +11,7 @@ from agent.observability.models import (
     ObservationMetrics,
     ObservationOutputSummary,
     ObservationProviders,
+    ObservationRecovery,
     ObservationSafetyNotes,
     ObservationShadowPath,
     ObservationSkills,
@@ -29,6 +30,8 @@ def build_observation_snapshot(response: SolutionInsightResponse) -> Observation
     run_metrics = dict(response.run_metrics)
     trajectory_evaluation = dict(response.trajectory_evaluation)
     evaluation_gate_summary = dict(response.evaluation_gate_summary)
+    recovery_summary = dict(response.recovery_summary)
+    model_provider_summary = dict(response.model_provider_summary)
 
     return ObservationSnapshot(
         request_id=response.request_id,
@@ -130,6 +133,18 @@ def build_observation_snapshot(response: SolutionInsightResponse) -> Observation
             human_review_reasons=list(trajectory_evaluation.get("human_review_reasons", [])),
             failed_rules=list(evaluation_gate_summary.get("failed_rules", [])),
             review_queue_status=evaluation_gate_summary.get("review_queue_status"),
+        ),
+        recovery=ObservationRecovery(
+            decision=recovery_summary.get("decision"),
+            error_type=recovery_summary.get("error_type"),
+            fallback_type=recovery_summary.get("fallback_type"),
+            retry_recommended=bool(recovery_summary.get("retry_recommended", False)),
+            stop_recommended=bool(recovery_summary.get("stop_recommended", False)),
+            human_review_required=bool(recovery_summary.get("human_review_required", False)),
+            safe_to_continue=bool(recovery_summary.get("safe_to_continue", False)),
+            primary_provider=model_provider_summary.get("primary_provider"),
+            fallback_provider=model_provider_summary.get("fallback_provider"),
+            model_fallback_configured=bool(model_provider_summary.get("model_fallback_configured", False)),
         ),
     )
 

@@ -288,9 +288,39 @@ class SolutionInsightService:
             if review_queue_item_payload is None
             else review_queue_item_payload["status"],
         }
+        from agent.model_providers.registry import build_default_registry
+        from agent.recovery import ErrorType, RecoveryDecisionEngine
+
+        recovery_error_type = (
+            ErrorType.evaluation_gate_failed
+            if trajectory_evaluation.gate_decision.value in {"human_review", "stop"}
+            else ErrorType.retrieval_empty
+            if fallback_recommended
+            else ErrorType.unknown_error
+        )
+        recovery_decision = RecoveryDecisionEngine().decide(
+            error_type=recovery_error_type,
+            current_retry_count=0,
+            trajectory_evaluation=trajectory_evaluation,
+        )
+        recovery_summary = recovery_decision.model_dump(mode="json")
+        provider_registry = build_default_registry()
+        primary_provider = provider_registry.select_primary()
+        fallback_provider = provider_registry.select_fallback(primary_provider.provider_name)
+        model_provider_summary = {
+            "primary_provider": primary_provider.provider_name,
+            "primary_model": primary_provider.model_name,
+            "fallback_provider": None if fallback_provider is None else fallback_provider.provider_name,
+            "fallback_model": None if fallback_provider is None else fallback_provider.model_name,
+            "health": provider_registry.health_check_all(),
+            "model_fallback_configured": fallback_provider is not None,
+            "network_access": "none",
+        }
         log_record["governance"] = trajectory_summary
         log_record["run_metrics"] = run_metrics_payload
         log_record["trajectory_evaluation"] = evaluation_gate_summary
+        log_record["recovery_summary"] = recovery_summary
+        log_record["model_provider_summary"] = model_provider_summary
 
         return SolutionInsightResponse(
             request_id=request_id,
@@ -319,6 +349,8 @@ class SolutionInsightService:
             trajectory_evaluation=trajectory_evaluation_payload,
             evaluation_gate_summary=evaluation_gate_summary,
             review_queue_item=review_queue_item_payload,
+            recovery_summary=recovery_summary,
+            model_provider_summary=model_provider_summary,
             response_note=note,
             log_record=log_record,
         )
