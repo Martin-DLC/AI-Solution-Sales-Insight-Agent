@@ -89,8 +89,8 @@ Normal `SolutionInsightService` calls should not hit these limits.
 
 Runtime Governance v0.1 does not include:
 
-- Real permission system.
-- Real approval workflow.
+- Production permission system.
+- Production approval workflow.
 - Production RBAC.
 - Immutable audit log.
 - External tracing backend.
@@ -120,3 +120,16 @@ This is separate from Human Evaluation. The project still does not fake human sc
 - Redaction is conservative but not a full enterprise DLP system.
 - Runtime limits only cover event count and consecutive failed events in Batch 1.
 - The governance layer is intentionally local-first and does not claim production deployment readiness.
+
+## 10. Batch 2 Permission and Approval Foundation
+
+Batch 2 adds a local-first tool permission and approval foundation:
+
+- Tool policies live in `config/tool_permissions.yaml`.
+- `PermissionChecker` returns structured allow/deny decisions.
+- Unknown tools, unknown actions, and scope-exceeding requests are denied by default.
+- High-risk actions such as CRM writes, email sends, ticket updates, and deletes require human review.
+- `ApprovalManager` supports local simulated approval requests, approvals, rejections, and expirations.
+- Permission and approval actions can emit trajectory events such as `permission_checked`, `permission_denied`, `approval_requested`, `approval_approved`, `approval_rejected`, and `approval_expired`.
+
+This is still not production RBAC, real IAM, or a real approval service. The normal `SolutionInsightService` path only records read-only permission checks for mock tools and does not execute high-risk operations.

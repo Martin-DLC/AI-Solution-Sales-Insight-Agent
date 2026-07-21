@@ -6,7 +6,7 @@ import secrets
 from pathlib import Path
 from typing import Any
 
-from agent.governance import TrajectoryRecorder
+from agent.governance import PermissionChecker, TrajectoryRecorder
 from agent.governance.models import RuntimeEventStatus, RuntimeRiskLevel, TrajectoryEventType, summarize_value
 from agent.models import (
     SolutionInsightEnterpriseContext,
@@ -275,6 +275,10 @@ class SolutionInsightService:
         human_confirmation_required: bool,
         generation: dict[str, Any],
     ) -> None:
+        self._record_read_only_permission_events(
+            recorder=recorder,
+            enterprise_context_payload=enterprise_context_payload,
+        )
         recorder.record_event(
             event_type=TrajectoryEventType.provider_context_completed,
             tool_name="enterprise_context_providers",
@@ -342,6 +346,31 @@ class SolutionInsightService:
             status=RuntimeEventStatus.success,
             risk_level=RuntimeRiskLevel.low,
         )
+
+    def _record_read_only_permission_events(
+        self,
+        *,
+        recorder: TrajectoryRecorder,
+        enterprise_context_payload: dict[str, Any] | None,
+    ) -> None:
+        checker = PermissionChecker(recorder=recorder)
+        read_checks = [
+            ("knowledge_search", "search", "knowledge:read"),
+        ]
+        if enterprise_context_payload is not None:
+            read_checks.extend(
+                [
+                    ("crm_read", "read", "crm:read"),
+                    ("ticket_read", "read", "ticket:read"),
+                    ("bi_read", "read", "bi:read"),
+                ]
+            )
+        for tool_name, action, requested_scope in read_checks:
+            checker.check_permission(
+                tool_name=tool_name,
+                action=action,
+                requested_scope=requested_scope,
+            )
 
     def _build_skill_registry(self) -> SkillRegistry:
         registry = SkillRegistry()

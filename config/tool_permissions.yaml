@@ -1,0 +1,82 @@
+tools:
+  - tool_name: knowledge_search
+    allowed_actions: [search, read]
+    permission_scope: knowledge:read
+    risk_level: low
+    requires_confirmation: false
+    requires_human_review: false
+    idempotent: true
+    reversible: true
+    description: Search approved local knowledge assets.
+  - tool_name: crm_read
+    allowed_actions: [read]
+    permission_scope: crm:read
+    risk_level: medium
+    requires_confirmation: false
+    requires_human_review: false
+    idempotent: true
+    reversible: true
+    description: Read mock CRM customer context.
+  - tool_name: crm_write
+    allowed_actions: [write, update]
+    permission_scope: crm:write
+    risk_level: high
+    requires_confirmation: true
+    requires_human_review: true
+    idempotent: false
+    reversible: false
+    description: Simulated CRM write operation for approval tests only.
+  - tool_name: ticket_read
+    allowed_actions: [read]
+    permission_scope: ticket:read
+    risk_level: medium
+    requires_confirmation: false
+    requires_human_review: false
+    idempotent: true
+    reversible: true
+    description: Read mock support ticket context.
+  - tool_name: ticket_update
+    allowed_actions: [update]
+    permission_scope: ticket:update
+    risk_level: high
+    requires_confirmation: true
+    requires_human_review: true
+    idempotent: false
+    reversible: true
+    description: Simulated support ticket update operation.
+  - tool_name: bi_read
+    allowed_actions: [read]
+    permission_scope: bi:read
+    risk_level: low
+    requires_confirmation: false
+    requires_human_review: false
+    idempotent: true
+    reversible: true
+    description: Read mock BI metrics context.
+  - tool_name: email_draft
+    allowed_actions: [draft]
+    permission_scope: email:draft
+    risk_level: medium
+    requires_confirmation: true
+    requires_human_review: false
+    idempotent: false
+    reversible: true
+    description: Draft an outbound email without sending.
+  - tool_name: email_send
+    allowed_actions: [send]
+    permission_scope: email:send
+    risk_level: high
+    requires_confirmation: true
+    requires_human_review: true
+    idempotent: false
+    reversible: false
+    description: Simulated outbound email send operation for approval tests only.
+  - tool_name: delete_record
+    allowed_actions: [delete]
+    permission_scope: records:delete
+    risk_level: high
+    requires_confirmation: true
+    requires_human_review: true
+    idempotent: false
+    reversible: false
+    description: Simulated destructive delete operation; never executed by the service.

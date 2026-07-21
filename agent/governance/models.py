@@ -30,6 +30,12 @@ class TrajectoryEventType(str, Enum):
     human_review_required = "human_review_required"
     generation_completed = "generation_completed"
     stopped_by_policy = "stopped_by_policy"
+    permission_checked = "permission_checked"
+    permission_denied = "permission_denied"
+    approval_requested = "approval_requested"
+    approval_approved = "approval_approved"
+    approval_rejected = "approval_rejected"
+    approval_expired = "approval_expired"
 
 
 class RuntimeRiskLevel(str, Enum):

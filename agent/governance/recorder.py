@@ -14,6 +14,7 @@ from agent.governance.models import (
 )
 from agent.governance.runtime_limits import RuntimeLimits, load_runtime_limits
 from agent.governance.runtime_state import RuntimeState, RuntimeStatus
+from agent.governance.permissions import PermissionDecision
 
 
 class TrajectoryRecorder:
@@ -162,6 +163,60 @@ class TrajectoryRecorder:
             human_review_required=True,
             status=RuntimeEventStatus.success,
             risk_level=RuntimeRiskLevel.medium,
+        )
+
+    def record_permission_event(self, decision: PermissionDecision) -> TrajectoryEvent:
+        event_type = (
+            TrajectoryEventType.permission_checked
+            if decision.allowed
+            else TrajectoryEventType.permission_denied
+        )
+        return self.record_event(
+            event_type=event_type,
+            tool_name=decision.tool_name,
+            permission_scope=decision.requested_scope,
+            risk_level=decision.risk_level,
+            status=RuntimeEventStatus.success if decision.allowed else RuntimeEventStatus.failed,
+            human_review_required=decision.requires_human_review,
+            output_summary=summarize_value(
+                {
+                    "action": decision.action,
+                    "allowed": decision.allowed,
+                    "granted_scope": decision.granted_scope,
+                    "requires_confirmation": decision.requires_confirmation,
+                    "requires_human_review": decision.requires_human_review,
+                    "denial_reason": decision.denial_reason,
+                }
+            ),
+        )
+
+    def record_approval_event(
+        self,
+        *,
+        event_type: TrajectoryEventType | str,
+        tool_name: str,
+        action: str,
+        requested_scope: str,
+        risk_level: RuntimeRiskLevel | str,
+        approval_id: str,
+        status: RuntimeEventStatus | str = RuntimeEventStatus.success,
+        human_review_required: bool = True,
+        reason: str | None = None,
+    ) -> TrajectoryEvent:
+        return self.record_event(
+            event_type=event_type,
+            tool_name=tool_name,
+            permission_scope=requested_scope,
+            risk_level=risk_level,
+            status=status,
+            human_review_required=human_review_required,
+            output_summary=summarize_value(
+                {
+                    "approval_id": approval_id,
+                    "action": action,
+                    "reason": reason,
+                }
+            ),
         )
 
     def stop_by_policy(self, *, reason: str) -> TrajectoryEvent:
