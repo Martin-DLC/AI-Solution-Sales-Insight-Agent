@@ -119,16 +119,17 @@ python scripts/run_solution_insight_observability_demo.py --write
 - 触发原因可能是证据不足、边界阻塞或检索错误
 - 这样做比让模型“硬编一个答案”更可靠
 
-## 6. 如何解释没有夸大 production readiness
+## 6. 如何解释 Runtime Governance v0.1
 
 可以直接说明：
 
 - 这是 portfolio-grade prototype
-- 当前没有复杂前端
-- 当前没有把 hierarchical retrieval 接到正式主链路
+- Runtime Governance v0.1 增加了 `run_id` / `trace_id`、trajectory events、permission presets、estimated cost、trajectory evaluation、human review trigger、fallback recovery 和 model provider abstraction
+- 当前没有真实 IAM、不可变审计日志、真实企业写入、真实人工评分或真实 ROI
 - deterministic mode 是 demo 友好模式，不是生产质量保证
+- ROI metric framework 是未来 pilot 的指标框架，不是当前业务结果
 
-## 7. 2 分钟面试展示版本
+## 7. 2 分钟项目展示版本
 
 “这个项目的核心价值不是让模型一次性写出漂亮报告，而是把销售分析拆成可审计的步骤。我们先做正式 Retrieval Benchmark，确认边界和证据质量；再做 Solution Insight Service，把检索、fallback、LLM 输出和人工确认串起来；最后用 CLI 和 FastAPI 包装成一个能实际展示的产品。它的亮点是能解释、能复现、能保留失败边界。”
 

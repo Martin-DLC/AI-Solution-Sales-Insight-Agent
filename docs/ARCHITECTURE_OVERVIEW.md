@@ -7,6 +7,7 @@
 1. 正式主链路：输入 -> 检索 -> 证据 -> fallback -> 结构化输出
 2. Shadow 旁路：输入 -> hierarchical retrieval debug -> 仅供诊断
 3. Web Demo 展示层：输入表单 -> `/solution-insight` -> 结果卡片，不改变 service / retrieval / evaluation 主链路
+4. Runtime Governance v0.1：围绕主链路记录 trace、权限、评测、人审触发、fallback、成本估算和企业交付边界
 
 可维护的 Mermaid 图源文件见 [architecture_diagram.mmd](architecture_diagram.mmd)。
 
@@ -22,6 +23,7 @@ flowchart LR
     E --> F[Deterministic / LLM Generator]
     F --> G[Structured Output]
     G --> M[Observation Snapshot / Report]
+    G --> N[Runtime Governance Summary]
 ```
 
 ## Shadow Flow
@@ -57,6 +59,14 @@ fallback 不是“失败就硬继续”，而是：
 - 检索错误时不伪造结论
 - 边界不清时不冒充可信答案
 
+### Governance is local-first
+
+- `run_id` / `trace_id` 用于本地追踪
+- permission / approval 当前是本地预设和模拟状态
+- trajectory evaluation 是规则门，不是人工评分
+- observability cost 是估算，不是生产账单
+- human review queue 是触发队列，不代表已完成真实人工评审
+
 ## Why this architecture works for demos
 
 - CLI 可以快速演示
@@ -65,3 +75,4 @@ fallback 不是“失败就硬继续”，而是：
 - formal benchmark 结果仍然冻结可追溯
 - shadow 让我们可以展示技术深度，但不会污染正式结论
 - Observability Snapshot 位于正式输出之后，不影响主链路，只负责可展示、可排障的只读观测
+- Runtime Governance v0.1 让 demo 能说明企业交付边界，但不声称已经具备生产级 IAM、不可变审计日志或真实企业写入

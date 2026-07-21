@@ -161,7 +161,7 @@ curl -X POST http://localhost:8000/solution-insight \
 
 ## 6. CLI Usage
 
-CLI 会输出结构化 JSON，适合本地 demo、调试和面试展示。
+CLI 会输出结构化 JSON，适合本地 demo、调试和项目展示。
 
 ```bash
 python run.py solution-insight --help
@@ -360,6 +360,24 @@ Shadow retrieval 已通过 feature flag 接入：
 
 这部分上下文当前只进入可选 `enterprise_context` 和 `skill_trace`，不替代正式 evidence，也不强行改变正式 solution generation。
 
+## Runtime Governance v0.1
+
+Runtime Governance v0.1 adds a local-first governance layer around the existing Solution Insight Agent. It covers runtime trace, permission and approval presets, observability and estimated cost, trajectory evaluation, human review triggers, fallback and recovery, model provider abstraction, and enterprise delivery governance.
+
+Key documents:
+
+- [Enterprise AI Governance](docs/ENTERPRISE_AI_GOVERNANCE.md)
+- [Agent Runtime Governance](docs/AGENT_RUNTIME_GOVERNANCE.md)
+- [Permission Model](docs/PERMISSION_MODEL.md)
+- [Observability and Cost](docs/OBSERVABILITY_AND_COST.md)
+- [Trajectory Evaluation and Human Review](docs/TRAJECTORY_EVALUATION_AND_HUMAN_REVIEW.md)
+- [Fallback and Recovery](docs/FALLBACK_AND_RECOVERY.md)
+- [Model Provider Strategy](docs/MODEL_PROVIDER_STRATEGY.md)
+- [Enterprise Delivery Blueprint](docs/ENTERPRISE_DELIVERY_BLUEPRINT.md)
+- [ROI Metric Framework](docs/ROI_METRIC_FRAMEWORK.md)
+
+This governance layer is for local reference, demo review, and future pilot planning. It does not include production deployment, real IAM, immutable audit logs, real enterprise writes, completed human scoring, or real ROI measurement.
+
 ## 12. Project Status
 
 当前项目已经完成：
@@ -370,6 +388,7 @@ Shadow retrieval 已通过 feature flag 接入：
 - shadow retrieval debug
 - service 级 fallback
 - v0.3 Context Provider Interface
+- Runtime Governance v0.1 local governance foundation
 
 ## 13. Limitations
 
@@ -380,6 +399,7 @@ Shadow retrieval 已通过 feature flag 接入：
 - deterministic mode 是可复现 demo，不代表真实 LLM 最终质量
 - 当前没有复杂前端
 - 当前不是生产部署完成态
+- Runtime Governance v0.1 不包含真实 IAM、不可变审计日志、真实企业写入、已完成人工评分或真实 ROI
 
 ## 14. Roadmap
 
