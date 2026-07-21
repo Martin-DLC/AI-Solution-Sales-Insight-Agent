@@ -252,8 +252,45 @@ class SolutionInsightService:
             output_text=output_text,
         )
         run_metrics_payload = run_metrics.model_dump(mode="json")
+        from evaluation.trajectory import EvaluationGate, ReviewQueueManager
+
+        evaluation_gate = EvaluationGate()
+        trajectory_evaluation = evaluation_gate.evaluate(
+            runtime_trace.events,
+            metrics=run_metrics,
+        )
+        trajectory_evaluation_payload = trajectory_evaluation.model_dump(mode="json")
+        review_queue_item_payload = None
+        if evaluation_gate.should_trigger_human_review(trajectory_evaluation):
+            review_queue = ReviewQueueManager()
+            review_item = review_queue.create_item(
+                run_id=trajectory_evaluation.run_id,
+                trace_id=trajectory_evaluation.trace_id,
+                evaluation_id=trajectory_evaluation.evaluation_id,
+                trigger_reason="; ".join(trajectory_evaluation.human_review_reasons)
+                or "trajectory_evaluation_requires_human_review",
+                priority="high" if trajectory_evaluation.risk_level.value == "high" else "medium",
+            )
+            review_queue_item_payload = review_item.model_dump(mode="json")
+        evaluation_gate_summary = {
+            "evaluation_id": trajectory_evaluation.evaluation_id,
+            "passed": trajectory_evaluation.passed,
+            "gate_decision": trajectory_evaluation.gate_decision.value,
+            "human_review_required": trajectory_evaluation.human_review_required,
+            "retry_recommended": trajectory_evaluation.retry_recommended,
+            "stop_recommended": trajectory_evaluation.stop_recommended,
+            "failed_rules": [
+                result.rule_id
+                for result in trajectory_evaluation.rule_results
+                if not result.passed
+            ],
+            "review_queue_status": None
+            if review_queue_item_payload is None
+            else review_queue_item_payload["status"],
+        }
         log_record["governance"] = trajectory_summary
         log_record["run_metrics"] = run_metrics_payload
+        log_record["trajectory_evaluation"] = evaluation_gate_summary
 
         return SolutionInsightResponse(
             request_id=request_id,
@@ -279,6 +316,9 @@ class SolutionInsightService:
             governance_trace=governance_trace,
             trajectory_summary=trajectory_summary,
             run_metrics=run_metrics_payload,
+            trajectory_evaluation=trajectory_evaluation_payload,
+            evaluation_gate_summary=evaluation_gate_summary,
+            review_queue_item=review_queue_item_payload,
             response_note=note,
             log_record=log_record,
         )

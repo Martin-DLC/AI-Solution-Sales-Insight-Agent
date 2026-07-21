@@ -1,0 +1,42 @@
+rules:
+  - rule_id: no_policy_stop
+    rule_name: No policy stop
+    severity: critical
+    recommended_action: stop
+    enabled: true
+  - rule_id: no_permission_denied
+    rule_name: No permission denied
+    severity: error
+    recommended_action: human_review
+    enabled: true
+  - rule_id: high_risk_requires_review
+    rule_name: High risk requires review
+    severity: error
+    recommended_action: human_review
+    enabled: true
+  - rule_id: fallback_requires_explanation
+    rule_name: Fallback requires explanation
+    severity: warning
+    recommended_action: human_review
+    enabled: true
+  - rule_id: human_review_event_consistency
+    rule_name: Human review event consistency
+    severity: error
+    recommended_action: human_review
+    enabled: true
+  - rule_id: no_excessive_failures
+    rule_name: No excessive failures
+    severity: error
+    recommended_action: retry
+    enabled: true
+    threshold: 3
+  - rule_id: required_core_nodes_present
+    rule_name: Required core nodes present
+    severity: error
+    recommended_action: human_review
+    enabled: true
+  - rule_id: shadow_does_not_override_formal
+    rule_name: Shadow does not override formal
+    severity: warning
+    recommended_action: human_review
+    enabled: true

@@ -13,6 +13,7 @@ def render_observation_report(snapshot: ObservationSnapshot) -> str:
     safety = snapshot.safety_notes
     governance = snapshot.governance
     metrics = snapshot.metrics
+    trajectory_evaluation = snapshot.trajectory_evaluation
 
     lines = [
         "# Solution Insight Observability Report",
@@ -100,5 +101,13 @@ def render_observation_report(snapshot: ObservationSnapshot) -> str:
         f"- human_review_count: {metrics.human_review_count}",
         f"- total_latency_ms: {metrics.total_latency_ms}",
         f"- cost_is_estimated: `{metrics.cost_is_estimated}`",
+        "",
+        "## Trajectory Evaluation",
+        f"- passed: `{trajectory_evaluation.passed}`",
+        f"- gate_decision: `{trajectory_evaluation.gate_decision}`",
+        f"- human_review_required: `{trajectory_evaluation.human_review_required}`",
+        f"- human_review_reasons: {', '.join(trajectory_evaluation.human_review_reasons) if trajectory_evaluation.human_review_reasons else '(none)'}",
+        f"- failed_rules: {', '.join(trajectory_evaluation.failed_rules) if trajectory_evaluation.failed_rules else '(none)'}",
+        f"- review_queue_status: `{trajectory_evaluation.review_queue_status}`",
     ]
     return "\n".join(lines) + "\n"

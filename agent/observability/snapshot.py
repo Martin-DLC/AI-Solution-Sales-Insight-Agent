@@ -15,6 +15,7 @@ from agent.observability.models import (
     ObservationShadowPath,
     ObservationSkills,
     ObservationSnapshot,
+    ObservationTrajectoryEvaluation,
 )
 
 
@@ -26,6 +27,8 @@ def build_observation_snapshot(response: SolutionInsightResponse) -> Observation
     warnings = [] if skill_trace is None else list(skill_trace.warnings)
     provider_results = [] if enterprise_context is None else list(enterprise_context.provider_results)
     run_metrics = dict(response.run_metrics)
+    trajectory_evaluation = dict(response.trajectory_evaluation)
+    evaluation_gate_summary = dict(response.evaluation_gate_summary)
 
     return ObservationSnapshot(
         request_id=response.request_id,
@@ -119,6 +122,14 @@ def build_observation_snapshot(response: SolutionInsightResponse) -> Observation
             human_review_count=int(run_metrics.get("human_review_count") or 0),
             total_latency_ms=int(run_metrics.get("total_latency_ms") or 0),
             cost_is_estimated=bool(run_metrics.get("cost_is_estimated", True)),
+        ),
+        trajectory_evaluation=ObservationTrajectoryEvaluation(
+            passed=trajectory_evaluation.get("passed"),
+            gate_decision=trajectory_evaluation.get("gate_decision"),
+            human_review_required=bool(trajectory_evaluation.get("human_review_required", False)),
+            human_review_reasons=list(trajectory_evaluation.get("human_review_reasons", [])),
+            failed_rules=list(evaluation_gate_summary.get("failed_rules", [])),
+            review_queue_status=evaluation_gate_summary.get("review_queue_status"),
         ),
     )
 

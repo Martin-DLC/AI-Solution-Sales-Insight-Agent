@@ -96,6 +96,15 @@ class ObservationMetrics(StrictBaseModel):
     cost_is_estimated: bool = True
 
 
+class ObservationTrajectoryEvaluation(StrictBaseModel):
+    passed: bool | None = None
+    gate_decision: str | None = None
+    human_review_required: bool = False
+    human_review_reasons: list[str] = Field(default_factory=list)
+    failed_rules: list[str] = Field(default_factory=list)
+    review_queue_status: str | None = None
+
+
 class ObservationSnapshot(StrictBaseModel):
     request_id: str
     generated_at: str
@@ -109,6 +118,7 @@ class ObservationSnapshot(StrictBaseModel):
     safety_notes: ObservationSafetyNotes
     governance: ObservationGovernance = Field(default_factory=ObservationGovernance)
     metrics: ObservationMetrics = Field(default_factory=ObservationMetrics)
+    trajectory_evaluation: ObservationTrajectoryEvaluation = Field(default_factory=ObservationTrajectoryEvaluation)
 
 
 ObservationMode = Literal["deterministic", "llm", "auto"]
