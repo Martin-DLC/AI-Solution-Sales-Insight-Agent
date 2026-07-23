@@ -83,19 +83,19 @@ In offline test mode, the adapter should be replaced by mock clients or skipped 
 
 ## 6. Proposed New Files
 
-The v0.5A foundation implements the adapter, candidate config, smoke test script, onboarding doc, and offline adapter tests. Other files remain proposed for later batches.
+The v0.5A foundation implements the adapter, candidate config, smoke test script, onboarding doc, and offline adapter tests. The v0.5B foundation implements the offline Multi-MaaS evaluation runner, seed cases, reports, governance docs, and runner tests.
 
 | File | Purpose | Depends On | Should Modify Existing Flow? |
 | --- | --- | --- | --- |
 | `agent/model_providers/openai_compatible.py` | Implement an OpenAI-compatible provider adapter that conforms to `BaseModelProvider`. | `agent/model_providers/base.py`, existing recovery taxonomy | No. Implemented as opt-in adapter foundation. |
 | `config/maas_providers.yaml` | Define MaaS provider candidates, base URL, API key env var, model examples, enabled flag, and verification metadata. | Existing config loading patterns | No. Implemented separately from `config/model_providers.yaml`. |
 | `scripts/run_maas_provider_smoke_test.py` | Run provider availability/smoke checks with skipped status when API keys are missing. | OpenAI-compatible adapter, recovery decisions | No. Implemented as a standalone script. |
-| `scripts/run_multi_maas_model_eval.py` | Run evaluation cases across selected provider/model pairs and write JSON/Markdown comparison reports. | `evaluation/llm/runner.py`, provider adapter, report helpers | No. It should reuse the harness without changing deterministic baseline checks. |
+| `scripts/run_multi_maas_model_eval.py` | Run evaluation cases across selected provider/model pairs and write JSON/Markdown comparison reports. | Multi-MaaS runner, provider adapter, report helpers | No. Implemented as an offline-safe CLI without changing deterministic baseline checks. |
 | `docs/MAAS_PROVIDER_ONBOARDING.md` | Document how to add a provider safely, including env vars and verification boundaries. | This plan, provider config | No. Implemented as documentation only. |
-| `docs/MODEL_EVALUATION_GOVERNANCE.md` | Define rules for separating live, mock, skipped, and estimated evaluation outputs. | LLM evaluation and trajectory evaluation docs | No. Documentation only. |
-| `docs/MULTI_MAAS_EVALUATION_REPORT_TEMPLATE.md` | Define report sections for provider comparison, limitations, and recommended actions. | Reports directory conventions | No. Documentation only. |
+| `docs/MODEL_EVALUATION_GOVERNANCE.md` | Define rules for separating live, mock, skipped, and estimated evaluation outputs. | LLM evaluation and trajectory evaluation docs | No. Implemented as documentation only. |
+| `docs/MULTI_MAAS_EVALUATION_REPORT_TEMPLATE.md` | Define report sections for provider comparison, limitations, and recommended actions. | Reports directory conventions | No. Implemented as documentation only. |
 | `tests/test_openai_compatible_maas_provider.py` | Offline tests for adapter config, skipped missing key behavior, parsing, usage, errors, and secret redaction. | Adapter and mock client factory | No. Implemented as tests only. |
-| `tests/test_multi_maas_model_eval.py` | Offline tests for multi-provider eval statuses, schema validity, latency/cost summaries, and separated outputs. | Multi-MaaS eval runner | No. Tests only. |
+| `tests/test_multi_maas_model_eval.py` | Offline tests for multi-provider eval statuses, schema validity, latency/cost summaries, and separated outputs. | Multi-MaaS eval runner | No. Implemented as tests only. |
 
 ## 7. Evaluation Metrics
 
