@@ -1,0 +1,49 @@
+policies:
+  - policy_name: conservative_eval_policy
+    mode: evaluation_only
+    not_production_routing: true
+    recommendations_only: true
+    primary_selection_rules: prefer clearer verification status, dry-run passability, higher schema validity, and lower error rate
+    fallback_selection_rules: choose next eligible candidate by the same evaluation-only score
+    stop_conditions: all targets skipped, all targets failed, or no usable evaluation data
+    human_review_conditions: high-risk cases, schema invalid results, provider unavailable results, or governance-sensitive cases
+    metric_weights:
+      schema_valid_rate: 0.35
+      provider_error_rate: -0.25
+      timeout_rate: -0.15
+      usage_available_rate: 0.10
+      average_latency_ms: -0.05
+      human_review_trigger_rate: -0.10
+    boundary_note: Evaluation-only recommendation; not production routing, not real fallback execution, and not a real availability conclusion.
+  - policy_name: cost_sensitive_eval_policy
+    mode: evaluation_only
+    not_production_routing: true
+    recommendations_only: true
+    primary_selection_rules: prefer lower estimated cost when structure and failure metrics are acceptable
+    fallback_selection_rules: choose the next candidate with acceptable structure and lower estimated cost
+    stop_conditions: all targets skipped, all targets failed, or estimated cost is unavailable for every successful target
+    human_review_conditions: high-risk cases or unclear cost and quality tradeoff
+    metric_weights:
+      schema_valid_rate: 0.25
+      provider_error_rate: -0.20
+      timeout_rate: -0.10
+      usage_available_rate: 0.10
+      average_estimated_cost: -0.25
+      human_review_trigger_rate: -0.10
+    boundary_note: Evaluation-only recommendation; estimated cost is not real billing and must not be treated as price verification.
+  - policy_name: reliability_sensitive_eval_policy
+    mode: evaluation_only
+    not_production_routing: true
+    recommendations_only: true
+    primary_selection_rules: prefer lower timeout rate and lower provider error rate
+    fallback_selection_rules: choose the next candidate with the lowest observed evaluation error profile
+    stop_conditions: all targets skipped, all targets failed, or every target has high timeout/provider error rates
+    human_review_conditions: repeated provider unavailable, timeout, schema invalid, or unknown errors
+    metric_weights:
+      schema_valid_rate: 0.20
+      provider_error_rate: -0.35
+      timeout_rate: -0.25
+      usage_available_rate: 0.05
+      average_latency_ms: -0.05
+      human_review_trigger_rate: -0.10
+    boundary_note: Evaluation-only recommendation; current metrics are not SLA, uptime, or production stability claims.

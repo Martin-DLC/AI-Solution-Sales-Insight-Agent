@@ -121,4 +121,6 @@ class MultiMaaSEvaluationReport(StrictBaseModel):
     cases: list[MultiMaaSEvaluationCase]
     summary: MultiMaaSEvaluationSummary
     results: list[MultiMaaSEvaluationResult]
+    selection_recommendation: dict[str, object] | None = None
+    recovery_summary: dict[str, object] | None = None
     boundary_notes: list[str] = Field(default_factory=lambda: [MULTI_MAAS_BOUNDARY_NOTE])

@@ -20,7 +20,12 @@ from evaluation.multi_maas.models import (
     ProviderModelTarget,
     ProviderSummary,
 )
+from evaluation.multi_maas.recovery_summary import build_recovery_recommendation_summary
 from evaluation.multi_maas.scoring import score_output
+from evaluation.multi_maas.selection import (
+    DEFAULT_SELECTION_POLICY_PATH,
+    build_provider_selection_recommendation,
+)
 
 
 DEFAULT_CASES_PATH = Path("evaluation/multi_maas/cases.jsonl")
@@ -45,6 +50,8 @@ class MultiMaaSEvaluationRunner:
         provider_name: str | None = None,
         model_name: str | None = None,
         dry_run: bool = True,
+        policy_name: str = "conservative_eval_policy",
+        selection_config_path: str | Path = DEFAULT_SELECTION_POLICY_PATH,
     ) -> MultiMaaSEvaluationReport:
         created_at = datetime.now(UTC).isoformat()
         run_id = f"multi-maas-eval-{created_at}"
@@ -62,6 +69,12 @@ class MultiMaaSEvaluationRunner:
             targets=targets,
             results=results,
         )
+        selection_recommendation = build_provider_selection_recommendation(
+            results,
+            policy_name=policy_name,
+            policy_path=selection_config_path,
+        )
+        recovery_summary = build_recovery_recommendation_summary(results)
         return MultiMaaSEvaluationReport(
             run_id=run_id,
             created_at=created_at,
@@ -70,6 +83,8 @@ class MultiMaaSEvaluationRunner:
             cases=cases,
             summary=summary,
             results=results,
+            selection_recommendation=selection_recommendation.model_dump(mode="json"),
+            recovery_summary=recovery_summary.model_dump(mode="json"),
         )
 
     def _resolve_targets(
@@ -161,11 +176,15 @@ def run_multi_maas_evaluation(
     cases_path: str | Path = DEFAULT_CASES_PATH,
     config_path: str | Path = DEFAULT_MAAS_CONFIG_PATH,
     dry_run: bool = True,
+    policy_name: str = "conservative_eval_policy",
+    selection_config_path: str | Path = DEFAULT_SELECTION_POLICY_PATH,
 ) -> MultiMaaSEvaluationReport:
     return MultiMaaSEvaluationRunner(cases_path=cases_path, config_path=config_path).run(
         provider_name=provider_name,
         model_name=model_name,
         dry_run=dry_run,
+        policy_name=policy_name,
+        selection_config_path=selection_config_path,
     )
 
 

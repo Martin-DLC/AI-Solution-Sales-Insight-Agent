@@ -173,6 +173,10 @@ Acceptance:
 
 Only evaluation-mode recommended actions are produced. No production automatic routing is executed.
 
+Current foundation:
+
+v0.5C adds evaluation-only selection policies, candidate ranking, provider selection recommendation, recovery recommendation summary, and governance documentation. These outputs explain evaluation results without executing retry, fallback, compensation, or production model routing.
+
 ## 11. Acceptance Commands
 
 For this batch, because only this document is added, the required commands are:

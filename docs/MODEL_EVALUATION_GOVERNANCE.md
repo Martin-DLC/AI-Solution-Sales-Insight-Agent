@@ -39,6 +39,10 @@ When formal evidence is unavailable, evidence grounding must be treated as unava
 
 Recovery recommendations reuse `RecoveryDecisionEngine` where possible. They are recommendations for evaluation reports only. They do not execute retry, fallback, compensation, or production routing.
 
-## 7. Cost Boundary
+## 7. Provider Selection Boundary
+
+Provider selection policies are evaluation-only. Candidate ranking may explain why one provider/model looks preferable within a dry-run or evaluation report, but skipped and dry-run data cannot establish model quality. Fallback provider recommendations are not production routing.
+
+## 8. Cost Boundary
 
 Estimated cost is not real billing. Usage may be missing or provider-specific. Reports must keep usage availability and cost estimate status explicit.

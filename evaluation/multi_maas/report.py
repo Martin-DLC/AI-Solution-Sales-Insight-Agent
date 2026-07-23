@@ -67,6 +67,31 @@ def render_markdown_report(report: MultiMaaSEvaluationReport) -> str:
             f"- `{summary.provider_name}` / `{summary.model_name}`: total={summary.total_runs}, "
             f"success={summary.success_count}, skipped={summary.skipped_count}, failed={summary.failed_count}"
         )
+    selection = report.selection_recommendation or {}
+    lines.extend(
+        [
+            "",
+            "## Provider Selection Recommendation",
+            f"- policy_name: `{selection.get('policy_name')}`",
+            f"- recommendation_status: `{selection.get('recommendation_status')}`",
+            f"- primary_provider: `{selection.get('primary_provider')}`",
+            f"- primary_model: `{selection.get('primary_model')}`",
+            f"- fallback_provider: `{selection.get('fallback_provider')}`",
+            f"- fallback_model: `{selection.get('fallback_model')}`",
+            f"- selection_reason: {selection.get('selection_reason')}",
+            f"- fallback_reason: {selection.get('fallback_reason')}",
+            "",
+            "## Candidate Ranking",
+        ]
+    )
+    for candidate in selection.get("candidate_ranking", []) or []:
+        if not isinstance(candidate, dict):
+            continue
+        lines.append(
+            f"- `{candidate.get('provider_name')}` / `{candidate.get('model_name')}`: "
+            f"status=`{candidate.get('status')}`, score=`{candidate.get('score')}`, "
+            f"verification=`{candidate.get('verification_status')}`"
+        )
     lines.extend(["", "## Per-case Results"])
     for result in report.results:
         lines.append(
@@ -74,20 +99,30 @@ def render_markdown_report(report: MultiMaaSEvaluationReport) -> str:
             f"status=`{result.status}`, schema_valid=`{result.schema_valid}`, "
             f"recovery=`{result.recommended_recovery_action}`"
         )
+    recovery = report.recovery_summary or {}
     lines.extend(
         [
             "",
             "## Recovery Recommendation Summary",
-            f"- retry_recommended_count: {report.summary.retry_recommended_count}",
-            f"- fallback_recommended_count: {report.summary.fallback_recommended_count}",
-            f"- human_review_trigger_count: {report.summary.human_review_trigger_count}",
+            f"- retry_recommended_count: {recovery.get('retry_recommended_count', report.summary.retry_recommended_count)}",
+            f"- fallback_recommended_count: {recovery.get('fallback_recommended_count', report.summary.fallback_recommended_count)}",
+            f"- human_review_recommended_count: {recovery.get('human_review_recommended_count')}",
+            f"- stop_recommended_count: {recovery.get('stop_recommended_count')}",
+            f"- provider_unavailable_count: {recovery.get('provider_unavailable_count')}",
+            f"- timeout_count: {recovery.get('timeout_count')}",
+            f"- schema_invalid_count: {recovery.get('schema_invalid_count')}",
+            f"- unknown_error_count: {recovery.get('unknown_error_count')}",
             "",
             "## Boundary Notes",
             "- skipped_missing_api_key is not a model quality failure conclusion.",
             "- skipped_dry_run is not a model quality result.",
+            "- Provider selection is evaluation-only recommendation.",
+            "- Fallback provider recommendation is not production routing.",
+            "- Skipped and dry-run data cannot be used for model quality ranking.",
             "- heuristic score does not represent human scoring.",
             "- estimated cost is not real billing.",
             "- not_verified provider status does not mean MaaS integration is complete.",
+            "- missing_api_key is not a model quality failure.",
             "- provider fallback recommendation is not production routing.",
         ]
     )

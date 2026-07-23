@@ -7,7 +7,17 @@ from evaluation.multi_maas.models import (
     ProviderModelTarget,
     ProviderSummary,
 )
+from evaluation.multi_maas.recovery_summary import (
+    RecoveryRecommendationSummary,
+    build_recovery_recommendation_summary,
+)
 from evaluation.multi_maas.runner import MultiMaaSEvaluationRunner, run_multi_maas_evaluation
+from evaluation.multi_maas.selection import (
+    ProviderSelectionCandidate,
+    ProviderSelectionPolicy,
+    ProviderSelectionRecommendation,
+    build_provider_selection_recommendation,
+)
 
 __all__ = [
     "MULTI_MAAS_BOUNDARY_NOTE",
@@ -17,6 +27,12 @@ __all__ = [
     "MultiMaaSEvaluationRunner",
     "MultiMaaSEvaluationSummary",
     "ProviderModelTarget",
+    "ProviderSelectionCandidate",
+    "ProviderSelectionPolicy",
+    "ProviderSelectionRecommendation",
     "ProviderSummary",
+    "RecoveryRecommendationSummary",
+    "build_provider_selection_recommendation",
+    "build_recovery_recommendation_summary",
     "run_multi_maas_evaluation",
 ]

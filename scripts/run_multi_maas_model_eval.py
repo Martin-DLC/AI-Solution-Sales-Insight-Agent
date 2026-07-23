@@ -23,6 +23,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--selection-policy", default="conservative_eval_policy")
+    parser.add_argument("--selection-config", default="config/maas_selection_policies.yaml")
     args = parser.parse_args(argv)
 
     dry_run = True if args.dry_run or args.check or not args.write else False
@@ -32,6 +34,8 @@ def main(argv: list[str] | None = None) -> int:
         cases_path=args.cases,
         config_path=args.config,
         dry_run=dry_run,
+        policy_name=args.selection_policy,
+        selection_config_path=args.selection_config,
     )
 
     if args.write:

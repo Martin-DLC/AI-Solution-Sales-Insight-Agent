@@ -53,11 +53,17 @@ v0.5B adds an offline-safe Multi-MaaS evaluation runner under `evaluation/multi_
 
 The runner does not modify the agent's main flow, does not call real APIs by default, and does not treat dry-run or missing-key results as model quality outcomes.
 
-## 9. Relationship to Existing LLM Evaluation
+## 9. Provider Selection and Recovery Governance
+
+v0.5C adds evaluation-only provider selection policies and recovery summaries. The selection module can rank provider/model candidates when successful evaluation data exists, but returns `skipped_all_targets` or `insufficient_data` when only skipped/dry-run data is available.
+
+Fallback provider recommendations are report guidance only. They do not execute live fallback and do not create production routing.
+
+## 10. Relationship to Existing LLM Evaluation
 
 This abstraction does not modify existing LLM evaluation artifacts or provider comparison reports. Existing eval assets remain source-of-truth for current evaluation history.
 
-## 10. What Is Not Implemented Yet
+## 11. What Is Not Implemented Yet
 
 - Real DeepSeek API calls.
 - Production-verified MaaS provider integrations.
@@ -65,6 +71,6 @@ This abstraction does not modify existing LLM evaluation artifacts or provider c
 - Real billing reconciliation.
 - Real provider performance claims.
 
-## 11. Known Limitations
+## 12. Known Limitations
 
 Current model fallback is preset and mock-only. It is suitable for local tests and governance design, not production deployment claims.
