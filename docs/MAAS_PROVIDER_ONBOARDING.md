@@ -80,3 +80,9 @@ Usage fields are optional because not every provider response returns token coun
 - `deprecated`: Provider should no longer be used for new evaluation runs.
 
 `not_verified` does not mean unavailable; it means the repository has not verified the provider. Smoke test passed does not mean production available. Estimated cost does not equal real billing. Provider fallback simulation does not equal production routing.
+
+## 10. Related v0.5 Documents
+
+- `docs/MULTI_MAAS_EVALUATION_PLAYBOOK.md`
+- `docs/MULTI_MAAS_V0_5_RELEASE_NOTES.md`
+- `docs/MULTI_MAAS_V0_5_CHECKLIST.md`

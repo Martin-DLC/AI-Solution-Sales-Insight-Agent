@@ -18,6 +18,7 @@
 - Skills Registry v0.2
 - MCP-style Mock Context
 - Context Provider Interface v0.3
+- Multi-MaaS Evaluation Foundation v0.5
 - CLI 与最小 FastAPI 包装层
 - deterministic demo mode
 - shadow retrieval debug mode
@@ -378,6 +379,40 @@ Key documents:
 
 This governance layer is for local reference, demo review, and future pilot planning. It does not include production deployment, real IAM, immutable audit logs, real enterprise writes, completed human scoring, or real ROI measurement.
 
+## Multi-MaaS Evaluation Foundation v0.5
+
+Multi-MaaS Evaluation Foundation v0.5 adds an offline-first evaluation layer for MaaS provider and model readiness. It includes:
+
+- OpenAI-compatible MaaS adapter
+- MaaS provider config
+- Provider smoke test
+- Multi-MaaS model evaluation runner
+- Evaluation-only provider selection
+- Recovery recommendation summary
+- JSON / Markdown reports
+- Dry-run behavior by default
+
+This layer does not claim real MaaS integration, real model evaluation results, production routing, real cost, real SLA, or real ROI.
+
+Key documents:
+
+- [Multi-MaaS Evaluation Plan](docs/MULTI_MAAS_EVALUATION_PLAN.md)
+- [MaaS Provider Onboarding](docs/MAAS_PROVIDER_ONBOARDING.md)
+- [Model Evaluation Governance](docs/MODEL_EVALUATION_GOVERNANCE.md)
+- [Multi-MaaS Evaluation Report Template](docs/MULTI_MAAS_EVALUATION_REPORT_TEMPLATE.md)
+- [Provider Selection and Recovery Governance](docs/PROVIDER_SELECTION_AND_RECOVERY_GOVERNANCE.md)
+- [Multi-MaaS Evaluation Playbook](docs/MULTI_MAAS_EVALUATION_PLAYBOOK.md)
+- [Multi-MaaS v0.5 Release Notes](docs/MULTI_MAAS_V0_5_RELEASE_NOTES.md)
+- [Multi-MaaS v0.5 Checklist](docs/MULTI_MAAS_V0_5_CHECKLIST.md)
+
+Useful dry-run checks:
+
+```bash
+./.venv/bin/python scripts/run_maas_provider_smoke_test.py --provider cubexai --dry-run --check
+./.venv/bin/python scripts/run_multi_maas_model_eval.py --dry-run --check
+./.venv/bin/python scripts/run_multi_maas_model_eval.py --dry-run --check --selection-policy conservative_eval_policy
+```
+
 ## 12. Project Status
 
 当前项目已经完成：
@@ -389,6 +424,7 @@ This governance layer is for local reference, demo review, and future pilot plan
 - service 级 fallback
 - v0.3 Context Provider Interface
 - Runtime Governance v0.1 local governance foundation
+- Multi-MaaS Evaluation Foundation v0.5 offline-first evaluation layer
 
 ## 13. Limitations
 
@@ -400,6 +436,7 @@ This governance layer is for local reference, demo review, and future pilot plan
 - 当前没有复杂前端
 - 当前不是生产部署完成态
 - Runtime Governance v0.1 不包含真实 IAM、不可变审计日志、真实企业写入、已完成人工评分或真实 ROI
+- Multi-MaaS v0.5 不包含真实 MaaS 接入、真实模型评测结果、生产路由、真实成本、真实 SLA 或真实 ROI
 
 ## 14. Roadmap
 

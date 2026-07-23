@@ -74,3 +74,5 @@ This abstraction does not modify existing LLM evaluation artifacts or provider c
 ## 12. Known Limitations
 
 Current model fallback is preset and mock-only. It is suitable for local tests and governance design, not production deployment claims.
+
+For the v0.5 operating workflow, see `docs/MULTI_MAAS_EVALUATION_PLAYBOOK.md`.

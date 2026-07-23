@@ -46,3 +46,7 @@ Provider selection policies are evaluation-only. Candidate ranking may explain w
 ## 8. Cost Boundary
 
 Estimated cost is not real billing. Usage may be missing or provider-specific. Reports must keep usage availability and cost estimate status explicit.
+
+## 9. Release Documentation
+
+Use `docs/MULTI_MAAS_EVALUATION_PLAYBOOK.md` for the operating workflow and `docs/MULTI_MAAS_V0_5_CHECKLIST.md` before tagging a v0.5 release.

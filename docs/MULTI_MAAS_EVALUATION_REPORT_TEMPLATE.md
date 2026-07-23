@@ -70,3 +70,10 @@ Every report must state:
 - Estimated cost is not real billing.
 - `not_verified` provider status does not mean MaaS integration is complete.
 - Provider fallback recommendation is not production routing.
+
+## 9. Release Use
+
+For v0.5 release review, pair this template with:
+
+- `docs/MULTI_MAAS_EVALUATION_PLAYBOOK.md`
+- `docs/MULTI_MAAS_V0_5_CHECKLIST.md`

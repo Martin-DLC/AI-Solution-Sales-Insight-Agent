@@ -53,3 +53,7 @@ Human review may be recommended for high-risk cases, schema invalid outputs, pro
 ## 9. Production Boundary
 
 Provider fallback recommendation is not production routing. A provider with `not_verified` status is not a completed MaaS integration. A selected primary provider is only an evaluation-mode recommendation.
+
+## 10. Release Review
+
+Before release, run the validation commands in `docs/MULTI_MAAS_V0_5_CHECKLIST.md` and confirm that selection recommendations remain evaluation-only and recovery recommendations do not execute retry, fallback, or compensation.

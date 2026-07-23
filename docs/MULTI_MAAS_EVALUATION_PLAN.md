@@ -193,3 +193,13 @@ The following targeted tests are acceptable when runtime cost is reasonable:
 ./.venv/bin/python -m pytest tests/test_observability_and_cost.py -q
 ./.venv/bin/python -m pytest tests/test_trajectory_evaluation_and_human_review.py -q
 ```
+
+## 12. Release Playbook and Checklist
+
+v0.5 release documentation is organized in:
+
+- `docs/MULTI_MAAS_EVALUATION_PLAYBOOK.md`
+- `docs/MULTI_MAAS_V0_5_RELEASE_NOTES.md`
+- `docs/MULTI_MAAS_V0_5_CHECKLIST.md`
+
+These documents keep the same boundaries as this plan: offline-first, dry-run by default, evaluation-only selection, no real API calls by default, no production routing, no real billing claims, and no replacement of formal retrieval or human evaluation artifacts.
