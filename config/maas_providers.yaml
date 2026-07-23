@@ -1,0 +1,86 @@
+providers:
+  - provider_name: cubexai
+    adapter_type: openai_compatible
+    model_name: to_be_configured
+    base_url_candidate: https://ai.lifangyun.com
+    api_key_env: CUBEXAI_API_KEY
+    timeout_seconds: 30
+    max_retries: 0
+    default_headers: {}
+    supports_tool_calling: false
+    supports_structured_output: true
+    supports_streaming: false
+    supports_long_context: false
+    cost_profile: not_configured
+    latency_profile: not_verified
+    data_policy: not_verified
+    verification_status: not_verified
+    notes: CubexAI / Lifangyun MaaS candidate; do not assume a /v1 path until verified.
+  - provider_name: siliconflow
+    adapter_type: openai_compatible
+    model_name: to_be_configured
+    base_url_candidate: to_be_verified
+    api_key_env: SILICONFLOW_API_KEY
+    timeout_seconds: 30
+    max_retries: 0
+    default_headers: {}
+    supports_tool_calling: false
+    supports_structured_output: true
+    supports_streaming: false
+    supports_long_context: false
+    cost_profile: not_configured
+    latency_profile: not_verified
+    data_policy: not_verified
+    verification_status: not_verified
+    notes: Candidate only; base URL and model IDs require provider documentation or user config.
+  - provider_name: aliyun_bailian
+    adapter_type: openai_compatible
+    model_name: to_be_configured
+    base_url_candidate: to_be_verified
+    api_key_env: ALIYUN_BAILIAN_API_KEY
+    timeout_seconds: 30
+    max_retries: 0
+    default_headers: {}
+    supports_tool_calling: false
+    supports_structured_output: true
+    supports_streaming: false
+    supports_long_context: false
+    cost_profile: not_configured
+    latency_profile: not_verified
+    data_policy: not_verified
+    verification_status: not_verified
+    notes: Aliyun Bailian candidate; not the same as a verified live Qwen evaluation result.
+  - provider_name: openrouter
+    adapter_type: openai_compatible
+    model_name: to_be_configured
+    base_url_candidate: to_be_verified
+    api_key_env: OPENROUTER_API_KEY
+    timeout_seconds: 30
+    max_retries: 0
+    default_headers: {}
+    supports_tool_calling: false
+    supports_structured_output: true
+    supports_streaming: false
+    supports_long_context: false
+    cost_profile: not_configured
+    latency_profile: not_verified
+    data_policy: not_verified
+    verification_status: not_verified
+    notes: Candidate only; no price, latency, SLA, or availability claim.
+  - provider_name: generic_openai_compatible
+    adapter_type: openai_compatible
+    model_name: to_be_configured
+    base_url_candidate: to_be_configured
+    api_key_env: GENERIC_MAAS_API_KEY
+    timeout_seconds: 30
+    max_retries: 0
+    default_headers: {}
+    supports_tool_calling: false
+    supports_structured_output: true
+    supports_streaming: false
+    supports_long_context: false
+    cost_profile: not_configured
+    latency_profile: not_verified
+    data_policy: not_verified
+    verification_status: not_verified
+    notes: Generic adapter candidate for user-provided OpenAI-compatible endpoints.

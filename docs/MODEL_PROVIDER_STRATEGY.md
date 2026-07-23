@@ -41,18 +41,24 @@ Batch 5 uses descriptive local metadata only. It does not provide real billing d
 
 `ModelProviderRegistry` can register providers, select a healthy primary provider, select a fallback provider, and run health checks.
 
-## 7. Relationship to Existing LLM Evaluation
+## 7. OpenAI-compatible MaaS Adapter
+
+v0.5A adds `OpenAICompatibleModelProvider` as an offline-safe adapter foundation under the existing `BaseModelProvider` protocol. It supports MaaS provider metadata, dry-run smoke tests, skipped-missing-key results, and error mapping into the existing recovery taxonomy.
+
+Candidate MaaS providers live in `config/maas_providers.yaml` with `verification_status: not_verified`. These entries are evaluation candidates only. Dry-run or skipped smoke results are not model quality results, estimated cost is not real billing, and provider fallback simulation is not production routing.
+
+## 8. Relationship to Existing LLM Evaluation
 
 This abstraction does not modify existing LLM evaluation artifacts or provider comparison reports. Existing eval assets remain source-of-truth for current evaluation history.
 
-## 8. What Is Not Implemented Yet
+## 9. What Is Not Implemented Yet
 
 - Real DeepSeek API calls.
-- New real provider integrations.
+- Production-verified MaaS provider integrations.
 - Production model routing.
 - Real billing reconciliation.
 - Real provider performance claims.
 
-## 9. Known Limitations
+## 10. Known Limitations
 
 Current model fallback is preset and mock-only. It is suitable for local tests and governance design, not production deployment claims.
